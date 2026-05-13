@@ -86,7 +86,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
       <input type="hidden" {...register("slotId")} />
 
       <div className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
