@@ -34,6 +34,11 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     resolver: zodResolver(applySchema),
     defaultValues: {
       slotId,
+      nombre: "",
+      email: "",
+      linkedin: "",
+      titulo: "",
+      descripcion: "",
       herramientas: [],
     },
   });
