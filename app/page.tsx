@@ -1,101 +1,90 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="flex flex-col min-h-screen">
+      <nav className="border-b border-border/50 px-6 py-4">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <span className="font-black text-lg tracking-tight">
+            AI First <span className="text-primary">Founders</span>
+          </span>
+          <Button size="sm" render={<Link href="/postular" />}>
+            Postular
+          </Button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+      </nav>
+
+      <section className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
+        <div className="max-w-3xl mx-auto space-y-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm text-primary font-medium">
+            <Brain className="h-4 w-4" />
+            Martes 7–8 pm · Comunidad AI First Founders
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl font-black leading-tight tracking-tight text-balance">
+            Comparte lo que{" "}
+            <span className="text-primary">construiste con IA</span>
+          </h1>
+
+          <p className="text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Cada martes, un founder comparte su experiencia construyendo con inteligencia
+            artificial. Elige tu fecha, postula y habla ante la comunidad.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button size="lg" className="text-base font-bold" render={<Link href="/postular" />}>
+              Postular como speaker
+              <ArrowRight className="h-5 w-5 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-border/50 px-6 py-16">
+        <div className="max-w-5xl mx-auto grid gap-8 sm:grid-cols-3">
+          <FeatureCard
+            icon={<Calendar className="h-6 w-6 text-primary" />}
+            title="Elige tu martes"
+            description="Ve los próximos 8 martes disponibles y reserva el que mejor te quede."
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <FeatureCard
+            icon={<Brain className="h-6 w-6 text-primary" />}
+            title="Comparte tu historia"
+            description="Cuéntanos qué construiste, qué herramientas usaste y qué aprendiste."
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <FeatureCard
+            icon={<Users className="h-6 w-6 text-primary" />}
+            title="Conecta con founders"
+            description="Habla frente a una comunidad de builders que entienden tu stack."
           />
-          Go to nextjs.org →
-        </a>
+        </div>
+      </section>
+
+      <footer className="border-t border-border/50 px-6 py-6 text-center text-sm text-muted-foreground">
+        © {new Date().getFullYear()} AI First Founders
       </footer>
+    </main>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="rounded-xl border border-border/50 bg-card p-6 space-y-3">
+      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+        {icon}
+      </div>
+      <h3 className="font-bold">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
     </div>
   );
 }
