@@ -1,8 +1,6 @@
 import { ApifyClient } from "apify-client";
 
-// Actor configurable — por defecto: curious_coder/linkedin-profile-scraper
-// Puedes cambiarlo con APIFY_LINKEDIN_ACTOR en .env.local
-const ACTOR_ID = process.env.APIFY_LINKEDIN_ACTOR ?? "2SyF0bVxmgGr8IVCZ";
+const ACTOR_ID = process.env.APIFY_LINKEDIN_ACTOR ?? "supreme_coder/linkedin-profile-scraper";
 
 export interface LinkedInProfile {
   fullName: string | null;
@@ -14,18 +12,13 @@ export interface LinkedInProfile {
 }
 
 interface ApifyRawResult {
-  fullName?: string;
   firstName?: string;
   lastName?: string;
   headline?: string;
   summary?: string;
-  about?: string;
-  profilePicture?: string;
-  photoUrl?: string;
-  imgUrl?: string;
+  pictureUrl?: string;
   skills?: Array<{ name?: string } | string>;
-  linkedInUrl?: string;
-  url?: string;
+  inputUrl?: string;
 }
 
 export async function scrapeLinkedInProfile(
@@ -37,7 +30,7 @@ export async function scrapeLinkedInProfile(
   const client = new ApifyClient({ token });
 
   const run = await client.actor(ACTOR_ID).call({
-    profileUrls: [linkedinUrl],
+    urls: [{ url: linkedinUrl }],
   });
 
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
@@ -46,8 +39,7 @@ export async function scrapeLinkedInProfile(
 
   const raw = items[0] as ApifyRawResult;
 
-  const joinedName = [raw.firstName, raw.lastName].filter(Boolean).join(" ");
-  const fullName = raw.fullName ?? (joinedName || null);
+  const fullName = [raw.firstName, raw.lastName].filter(Boolean).join(" ") || null;
 
   const skills = (raw.skills ?? []).map((s) =>
     typeof s === "string" ? s : (s.name ?? "")
@@ -56,8 +48,8 @@ export async function scrapeLinkedInProfile(
   return {
     fullName,
     headline: raw.headline ?? null,
-    summary: raw.summary ?? raw.about ?? null,
-    profilePicture: raw.profilePicture ?? raw.photoUrl ?? raw.imgUrl ?? null,
+    summary: raw.summary ?? null,
+    profilePicture: raw.pictureUrl ?? null,
     skills,
     url: linkedinUrl,
   };
