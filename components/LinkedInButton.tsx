@@ -7,10 +7,9 @@ import { Button } from "@/components/ui/button";
 
 interface LinkedInButtonProps {
   slotId: string;
-  onProfile: (data: { name: string; email: string; image: string | null; headline: string | null }) => void;
 }
 
-export function LinkedInButton({ slotId, onProfile }: LinkedInButtonProps) {
+export function LinkedInButton({ slotId }: LinkedInButtonProps) {
   const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {

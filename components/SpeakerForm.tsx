@@ -93,7 +93,8 @@ export function SpeakerForm({ slotId, slotLabel, linkedinPrefill }: SpeakerFormP
       if (prefill.descripcion && !getValues("descripcion")) {
         setValue("descripcion", prefill.descripcion, { shouldValidate: true });
       }
-      if (prefill.herramientas.length > 0 && selectedTools.length === 0) {
+      const currentTools = getValues("herramientas") ?? [];
+      if (prefill.herramientas.length > 0 && currentTools.length === 0) {
         setValue("herramientas", prefill.herramientas, { shouldValidate: true });
       }
       if (prefill.descripcion) {
@@ -115,7 +116,7 @@ export function SpeakerForm({ slotId, slotLabel, linkedinPrefill }: SpeakerFormP
     } finally {
       setLinkedinLoading(false);
     }
-  }, [getValues, setValue, selectedTools, photo]);
+  }, [getValues, setValue, photo]);
 
   const onSubmit = async (data: ApplyInput) => {
     setServerError(null);
@@ -184,7 +185,7 @@ export function SpeakerForm({ slotId, slotLabel, linkedinPrefill }: SpeakerFormP
             <p className="text-xs text-amber-400">
               Tu perfil es privado — conecta tu cuenta para importar nombre, email y foto
             </p>
-            <LinkedInButton slotId={slotId} onProfile={() => {}} />
+            <LinkedInButton slotId={slotId} />
           </div>
         )}
       </Field>
