@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { applySchema, HERRAMIENTAS_OPTIONS, type ApplyInput } from "@/lib/schemas";
 import { PhotoUpload } from "@/components/PhotoUpload";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import type { FormPrefill } from "@/lib/linkedin/map-to-form";
 
 interface SpeakerFormProps {
   slotId: string;
@@ -23,12 +24,15 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [linkedinLoading, setLinkedinLoading] = useState(false);
+  const [linkedinPrefilled, setLinkedinPrefilled] = useState(false);
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<ApplyInput>({
     resolver: zodResolver(applySchema),
@@ -53,6 +57,48 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     setValue("herramientas", next, { shouldValidate: true });
   };
 
+  const fetchLinkedInProfile = useCallback(async () => {
+    const url = getValues("linkedin");
+    if (!url || !url.includes("linkedin.com/in/")) return;
+
+    setLinkedinLoading(true);
+    setLinkedinPrefilled(false);
+
+    try {
+      const res = await fetch(`/api/linkedin-profile?url=${encodeURIComponent(url)}`);
+      if (!res.ok) return;
+
+      const { prefill }: { prefill: FormPrefill } = await res.json();
+
+      if (prefill.nombre && !getValues("nombre")) {
+        setValue("nombre", prefill.nombre, { shouldValidate: true });
+      }
+      if (prefill.titulo && !getValues("titulo")) {
+        setValue("titulo", prefill.titulo, { shouldValidate: true });
+      }
+      if (prefill.descripcion && !getValues("descripcion")) {
+        setValue("descripcion", prefill.descripcion, { shouldValidate: true });
+      }
+      if (prefill.herramientas.length > 0 && selectedTools.length === 0) {
+        setValue("herramientas", prefill.herramientas, { shouldValidate: true });
+      }
+      if (prefill.photoUrl && !photo) {
+        const photoRes = await fetch(prefill.photoUrl);
+        if (photoRes.ok) {
+          const blob = await photoRes.blob();
+          const file = new File([blob], "linkedin-photo.jpg", { type: blob.type || "image/jpeg" });
+          setPhoto(file);
+        }
+      }
+
+      setLinkedinPrefilled(true);
+    } catch {
+      // silently fail — user fills manually
+    } finally {
+      setLinkedinLoading(false);
+    }
+  }, [getValues, setValue, selectedTools, photo]);
+
   const onSubmit = async (data: ApplyInput) => {
     setServerError(null);
     setPhotoError(null);
@@ -72,16 +118,12 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     data.herramientas.forEach((h) => formData.append("herramientas", h));
     formData.append("foto", photo);
 
-    const res = await fetch("/api/apply", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await fetch("/api/apply", { method: "POST", body: formData });
 
     if (res.status === 409) {
       setServerError("Esta fecha ya fue reservada por otro speaker. Por favor elige otra.");
       return;
     }
-
     if (!res.ok) {
       setServerError("Ocurrió un error inesperado. Intenta de nuevo.");
       return;
@@ -98,6 +140,27 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
         <p className="text-sm text-muted-foreground">Fecha seleccionada</p>
         <p className="font-semibold text-primary">{slotLabel} · 7:00 – 8:00 pm</p>
       </div>
+
+      {/* LinkedIn field — triggers scrape on blur */}
+      <Field label="LinkedIn" error={errors.linkedin?.message} required>
+        <div className="relative">
+          <Input
+            placeholder="https://linkedin.com/in/tu-perfil"
+            {...register("linkedin")}
+            onBlur={fetchLinkedInProfile}
+            className={cn(errors.linkedin && "border-destructive", "pr-10")}
+          />
+          {linkedinLoading && (
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-muted-foreground" />
+          )}
+        </div>
+        {linkedinPrefilled && (
+          <p className="flex items-center gap-1.5 text-xs text-emerald-400 mt-1">
+            <Sparkles className="h-3 w-3" />
+            Datos cargados desde LinkedIn — revisa y edita si quieres
+          </p>
+        )}
+      </Field>
 
       <div className="grid gap-6 sm:grid-cols-2">
         <Field label="Nombre completo" error={errors.nombre?.message} required>
@@ -117,14 +180,6 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
           />
         </Field>
       </div>
-
-      <Field label="LinkedIn" error={errors.linkedin?.message} required>
-        <Input
-          placeholder="https://linkedin.com/in/tu-perfil"
-          {...register("linkedin")}
-          className={cn(errors.linkedin && "border-destructive")}
-        />
-      </Field>
 
       <Field label="Título de la charla" error={errors.titulo?.message} required>
         <Input
