@@ -54,7 +54,9 @@ export async function POST(req: NextRequest) {
 
   // Update Biografía property with summary
   if (raw.summary) {
-    await updateSpeakerBio(speakerId, raw.summary);
+    await updateSpeakerBio(speakerId, raw.summary).catch((e) =>
+      console.error("[apify-webhook] updateSpeakerBio failed:", e.message)
+    );
   }
 
   // Append structured LinkedIn content as page blocks
@@ -63,7 +65,9 @@ export async function POST(req: NextRequest) {
     summary: raw.summary,
     positions: raw.positions as Parameters<typeof appendLinkedInContent>[1]["positions"],
     educations: raw.educations as Parameters<typeof appendLinkedInContent>[1]["educations"],
-  });
+  }).catch((e) =>
+    console.error("[apify-webhook] appendLinkedInContent failed:", e.message, JSON.stringify(e.body ?? e.code))
+  );
 
   return NextResponse.json({ ok: true });
 }

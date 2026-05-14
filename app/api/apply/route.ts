@@ -57,11 +57,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
   }
 
-  // 3b) Trigger async LinkedIn scrape → webhook updates Biografía when done
+  // 3b) Start async LinkedIn scrape — awaited so webhook is guaranteed registered before response
   if (process.env.APIFY_TOKEN && parsed.linkedin) {
     const origin = new URL(req.url).origin;
     const webhookUrl = `${origin}/api/apify-webhook?speakerId=${speakerId}`;
-    void startLinkedInScrapeAsync(parsed.linkedin, webhookUrl).catch(console.error);
+    await startLinkedInScrapeAsync(parsed.linkedin, webhookUrl).catch(console.error);
   }
 
   // 4) Re-read slot to guard against race condition
