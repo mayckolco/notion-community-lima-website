@@ -9,11 +9,12 @@ interface ApifyWebhookPayload {
   };
 }
 
-interface ApifyRawResult {
+interface HarvestRawResult {
   headline?: string;
-  summary?: string;
-  positions?: unknown[];
-  educations?: unknown[];
+  about?: string;
+  experience?: unknown[];
+  education?: unknown[];
+  error?: string;
 }
 
 export async function POST(req: NextRequest) {
@@ -46,25 +47,28 @@ export async function POST(req: NextRequest) {
   const client = new ApifyClient({ token });
   const { items } = await client.dataset(datasetId).listItems();
 
-  if (!items.length) {
+  if (!items.length) return NextResponse.json({ ok: true });
+
+  const raw = items[0] as HarvestRawResult;
+
+  if (raw.error) {
+    console.error("[apify-webhook] actor returned error:", raw.error);
     return NextResponse.json({ ok: true });
   }
 
-  const raw = items[0] as ApifyRawResult;
+  const bio = raw.about;
 
-  // Update Biografía property with summary
-  if (raw.summary) {
-    await updateSpeakerBio(speakerId, raw.summary).catch((e) =>
+  if (bio) {
+    await updateSpeakerBio(speakerId, bio).catch((e) =>
       console.error("[apify-webhook] updateSpeakerBio failed:", e.message)
     );
   }
 
-  // Append structured LinkedIn content as page blocks
   await appendLinkedInContent(speakerId, {
     headline: raw.headline,
-    summary: raw.summary,
-    positions: raw.positions as Parameters<typeof appendLinkedInContent>[1]["positions"],
-    educations: raw.educations as Parameters<typeof appendLinkedInContent>[1]["educations"],
+    summary: bio,
+    positions: raw.experience as Parameters<typeof appendLinkedInContent>[1]["positions"],
+    educations: raw.education as Parameters<typeof appendLinkedInContent>[1]["educations"],
   }).catch((e) =>
     console.error("[apify-webhook] appendLinkedInContent failed:", e.message, JSON.stringify(e.body ?? e.code))
   );

@@ -1,6 +1,6 @@
 import { ApifyClient } from "apify-client";
 
-const ACTOR_ID = process.env.APIFY_LINKEDIN_ACTOR ?? "supreme_coder/linkedin-profile-scraper";
+const ACTOR_ID = process.env.APIFY_LINKEDIN_ACTOR ?? "harvestapi/linkedin-profile-scraper";
 
 export interface LinkedInProfile {
   fullName: string | null;
@@ -11,14 +11,45 @@ export interface LinkedInProfile {
   url: string;
 }
 
-interface ApifyRawResult {
+interface HarvestExperience {
+  position?: string;
+  companyName?: string;
+  duration?: string;
+  description?: string | null;
+  location?: string;
+  startDate?: { month?: string; year?: number; text?: string };
+  endDate?: { month?: string; year?: number; text?: string } | null;
+}
+
+interface HarvestEducation {
+  schoolName?: string;
+  degree?: string;
+  fieldOfStudy?: string | null;
+  period?: string;
+  startDate?: { month?: string; year?: number; text?: string };
+  endDate?: { month?: string; year?: number; text?: string } | null;
+}
+
+interface HarvestRawResult {
   firstName?: string;
   lastName?: string;
   headline?: string;
-  summary?: string;
-  pictureUrl?: string;
+  about?: string;
+  photo?: string;
   skills?: Array<{ name?: string } | string>;
-  inputUrl?: string;
+  experience?: HarvestExperience[];
+  education?: HarvestEducation[];
+}
+
+export interface LinkedInFullData {
+  fullName: string | null;
+  headline: string | null;
+  summary: string | null;
+  profilePicture: string | null;
+  skills: string[];
+  experience: HarvestExperience[];
+  education: HarvestEducation[];
+  url: string;
 }
 
 export async function startLinkedInScrapeAsync(
@@ -57,10 +88,23 @@ export async function scrapeLinkedInProfile(
 
   if (!items.length) return null;
 
-  const raw = items[0] as ApifyRawResult;
+  const raw = items[0] as HarvestRawResult;
+  if ((raw as Record<string, unknown>).error) return null;
 
+  return rawToProfile(raw, linkedinUrl);
+}
+
+export function rawToFullData(raw: HarvestRawResult, url: string): LinkedInFullData {
+  const profile = rawToProfile(raw, url);
+  return {
+    ...profile,
+    experience: raw.experience ?? [],
+    education: raw.education ?? [],
+  };
+}
+
+function rawToProfile(raw: HarvestRawResult, url: string): LinkedInProfile {
   const fullName = [raw.firstName, raw.lastName].filter(Boolean).join(" ") || null;
-
   const skills = (raw.skills ?? []).map((s) =>
     typeof s === "string" ? s : (s.name ?? "")
   ).filter(Boolean);
@@ -68,9 +112,9 @@ export async function scrapeLinkedInProfile(
   return {
     fullName,
     headline: raw.headline ?? null,
-    summary: raw.summary ?? null,
-    profilePicture: raw.pictureUrl ?? null,
+    summary: raw.about ?? null,
+    profilePicture: raw.photo ?? null,
     skills,
-    url: linkedinUrl,
+    url,
   };
 }
