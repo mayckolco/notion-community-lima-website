@@ -30,17 +30,15 @@ export async function startLinkedInScrapeAsync(
 
   const client = new ApifyClient({ token });
 
-  await client.actor(ACTOR_ID).start(
-    { urls: [{ url: linkedinUrl }] },
-    {
-      webhooks: [
-        {
-          eventTypes: ["ACTOR.RUN.SUCCEEDED"],
-          requestUrl: webhookUrl,
-        },
-      ],
-    }
-  );
+  const run = await client.actor(ACTOR_ID).start({
+    urls: [{ url: linkedinUrl }],
+  });
+
+  await client.webhooks().create({
+    eventTypes: ["ACTOR.RUN.SUCCEEDED"],
+    requestUrl: webhookUrl,
+    condition: { actorRunId: run.id },
+  });
 }
 
 export async function scrapeLinkedInProfile(
