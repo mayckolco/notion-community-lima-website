@@ -4,7 +4,7 @@ import { SlotCard } from "@/components/SlotCard";
 import { listSlots } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 async function getSlots(): Promise<Slot[]> {
   try {
