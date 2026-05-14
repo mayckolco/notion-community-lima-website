@@ -4,18 +4,31 @@ import { ArrowLeft } from "lucide-react";
 import { getSlot } from "@/lib/notion/slots";
 import { SpeakerForm } from "@/components/SpeakerForm";
 import { formatSlotDate } from "@/lib/dates";
+import { auth } from "@/auth";
 
 interface PageProps {
   params: { slotId: string };
 }
 
 export default async function SlotFormPage({ params }: PageProps) {
-  const slot = await getSlot(params.slotId);
+  const [slot, session] = await Promise.all([
+    getSlot(params.slotId),
+    auth(),
+  ]);
 
   if (!slot) notFound();
   if (slot.estado !== "Disponible") redirect("/postular");
 
   const slotLabel = formatSlotDate(slot.fecha);
+
+  const linkedinPrefill = session?.user
+    ? {
+        nombre: session.user.name ?? "",
+        email: session.user.email ?? "",
+        image: session.user.image ?? null,
+        headline: (session.user as Record<string, unknown>).headline as string | null ?? null,
+      }
+    : null;
 
   return (
     <main className="min-h-screen px-6 py-12">
@@ -37,7 +50,11 @@ export default async function SlotFormPage({ params }: PageProps) {
           </p>
         </div>
 
-        <SpeakerForm slotId={params.slotId} slotLabel={slotLabel} />
+        <SpeakerForm
+          slotId={params.slotId}
+          slotLabel={slotLabel}
+          linkedinPrefill={linkedinPrefill}
+        />
       </div>
     </main>
   );

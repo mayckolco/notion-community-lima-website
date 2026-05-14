@@ -13,20 +13,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import type { FormPrefill } from "@/lib/linkedin/map-to-form";
+import { LinkedInButton } from "@/components/LinkedInButton";
+
+interface LinkedInOAuthPrefill {
+  nombre: string;
+  email: string;
+  image: string | null;
+  headline: string | null;
+}
 
 interface SpeakerFormProps {
   slotId: string;
   slotLabel: string;
+  linkedinPrefill?: LinkedInOAuthPrefill | null;
 }
 
-export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
+export function SpeakerForm({ slotId, slotLabel, linkedinPrefill }: SpeakerFormProps) {
   const router = useRouter();
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
   const [linkedinLoading, setLinkedinLoading] = useState(false);
-  const [linkedinPrefilled, setLinkedinPrefilled] = useState(false);
+  const [linkedinPrefilled, setLinkedinPrefilled] = useState(!!linkedinPrefill);
   const [linkedinBio, setLinkedinBio] = useState<string | null>(null);
+  const [linkedinPrivate, setLinkedinPrivate] = useState(false);
 
   const {
     register,
@@ -39,10 +49,10 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     resolver: zodResolver(applySchema),
     defaultValues: {
       slotId,
-      nombre: "",
-      email: "",
+      nombre: linkedinPrefill?.nombre ?? "",
+      email: linkedinPrefill?.email ?? "",
       linkedin: "",
-      titulo: "",
+      titulo: linkedinPrefill?.headline ? `Charla sobre ${linkedinPrefill.headline.split("|")[0].trim()}` : "",
       descripcion: "",
       herramientas: [],
     },
@@ -67,7 +77,10 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
     try {
       const res = await fetch(`/api/linkedin-profile?url=${encodeURIComponent(url)}`);
-      if (!res.ok) return;
+      if (!res.ok) {
+        setLinkedinPrivate(true);
+        return;
+      }
 
       const { prefill }: { prefill: FormPrefill } = await res.json();
 
@@ -98,7 +111,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
       setLinkedinPrefilled(true);
     } catch {
-      // silently fail — user fills manually
+      setLinkedinPrivate(true);
     } finally {
       setLinkedinLoading(false);
     }
@@ -165,6 +178,14 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
             <Sparkles className="h-3 w-3" />
             Datos cargados desde LinkedIn — revisa y edita si quieres
           </p>
+        )}
+        {linkedinPrivate && !linkedinPrefilled && (
+          <div className="mt-3 space-y-2">
+            <p className="text-xs text-amber-400">
+              Tu perfil es privado — conecta tu cuenta para importar nombre, email y foto
+            </p>
+            <LinkedInButton slotId={slotId} onProfile={() => {}} />
+          </div>
         )}
       </Field>
 
