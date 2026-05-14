@@ -26,6 +26,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
   const [serverError, setServerError] = useState<string | null>(null);
   const [linkedinLoading, setLinkedinLoading] = useState(false);
   const [linkedinPrefilled, setLinkedinPrefilled] = useState(false);
+  const [linkedinBio, setLinkedinBio] = useState<string | null>(null);
 
   const {
     register,
@@ -82,6 +83,10 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       if (prefill.herramientas.length > 0 && selectedTools.length === 0) {
         setValue("herramientas", prefill.herramientas, { shouldValidate: true });
       }
+      if (prefill.descripcion) {
+        setLinkedinBio(prefill.descripcion);
+      }
+
       if (prefill.photoUrl && !photo) {
         const photoRes = await fetch(prefill.photoUrl);
         if (photoRes.ok) {
@@ -117,6 +122,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     formData.append("descripcion", data.descripcion);
     data.herramientas.forEach((h) => formData.append("herramientas", h));
     formData.append("foto", photo);
+    if (linkedinBio) formData.append("linkedinBio", linkedinBio);
 
     const res = await fetch("/api/apply", { method: "POST", body: formData });
 

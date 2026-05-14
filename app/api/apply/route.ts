@@ -42,14 +42,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "slot_unavailable" }, { status: 409 });
   }
 
-  // 2) Get photo file (optional)
+  // 2) Get photo and LinkedIn bio
   const photoField = formData.get("foto");
   const photo = photoField instanceof File && photoField.size > 0 ? photoField : null;
+  const linkedinBio = (formData.get("linkedinBio") as string | null) ?? undefined;
 
   // 3) Create Speaker page
   let speakerId: string;
   try {
-    speakerId = await createSpeaker(parsed, parsed.slotId, photo);
+    speakerId = await createSpeaker(parsed, parsed.slotId, photo, linkedinBio);
   } catch (err) {
     console.error("[POST /api/apply] createSpeaker failed:", err);
     return NextResponse.json({ error: "internal_error" }, { status: 500 });

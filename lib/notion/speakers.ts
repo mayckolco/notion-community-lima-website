@@ -61,7 +61,8 @@ async function uploadPhotoToNotion(photo: File): Promise<string | null> {
 export async function createSpeaker(
   data: ApplyInput,
   slotId: string,
-  photo: File | null
+  photo: File | null,
+  linkedinBio?: string
 ): Promise<string> {
   const notion = getNotionClient();
 
@@ -100,6 +101,9 @@ export async function createSpeaker(
       },
       Estado: { status: { name: "Confirmado" } },
       Slot: { relation: [{ id: slotId }] },
+      ...(linkedinBio
+        ? { descripcion: { rich_text: [{ text: { content: linkedinBio.slice(0, 2000) } }] } }
+        : {}),
       ...fotoProperty,
     },
   });
