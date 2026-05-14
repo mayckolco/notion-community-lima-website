@@ -3,6 +3,7 @@ import { z } from "zod";
 import { applySchema } from "@/lib/schemas";
 import { getSlot, lockSlot } from "@/lib/notion/slots";
 import { archiveSpeaker, createSpeaker } from "@/lib/notion/speakers";
+import { startLinkedInScrapeAsync } from "@/lib/linkedin/apify";
 
 export async function POST(req: NextRequest) {
   let formData: FormData;
@@ -54,6 +55,13 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("[POST /api/apply] createSpeaker failed:", err);
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
+  }
+
+  // 3b) Trigger async LinkedIn scrape → webhook updates Biografía when done
+  if (process.env.APIFY_TOKEN && parsed.linkedin) {
+    const origin = new URL(req.url).origin;
+    const webhookUrl = `${origin}/api/apify-webhook?speakerId=${speakerId}`;
+    void startLinkedInScrapeAsync(parsed.linkedin, webhookUrl).catch(console.error);
   }
 
   // 4) Re-read slot to guard against race condition

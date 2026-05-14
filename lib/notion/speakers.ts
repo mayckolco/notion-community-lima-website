@@ -111,6 +111,16 @@ export async function createSpeaker(
   return page.id;
 }
 
+export async function updateSpeakerBio(speakerId: string, bio: string): Promise<void> {
+  const notion = getNotionClient();
+  await notion.pages.update({
+    page_id: speakerId,
+    properties: {
+      "Biografía": { rich_text: [{ text: { content: bio.slice(0, 2000) } }] },
+    },
+  });
+}
+
 export async function archiveSpeaker(speakerId: string): Promise<void> {
   const notion = getNotionClient();
   await notion.pages.update({

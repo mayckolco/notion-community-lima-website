@@ -21,6 +21,28 @@ interface ApifyRawResult {
   inputUrl?: string;
 }
 
+export async function startLinkedInScrapeAsync(
+  linkedinUrl: string,
+  webhookUrl: string
+): Promise<void> {
+  const token = process.env.APIFY_TOKEN;
+  if (!token) return;
+
+  const client = new ApifyClient({ token });
+
+  await client.actor(ACTOR_ID).start(
+    { urls: [{ url: linkedinUrl }] },
+    {
+      webhooks: [
+        {
+          eventTypes: ["ACTOR.RUN.SUCCEEDED"],
+          requestUrl: webhookUrl,
+        },
+      ],
+    }
+  );
+}
+
 export async function scrapeLinkedInProfile(
   linkedinUrl: string
 ): Promise<LinkedInProfile | null> {
