@@ -102,7 +102,7 @@ export async function createSpeaker(
       Estado: { status: { name: "Confirmado" } },
       Slot: { relation: [{ id: slotId }] },
       ...(linkedinBio
-        ? { descripcion: { rich_text: [{ text: { content: linkedinBio.slice(0, 2000) } }] } }
+        ? { "Biografía": { rich_text: [{ text: { content: linkedinBio.slice(0, 2000) } }] } }
         : {}),
       ...fotoProperty,
     },
