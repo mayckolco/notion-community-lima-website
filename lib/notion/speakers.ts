@@ -144,6 +144,14 @@ function paragraph(text: string) {
 function bullet(text: string) {
   return { object: "block", type: "bulleted_list_item", bulleted_list_item: { rich_text: [{ type: "text", text: { content: text.slice(0, 2000) } }] } };
 }
+// Split long text into multiple paragraph blocks (Notion limit: 2000 chars per element)
+function paragraphs(text: string): object[] {
+  const blocks: object[] = [];
+  for (let i = 0; i < text.length; i += 2000) {
+    blocks.push(paragraph(text.slice(i, i + 2000)));
+  }
+  return blocks;
+}
 
 export interface LinkedInPageData {
   headline?: string | null;
@@ -154,14 +162,19 @@ export interface LinkedInPageData {
 
 export async function appendLinkedInContent(pageId: string, data: LinkedInPageData): Promise<void> {
   const notion = getNotionClient();
+
+  // Skip if page already has content blocks (avoid duplicates)
+  const existing = await notion.blocks.children.list({ block_id: pageId });
+  if (existing.results.length > 0) return;
+
   const blocks: object[] = [];
 
   if (data.headline) {
-    blocks.push(h2("Headline"), paragraph(data.headline));
+    blocks.push(h2("Headline"), ...paragraphs(data.headline));
   }
 
   if (data.summary) {
-    blocks.push(h2("Acerca de"), paragraph(data.summary));
+    blocks.push(h2("Acerca de"), ...paragraphs(data.summary));
   }
 
   if (data.positions?.length) {
@@ -176,7 +189,7 @@ export async function appendLinkedInContent(pageId: string, data: LinkedInPageDa
       if (company) line += ` en ${company}`;
       line += ` · ${start} – ${end}${duration}${location}`;
       blocks.push(bullet(line));
-      if (pos.description) blocks.push(paragraph(pos.description));
+      if (pos.description) blocks.push(...paragraphs(pos.description));
     }
   }
 
@@ -195,10 +208,13 @@ export async function appendLinkedInContent(pageId: string, data: LinkedInPageDa
 
   if (!blocks.length) return;
 
-  await notion.blocks.children.append({
-    block_id: pageId,
-    children: blocks as Parameters<typeof notion.blocks.children.append>[0]["children"],
-  });
+  // Notion allows max 100 blocks per request — batch if needed
+  for (let i = 0; i < blocks.length; i += 100) {
+    await notion.blocks.children.append({
+      block_id: pageId,
+      children: blocks.slice(i, i + 100) as Parameters<typeof notion.blocks.children.append>[0]["children"],
+    });
+  }
 }
 
 export async function updateSpeakerBio(speakerId: string, bio: string): Promise<void> {
