@@ -111,23 +111,29 @@ export async function createSpeaker(
   return page.id;
 }
 
-interface HarvestDateObj { month?: string; year?: number; text?: string }
+const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+interface PCDate { day?: number; month?: number; year?: number }
 interface Position {
-  position?: string;
-  companyName?: string;
-  duration?: string;
+  title?: string;
+  company?: string;
   description?: string | null;
-  location?: string;
-  startDate?: HarvestDateObj;
-  endDate?: HarvestDateObj | null;
+  location?: string | null;
+  starts_at?: PCDate | null;
+  ends_at?: PCDate | null;
 }
 interface Education {
-  schoolName?: string;
-  degree?: string;
-  fieldOfStudy?: string | null;
-  period?: string;
-  startDate?: HarvestDateObj;
-  endDate?: HarvestDateObj | null;
+  school?: string;
+  degree_name?: string | null;
+  field_of_study?: string | null;
+  starts_at?: PCDate | null;
+  ends_at?: PCDate | null;
+}
+
+function formatPCDate(d?: PCDate | null): string {
+  if (!d?.year) return "Presente";
+  const m = d.month ? MONTHS[d.month - 1] : "";
+  return [m, d.year].filter(Boolean).join(" ");
 }
 
 function h2(text: string) {
@@ -175,14 +181,12 @@ export async function appendLinkedInContent(pageId: string, data: LinkedInPageDa
   if (data.positions?.length) {
     blocks.push(h2("Experiencia"));
     for (const pos of data.positions) {
-      const start = pos.startDate?.text ?? "";
-      const end = pos.endDate?.text ?? "Presente";
-      const duration = pos.duration ? ` (${pos.duration})` : "";
+      const start = formatPCDate(pos.starts_at);
+      const end = pos.ends_at ? formatPCDate(pos.ends_at) : "Presente";
       const location = pos.location ? ` · ${pos.location}` : "";
-      let line = pos.position ?? "";
-      if (pos.companyName) line += ` en ${pos.companyName}`;
-      if (start) line += ` · ${start} – ${end}${duration}`;
-      if (location) line += location;
+      let line = pos.title ?? "";
+      if (pos.company) line += ` en ${pos.company}`;
+      line += ` · ${start} – ${end}${location}`;
       blocks.push(bullet(line));
       if (pos.description) blocks.push(...paragraphs(pos.description));
     }
@@ -191,10 +195,12 @@ export async function appendLinkedInContent(pageId: string, data: LinkedInPageDa
   if (data.educations?.length) {
     blocks.push(h2("Educación"));
     for (const edu of data.educations) {
-      const degree = [edu.degree, edu.fieldOfStudy].filter(Boolean).join(", ");
-      let line = edu.schoolName ?? "";
+      const degree = [edu.degree_name, edu.field_of_study].filter(Boolean).join(", ");
+      const start = formatPCDate(edu.starts_at);
+      const end = edu.ends_at ? formatPCDate(edu.ends_at) : "Presente";
+      let line = edu.school ?? "";
       if (degree) line += ` · ${degree}`;
-      if (edu.period) line += ` · ${edu.period}`;
+      if (edu.starts_at?.year) line += ` · ${start} – ${end}`;
       blocks.push(bullet(line));
     }
   }

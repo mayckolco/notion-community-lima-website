@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { applySchema } from "@/lib/schemas";
 import { getSlot, lockSlot } from "@/lib/notion/slots";
-import { archiveSpeaker, createSpeaker } from "@/lib/notion/speakers";
-import { startLinkedInScrapeAsync } from "@/lib/linkedin/apify";
+import { archiveSpeaker, createSpeaker, updateSpeakerBio, appendLinkedInContent } from "@/lib/notion/speakers";
+import { scrapeLinkedIn } from "@/lib/linkedin/proxycurl";
 
 export async function POST(req: NextRequest) {
   let formData: FormData;
@@ -57,11 +57,24 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
   }
 
-  // 3b) Start async LinkedIn scrape — awaited so webhook is guaranteed registered before response
-  if (process.env.APIFY_TOKEN && parsed.linkedin) {
-    const origin = new URL(req.url).origin;
-    const webhookUrl = `${origin}/api/apify-webhook?speakerId=${speakerId}`;
-    await startLinkedInScrapeAsync(parsed.linkedin, webhookUrl).catch(console.error);
+  // 3b) Scrape LinkedIn with ProxyCurl and save to Notion page
+  if (process.env.PROXYCURL_API_KEY && parsed.linkedin) {
+    try {
+      const linkedin = await scrapeLinkedIn(parsed.linkedin);
+      if (linkedin) {
+        if (linkedin.summary) {
+          await updateSpeakerBio(speakerId, linkedin.summary);
+        }
+        await appendLinkedInContent(speakerId, {
+          headline: linkedin.headline,
+          summary: linkedin.summary,
+          positions: linkedin.experiences,
+          educations: linkedin.educations,
+        });
+      }
+    } catch (e) {
+      console.error("[apply] ProxyCurl scrape failed:", e);
+    }
   }
 
   // 4) Re-read slot to guard against race condition
