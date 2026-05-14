@@ -111,6 +111,96 @@ export async function createSpeaker(
   return page.id;
 }
 
+const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+
+interface DateObj { month?: number; year?: number }
+interface Position {
+  title?: string;
+  company?: { name?: string };
+  timePeriod?: { startDate?: DateObj; endDate?: DateObj | null };
+  totalDuration?: string;
+  description?: string;
+  locationName?: string;
+}
+interface Education {
+  schoolName?: string;
+  degreeName?: string;
+  fieldOfStudy?: string;
+  timePeriod?: { startDate?: DateObj; endDate?: DateObj | null };
+}
+
+function formatDate(d?: DateObj | null): string {
+  if (!d) return "Presente";
+  const m = d.month ? MONTHS[d.month - 1] : "";
+  return [m, d.year].filter(Boolean).join(" ");
+}
+
+function h2(text: string) {
+  return { object: "block", type: "heading_2", heading_2: { rich_text: [{ type: "text", text: { content: text } }] } };
+}
+function paragraph(text: string) {
+  return { object: "block", type: "paragraph", paragraph: { rich_text: [{ type: "text", text: { content: text.slice(0, 2000) } }] } };
+}
+function bullet(text: string) {
+  return { object: "block", type: "bulleted_list_item", bulleted_list_item: { rich_text: [{ type: "text", text: { content: text.slice(0, 2000) } }] } };
+}
+
+export interface LinkedInPageData {
+  headline?: string | null;
+  summary?: string | null;
+  positions?: Position[];
+  educations?: Education[];
+}
+
+export async function appendLinkedInContent(pageId: string, data: LinkedInPageData): Promise<void> {
+  const notion = getNotionClient();
+  const blocks: object[] = [];
+
+  if (data.headline) {
+    blocks.push(h2("Headline"), paragraph(data.headline));
+  }
+
+  if (data.summary) {
+    blocks.push(h2("Acerca de"), paragraph(data.summary));
+  }
+
+  if (data.positions?.length) {
+    blocks.push(h2("Experiencia"));
+    for (const pos of data.positions) {
+      const company = pos.company?.name ?? "";
+      const start = formatDate(pos.timePeriod?.startDate);
+      const end = pos.timePeriod?.endDate ? formatDate(pos.timePeriod.endDate) : "Presente";
+      const duration = pos.totalDuration ? ` (${pos.totalDuration})` : "";
+      const location = pos.locationName ? ` · ${pos.locationName}` : "";
+      let line = pos.title ?? "";
+      if (company) line += ` en ${company}`;
+      line += ` · ${start} – ${end}${duration}${location}`;
+      blocks.push(bullet(line));
+      if (pos.description) blocks.push(paragraph(pos.description));
+    }
+  }
+
+  if (data.educations?.length) {
+    blocks.push(h2("Educación"));
+    for (const edu of data.educations) {
+      const degree = [edu.degreeName, edu.fieldOfStudy].filter(Boolean).join(", ");
+      const start = formatDate(edu.timePeriod?.startDate);
+      const end = edu.timePeriod?.endDate ? formatDate(edu.timePeriod.endDate) : "Presente";
+      let line = edu.schoolName ?? "";
+      if (degree) line += ` · ${degree}`;
+      if (edu.timePeriod?.startDate) line += ` · ${start} – ${end}`;
+      blocks.push(bullet(line));
+    }
+  }
+
+  if (!blocks.length) return;
+
+  await notion.blocks.children.append({
+    block_id: pageId,
+    children: blocks as Parameters<typeof notion.blocks.children.append>[0]["children"],
+  });
+}
+
 export async function updateSpeakerBio(speakerId: string, bio: string): Promise<void> {
   const notion = getNotionClient();
   await notion.pages.update({

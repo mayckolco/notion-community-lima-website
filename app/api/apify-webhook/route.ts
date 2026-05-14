@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ApifyClient } from "apify-client";
-import { updateSpeakerBio } from "@/lib/notion/speakers";
+import { appendLinkedInContent, updateSpeakerBio } from "@/lib/notion/speakers";
 
 interface ApifyWebhookPayload {
   eventType: string;
@@ -10,7 +10,10 @@ interface ApifyWebhookPayload {
 }
 
 interface ApifyRawResult {
+  headline?: string;
   summary?: string;
+  positions?: unknown[];
+  educations?: unknown[];
 }
 
 export async function POST(req: NextRequest) {
@@ -48,9 +51,19 @@ export async function POST(req: NextRequest) {
   }
 
   const raw = items[0] as ApifyRawResult;
+
+  // Update Biografía property with summary
   if (raw.summary) {
     await updateSpeakerBio(speakerId, raw.summary);
   }
+
+  // Append structured LinkedIn content as page blocks
+  await appendLinkedInContent(speakerId, {
+    headline: raw.headline,
+    summary: raw.summary,
+    positions: raw.positions as Parameters<typeof appendLinkedInContent>[1]["positions"],
+    educations: raw.educations as Parameters<typeof appendLinkedInContent>[1]["educations"],
+  });
 
   return NextResponse.json({ ok: true });
 }
