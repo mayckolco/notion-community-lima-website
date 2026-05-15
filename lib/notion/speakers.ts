@@ -79,6 +79,8 @@ export async function createSpeaker(
       Email: { email: data.email },
       LinkedIn: { url: data.linkedin },
       WhatsApp: { phone_number: data.whatsapp },
+      Rol: { rich_text: [{ text: { content: data.rol } }] },
+      Empresa: { rich_text: [{ text: { content: data.empresa } }] },
       "Título de la charla": { rich_text: [{ text: { content: data.titulo } }] },
       Descripción: { rich_text: [{ text: { content: data.descripcion } }] },
       Herramientas: { multi_select: data.herramientas.map((name) => ({ name })) },

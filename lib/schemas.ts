@@ -7,6 +7,8 @@ export const applySchema = z.object({
   linkedin: z.string().min(1, "El LinkedIn es requerido").url("URL de LinkedIn inválida"),
   titulo: z.string().min(1, "El título es requerido").min(5, "Mínimo 5 caracteres"),
   whatsapp: z.string().min(1, "El WhatsApp es requerido"),
+  rol: z.string().min(1, "El rol es requerido"),
+  empresa: z.string().min(1, "La empresa es requerida"),
   descripcion: z.string().min(1, "La descripción es requerida").min(20, "Mínimo 20 caracteres").max(2000, "Máximo 2000 caracteres"),
   herramientas: z.array(z.string()).min(1, "Selecciona al menos una herramienta"),
 });

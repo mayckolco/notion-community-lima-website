@@ -43,6 +43,8 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       email: "",
       linkedin: "",
       whatsapp: "",
+      rol: "",
+      empresa: "",
       titulo: "",
       descripcion: "",
       herramientas: [],
@@ -91,6 +93,8 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     formData.append("email", data.email);
     formData.append("linkedin", data.linkedin);
     formData.append("whatsapp", data.whatsapp);
+    formData.append("rol", data.rol);
+    formData.append("empresa", data.empresa);
     formData.append("titulo", data.titulo);
     formData.append("descripcion", data.descripcion);
     data.herramientas.forEach((h) => formData.append("herramientas", h));
@@ -134,6 +138,24 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
             placeholder="+51 999 888 777"
             {...register("whatsapp")}
             className={cn(errors.whatsapp && "border-destructive")}
+          />
+        </Field>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
+        <Field label="Rol" error={errors.rol?.message} required>
+          <Input
+            placeholder="CEO, CTO, Founder..."
+            {...register("rol")}
+            className={cn(errors.rol && "border-destructive")}
+          />
+        </Field>
+
+        <Field label="Empresa" error={errors.empresa?.message} required>
+          <Input
+            placeholder="Nombre de tu empresa o proyecto"
+            {...register("empresa")}
+            className={cn(errors.empresa && "border-destructive")}
           />
         </Field>
       </div>
