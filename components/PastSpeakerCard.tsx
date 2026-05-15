@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { PastSpeaker } from "@/lib/notion/speakers";
 
 interface PastSpeakerCardProps {
@@ -57,19 +58,15 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
       )}
 
       {/* footer */}
-      {speaker.linkedin && (
-        <div className="mt-auto pt-2 border-t border-border/30 flex justify-end">
-          <a
-            href={speaker.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
-          >
-            Ver más
-            <ExternalLink className="h-2.5 w-2.5" />
-          </a>
-        </div>
-      )}
+      <div className="mt-auto pt-2 border-t border-border/30 flex justify-end">
+        <Link
+          href={`/directorio/${speaker.id}`}
+          className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
+        >
+          Ver más
+          <ArrowRight className="h-2.5 w-2.5" />
+        </Link>
+      </div>
     </div>
   );
 }

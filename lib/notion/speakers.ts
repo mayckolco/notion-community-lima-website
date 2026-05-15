@@ -99,6 +99,7 @@ export interface PastSpeaker {
   rol: string | null;
   empresa: string | null;
   titulo: string;
+  descripcion: string | null;
   herramientas: string[];
   foto: string | null;
   linkedin: string | null;
@@ -145,6 +146,10 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
   const linkedin =
     (props["LinkedIn"] as { url?: string | null })?.url ?? null;
 
+  const descripcion =
+    (props["Descripción"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? null;
+
   const rol =
     (props["Rol"] as { rich_text?: Array<{ plain_text?: string }> })
       ?.rich_text?.[0]?.plain_text ?? null;
@@ -175,7 +180,7 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     if (foto) break;
   }
 
-  return { id: page.id as string, nombre, rol, empresa, titulo, herramientas, foto, linkedin, webinarUrl };
+  return { id: page.id as string, nombre, rol, empresa, titulo, descripcion, herramientas, foto, linkedin, webinarUrl };
 }
 
 export async function listPastSpeakers(): Promise<PastSpeaker[]> {
@@ -188,6 +193,16 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
 export async function listDirectorySpeakers(): Promise<PastSpeaker[]> {
   const pages = await querySpeakers();
   return pages.map(parseSpeakerPage);
+}
+
+export async function getSpeakerById(id: string): Promise<PastSpeaker | null> {
+  const notion = getNotionClient();
+  try {
+    const page = await notion.pages.retrieve({ page_id: id });
+    return parseSpeakerPage(page as Record<string, unknown>);
+  } catch {
+    return null;
+  }
 }
 
 export async function archiveSpeaker(speakerId: string): Promise<void> {
