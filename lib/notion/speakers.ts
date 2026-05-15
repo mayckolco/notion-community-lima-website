@@ -78,6 +78,7 @@ export async function createSpeaker(
       "Nombre completo": { title: [{ text: { content: data.nombre } }] },
       Email: { email: data.email },
       LinkedIn: { url: data.linkedin },
+      WhatsApp: { phone_number: data.whatsapp },
       "Título de la charla": { rich_text: [{ text: { content: data.titulo } }] },
       Descripción: { rich_text: [{ text: { content: data.descripcion } }] },
       Herramientas: { multi_select: data.herramientas.map((name) => ({ name })) },
@@ -86,17 +87,6 @@ export async function createSpeaker(
       ...fotoProperty,
     },
   });
-
-  if (data.whatsapp) {
-    try {
-      await notion.pages.update({
-        page_id: page.id,
-        properties: { WhatsApp: { phone_number: data.whatsapp } },
-      });
-    } catch {
-      console.warn("[createSpeaker] WhatsApp property not in Notion DB yet — add a Phone Number property named 'WhatsApp'");
-    }
-  }
 
   return page.id;
 }
