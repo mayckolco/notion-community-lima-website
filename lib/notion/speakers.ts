@@ -96,6 +96,8 @@ export async function createSpeaker(
 export interface PastSpeaker {
   id: string;
   nombre: string;
+  rol: string | null;
+  empresa: string | null;
   titulo: string;
   herramientas: string[];
   foto: string | null;
@@ -143,6 +145,14 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
   const linkedin =
     (props["LinkedIn"] as { url?: string | null })?.url ?? null;
 
+  const rol =
+    (props["Rol"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? null;
+
+  const empresa =
+    (props["Empresa"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? null;
+
   const webinarRollup = props["Webinar"] as {
     rollup?: { array?: Array<{ url?: string }> };
     url?: string | null;
@@ -165,7 +175,7 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     if (foto) break;
   }
 
-  return { id: page.id as string, nombre, titulo, herramientas, foto, linkedin, webinarUrl };
+  return { id: page.id as string, nombre, rol, empresa, titulo, herramientas, foto, linkedin, webinarUrl };
 }
 
 export async function listPastSpeakers(): Promise<PastSpeaker[]> {
