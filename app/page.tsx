@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { listPastSpeakers } from "@/lib/notion/speakers";
+import { PastSpeakerCard } from "@/components/PastSpeakerCard";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const pastSpeakers = await listPastSpeakers();
   return (
     <main className="flex flex-col min-h-screen">
       <nav className="border-b border-border/50 px-6 py-4">
@@ -61,6 +64,24 @@ export default function LandingPage() {
           />
         </div>
       </section>
+
+      {pastSpeakers.length > 0 && (
+        <section className="border-t border-border/50 px-6 py-16">
+          <div className="max-w-5xl mx-auto space-y-8">
+            <div className="space-y-1">
+              <p className="text-xs font-mono text-primary uppercase tracking-widest">Ediciones pasadas</p>
+              <h2 className="text-2xl font-black tracking-tight">
+                Speakers que ya <span className="text-primary">compartieron</span>
+              </h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {pastSpeakers.map((speaker, i) => (
+                <PastSpeakerCard key={speaker.id} speaker={speaker} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <footer className="border-t border-border/50 px-6 py-6 text-center text-sm text-muted-foreground">
         © {new Date().getFullYear()} AI First Founders

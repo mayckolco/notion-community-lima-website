@@ -90,6 +90,89 @@ export async function createSpeaker(
   return page.id;
 }
 
+export interface PastSpeaker {
+  id: string;
+  nombre: string;
+  titulo: string;
+  herramientas: string[];
+  foto: string | null;
+  linkedin: string | null;
+  webinarUrl: string | null;
+}
+
+export async function listPastSpeakers(): Promise<PastSpeaker[]> {
+  const res = await fetch(
+    `https://api.notion.com/v1/databases/${DB_SPEAKERS_ID}/query`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+        "Notion-Version": "2022-06-28",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        filter: {
+          and: [
+            { property: "Estado", status: { equals: "Confirmado" } },
+            { property: "Webinar", url: { is_not_empty: true } },
+          ],
+        },
+        sorts: [{ timestamp: "created_time", direction: "descending" }],
+      }),
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) return [];
+
+  const data = (await res.json()) as { results: Array<Record<string, unknown>> };
+
+  return data.results.map((page) => {
+    const props = page.properties as Record<string, unknown>;
+
+    const nombre =
+      (props["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
+        ?.title?.[0]?.plain_text ?? "";
+
+    const titulo =
+      (props["Título de la charla"] as { rich_text?: Array<{ plain_text?: string }> })
+        ?.rich_text?.[0]?.plain_text ?? "";
+
+    const herramientas =
+      (props["Herramientas"] as { multi_select?: Array<{ name?: string }> })
+        ?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
+
+    const linkedin =
+      (props["LinkedIn"] as { url?: string | null })?.url ?? null;
+
+    const webinarUrl =
+      (props["Webinar"] as { url?: string | null })?.url ?? null;
+
+    const fotosRaw = (props["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
+    let foto: string | null = null;
+    for (const f of fotosRaw) {
+      if (f.type === "file_upload") {
+        foto = (f.file_upload as { url?: string })?.url ?? null;
+      } else if (f.type === "external") {
+        foto = (f.external as { url?: string })?.url ?? null;
+      } else if (f.type === "file") {
+        foto = (f.file as { url?: string })?.url ?? null;
+      }
+      if (foto) break;
+    }
+
+    return {
+      id: page.id as string,
+      nombre,
+      titulo,
+      herramientas,
+      foto,
+      linkedin,
+      webinarUrl,
+    };
+  });
+}
+
 export async function archiveSpeaker(speakerId: string): Promise<void> {
   const notion = getNotionClient();
   await notion.pages.update({ page_id: speakerId, archived: true });
