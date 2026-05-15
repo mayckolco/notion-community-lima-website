@@ -25,7 +25,7 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
               src={speaker.foto}
               alt={speaker.nombre}
               fill
-              className="object-cover grayscale"
+              className="object-cover grayscale hover:grayscale-0 transition-all duration-300"
               sizes="48px"
             />
           ) : (
