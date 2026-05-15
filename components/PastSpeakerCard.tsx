@@ -57,32 +57,19 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
       )}
 
       {/* footer */}
-      <div className="flex items-center justify-between mt-auto pt-2 border-t border-border/30">
-        {speaker.webinarUrl ? (
-          <a
-            href={speaker.webinarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1 text-[10px] font-mono text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
-          >
-            Ver webinar
-            <ExternalLink className="h-2.5 w-2.5" />
-          </a>
-        ) : (
-          <span />
-        )}
-        {speaker.linkedin && (
+      {speaker.linkedin && (
+        <div className="mt-auto pt-2 border-t border-border/30">
           <a
             href={speaker.linkedin}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
           >
-            LinkedIn
+            Ver más
             <ExternalLink className="h-2.5 w-2.5" />
           </a>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
