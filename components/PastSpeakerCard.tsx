@@ -58,7 +58,7 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
 
       {/* footer */}
       {speaker.linkedin && (
-        <div className="mt-auto pt-2 border-t border-border/30">
+        <div className="mt-auto pt-2 border-t border-border/30 flex justify-end">
           <a
             href={speaker.linkedin}
             target="_blank"
