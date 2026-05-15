@@ -1,4 +1,4 @@
-import { addWeeks } from "date-fns";
+import { addWeeks, isBefore, parseISO, startOfDay } from "date-fns";
 import { DB_SLOTS_ID, getNotionClient } from "./client";
 import type { Slot, SlotEstado } from "@/lib/schemas";
 
@@ -63,15 +63,19 @@ export async function listSlots(): Promise<Slot[]> {
     sorts: [{ property: "Fecha", direction: "ascending" }],
   });
 
-  return data.results.map((page) => {
-    const props = page.properties as Record<string, unknown>;
-    return {
-      id: ((page.id as string) ?? "").replace(/-/g, ""),
-      fecha: extractDate(props) ?? "",
-      estado: extractStatus(props),
-      lumaUrl: extractLumaUrl(props),
-    };
-  });
+  const today = startOfDay(now);
+
+  return data.results
+    .map((page) => {
+      const props = page.properties as Record<string, unknown>;
+      return {
+        id: ((page.id as string) ?? "").replace(/-/g, ""),
+        fecha: extractDate(props) ?? "",
+        estado: extractStatus(props),
+        lumaUrl: extractLumaUrl(props),
+      };
+    })
+    .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
 }
 
 export async function getSlot(slotId: string): Promise<Slot | null> {
