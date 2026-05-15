@@ -111,12 +111,7 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        filter: {
-          and: [
-            { property: "Estado", status: { equals: "Confirmado" } },
-            { property: "Webinar", url: { is_not_empty: true } },
-          ],
-        },
+        filter: { property: "Estado", status: { equals: "Confirmado" } },
         sorts: [{ timestamp: "created_time", direction: "descending" }],
       }),
       cache: "no-store",
@@ -127,7 +122,7 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
 
   const data = (await res.json()) as { results: Array<Record<string, unknown>> };
 
-  return data.results.map((page) => {
+  return data.results.flatMap((page) => {
     const props = page.properties as Record<string, unknown>;
 
     const nombre =
@@ -145,8 +140,15 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
     const linkedin =
       (props["LinkedIn"] as { url?: string | null })?.url ?? null;
 
+    // Webinar is a rollup from Slot — read array of URLs
+    const webinarRollup = props["Webinar"] as {
+      rollup?: { array?: Array<{ url?: string }> };
+      url?: string | null;
+    };
     const webinarUrl =
-      (props["Webinar"] as { url?: string | null })?.url ?? null;
+      webinarRollup?.rollup?.array?.[0]?.url ??
+      webinarRollup?.url ??
+      null;
 
     const fotosRaw = (props["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
     let foto: string | null = null;
@@ -161,7 +163,9 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
       if (foto) break;
     }
 
-    return {
+    if (!webinarUrl) return [];
+
+    return [{
       id: page.id as string,
       nombre,
       titulo,
@@ -169,7 +173,7 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
       foto,
       linkedin,
       webinarUrl,
-    };
+    }];
   });
 }
 
