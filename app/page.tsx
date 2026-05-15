@@ -14,6 +14,17 @@ export default async function LandingPage() {
           <span className="font-black text-lg tracking-tight">
             AI First <span className="text-primary">Founders</span>
           </span>
+          <div className="hidden sm:flex items-center gap-7">
+            {["Nosotros", "Directorio", "Comunidad", "Servicios"].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {item}
+              </a>
+            ))}
+          </div>
           <Button size="sm" render={<Link href="/postular" />}>
             Postular
           </Button>
