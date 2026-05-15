@@ -87,6 +87,17 @@ export async function createSpeaker(
     },
   });
 
+  if (data.whatsapp) {
+    try {
+      await notion.pages.update({
+        page_id: page.id,
+        properties: { WhatsApp: { phone_number: data.whatsapp } },
+      });
+    } catch {
+      console.warn("[createSpeaker] WhatsApp property not in Notion DB yet — add a Phone Number property named 'WhatsApp'");
+    }
+  }
+
   return page.id;
 }
 

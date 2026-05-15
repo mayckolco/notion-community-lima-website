@@ -1,4 +1,5 @@
-import { addDays, addWeeks, format, getDay, startOfDay } from "date-fns";
+import { addDays, addWeeks, format, getDay, parseISO, startOfDay } from "date-fns";
+import { es } from "date-fns/locale";
 
 /** Returns the next `count` upcoming Tuesdays (today inclusive if today is Tuesday). */
 export function nextTuesdays(count: number, from: Date = new Date()): Date[] {
@@ -20,10 +21,10 @@ export function nextTuesdays(count: number, from: Date = new Date()): Date[] {
   return dates;
 }
 
-/** Format a date as "Martes, 19 de mayo de 2026 · 7:00 – 8:00 pm" */
+/** Format a date as "Martes, 19 de mayo de 2026" */
 export function formatSlotDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  return format(date, "EEEE, d 'de' MMMM 'de' yyyy");
+  const date = parseISO(dateStr);
+  return format(date, "EEEE, d 'de' MMMM 'de' yyyy", { locale: es });
 }
 
 /** Format short: "Mar 19 may" */

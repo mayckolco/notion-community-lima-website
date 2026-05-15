@@ -18,6 +18,7 @@ export async function POST(req: NextRequest) {
     nombre: formData.get("nombre"),
     email: formData.get("email"),
     linkedin: formData.get("linkedin"),
+    whatsapp: formData.get("whatsapp"),
     titulo: formData.get("titulo"),
     descripcion: formData.get("descripcion"),
     herramientas: formData.getAll("herramientas"),

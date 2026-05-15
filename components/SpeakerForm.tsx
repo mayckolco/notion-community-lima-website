@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { applySchema, HERRAMIENTAS_OPTIONS, type ApplyInput } from "@/lib/schemas";
 import { PhotoUpload } from "@/components/PhotoUpload";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+
+const PRESET_TOOLS = (HERRAMIENTAS_OPTIONS as readonly string[]).filter((t) => t !== "Other");
 
 interface SpeakerFormProps {
   slotId: string;
@@ -23,6 +25,9 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [showOtherInput, setShowOtherInput] = useState(false);
+  const [otherInput, setOtherInput] = useState("");
+  const [customTools, setCustomTools] = useState<string[]>([]);
 
   const {
     register,
@@ -37,6 +42,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       nombre: "",
       email: "",
       linkedin: "",
+      whatsapp: "",
       titulo: "",
       descripcion: "",
       herramientas: [],
@@ -45,12 +51,30 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
   const selectedTools = watch("herramientas") ?? [];
 
-  const toggleTool = (tool: string) => {
+  const togglePreset = (tool: string) => {
     const next = selectedTools.includes(tool)
       ? selectedTools.filter((t) => t !== tool)
       : [...selectedTools, tool];
     setValue("herramientas", next, { shouldValidate: true });
   };
+
+  const addCustomTool = () => {
+    const trimmed = otherInput.trim();
+    if (!trimmed || selectedTools.includes(trimmed)) {
+      setOtherInput("");
+      return;
+    }
+    setValue("herramientas", [...selectedTools, trimmed], { shouldValidate: true });
+    setCustomTools((prev) => [...prev, trimmed]);
+    setOtherInput("");
+  };
+
+  const removeCustomTool = (tool: string) => {
+    setCustomTools((prev) => prev.filter((t) => t !== tool));
+    setValue("herramientas", selectedTools.filter((t) => t !== tool), { shouldValidate: true });
+  };
+
+  const otherActive = showOtherInput || customTools.length > 0;
 
   const onSubmit = async (data: ApplyInput) => {
     setServerError(null);
@@ -66,6 +90,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     formData.append("nombre", data.nombre);
     formData.append("email", data.email);
     formData.append("linkedin", data.linkedin);
+    formData.append("whatsapp", data.whatsapp);
     formData.append("titulo", data.titulo);
     formData.append("descripcion", data.descripcion);
     data.herramientas.forEach((h) => formData.append("herramientas", h));
@@ -91,7 +116,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
       <div className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
         <p className="text-sm text-muted-foreground">Fecha seleccionada</p>
-        <p className="font-semibold text-primary">{slotLabel} · 7:00 – 8:00 pm</p>
+        <p className="font-semibold text-primary capitalize">{slotLabel} · 7:00 – 8:00 pm</p>
       </div>
 
       <Field label="LinkedIn" error={errors.linkedin?.message} required>
@@ -121,6 +146,15 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
         </Field>
       </div>
 
+      <Field label="WhatsApp" error={errors.whatsapp?.message} required>
+        <Input
+          type="tel"
+          placeholder="+51 999 888 777"
+          {...register("whatsapp")}
+          className={cn(errors.whatsapp && "border-destructive")}
+        />
+      </Field>
+
       <Field label="Título de la charla" error={errors.titulo?.message} required>
         <Input
           placeholder="Cómo construí mi startup con IA en 30 días"
@@ -138,16 +172,18 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
         />
       </Field>
 
+      {/* Herramientas */}
       <div className="space-y-2">
         <Label>
           Herramientas que usas <span className="text-destructive">*</span>
         </Label>
+
         <div className="flex flex-wrap gap-2">
-          {HERRAMIENTAS_OPTIONS.map((tool) => (
+          {PRESET_TOOLS.map((tool) => (
             <button
               key={tool}
               type="button"
-              onClick={() => toggleTool(tool)}
+              onClick={() => togglePreset(tool)}
               className={cn(
                 "rounded-full px-3 py-1 text-sm font-medium border transition-all",
                 selectedTools.includes(tool)
@@ -158,7 +194,66 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
               {tool}
             </button>
           ))}
+          <button
+            type="button"
+            onClick={() => setShowOtherInput((v) => !v)}
+            className={cn(
+              "rounded-full px-3 py-1 text-sm font-medium border transition-all",
+              otherActive
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-secondary text-muted-foreground hover:border-primary/50"
+            )}
+          >
+            Otro
+          </button>
         </div>
+
+        {customTools.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-1">
+            {customTools.map((tool) => (
+              <span
+                key={tool}
+                className="inline-flex items-center gap-1 rounded-full border border-primary bg-primary/10 px-3 py-1 text-sm font-medium text-primary"
+              >
+                {tool}
+                <button
+                  type="button"
+                  onClick={() => removeCustomTool(tool)}
+                  className="ml-0.5 hover:text-destructive transition-colors"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {showOtherInput && (
+          <div className="flex gap-2 pt-1">
+            <Input
+              value={otherInput}
+              onChange={(e) => setOtherInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addCustomTool();
+                }
+              }}
+              placeholder="Ej: Windsurf, Dify, Perplexity..."
+              className="max-w-xs"
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addCustomTool}
+              disabled={!otherInput.trim()}
+            >
+              Agregar
+            </Button>
+          </div>
+        )}
+
         {errors.herramientas && (
           <p className="text-xs text-destructive">{errors.herramientas.message}</p>
         )}

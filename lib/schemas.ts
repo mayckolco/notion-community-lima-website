@@ -6,7 +6,8 @@ export const applySchema = z.object({
   email: z.string().min(1, "El email es requerido").email("Email inválido"),
   linkedin: z.string().min(1, "El LinkedIn es requerido").url("URL de LinkedIn inválida"),
   titulo: z.string().min(1, "El título es requerido").min(5, "Mínimo 5 caracteres"),
-  descripcion: z.string().min(1, "La descripción es requerida").min(20, "Mínimo 20 caracteres").max(1000),
+  whatsapp: z.string().min(1, "El WhatsApp es requerido"),
+  descripcion: z.string().min(1, "La descripción es requerida").min(20, "Mínimo 20 caracteres").max(2000, "Máximo 2000 caracteres"),
   herramientas: z.array(z.string()).min(1, "Selecciona al menos una herramienta"),
 });
 
