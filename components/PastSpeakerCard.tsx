@@ -39,11 +39,6 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
               {[speaker.rol, speaker.empresa].filter(Boolean).join(" · ")}
             </p>
           )}
-          {speaker.titulo && (
-            <p className="text-xs text-muted-foreground leading-tight mt-0.5 line-clamp-2">
-              {speaker.titulo}
-            </p>
-          )}
         </div>
       </div>
 
