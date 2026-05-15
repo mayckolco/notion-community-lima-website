@@ -120,7 +120,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
       <div className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
         <p className="text-sm text-muted-foreground">Fecha seleccionada</p>
-        <p className="font-semibold text-primary capitalize">{slotLabel} · 7:00 – 8:00 pm</p>
+        <p className="font-semibold text-primary">{slotLabel} · 7:00 – 8:00 pm</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
