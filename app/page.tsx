@@ -3,33 +3,14 @@ import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listPastSpeakers } from "@/lib/notion/speakers";
 import { PastSpeakerCard } from "@/components/PastSpeakerCard";
+import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export default async function LandingPage() {
   const pastSpeakers = await listPastSpeakers();
   return (
     <main className="flex flex-col min-h-screen">
-      <nav className="border-b border-border/50 px-6 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="font-black text-lg tracking-tight">
-            AI First <span className="text-primary">Founders</span>
-          </span>
-          <div className="hidden sm:flex items-center gap-7">
-            {["Nosotros", "Directorio", "Comunidad", "Servicios"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-          <Button size="sm" render={<Link href="/postular" />}>
-            Postular
-          </Button>
-        </div>
-      </nav>
+      <Navbar />
 
       <section className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
         <div className="max-w-3xl mx-auto space-y-8">

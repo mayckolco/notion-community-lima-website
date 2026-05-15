@@ -101,7 +101,7 @@ export interface PastSpeaker {
   webinarUrl: string | null;
 }
 
-export async function listPastSpeakers(): Promise<PastSpeaker[]> {
+async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
   const res = await fetch(
     `https://api.notion.com/v1/databases/${DB_SPEAKERS_ID}/query`,
     {
@@ -118,64 +118,64 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
       cache: "no-store",
     }
   );
-
   if (!res.ok) return [];
-
   const data = (await res.json()) as { results: Array<Record<string, unknown>> };
+  return data.results;
+}
 
-  return data.results.flatMap((page) => {
-    const props = page.properties as Record<string, unknown>;
+function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
+  const props = page.properties as Record<string, unknown>;
 
-    const nombre =
-      (props["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
-        ?.title?.[0]?.plain_text ?? "";
+  const nombre =
+    (props["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
+      ?.title?.[0]?.plain_text ?? "";
 
-    const titulo =
-      (props["Título de la charla"] as { rich_text?: Array<{ plain_text?: string }> })
-        ?.rich_text?.[0]?.plain_text ?? "";
+  const titulo =
+    (props["Título de la charla"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? "";
 
-    const herramientas =
-      (props["Herramientas"] as { multi_select?: Array<{ name?: string }> })
-        ?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
+  const herramientas =
+    (props["Herramientas"] as { multi_select?: Array<{ name?: string }> })
+      ?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
 
-    const linkedin =
-      (props["LinkedIn"] as { url?: string | null })?.url ?? null;
+  const linkedin =
+    (props["LinkedIn"] as { url?: string | null })?.url ?? null;
 
-    // Webinar is a rollup from Slot — read array of URLs
-    const webinarRollup = props["Webinar"] as {
-      rollup?: { array?: Array<{ url?: string }> };
-      url?: string | null;
-    };
-    const webinarUrl =
-      webinarRollup?.rollup?.array?.[0]?.url ??
-      webinarRollup?.url ??
-      null;
+  const webinarRollup = props["Webinar"] as {
+    rollup?: { array?: Array<{ url?: string }> };
+    url?: string | null;
+  };
+  const webinarUrl =
+    webinarRollup?.rollup?.array?.[0]?.url ??
+    webinarRollup?.url ??
+    null;
 
-    const fotosRaw = (props["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
-    let foto: string | null = null;
-    for (const f of fotosRaw) {
-      if (f.type === "file_upload") {
-        foto = (f.file_upload as { url?: string })?.url ?? null;
-      } else if (f.type === "external") {
-        foto = (f.external as { url?: string })?.url ?? null;
-      } else if (f.type === "file") {
-        foto = (f.file as { url?: string })?.url ?? null;
-      }
-      if (foto) break;
+  const fotosRaw = (props["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
+  let foto: string | null = null;
+  for (const f of fotosRaw) {
+    if (f.type === "file_upload") {
+      foto = (f.file_upload as { url?: string })?.url ?? null;
+    } else if (f.type === "external") {
+      foto = (f.external as { url?: string })?.url ?? null;
+    } else if (f.type === "file") {
+      foto = (f.file as { url?: string })?.url ?? null;
     }
+    if (foto) break;
+  }
 
-    if (!webinarUrl) return [];
+  return { id: page.id as string, nombre, titulo, herramientas, foto, linkedin, webinarUrl };
+}
 
-    return [{
-      id: page.id as string,
-      nombre,
-      titulo,
-      herramientas,
-      foto,
-      linkedin,
-      webinarUrl,
-    }];
-  });
+export async function listPastSpeakers(): Promise<PastSpeaker[]> {
+  const pages = await querySpeakers();
+  return pages
+    .map(parseSpeakerPage)
+    .filter((s) => !!s.webinarUrl);
+}
+
+export async function listDirectorySpeakers(): Promise<PastSpeaker[]> {
+  const pages = await querySpeakers();
+  return pages.map(parseSpeakerPage);
 }
 
 export async function archiveSpeaker(speakerId: string): Promise<void> {
