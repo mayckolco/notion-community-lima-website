@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { listPastSpeakers } from "@/lib/notion/speakers";
+import { listDirectorySpeakers } from "@/lib/notion/speakers";
 import { PastSpeakerCard } from "@/components/PastSpeakerCard";
 import { SpeakerMarquee } from "@/components/SpeakerMarquee";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export default async function LandingPage() {
-  const pastSpeakers = await listPastSpeakers();
+  const allSpeakers = await listDirectorySpeakers();
+  const pastSpeakers = allSpeakers.filter((s) => !!s.webinarUrl);
   return (
     <main className="flex flex-col min-h-screen">
       <Navbar />
@@ -59,9 +60,9 @@ export default async function LandingPage() {
         </div>
       </section>
 
-      {pastSpeakers.length > 0 && (
+      {allSpeakers.length > 0 && (
         <section className="border-t border-border/50 py-12">
-          <SpeakerMarquee speakers={pastSpeakers} />
+          <SpeakerMarquee speakers={allSpeakers} />
         </section>
       )}
 
