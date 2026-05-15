@@ -12,7 +12,10 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
   const num = String(index + 1).padStart(2, "0");
 
   return (
-    <div className="relative border border-border/60 bg-card p-5 flex flex-col gap-4 group hover:border-primary/40 transition-colors">
+    <Link
+      href={`/directorio/${speaker.id}`}
+      className="relative border border-border/60 bg-card p-5 flex flex-col gap-4 hover:border-primary/40 transition-colors group"
+    >
       {/* corner brackets */}
       <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">{num}</span>
       <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
@@ -26,7 +29,7 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
               src={speaker.foto}
               alt={speaker.nombre}
               fill
-              className="object-cover grayscale hover:grayscale-0 transition-all duration-300"
+              className="object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
               sizes="48px"
             />
           ) : (
@@ -59,14 +62,11 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
 
       {/* footer */}
       <div className="mt-auto pt-2 border-t border-border/30 flex justify-end">
-        <Link
-          href={`/directorio/${speaker.id}`}
-          className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground hover:text-foreground transition-colors uppercase tracking-wider"
-        >
+        <span className="flex items-center gap-1 text-[10px] font-mono text-muted-foreground group-hover:text-foreground transition-colors uppercase tracking-wider">
           Ver más
           <ArrowRight className="h-2.5 w-2.5" />
-        </Link>
+        </span>
       </div>
-    </div>
+    </Link>
   );
 }
