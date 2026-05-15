@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { CheckCircle2, Calendar, ExternalLink } from "lucide-react";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
 export default function GraciasPage() {
   return (
+    <>
     <main className="min-h-screen flex items-center justify-center px-6 py-12">
       <div className="max-w-lg w-full text-center space-y-8">
         <div className="flex justify-center">
@@ -65,5 +67,7 @@ export default function GraciasPage() {
         </div>
       </div>
     </main>
+    <Footer />
+    </>
   );
 }

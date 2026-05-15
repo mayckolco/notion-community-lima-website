@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { SlotCarousel } from "@/components/SlotCarousel";
+import { Footer } from "@/components/Footer";
 import { listSlots } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
 
@@ -19,6 +20,7 @@ export default async function PostularPage() {
   const slots = await getSlots();
 
   return (
+    <>
     <main className="min-h-screen px-6 py-12">
       <div className="max-w-5xl mx-auto space-y-10">
         <div>
@@ -51,5 +53,7 @@ export default async function PostularPage() {
         )}
       </div>
     </main>
+    <Footer />
+    </>
   );
 }

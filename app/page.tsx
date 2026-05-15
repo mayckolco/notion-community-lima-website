@@ -3,6 +3,7 @@ import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listPastSpeakers } from "@/lib/notion/speakers";
 import { PastSpeakerCard } from "@/components/PastSpeakerCard";
+import { Footer } from "@/components/Footer";
 
 export default async function LandingPage() {
   const pastSpeakers = await listPastSpeakers();
@@ -83,9 +84,7 @@ export default async function LandingPage() {
         </section>
       )}
 
-      <footer className="border-t border-border/50 px-6 py-6 text-center text-sm text-muted-foreground">
-        © {new Date().getFullYear()} AI First Founders
-      </footer>
+      <Footer />
     </main>
   );
 }
