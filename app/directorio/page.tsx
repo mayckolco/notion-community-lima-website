@@ -20,7 +20,7 @@ export default async function DirectorioPage() {
               Directorio de <span className="text-primary">speakers</span>
             </h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
-              Todos los founders que han compartido su experiencia construyendo con IA en nuestra comunidad.
+              Todos los speakers que han compartido su experiencia construyendo con IA en nuestra comunidad.
             </p>
           </div>
 
