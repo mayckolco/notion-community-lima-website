@@ -51,7 +51,7 @@ async function queryDatabase(
 
 export async function listSlots(): Promise<Slot[]> {
   const now = new Date();
-  const until = addWeeks(now, 8);
+  const until = addWeeks(now, 20);
 
   const data = await queryDatabase(DB_SLOTS_ID, {
     filter: {

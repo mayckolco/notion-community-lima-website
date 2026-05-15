@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { SlotCard } from "@/components/SlotCard";
+import { SlotCarousel } from "@/components/SlotCarousel";
 import { listSlots } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
 
@@ -47,11 +47,7 @@ export default async function PostularPage() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {slots.map((slot, index) => (
-              <SlotCard key={slot.id} slot={slot} weekNumber={index + 1} />
-            ))}
-          </div>
+          <SlotCarousel slots={slots} />
         )}
       </div>
     </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { format, parseISO } from "date-fns";
+import { format, getISOWeek, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
@@ -12,7 +12,6 @@ import type { Slot } from "@/lib/schemas";
 
 interface SlotCardProps {
   slot: Slot;
-  weekNumber: number;
 }
 
 const ESTADO_CONFIG = {
@@ -33,12 +32,12 @@ const ESTADO_CONFIG = {
     className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
   },
   Realizado: {
-    label: "Realizado",
+    label: "Ocupado",
     className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
   },
 } as const;
 
-export function SlotCard({ slot, weekNumber }: SlotCardProps) {
+export function SlotCard({ slot }: SlotCardProps) {
   const date = parseISO(slot.fecha);
   const available = slot.estado === "Disponible";
   const config = ESTADO_CONFIG[slot.estado] ?? ESTADO_CONFIG.Bloqueado;
@@ -60,7 +59,7 @@ export function SlotCard({ slot, weekNumber }: SlotCardProps) {
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
-              Semana {weekNumber}
+              Semana {getISOWeek(date)}
             </p>
             <p className="text-lg font-bold capitalize leading-tight">{dayName}</p>
             <p className="text-3xl font-black text-primary leading-none">{dayNum}</p>
