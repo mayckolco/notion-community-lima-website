@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { applySchema } from "@/lib/schemas";
 import { getSlot, lockSlot } from "@/lib/notion/slots";
-import { archiveSpeaker, createSpeaker, updateSpeakerBio, appendLinkedInContent } from "@/lib/notion/speakers";
-import { scrapeLinkedIn } from "@/lib/linkedin/proxycurl";
+import { archiveSpeaker, createSpeaker } from "@/lib/notion/speakers";
 
 export async function POST(req: NextRequest) {
   let formData: FormData;
@@ -29,10 +28,7 @@ export async function POST(req: NextRequest) {
     parsed = applySchema.parse(raw);
   } catch (err) {
     if (err instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: "invalid_payload", details: err.issues },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "invalid_payload", details: err.issues }, { status: 400 });
     }
     return NextResponse.json({ error: "invalid_payload" }, { status: 400 });
   }
@@ -43,38 +39,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "slot_unavailable" }, { status: 409 });
   }
 
-  // 2) Get photo and LinkedIn bio
+  // 2) Get photo
   const photoField = formData.get("foto");
   const photo = photoField instanceof File && photoField.size > 0 ? photoField : null;
-  const linkedinBio = (formData.get("linkedinBio") as string | null) ?? undefined;
 
   // 3) Create Speaker page
   let speakerId: string;
   try {
-    speakerId = await createSpeaker(parsed, parsed.slotId, photo, linkedinBio);
+    speakerId = await createSpeaker(parsed, parsed.slotId, photo);
   } catch (err) {
     console.error("[POST /api/apply] createSpeaker failed:", err);
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
-  }
-
-  // 3b) Scrape LinkedIn with ProxyCurl and save to Notion page
-  if (process.env.PROXYCURL_API_KEY && parsed.linkedin) {
-    try {
-      const linkedin = await scrapeLinkedIn(parsed.linkedin);
-      if (linkedin) {
-        if (linkedin.summary) {
-          await updateSpeakerBio(speakerId, linkedin.summary);
-        }
-        await appendLinkedInContent(speakerId, {
-          headline: linkedin.headline,
-          summary: linkedin.summary,
-          positions: linkedin.experiences,
-          educations: linkedin.educations,
-        });
-      }
-    } catch (e) {
-      console.error("[apply] ProxyCurl scrape failed:", e);
-    }
   }
 
   // 4) Re-read slot to guard against race condition
