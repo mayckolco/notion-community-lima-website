@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "prod-files-secure.s3.us-west-2.amazonaws.com" },
+      { protocol: "https", hostname: "*.amazonaws.com" },
+      { protocol: "https", hostname: "media.licdn.com" },
+      { protocol: "https", hostname: "notion.so" },
+      { protocol: "https", hostname: "www.notion.so" },
+      { protocol: "https", hostname: "file.notion.so" },
+    ],
+  },
+};
 
 export default nextConfig;
