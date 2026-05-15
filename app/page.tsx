@@ -3,6 +3,7 @@ import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listPastSpeakers } from "@/lib/notion/speakers";
 import { PastSpeakerCard } from "@/components/PastSpeakerCard";
+import { SpeakerMarquee } from "@/components/SpeakerMarquee";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -57,6 +58,12 @@ export default async function LandingPage() {
           />
         </div>
       </section>
+
+      {pastSpeakers.length > 0 && (
+        <section className="border-t border-border/50 py-12">
+          <SpeakerMarquee speakers={pastSpeakers} />
+        </section>
+      )}
 
       {pastSpeakers.length > 0 && (
         <section className="border-t border-border/50 px-6 py-16">
