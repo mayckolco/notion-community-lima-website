@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-const PRESET_TOOLS = (HERRAMIENTAS_OPTIONS as readonly string[]).filter((t) => t !== "Other");
+const PRESET_TOOLS = (HERRAMIENTAS_OPTIONS as readonly string[]).filter((t) => t !== "Otros");
 
 interface SpeakerFormProps {
   slotId: string;
@@ -119,16 +119,8 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
         <p className="font-semibold text-primary capitalize">{slotLabel} · 7:00 – 8:00 pm</p>
       </div>
 
-      <Field label="LinkedIn" error={errors.linkedin?.message} required>
-        <Input
-          placeholder="https://linkedin.com/in/tu-perfil"
-          {...register("linkedin")}
-          className={cn(errors.linkedin && "border-destructive")}
-        />
-      </Field>
-
       <div className="grid gap-6 sm:grid-cols-2">
-        <Field label="Nombre completo" error={errors.nombre?.message} required>
+        <Field label="Nombre y Apellido" error={errors.nombre?.message} required>
           <Input
             placeholder="María García"
             {...register("nombre")}
@@ -136,6 +128,17 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
           />
         </Field>
 
+        <Field label="WhatsApp" error={errors.whatsapp?.message} required>
+          <Input
+            type="tel"
+            placeholder="+51 999 888 777"
+            {...register("whatsapp")}
+            className={cn(errors.whatsapp && "border-destructive")}
+          />
+        </Field>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2">
         <Field label="Email" error={errors.email?.message} required>
           <Input
             type="email"
@@ -144,16 +147,15 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
             className={cn(errors.email && "border-destructive")}
           />
         </Field>
-      </div>
 
-      <Field label="WhatsApp" error={errors.whatsapp?.message} required>
-        <Input
-          type="tel"
-          placeholder="+51 999 888 777"
-          {...register("whatsapp")}
-          className={cn(errors.whatsapp && "border-destructive")}
-        />
-      </Field>
+        <Field label="LinkedIn" error={errors.linkedin?.message} required>
+          <Input
+            placeholder="https://linkedin.com/in/tu-perfil"
+            {...register("linkedin")}
+            className={cn(errors.linkedin && "border-destructive")}
+          />
+        </Field>
+      </div>
 
       <Field label="Título de la charla" error={errors.titulo?.message} required>
         <Input
@@ -163,7 +165,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
         />
       </Field>
 
-      <Field label="Descripción" error={errors.descripcion?.message} required>
+      <Field label="Descripción breve" error={errors.descripcion?.message} required>
         <Textarea
           placeholder="Cuenta de qué va tu charla, qué aprendizajes compartirás y quién es el público ideal..."
           rows={4}
@@ -175,7 +177,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       {/* Herramientas */}
       <div className="space-y-2">
         <Label>
-          Herramientas que usas <span className="text-destructive">*</span>
+          Herramientas que usarás <span className="text-destructive">*</span>
         </Label>
 
         <div className="flex flex-wrap gap-2">
@@ -204,7 +206,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
                 : "border-border bg-secondary text-muted-foreground hover:border-primary/50"
             )}
           >
-            Otro
+            Otros
           </button>
         </div>
 

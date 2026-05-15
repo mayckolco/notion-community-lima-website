@@ -14,19 +14,23 @@ export const applySchema = z.object({
 export type ApplyInput = z.infer<typeof applySchema>;
 
 export const HERRAMIENTAS_OPTIONS = [
-  "Claude",
-  "ChatGPT",
+  "Notion",
   "Make",
   "n8n",
-  "Notion",
+  "Supabase",
+  "Zapier",
+  "V0",
   "Replit",
   "Cursor",
+  "Claude Code",
+  "Codex",
+  "Windsurf",
+  "Antigravity",
   "Lovable",
   "Bolt",
-  "Supabase",
-  "Vercel",
-  "LangChain",
-  "Other",
+  "Claude",
+  "ChatGPT",
+  "Otros",
 ] as const;
 
 export type SlotEstado =
