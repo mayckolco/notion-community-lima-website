@@ -8,6 +8,7 @@ const nextConfig = {
       { protocol: "https", hostname: "notion.so" },
       { protocol: "https", hostname: "www.notion.so" },
       { protocol: "https", hostname: "file.notion.so" },
+      { protocol: "https", hostname: "files.notion.so" },
     ],
   },
 };

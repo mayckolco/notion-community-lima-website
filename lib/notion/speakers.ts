@@ -107,25 +107,39 @@ export interface PastSpeaker {
 }
 
 async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
-  const res = await fetch(
-    `https://api.notion.com/v1/databases/${DB_SPEAKERS_ID}/query`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
-        "Notion-Version": "2022-06-28",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        filter: { property: "Estado", status: { equals: "Confirmado" } },
-        sorts: [{ timestamp: "created_time", direction: "descending" }],
-      }),
-      cache: "no-store",
-    }
-  );
-  if (!res.ok) return [];
-  const data = (await res.json()) as { results: Array<Record<string, unknown>> };
-  return data.results;
+  const allResults: Array<Record<string, unknown>> = [];
+  let cursor: string | undefined = undefined;
+
+  do {
+    const res = await fetch(
+      `https://api.notion.com/v1/databases/${DB_SPEAKERS_ID}/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.NOTION_TOKEN}`,
+          "Notion-Version": "2022-06-28",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          filter: { property: "Estado", status: { equals: "Confirmado" } },
+          sorts: [{ timestamp: "created_time", direction: "descending" }],
+          page_size: 100,
+          ...(cursor ? { start_cursor: cursor } : {}),
+        }),
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) break;
+    const data = (await res.json()) as {
+      results: Array<Record<string, unknown>>;
+      has_more: boolean;
+      next_cursor: string | null;
+    };
+    allResults.push(...data.results);
+    cursor = data.has_more && data.next_cursor ? data.next_cursor : undefined;
+  } while (cursor);
+
+  return allResults;
 }
 
 function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
