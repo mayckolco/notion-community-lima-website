@@ -25,7 +25,7 @@ export default async function LandingPage() {
           </h1>
 
           <p className="text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Cada martes, un founder comparte su experiencia construyendo con inteligencia
+            Cada martes, un builder comparte su experiencia construyendo con inteligencia
             artificial. Elige tu fecha, postula y habla ante la comunidad.
           </p>
 
