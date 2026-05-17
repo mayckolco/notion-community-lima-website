@@ -30,31 +30,36 @@ export function SpeakerMarquee({ speakers }: { speakers: PastSpeaker[] }) {
   const items = [...speakers, ...speakers, ...speakers, ...speakers];
 
   return (
-    <div
-      className="overflow-hidden space-y-3 py-2"
-      style={{
-        maskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
-        WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
-      }}
-    >
-      {/* Row 1: right → left */}
+    <div className="space-y-6">
+      <h2 className="text-center text-2xl font-bold text-white">
+        Speakers que ya compartieron su experiencia
+      </h2>
       <div
-        className="flex gap-3 w-max"
-        style={{ animation: "marquee-left 40s linear infinite" }}
+        className="overflow-hidden space-y-3 py-2"
+        style={{
+          maskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+        }}
       >
-        {items.map((speaker, i) => (
-          <PhotoCard key={`r1-${speaker.id}-${i}`} speaker={speaker} />
-        ))}
-      </div>
+        {/* Row 1: right → left */}
+        <div
+          className="flex gap-3 w-max"
+          style={{ animation: "marquee-left 80s linear infinite" }}
+        >
+          {items.map((speaker, i) => (
+            <PhotoCard key={`r1-${speaker.id}-${i}`} speaker={speaker} />
+          ))}
+        </div>
 
-      {/* Row 2: left → right */}
-      <div
-        className="flex gap-3 w-max"
-        style={{ animation: "marquee-right 49s linear infinite" }}
-      >
-        {items.map((speaker, i) => (
-          <PhotoCard key={`r2-${speaker.id}-${i}`} speaker={speaker} />
-        ))}
+        {/* Row 2: left → right */}
+        <div
+          className="flex gap-3 w-max"
+          style={{ animation: "marquee-right 98s linear infinite" }}
+        >
+          {items.map((speaker, i) => (
+            <PhotoCard key={`r2-${speaker.id}-${i}`} speaker={speaker} />
+          ))}
+        </div>
       </div>
     </div>
   );
