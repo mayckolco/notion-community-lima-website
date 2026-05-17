@@ -31,25 +31,21 @@ export default function NosotrosPage() {
         <div className="max-w-5xl mx-auto space-y-20">
 
           {/* Hero */}
-          <div className="grid sm:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6">
-              <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
-              <h1 className="text-5xl font-black tracking-tight leading-tight">
-                AI First <span className="gradient-text">Founders</span>
-              </h1>
-            </div>
-            <div className="space-y-4 sm:pt-10">
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Somos una comunidad de founders que construyen negocios usando inteligencia artificial
-                como primer recurso. Cada martes de 7 a 8 pm, un builder comparte en vivo lo que está
-                construyendo, qué herramientas usa y qué aprendió en el camino.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                Creemos que la IA no es el futuro — es el presente. Nuestra misión es conectar a los
-                founders que ya están construyendo con IA y ayudarlos a crecer más rápido compartiendo
-                experiencias reales, errores incluidos.
-              </p>
-            </div>
+          <div className="space-y-6">
+            <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
+            <h1 className="text-5xl font-black tracking-tight leading-tight">
+              AI First <span className="gradient-text">Founders</span>
+            </h1>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Somos una comunidad de founders que construyen negocios usando inteligencia artificial
+              como primer recurso. Cada martes de 7 a 8 pm, un builder comparte en vivo lo que está
+              construyendo, qué herramientas usa y qué aprendió en el camino.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              Creemos que la IA no es el futuro — es el presente. Nuestra misión es conectar a los
+              founders que ya están construyendo con IA y ayudarlos a crecer más rápido compartiendo
+              experiencias reales, errores incluidos.
+            </p>
           </div>
 
           {/* Stats */}
