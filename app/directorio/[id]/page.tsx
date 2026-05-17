@@ -60,7 +60,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
             </div>
 
             {/* Info */}
-            <div className="flex flex-col flex-1 min-w-0 min-h-[9rem]">
+            <div className="flex flex-col flex-1 min-w-0 gap-4">
               <div>
                 <h1 className="text-3xl font-black tracking-tight">{speaker.nombre}</h1>
                 {(speaker.rol || speaker.empresa) && (
@@ -69,6 +69,17 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                   </p>
                 )}
               </div>
+
+              {speaker.biografia && (
+                <div className="space-y-1">
+                  <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+                    Sobre mí
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {speaker.biografia}
+                  </p>
+                </div>
+              )}
 
               {speaker.linkedin && (
                 <div className="mt-auto flex justify-end">
@@ -85,18 +96,6 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
               )}
             </div>
           </div>
-
-          {/* Bio */}
-          {speaker.biografia && (
-            <div className="border border-border/60 bg-card p-8 space-y-4">
-              <p className="text-[10px] font-mono text-primary uppercase tracking-widest">
-                Sobre {speaker.nombre.split(" ")[0]}
-              </p>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {speaker.biografia}
-              </p>
-            </div>
-          )}
 
           {/* Webinars */}
           {webinars.length > 0 && (
