@@ -116,6 +116,7 @@ export interface PastSpeaker {
   empresa: string | null;
   titulo: string;
   descripcion: string | null;
+  biografia: string | null;
   herramientas: string[];
   foto: string | null;
   linkedin: string | null;
@@ -202,11 +203,15 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     if (foto) break;
   }
 
-  // titulo and herramientas come from the linked Webinar via rollup — not stored in Speaker
+  const biografia =
+    (props["Biografía"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? null;
+
+  // titulo and herramientas come from the linked Webinar — not stored in Speaker
   const titulo = "";
   const herramientas: string[] = [];
 
-  return { id: page.id as string, nombre, rol, empresa, titulo, descripcion, herramientas, foto, linkedin, webinarUrl };
+  return { id: page.id as string, nombre, rol, empresa, titulo, descripcion, biografia, herramientas, foto, linkedin, webinarUrl };
 }
 
 export async function listPastSpeakers(): Promise<PastSpeaker[]> {

@@ -107,20 +107,15 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Talk */}
-          {(speaker.titulo || speaker.descripcion) && (
+          {/* Bio */}
+          {speaker.biografia && (
             <div className="border border-border/60 bg-card p-8 space-y-4">
               <p className="text-[10px] font-mono text-primary uppercase tracking-widest">
-                Sobre la charla
+                Sobre {speaker.nombre.split(" ")[0]}
               </p>
-              {speaker.titulo && (
-                <h2 className="text-xl font-black tracking-tight">{speaker.titulo}</h2>
-              )}
-              {speaker.descripcion && (
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {speaker.descripcion}
-                </p>
-              )}
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {speaker.biografia}
+              </p>
             </div>
           )}
 
