@@ -127,7 +127,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
           {webinars.length > 0 && (
             <div className="space-y-6">
               <p className="text-[10px] font-mono text-primary uppercase tracking-widest">
-                Charlas
+                Webinars
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {webinars.map((w, i) => {
