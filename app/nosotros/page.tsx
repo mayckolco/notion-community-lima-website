@@ -7,19 +7,19 @@ const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[]
     nombre: "Javier Flores",
     titulo: "Co-fundador · AI First Founders",
     bio: "",
-    foto: "/founders/javier-flores.jpg",
+    foto: "/founders/javier-flores.jpeg",
   },
   {
     nombre: "Mayckol Cruzado",
     titulo: "Co-fundador · AI First Founders",
     bio: "",
-    foto: "/founders/mayckol-cruzado.jpg",
+    foto: "/founders/mayckol-cruzado.jpeg",
   },
   {
     nombre: "Ignacio Velásquez",
     titulo: "Co-fundador · AI First Founders",
     bio: "",
-    foto: "/founders/ignacio-velasquez.jpg",
+    foto: "/founders/ignacio-velasquez.jpeg",
   },
 ];
 
