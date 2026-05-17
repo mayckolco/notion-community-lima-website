@@ -53,9 +53,26 @@ async function uploadPhotoToNotion(photo: File): Promise<string | null> {
   }
 }
 
-export async function createSpeaker(
+export async function findSpeakerByEmail(email: string): Promise<string | null> {
+  const res = await fetch(
+    `${NOTION_BASE}/databases/${DB_SPEAKERS_ID}/query`,
+    {
+      method: "POST",
+      headers: { ...authHeaders(), "Content-Type": "application/json" },
+      body: JSON.stringify({
+        filter: { property: "Email", email: { equals: email } },
+        page_size: 1,
+      }),
+    }
+  );
+  if (!res.ok) return null;
+  const data = (await res.json()) as { results: Array<{ id: string }> };
+  if (data.results.length === 0) return null;
+  return data.results[0].id;
+}
+
+export async function createSpeakerProfile(
   data: ApplyInput,
-  slotId: string,
   photo: File | null
 ): Promise<string> {
   const notion = getNotionClient();
@@ -72,20 +89,19 @@ export async function createSpeaker(
     }
   }
 
+  const whatsappDigits = data.whatsapp.replace(/\D/g, "");
+  const whatsappNum = whatsappDigits ? parseInt(whatsappDigits, 10) : null;
+
   const page = await notion.pages.create({
     parent: { database_id: DB_SPEAKERS_ID },
     properties: {
       "Nombre completo": { title: [{ text: { content: data.nombre } }] },
       Email: { email: data.email },
       LinkedIn: { url: data.linkedin },
-      WhatsApp: { phone_number: data.whatsapp },
+      ...(whatsappNum !== null ? { Whatsapp: { number: whatsappNum } } : {}),
       Rol: { rich_text: [{ text: { content: data.rol } }] },
       Empresa: { rich_text: [{ text: { content: data.empresa } }] },
-      "Título de la charla": { rich_text: [{ text: { content: data.titulo } }] },
-      Descripción: { rich_text: [{ text: { content: data.descripcion } }] },
-      Herramientas: { multi_select: data.herramientas.map((name) => ({ name })) },
-      Estado: { status: { name: "Confirmado" } },
-      Slot: { relation: [{ id: slotId }] },
+      Estado: { status: { name: "Aplicado" } },
       ...fotoProperty,
     },
   });
@@ -149,14 +165,6 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     (props["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
       ?.title?.[0]?.plain_text ?? "";
 
-  const titulo =
-    (props["Título de la charla"] as { rich_text?: Array<{ plain_text?: string }> })
-      ?.rich_text?.[0]?.plain_text ?? "";
-
-  const herramientas =
-    (props["Herramientas"] as { multi_select?: Array<{ name?: string }> })
-      ?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
-
   const linkedin =
     (props["LinkedIn"] as { url?: string | null })?.url ?? null;
 
@@ -172,7 +180,7 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     (props["Empresa"] as { rich_text?: Array<{ plain_text?: string }> })
       ?.rich_text?.[0]?.plain_text ?? null;
 
-  const webinarRollup = props["Webinar"] as {
+  const webinarRollup = props["Webinar URL"] as {
     rollup?: { array?: Array<{ url?: string }> };
     url?: string | null;
   };
@@ -193,6 +201,10 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     }
     if (foto) break;
   }
+
+  // titulo and herramientas come from the linked Webinar via rollup — not stored in Speaker
+  const titulo = "";
+  const herramientas: string[] = [];
 
   return { id: page.id as string, nombre, rol, empresa, titulo, descripcion, herramientas, foto, linkedin, webinarUrl };
 }

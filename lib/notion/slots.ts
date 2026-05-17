@@ -95,11 +95,19 @@ export async function getSlot(slotId: string): Promise<Slot | null> {
   }
 }
 
-export async function lockSlot(slotId: string): Promise<void> {
+export async function confirmWebinar(
+  slotId: string,
+  speakerId: string,
+  talk: { titulo: string; herramientas: string[]; descripcion: string }
+): Promise<void> {
   const notion = getNotionClient();
   await notion.pages.update({
     page_id: slotId,
     properties: {
+      Título: { title: [{ text: { content: talk.titulo } }] },
+      Herramientas: { multi_select: talk.herramientas.map((name) => ({ name })) },
+      Descripción: { rich_text: [{ text: { content: talk.descripcion } }] },
+      Speaker: { relation: [{ id: speakerId }] },
       Estado: { status: { name: "Confirmado" } },
     },
   });

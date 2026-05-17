@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { applySchema } from "@/lib/schemas";
-import { getSlot, lockSlot } from "@/lib/notion/slots";
-import { archiveSpeaker, createSpeaker } from "@/lib/notion/speakers";
+import { getSlot, confirmWebinar } from "@/lib/notion/slots";
+import { findSpeakerByEmail, createSpeakerProfile, archiveSpeaker } from "@/lib/notion/speakers";
 
 export async function POST(req: NextRequest) {
   let formData: FormData;
@@ -46,28 +46,40 @@ export async function POST(req: NextRequest) {
   const photoField = formData.get("foto");
   const photo = photoField instanceof File && photoField.size > 0 ? photoField : null;
 
-  // 3) Create Speaker page
-  let speakerId: string;
-  try {
-    speakerId = await createSpeaker(parsed, parsed.slotId, photo);
-  } catch (err) {
-    console.error("[POST /api/apply] createSpeaker failed:", err);
-    return NextResponse.json({ error: "internal_error" }, { status: 500 });
+  // 3) Find existing speaker or create new profile
+  let speakerId = await findSpeakerByEmail(parsed.email);
+  const speakerIsNew = speakerId === null;
+
+  if (speakerIsNew) {
+    try {
+      speakerId = await createSpeakerProfile(parsed, photo);
+    } catch (err) {
+      console.error("[POST /api/apply] createSpeakerProfile failed:", err);
+      return NextResponse.json({ error: "internal_error" }, { status: 500 });
+    }
   }
 
   // 4) Re-read slot to guard against race condition
   const freshSlot = await getSlot(parsed.slotId);
   if (!freshSlot || freshSlot.estado !== "Disponible") {
-    await archiveSpeaker(speakerId).catch(console.error);
+    if (speakerIsNew && speakerId) {
+      await archiveSpeaker(speakerId).catch(console.error);
+    }
     return NextResponse.json({ error: "slot_unavailable" }, { status: 409 });
   }
 
-  // 5) Lock the slot
+  // 5) Update webinar with talk data and link to speaker
   try {
-    await lockSlot(parsed.slotId);
+    await confirmWebinar(parsed.slotId, speakerId!, {
+      titulo: parsed.titulo,
+      herramientas: parsed.herramientas,
+      descripcion: parsed.descripcion,
+    });
   } catch (err) {
-    console.error("[POST /api/apply] lockSlot failed:", err);
-    await archiveSpeaker(speakerId).catch(console.error);
+    console.error("[POST /api/apply] confirmWebinar failed:", err);
+    if (speakerIsNew && speakerId) {
+      await archiveSpeaker(speakerId).catch(console.error);
+    }
     return NextResponse.json({ error: "internal_error" }, { status: 500 });
   }
 
