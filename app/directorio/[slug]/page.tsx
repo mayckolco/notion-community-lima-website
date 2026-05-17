@@ -2,22 +2,20 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, PlayCircle } from "lucide-react";
-import { getSpeakerById, getWebinarsBySpeakerId } from "@/lib/notion/speakers";
+import { getSpeakerBySlug, getWebinarsBySpeakerId } from "@/lib/notion/speakers";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export const revalidate = 0;
 
 interface PageProps {
-  params: { id: string };
+  params: { slug: string };
 }
 
 export default async function SpeakerDetailPage({ params }: PageProps) {
-  const [speaker, webinars] = await Promise.all([
-    getSpeakerById(params.id),
-    getWebinarsBySpeakerId(params.id),
-  ]);
+  const speaker = await getSpeakerBySlug(params.slug);
   if (!speaker) notFound();
+  const webinars = await getWebinarsBySpeakerId(speaker.id);
 
   return (
     <>

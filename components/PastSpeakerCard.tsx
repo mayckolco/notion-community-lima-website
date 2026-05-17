@@ -13,7 +13,7 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
 
   return (
     <Link
-      href={`/directorio/${speaker.id}`}
+      href={`/directorio/${speaker.slug}`}
       className="relative border border-border/60 bg-card p-5 flex flex-col gap-4 hover:border-primary/40 transition-colors group"
     >
       {/* corner brackets */}

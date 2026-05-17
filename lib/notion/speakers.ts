@@ -1,6 +1,16 @@
 import { DB_SPEAKERS_ID, getNotionClient } from "./client";
 import type { ApplyInput } from "@/lib/schemas";
 
+export function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9\s]/g, "")
+    .trim()
+    .replace(/\s+/g, "-");
+}
+
 const NOTION_BASE = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
 
@@ -111,6 +121,7 @@ export async function createSpeakerProfile(
 
 export interface PastSpeaker {
   id: string;
+  slug: string;
   nombre: string;
   rol: string | null;
   empresa: string | null;
@@ -210,8 +221,9 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
   // titulo and herramientas come from the linked Webinar — not stored in Speaker
   const titulo = "";
   const herramientas: string[] = [];
+  const slug = slugify(nombre);
 
-  return { id: page.id as string, nombre, rol, empresa, titulo, descripcion, biografia, herramientas, foto, linkedin, webinarUrl };
+  return { id: page.id as string, slug, nombre, rol, empresa, titulo, descripcion, biografia, herramientas, foto, linkedin, webinarUrl };
 }
 
 export async function listPastSpeakers(): Promise<PastSpeaker[]> {
@@ -224,6 +236,35 @@ export async function listPastSpeakers(): Promise<PastSpeaker[]> {
 export async function listDirectorySpeakers(): Promise<PastSpeaker[]> {
   const pages = await querySpeakers();
   return pages.map(parseSpeakerPage);
+}
+
+export async function getSpeakerBySlug(slug: string): Promise<PastSpeaker | null> {
+  const allResults: Array<Record<string, unknown>> = [];
+  let cursor: string | undefined = undefined;
+
+  do {
+    const res = await fetch(`${NOTION_BASE}/databases/${DB_SPEAKERS_ID}/query`, {
+      method: "POST",
+      headers: { ...authHeaders(), "Content-Type": "application/json" },
+      body: JSON.stringify({
+        page_size: 100,
+        sorts: [{ timestamp: "created_time", direction: "descending" }],
+        ...(cursor ? { start_cursor: cursor } : {}),
+      }),
+      cache: "no-store",
+    });
+    if (!res.ok) break;
+    const data = (await res.json()) as {
+      results: Array<Record<string, unknown>>;
+      has_more: boolean;
+      next_cursor: string | null;
+    };
+    allResults.push(...data.results);
+    cursor = data.has_more && data.next_cursor ? data.next_cursor : undefined;
+  } while (cursor);
+
+  const match = allResults.map(parseSpeakerPage).find((s) => s.slug === slug);
+  return match ?? null;
 }
 
 export async function getSpeakerById(id: string): Promise<PastSpeaker | null> {
