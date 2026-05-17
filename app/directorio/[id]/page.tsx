@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ExternalLink, PlayCircle } from "lucide-react";
 import { getSpeakerById, getWebinarsBySpeakerId } from "@/lib/notion/speakers";
-import { formatSlotDate } from "@/lib/dates";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -143,18 +142,13 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                       <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
                       <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
 
-                      <div className="pt-3 space-y-1">
+                      <div className="pt-3">
                         <p className="font-black text-sm leading-tight">{w.titulo}</p>
-                        {w.fecha && (
-                          <p className="text-[10px] font-mono text-muted-foreground capitalize">
-                            {formatSlotDate(w.fecha)}
-                          </p>
-                        )}
                       </div>
 
                       {w.herramientas.length > 0 && (
                         <div className="flex flex-wrap gap-1">
-                          {w.herramientas.slice(0, 3).map((tool) => (
+                          {w.herramientas.map((tool) => (
                             <span
                               key={tool}
                               className="text-[10px] font-mono border border-border/60 px-2 py-0.5 text-muted-foreground"
