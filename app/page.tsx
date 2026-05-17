@@ -2,14 +2,12 @@ import Link from "next/link";
 import { ArrowRight, Brain, Users, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { listDirectorySpeakers } from "@/lib/notion/speakers";
-import { PastSpeakerCard } from "@/components/PastSpeakerCard";
 import { SpeakerMarquee } from "@/components/SpeakerMarquee";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export default async function LandingPage() {
   const allSpeakers = await listDirectorySpeakers();
-  const pastSpeakers = allSpeakers.filter((s) => !!s.webinarUrl);
   return (
     <main className="flex flex-col min-h-screen">
       <Navbar />
@@ -66,23 +64,6 @@ export default async function LandingPage() {
         </section>
       )}
 
-      {pastSpeakers.length > 0 && (
-        <section className="border-t border-border/50 px-6 py-16">
-          <div className="max-w-5xl mx-auto space-y-8">
-            <div className="space-y-1">
-              <p className="text-xs font-mono text-primary uppercase tracking-widest">Ediciones pasadas</p>
-              <h2 className="text-2xl font-black tracking-tight">
-                Speakers que ya <span className="gradient-text">compartieron</span>
-              </h2>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {pastSpeakers.map((speaker, i) => (
-                <PastSpeakerCard key={speaker.id} speaker={speaker} index={i} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       <Footer />
     </main>
