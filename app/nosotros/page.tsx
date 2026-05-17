@@ -1,21 +1,25 @@
+import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
-const FOUNDERS = [
+const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[] = [
   {
-    nombre: "Fundador 1",
+    nombre: "Javier Flores",
     titulo: "Co-fundador · AI First Founders",
-    bio: "Agrega aquí la bio del fundador, su experiencia y qué lo llevó a crear AI First Founders.",
+    bio: "",
+    foto: "/founders/javier-flores.jpg",
   },
   {
-    nombre: "Fundador 2",
+    nombre: "Mayckol Cruzado",
     titulo: "Co-fundador · AI First Founders",
-    bio: "Agrega aquí la bio del fundador, su experiencia y qué lo llevó a crear AI First Founders.",
+    bio: "",
+    foto: "/founders/mayckol-cruzado.jpg",
   },
   {
-    nombre: "Fundador 3",
+    nombre: "Ignacio Velásquez",
     titulo: "Co-fundador · AI First Founders",
-    bio: "Agrega aquí la bio del fundador, su experiencia y qué lo llevó a crear AI First Founders.",
+    bio: "",
+    foto: "/founders/ignacio-velasquez.jpg",
   },
 ];
 
@@ -81,18 +85,30 @@ export default function NosotrosPage() {
                     <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
                     <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
 
-                    {/* Photo placeholder */}
-                    <div className="mt-2 w-16 h-16 rounded-sm bg-muted-foreground/10 border border-border/40 flex items-center justify-center">
-                      <span className="text-xl font-black text-muted-foreground/30">
-                        {f.nombre.charAt(0)}
-                      </span>
+                    {/* Photo */}
+                    <div className="mt-2 relative w-16 h-16 rounded-sm overflow-hidden bg-muted-foreground/10 border border-border/40 flex items-center justify-center flex-shrink-0">
+                      {f.foto ? (
+                        <Image
+                          src={f.foto}
+                          alt={f.nombre}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                        />
+                      ) : (
+                        <span className="text-xl font-black text-muted-foreground/30">
+                          {f.nombre.charAt(0)}
+                        </span>
+                      )}
                     </div>
 
                     <div>
                       <p className="font-black">{f.nombre}</p>
                       <p className="text-xs text-primary font-mono mt-0.5">{f.titulo}</p>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{f.bio}</p>
+                    {f.bio && (
+                      <p className="text-sm text-muted-foreground leading-relaxed">{f.bio}</p>
+                    )}
                   </div>
                 );
               })}
