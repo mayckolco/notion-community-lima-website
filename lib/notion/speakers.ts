@@ -230,7 +230,24 @@ export async function getSpeakerById(id: string): Promise<PastSpeaker | null> {
   const notion = getNotionClient();
   try {
     const page = await notion.pages.retrieve({ page_id: id });
-    return parseSpeakerPage(page as Record<string, unknown>);
+    const speaker = parseSpeakerPage(page as Record<string, unknown>);
+
+    // Resolve herramientas from the linked Webinar
+    const props = (page as Record<string, unknown>).properties as Record<string, unknown>;
+    const slotRelation = (props["Slot"] as { relation?: Array<{ id: string }> })?.relation ?? [];
+    if (slotRelation.length > 0) {
+      try {
+        const webinarPage = await notion.pages.retrieve({ page_id: slotRelation[0].id });
+        const wp = (webinarPage as Record<string, unknown>).properties as Record<string, unknown>;
+        const herramientas = (wp["Herramientas"] as { multi_select?: Array<{ name?: string }> })
+          ?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
+        return { ...speaker, herramientas };
+      } catch {
+        // Webinar not accessible, return speaker without herramientas
+      }
+    }
+
+    return speaker;
   } catch {
     return null;
   }
