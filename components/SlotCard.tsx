@@ -85,7 +85,7 @@ export function SlotCard({ slot }: SlotCardProps) {
             render={<Link href={`/postular/${slot.id}`} />}
           >
             <Calendar className="h-4 w-4 mr-2" />
-            Postular para este martes
+            Aplicar aquí
           </Button>
         ) : slot.lumaUrl ? (
           <a

@@ -82,11 +82,6 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     setServerError(null);
     setPhotoError(null);
 
-    if (!photo) {
-      setPhotoError("La foto es requerida");
-      return;
-    }
-
     const formData = new FormData();
     formData.append("slotId", data.slotId);
     formData.append("nombre", data.nombre);
@@ -132,7 +127,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
           />
         </Field>
 
-        <Field label="WhatsApp" error={errors.whatsapp?.message} required>
+        <Field label="WhatsApp" error={errors.whatsapp?.message}>
           <Input
             type="tel"
             placeholder="+51 999 888 777"
@@ -170,7 +165,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
           />
         </Field>
 
-        <Field label="LinkedIn" error={errors.linkedin?.message} required>
+        <Field label="LinkedIn" error={errors.linkedin?.message}>
           <Input
             placeholder="https://linkedin.com/in/tu-perfil"
             {...register("linkedin")}
@@ -284,9 +279,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label>
-          Foto de perfil <span className="text-destructive">*</span>
-        </Label>
+        <Label>Foto de perfil</Label>
         <PhotoUpload value={photo} onChange={setPhoto} error={photoError ?? undefined} />
       </div>
 
