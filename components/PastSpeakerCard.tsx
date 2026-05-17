@@ -37,9 +37,9 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
           )}
         </div>
         <div className="min-w-0">
-          <p className="font-black text-sm leading-tight truncate">{speaker.nombre}</p>
+          <p className="font-black text-sm leading-tight">{speaker.nombre}</p>
           {(speaker.rol || speaker.empresa) && (
-            <p className="text-xs text-primary/80 font-mono leading-tight mt-0.5 truncate">
+            <p className="text-xs text-primary/80 font-mono leading-tight mt-0.5 break-words">
               {[speaker.rol, speaker.empresa].filter(Boolean).join(" · ")}
             </p>
           )}
