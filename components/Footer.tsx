@@ -35,7 +35,7 @@ export function Footer() {
     <footer className="border-t border-border/50 bg-card/30">
       <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col items-center gap-5">
         <span className="font-black text-lg tracking-tight">
-          AI First <span className="text-primary">Founders</span>
+          AI First <span className="gradient-text">Founders</span>
         </span>
 
         <div className="flex items-center gap-5">

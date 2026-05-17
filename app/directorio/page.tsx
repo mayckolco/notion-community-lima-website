@@ -17,7 +17,7 @@ export default async function DirectorioPage() {
           <div className="space-y-2">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Speakers</p>
             <h1 className="text-4xl font-black tracking-tight">
-              Directorio de <span className="text-primary">speakers</span>
+              Directorio de <span className="gradient-text">speakers</span>
             </h1>
             <p className="text-muted-foreground mt-2 max-w-xl">
               Todos los speakers que han compartido su experiencia construyendo con IA en nuestra comunidad.

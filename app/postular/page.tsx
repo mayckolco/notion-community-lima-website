@@ -33,7 +33,7 @@ export default async function PostularPage() {
           </Link>
 
           <h1 className="text-4xl font-black tracking-tight">
-            Elige tu <span className="text-primary">martes</span>
+            Elige tu <span className="gradient-text">martes</span>
           </h1>
           <p className="text-muted-foreground mt-2 max-w-xl">
             Estos son los próximos 8 martes disponibles. Selecciona el que mejor te quede
@@ -42,7 +42,7 @@ export default async function PostularPage() {
         </div>
 
         {slots.length === 0 ? (
-          <div className="rounded-xl border border-border/50 bg-card p-12 text-center space-y-3">
+          <div className="border border-border/50 bg-card p-12 text-center space-y-3">
             <p className="text-lg font-semibold">No hay slots disponibles en este momento</p>
             <p className="text-sm text-muted-foreground">
               Vuelve pronto o escríbenos para más información.

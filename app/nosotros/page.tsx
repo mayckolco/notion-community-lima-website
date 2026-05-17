@@ -30,7 +30,7 @@ export default function NosotrosPage() {
           <div className="space-y-6 max-w-2xl">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
             <h1 className="text-5xl font-black tracking-tight leading-tight">
-              AI First <span className="text-primary">Founders</span>
+              AI First <span className="gradient-text">Founders</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Somos una comunidad de founders que construyen negocios usando inteligencia artificial
@@ -52,7 +52,7 @@ export default function NosotrosPage() {
               { value: "0", label: "Teoría, solo práctica" },
             ].map(({ value, label }) => (
               <div key={label} className="bg-card px-8 py-8 space-y-1">
-                <p className="text-3xl font-black text-primary">{value}</p>
+                <p className="text-3xl font-black gradient-text">{value}</p>
                 <p className="text-sm text-muted-foreground">{label}</p>
               </div>
             ))}
@@ -63,7 +63,7 @@ export default function NosotrosPage() {
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Equipo fundador</p>
               <h2 className="text-2xl font-black tracking-tight">
-                Las personas detrás de <span className="text-primary">la comunidad</span>
+                Las personas detrás de <span className="gradient-text">la comunidad</span>
               </h2>
             </div>
 

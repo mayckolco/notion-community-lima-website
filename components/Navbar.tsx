@@ -14,7 +14,7 @@ export function Navbar() {
     <nav className="border-b border-border/50 px-6 py-4">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <Link href="/" className="font-black text-lg tracking-tight hover:opacity-80 transition-opacity">
-          AI First <span className="text-primary">Founders</span>
+          AI First <span className="gradient-text">Founders</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">

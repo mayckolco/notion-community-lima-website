@@ -23,7 +23,7 @@ export default async function LandingPage() {
 
           <h1 className="text-5xl sm:text-6xl font-black leading-tight tracking-tight text-balance">
             Comparte lo que{" "}
-            <span className="text-primary">construiste con IA</span>
+            <span className="gradient-text">construiste con IA</span>
           </h1>
 
           <p className="text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
@@ -72,7 +72,7 @@ export default async function LandingPage() {
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Ediciones pasadas</p>
               <h2 className="text-2xl font-black tracking-tight">
-                Speakers que ya <span className="text-primary">compartieron</span>
+                Speakers que ya <span className="gradient-text">compartieron</span>
               </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -99,8 +99,8 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="rounded-xl border border-border/50 bg-card p-6 space-y-3">
-      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+    <div className="border border-border/50 bg-card p-6 space-y-3">
+      <div className="w-10 h-10 bg-primary/10 flex items-center justify-center">
         {icon}
       </div>
       <h3 className="font-bold">{title}</h3>

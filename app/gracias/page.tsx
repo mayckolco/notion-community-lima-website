@@ -16,14 +16,14 @@ export default function GraciasPage() {
 
         <div className="space-y-3">
           <h1 className="text-4xl font-black tracking-tight">
-            ¡Postulación <span className="text-primary">confirmada!</span>
+            ¡Postulación <span className="gradient-text">confirmada!</span>
           </h1>
           <p className="text-lg text-muted-foreground">
             Tu lugar está reservado. Te contactaremos pronto con los detalles.
           </p>
         </div>
 
-        <div className="rounded-xl border border-border/50 bg-card p-6 text-left space-y-4">
+        <div className="border border-border/50 bg-card p-6 text-left space-y-4">
           <h2 className="font-bold">¿Qué sigue?</h2>
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex items-start gap-3">

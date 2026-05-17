@@ -30,7 +30,7 @@ export default async function SlotFormPage({ params }: PageProps) {
           </Link>
 
           <h1 className="text-3xl font-black tracking-tight">
-            Postula como <span className="text-primary">speaker</span>
+            Postula como <span className="gradient-text">speaker</span>
           </h1>
           <p className="text-muted-foreground mt-2">
             Confirma tu disponibilidad como Speaker. Este formulario toma menos de 2 minutos.
