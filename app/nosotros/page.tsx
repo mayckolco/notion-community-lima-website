@@ -31,7 +31,7 @@ export default function NosotrosPage() {
         <div className="max-w-5xl mx-auto space-y-20">
 
           {/* Hero */}
-          <div className="space-y-6 max-w-2xl">
+          <div className="space-y-6">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
             <h1 className="text-5xl font-black tracking-tight leading-tight">
               AI First <span className="gradient-text">Founders</span>
