@@ -253,6 +253,64 @@ export async function getSpeakerById(id: string): Promise<PastSpeaker | null> {
   }
 }
 
+export interface SpeakerWebinar {
+  id: string;
+  titulo: string;
+  fecha: string | null;
+  webinarUrl: string | null;
+  herramientas: string[];
+}
+
+export async function getWebinarsBySpeakerId(speakerId: string): Promise<SpeakerWebinar[]> {
+  const notion = getNotionClient();
+
+  let page: Record<string, unknown>;
+  try {
+    page = (await notion.pages.retrieve({ page_id: speakerId })) as Record<string, unknown>;
+  } catch {
+    return [];
+  }
+
+  const props = page.properties as Record<string, unknown>;
+  const slotRelation = (props["Slot"] as { relation?: Array<{ id: string }> })?.relation ?? [];
+  if (slotRelation.length === 0) return [];
+
+  const webinarPages = await Promise.all(
+    slotRelation.map(({ id }) =>
+      notion.pages.retrieve({ page_id: id }).catch(() => null)
+    )
+  );
+
+  return webinarPages
+    .filter((p): p is NonNullable<typeof p> => p !== null)
+    .map((wp) => {
+      const w = (wp as Record<string, unknown>).properties as Record<string, unknown>;
+
+      const titulo =
+        (w["Título"] as { title?: Array<{ plain_text?: string }> })
+          ?.title?.[0]?.plain_text ?? "";
+
+      const fecha =
+        (w["Fecha"] as { date?: { start?: string } })?.date?.start ?? null;
+
+      const webinarUrl =
+        (w["Webinar URL"] as { url?: string | null })?.url ?? null;
+
+      const herramientas =
+        (w["Herramientas"] as { multi_select?: Array<{ name?: string }> })
+          ?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
+
+      return {
+        id: (wp as Record<string, unknown>).id as string,
+        titulo,
+        fecha,
+        webinarUrl,
+        herramientas,
+      };
+    })
+    .filter((w) => !!w.titulo);
+}
+
 export async function archiveSpeaker(speakerId: string): Promise<void> {
   const notion = getNotionClient();
   await notion.pages.update({ page_id: speakerId, archived: true });

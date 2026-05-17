@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
-import { getSpeakerById } from "@/lib/notion/speakers";
+import { ArrowLeft, ExternalLink, PlayCircle } from "lucide-react";
+import { getSpeakerById, getWebinarsBySpeakerId } from "@/lib/notion/speakers";
+import { formatSlotDate } from "@/lib/dates";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
@@ -13,14 +14,17 @@ interface PageProps {
 }
 
 export default async function SpeakerDetailPage({ params }: PageProps) {
-  const speaker = await getSpeakerById(params.id);
+  const [speaker, webinars] = await Promise.all([
+    getSpeakerById(params.id),
+    getWebinarsBySpeakerId(params.id),
+  ]);
   if (!speaker) notFound();
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen px-6 py-12">
-        <div className="max-w-3xl mx-auto space-y-10">
+        <div className="max-w-5xl mx-auto space-y-10">
 
           {/* Back */}
           <Link
@@ -116,6 +120,68 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
               <p className="text-sm text-muted-foreground leading-relaxed">
                 {speaker.biografia}
               </p>
+            </div>
+          )}
+
+          {/* Webinars */}
+          {webinars.length > 0 && (
+            <div className="space-y-6">
+              <p className="text-[10px] font-mono text-primary uppercase tracking-widest">
+                Charlas
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {webinars.map((w, i) => {
+                  const num = String(i + 1).padStart(2, "0");
+                  return (
+                    <div
+                      key={w.id}
+                      className="relative border border-border/60 bg-card p-5 flex flex-col gap-3 group"
+                    >
+                      <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">
+                        {num}
+                      </span>
+                      <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
+                      <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
+
+                      <div className="pt-3 space-y-1">
+                        <p className="font-black text-sm leading-tight">{w.titulo}</p>
+                        {w.fecha && (
+                          <p className="text-[10px] font-mono text-muted-foreground capitalize">
+                            {formatSlotDate(w.fecha)}
+                          </p>
+                        )}
+                      </div>
+
+                      {w.herramientas.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {w.herramientas.slice(0, 3).map((tool) => (
+                            <span
+                              key={tool}
+                              className="text-[10px] font-mono border border-border/60 px-2 py-0.5 text-muted-foreground"
+                            >
+                              {tool}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {w.webinarUrl && (
+                        <div className="mt-auto pt-2 border-t border-border/30">
+                          <a
+                            href={w.webinarUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[10px] font-mono text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
+                          >
+                            <PlayCircle className="h-3 w-3" />
+                            Ver grabación
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
