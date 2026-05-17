@@ -31,8 +31,8 @@ export function SpeakerMarquee({ speakers }: { speakers: PastSpeaker[] }) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-center text-2xl font-bold text-white">
-        Speakers que ya compartieron su experiencia
+      <h2 className="text-center text-2xl font-bold text-white px-4">
+        Builders que ya compartieron su experiencia
       </h2>
       <div
         className="overflow-hidden space-y-3 py-2"
