@@ -75,17 +75,6 @@ export function SlotCard({ slot }: SlotCardProps) {
           <span>7:00 – 8:00 pm</span>
         </div>
 
-        {slot.lumaUrl && (
-          <a
-            href={slot.lumaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 mt-1.5 text-xs text-primary hover:underline"
-          >
-            <ExternalLink className="h-3 w-3" />
-            Ver en Luma
-          </a>
-        )}
       </CardContent>
 
       <CardFooter className="pt-0">
@@ -98,6 +87,16 @@ export function SlotCard({ slot }: SlotCardProps) {
             <Calendar className="h-4 w-4 mr-2" />
             Postular para este martes
           </Button>
+        ) : slot.lumaUrl ? (
+          <a
+            href={slot.lumaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium border border-primary/40 text-primary hover:bg-primary/10 transition-colors px-4 py-2"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Ver en Luma
+          </a>
         ) : (
           <Button disabled className="w-full" size="sm" variant="outline">
             No disponible

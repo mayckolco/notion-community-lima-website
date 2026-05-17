@@ -11,7 +11,7 @@ const NAV_LINKS = [
 
 export function Navbar() {
   return (
-    <nav className="border-b border-border/50 px-6 py-4">
+    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm px-6 py-4">
       <div className="max-w-5xl mx-auto flex items-center justify-between">
         <Link href="/" className="font-black text-lg tracking-tight hover:opacity-80 transition-opacity">
           AI First <span className="gradient-text">Founders</span>

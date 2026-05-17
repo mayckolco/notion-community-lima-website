@@ -7,7 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 
 export default async function LandingPage() {
-  const allSpeakers = await listDirectorySpeakers();
+  const allSpeakers = (await listDirectorySpeakers()).filter((s) => s.foto);
   return (
     <main className="flex flex-col min-h-screen">
       <Navbar />
@@ -16,7 +16,7 @@ export default async function LandingPage() {
         <div className="max-w-3xl mx-auto space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm text-primary font-medium">
             <Brain className="h-4 w-4" />
-            Martes 7–8 pm · Comunidad AI First Founders
+            Comunidad AI First Founders
           </div>
 
           <h1 className="text-5xl sm:text-6xl font-black leading-tight tracking-tight text-balance">
@@ -43,7 +43,7 @@ export default async function LandingPage() {
           <FeatureCard
             icon={<Calendar className="h-6 w-6 text-primary" />}
             title="Elige tu martes"
-            description="Ve los próximos 8 martes disponibles y reserva el que mejor te quede."
+            description="Martes disponibles y reserva el que mejor te quede"
           />
           <FeatureCard
             icon={<Brain className="h-6 w-6 text-primary" />}
@@ -53,7 +53,7 @@ export default async function LandingPage() {
           <FeatureCard
             icon={<Users className="h-6 w-6 text-primary" />}
             title="Conecta con founders"
-            description="Habla frente a una comunidad de builders que entienden tu stack."
+            description="Habla frente a una comunidad de builders que están construyendo."
           />
         </div>
       </section>
