@@ -99,7 +99,7 @@ export async function createSpeakerProfile(
     }
   }
 
-  const whatsappDigits = data.whatsapp.replace(/\D/g, "");
+  const whatsappDigits = (data.whatsapp ?? "").replace(/\D/g, "");
   const whatsappNum = whatsappDigits ? parseInt(whatsappDigits, 10) : null;
 
   const page = await notion.pages.create({
@@ -107,7 +107,7 @@ export async function createSpeakerProfile(
     properties: {
       "Nombre completo": { title: [{ text: { content: data.nombre } }] },
       Email: { email: data.email },
-      LinkedIn: { url: data.linkedin },
+      LinkedIn: { url: data.linkedin ?? null },
       ...(whatsappNum !== null ? { Whatsapp: { number: whatsappNum } } : {}),
       Rol: { rich_text: [{ text: { content: data.rol } }] },
       Empresa: { rich_text: [{ text: { content: data.empresa } }] },

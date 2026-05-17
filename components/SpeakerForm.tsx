@@ -86,14 +86,14 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
     formData.append("slotId", data.slotId);
     formData.append("nombre", data.nombre);
     formData.append("email", data.email);
-    formData.append("linkedin", data.linkedin);
-    formData.append("whatsapp", data.whatsapp);
+    formData.append("linkedin", data.linkedin ?? "");
+    formData.append("whatsapp", data.whatsapp ?? "");
     formData.append("rol", data.rol);
     formData.append("empresa", data.empresa);
     formData.append("titulo", data.titulo);
     formData.append("descripcion", data.descripcion);
     data.herramientas.forEach((h) => formData.append("herramientas", h));
-    formData.append("foto", photo);
+    if (photo) formData.append("foto", photo);
 
     const res = await fetch("/api/apply", { method: "POST", body: formData });
 
