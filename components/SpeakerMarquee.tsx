@@ -40,7 +40,7 @@ export function SpeakerMarquee({ speakers }: { speakers: PastSpeaker[] }) {
       {/* Row 1: right → left */}
       <div
         className="flex gap-3 w-max"
-        style={{ animation: "marquee-left 28s linear infinite" }}
+        style={{ animation: "marquee-left 40s linear infinite" }}
       >
         {items.map((speaker, i) => (
           <PhotoCard key={`r1-${speaker.id}-${i}`} speaker={speaker} />
@@ -50,7 +50,7 @@ export function SpeakerMarquee({ speakers }: { speakers: PastSpeaker[] }) {
       {/* Row 2: left → right */}
       <div
         className="flex gap-3 w-max"
-        style={{ animation: "marquee-right 34s linear infinite" }}
+        style={{ animation: "marquee-right 49s linear infinite" }}
       >
         {items.map((speaker, i) => (
           <PhotoCard key={`r2-${speaker.id}-${i}`} speaker={speaker} />
