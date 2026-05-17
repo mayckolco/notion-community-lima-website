@@ -60,7 +60,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
             </div>
 
             {/* Info */}
-            <div className="space-y-4 flex-1 min-w-0">
+            <div className="flex flex-col flex-1 min-w-0 min-h-[9rem]">
               <div>
                 <h1 className="text-3xl font-black tracking-tight">{speaker.nombre}</h1>
                 {(speaker.rol || speaker.empresa) && (
@@ -70,21 +70,8 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              {speaker.herramientas.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {speaker.herramientas.map((tool) => (
-                    <span
-                      key={tool}
-                      className="text-[10px] font-mono border border-border/60 px-2 py-0.5 text-muted-foreground"
-                    >
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              <div className="flex flex-wrap gap-3 pt-1">
-                {speaker.linkedin && (
+              {speaker.linkedin && (
+                <div className="mt-auto flex justify-end">
                   <a
                     href={speaker.linkedin}
                     target="_blank"
@@ -94,19 +81,8 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                     LinkedIn
                     <ExternalLink className="h-3 w-3" />
                   </a>
-                )}
-                {speaker.webinarUrl && (
-                  <a
-                    href={speaker.webinarUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-mono text-primary hover:text-primary/80 border border-primary/40 px-3 py-1.5 transition-colors"
-                  >
-                    Ver webinar
-                    <ExternalLink className="h-3 w-3" />
-                  </a>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
 
