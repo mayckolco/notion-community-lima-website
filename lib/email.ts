@@ -86,7 +86,7 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
                   </table>
 
                   <p style="margin:0 0 28px;color:#71717a;font-size:14px;line-height:1.8;">
-                    Esto nos permitirá revisar tu propuesta y considerarte para las próximas charlas.
+                    Esto nos permitirá revisar tu propuesta y ponernos en contacto contigo.
                   </p>
 
                   <p style="margin:0 0 28px;color:#71717a;font-size:14px;line-height:1.8;">
@@ -119,14 +119,6 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
             </table>
           </td></tr>
 
-          <!-- Footer -->
-          <tr>
-            <td align="center" style="padding-top:24px;">
-              <p style="margin:0;color:#3f3f46;font-size:10px;letter-spacing:0.05em;text-align:center;">
-                AI First Founders &mdash; Martes 7&ndash;8 pm
-              </p>
-            </td>
-          </tr>
 
         </table>
       </td>
