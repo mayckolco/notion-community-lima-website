@@ -22,7 +22,7 @@ export async function sendVerificationEmail(params: SendVerificationParams): Pro
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Confirma tu postulación como Speaker — AI First Founders",
+    subject: "Confirma tu postulación como Speaker [AI First Founders]",
     html: buildEmailHtml(params),
   });
 }
@@ -41,50 +41,64 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
       <td align="center">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
 
+          <!-- Header centrado -->
           <tr>
-            <td style="padding-bottom:28px;border-bottom:1px solid #27272a;">
-              <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;">
+            <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
+              <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
                 AI FIRST FOUNDERS
               </p>
             </td>
           </tr>
 
+          <!-- Card -->
           <tr><td style="padding:32px 0 0;">
             <table width="100%" cellpadding="0" cellspacing="0"
                    style="border:1px solid #27272a;background:#18181b;padding:40px;">
               <tr>
                 <td>
-                  <p style="margin:0 0 4px;color:#52525b;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">
-                    Postulación pendiente
-                  </p>
-                  <h1 style="margin:0 0 20px;color:#fafafa;font-size:22px;font-weight:900;letter-spacing:-0.02em;line-height:1.2;">
-                    Hola ${escHtml(nombre)},<br/>confirma tu lugar
-                  </h1>
-
-                  <p style="margin:0 0 8px;color:#71717a;font-size:13px;line-height:1.7;">
-                    Recibimos tu postulación para hablar el
-                    <strong style="color:#a1a1aa;">${escHtml(slotLabel)}</strong>
-                    (martes 7–8 pm).
-                  </p>
-                  <p style="margin:0 0 32px;color:#71717a;font-size:13px;line-height:1.7;">
-                    Para reservar tu fecha, haz clic en el botón.
-                    El link es válido por <strong style="color:#a1a1aa;">24 horas</strong>.
+                  <!-- Saludo -->
+                  <p style="margin:0 0 16px;color:#fafafa;font-size:16px;font-weight:700;line-height:1.5;">
+                    Hola ${escHtml(nombre)},
                   </p>
 
-                  <table cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
+                  <p style="margin:0 0 16px;color:#71717a;font-size:14px;line-height:1.8;">
+                    ¡Gracias por aplicar como speaker!<br/>
+                    Ya recibimos tu información correctamente para compartir el
+                    <strong style="color:#a1a1aa;">${escHtml(slotLabel)} (martes 7–8 pm)</strong>.
+                  </p>
+
+                  <p style="margin:0 0 28px;color:#71717a;font-size:14px;line-height:1.8;">
+                    Para completar tu postulación, solo necesitas dar clic en el siguiente botón:
+                  </p>
+
+                  <!-- CTA -->
+                  <table cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
                     <tr>
                       <td style="background:#fafafa;">
                         <a href="${verifyUrl}"
-                           style="display:inline-block;padding:13px 28px;color:#09090b;font-size:12px;
+                           style="display:inline-block;padding:13px 32px;color:#09090b;font-size:13px;
                                   font-weight:700;text-decoration:none;letter-spacing:0.08em;
                                   text-transform:uppercase;">
-                          Confirmar postulación &rarr;
+                          Confirmar
                         </a>
                       </td>
                     </tr>
                   </table>
 
-                  <hr style="border:none;border-top:1px solid #27272a;margin:0 0 24px;" />
+                  <p style="margin:0 0 28px;color:#71717a;font-size:14px;line-height:1.8;">
+                    Esto nos permitirá revisar tu propuesta y considerarte para las próximas charlas.
+                  </p>
+
+                  <p style="margin:0 0 28px;color:#71717a;font-size:14px;line-height:1.8;">
+                    ¡Estamos emocionados de conocer lo que quieres compartir!
+                  </p>
+
+                  <p style="margin:0 0 28px;color:#a1a1aa;font-size:14px;line-height:1.8;">
+                    Un abrazo,<br/>
+                    <strong style="color:#fafafa;">Equipo AIFF</strong>
+                  </p>
+
+                  <hr style="border:none;border-top:1px solid #27272a;margin:0 0 20px;" />
 
                   <p style="margin:0;color:#3f3f46;font-size:11px;line-height:1.8;">
                     Si no solicitaste esto, ignora este correo.<br/>
@@ -96,6 +110,7 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
             </table>
           </td></tr>
 
+          <!-- Footer -->
           <tr>
             <td style="padding-top:24px;">
               <p style="margin:0;color:#3f3f46;font-size:10px;letter-spacing:0.05em;">
