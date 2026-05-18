@@ -3,7 +3,7 @@ import path from "path";
 
 config({ path: path.resolve(process.cwd(), ".env.local") });
 
-import { getNotionClient, DB_SLOTS_ID, DB_SPEAKERS_ID } from "../lib/notion/client";
+import { getNotionClient, getDbSlotsId, getDbSpeakersId } from "../lib/notion/client";
 import { listSlots } from "../lib/notion/slots";
 
 async function main() {
@@ -16,8 +16,8 @@ async function main() {
   console.log(`Connected as: ${me.name ?? "Unknown"} (${me.type})`);
 
   // 2. Test Speaker Slots DB
-  console.log(`\nQuerying Speaker Slots (${DB_SLOTS_ID})...`);
-  const slotsDb = await notion.databases.retrieve({ database_id: DB_SLOTS_ID });
+  console.log(`\nQuerying Speaker Slots (${getDbSlotsId()})...`);
+  const slotsDb = await notion.databases.retrieve({ database_id: getDbSlotsId() });
   console.log(`  DB: "${(slotsDb as { title?: Array<{ plain_text: string }> }).title?.[0]?.plain_text}"`);
 
   const slots = await listSlots();
@@ -27,8 +27,8 @@ async function main() {
   }
 
   // 3. Test Speakers DB
-  console.log(`\nQuerying Speakers DB (${DB_SPEAKERS_ID})...`);
-  const speakersDb = await notion.databases.retrieve({ database_id: DB_SPEAKERS_ID });
+  console.log(`\nQuerying Speakers DB (${getDbSpeakersId()})...`);
+  const speakersDb = await notion.databases.retrieve({ database_id: getDbSpeakersId() });
   console.log(
     `  DB: "${(speakersDb as { title?: Array<{ plain_text: string }> }).title?.[0]?.plain_text}"`
   );

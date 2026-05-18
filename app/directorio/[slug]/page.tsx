@@ -12,7 +12,11 @@ interface PageProps {
   params: { slug: string };
 }
 
+const SLUG_RE = /^[a-z0-9-]{2,100}$/;
+
 export default async function SpeakerDetailPage({ params }: PageProps) {
+  if (!SLUG_RE.test(params.slug)) notFound();
+
   const speaker = await getSpeakerBySlug(params.slug);
   if (!speaker) notFound();
   const webinars = await getWebinarsBySpeakerId(speaker.id);

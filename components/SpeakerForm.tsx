@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { Loader2, X } from "lucide-react";
+import { Loader2, X, Mail } from "lucide-react";
 import { applySchema, HERRAMIENTAS_OPTIONS, type ApplyInput } from "@/lib/schemas";
 import { PhotoUpload } from "@/components/PhotoUpload";
 import { Button } from "@/components/ui/button";
@@ -21,10 +20,10 @@ interface SpeakerFormProps {
 }
 
 export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
-  const router = useRouter();
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoError, setPhotoError] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [submittedEmail, setSubmittedEmail] = useState<string | null>(null);
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [otherInput, setOtherInput] = useState("");
   const [customTools, setCustomTools] = useState<string[]>([]);
@@ -97,17 +96,46 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
     const res = await fetch("/api/apply", { method: "POST", body: formData });
 
+    if (res.status === 429) {
+      setServerError("Demasiados intentos. Espera unos minutos e intenta de nuevo.");
+      return;
+    }
     if (res.status === 409) {
       setServerError("Esta fecha ya fue reservada por otro speaker. Por favor elige otra.");
+      return;
+    }
+    if (res.status === 202) {
+      setSubmittedEmail(data.email);
       return;
     }
     if (!res.ok) {
       setServerError("Ocurrió un error inesperado. Intenta de nuevo.");
       return;
     }
-
-    router.push("/gracias");
   };
+
+  if (submittedEmail) {
+    return (
+      <div className="space-y-6 text-center py-8">
+        <div className="flex justify-center">
+          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
+            <Mail className="h-8 w-8 text-primary" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h2 className="text-2xl font-black tracking-tight">Revisa tu correo</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            Enviamos un link de confirmación a<br />
+            <span className="font-mono text-foreground">{submittedEmail}</span>
+          </p>
+        </div>
+        <div className="border border-border/50 bg-card p-4 text-left text-sm text-muted-foreground space-y-2">
+          <p>El link es válido por <strong className="text-foreground">24 horas</strong>. Revisa tu carpeta de spam si no lo ves.</p>
+          <p>Una vez que hagas clic, tu fecha quedará confirmada.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>

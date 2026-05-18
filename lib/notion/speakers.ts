@@ -1,4 +1,4 @@
-import { DB_SPEAKERS_ID, getNotionClient } from "./client";
+import { getDbSpeakersId, getNotionClient } from "./client";
 import type { ApplyInput } from "@/lib/schemas";
 
 export function slugify(name: string): string {
@@ -21,7 +21,7 @@ function authHeaders() {
   };
 }
 
-async function uploadPhotoToNotion(photo: File): Promise<string | null> {
+export async function uploadPhotoToNotion(photo: File): Promise<string | null> {
   try {
     const createRes = await fetch(`${NOTION_BASE}/file_uploads`, {
       method: "POST",
@@ -34,7 +34,7 @@ async function uploadPhotoToNotion(photo: File): Promise<string | null> {
     });
 
     if (!createRes.ok) {
-      console.error("[uploadPhoto] create failed:", await createRes.text());
+      console.error("[uploadPhoto] create failed with status:", createRes.status);
       return null;
     }
 
@@ -52,7 +52,7 @@ async function uploadPhotoToNotion(photo: File): Promise<string | null> {
     });
 
     if (!sendRes.ok) {
-      console.error("[uploadPhoto] send failed:", await sendRes.text());
+      console.error("[uploadPhoto] send failed with status:", sendRes.status);
       return null;
     }
 
@@ -65,7 +65,7 @@ async function uploadPhotoToNotion(photo: File): Promise<string | null> {
 
 export async function findSpeakerByEmail(email: string): Promise<string | null> {
   const res = await fetch(
-    `${NOTION_BASE}/databases/${DB_SPEAKERS_ID}/query`,
+    `${NOTION_BASE}/databases/${getDbSpeakersId()}/query`,
     {
       method: "POST",
       headers: { ...authHeaders(), "Content-Type": "application/json" },
@@ -83,27 +83,28 @@ export async function findSpeakerByEmail(email: string): Promise<string | null> 
 
 export async function createSpeakerProfile(
   data: ApplyInput,
-  photo: File | null
+  photo: File | null,
+  fotoId?: string
 ): Promise<string> {
   const notion = getNotionClient();
 
-  let fotoProperty: Record<string, unknown> = {};
-  if (photo) {
-    const fileId = await uploadPhotoToNotion(photo);
-    if (fileId) {
-      fotoProperty = {
-        Foto: {
-          files: [{ type: "file_upload", name: photo.name, file_upload: { id: fileId } }],
-        },
-      };
-    }
+  let resolvedFotoId = fotoId ?? null;
+  let fotoName = "foto.jpg";
+
+  if (!resolvedFotoId && photo) {
+    resolvedFotoId = await uploadPhotoToNotion(photo);
+    fotoName = photo.name;
   }
+
+  const fotoProperty: Record<string, unknown> = resolvedFotoId
+    ? { Foto: { files: [{ type: "file_upload", name: fotoName, file_upload: { id: resolvedFotoId } }] } }
+    : {};
 
   const whatsappDigits = (data.whatsapp ?? "").replace(/\D/g, "");
   const whatsappNum = whatsappDigits ? parseInt(whatsappDigits, 10) : null;
 
   const page = await notion.pages.create({
-    parent: { database_id: DB_SPEAKERS_ID },
+    parent: { database_id: getDbSpeakersId() },
     properties: {
       "Nombre completo": { title: [{ text: { content: data.nombre } }] },
       Email: { email: data.email },
@@ -140,7 +141,7 @@ async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
 
   do {
     const res = await fetch(
-      `https://api.notion.com/v1/databases/${DB_SPEAKERS_ID}/query`,
+      `https://api.notion.com/v1/databases/${getDbSpeakersId()}/query`,
       {
         method: "POST",
         headers: {
@@ -243,7 +244,7 @@ export async function getSpeakerBySlug(slug: string): Promise<PastSpeaker | null
   let cursor: string | undefined = undefined;
 
   do {
-    const res = await fetch(`${NOTION_BASE}/databases/${DB_SPEAKERS_ID}/query`, {
+    const res = await fetch(`${NOTION_BASE}/databases/${getDbSpeakersId()}/query`, {
       method: "POST",
       headers: { ...authHeaders(), "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -1,5 +1,5 @@
 import { addWeeks, isBefore, parseISO, startOfDay } from "date-fns";
-import { DB_SLOTS_ID, getNotionClient } from "./client";
+import { getDbSlotsId, getNotionClient } from "./client";
 import type { Slot, SlotEstado } from "@/lib/schemas";
 
 const NOTION_VERSION = "2022-06-28";
@@ -42,8 +42,7 @@ async function queryDatabase(
   });
 
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`Notion query failed: ${res.status} ${text}`);
+    throw new Error(`Notion query failed with status: ${res.status}`);
   }
 
   return res.json() as Promise<{ results: Array<Record<string, unknown>> }>;
@@ -53,7 +52,7 @@ export async function listSlots(): Promise<Slot[]> {
   const now = new Date();
   const until = addWeeks(now, 20);
 
-  const data = await queryDatabase(DB_SLOTS_ID, {
+  const data = await queryDatabase(getDbSlotsId(), {
     filter: {
       and: [
         { property: "Fecha", date: { on_or_after: now.toISOString() } },
@@ -120,7 +119,7 @@ export async function upsertSlot(params: {
 }): Promise<void> {
   const notion = getNotionClient();
 
-  const existing = await queryDatabase(DB_SLOTS_ID, {
+  const existing = await queryDatabase(getDbSlotsId(), {
     filter: { property: "Fecha", date: { equals: params.fecha } },
   });
 
@@ -147,7 +146,7 @@ export async function upsertSlot(params: {
     });
 
     await notion.pages.create({
-      parent: { database_id: DB_SLOTS_ID },
+      parent: { database_id: getDbSlotsId() },
       properties: {
         Slot: { title: [{ text: { content: title } }] },
         Fecha: { date: { start: params.fecha } },
