@@ -100,11 +100,20 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
 
                   <hr style="border:none;border-top:1px solid #27272a;margin:0 0 20px;" />
 
-                  <p style="margin:0;color:#3f3f46;font-size:11px;line-height:1.8;">
-                    Si no solicitaste esto, ignora este correo.<br/>
-                    Link completo:<br/>
-                    <span style="color:#52525b;word-break:break-all;">${verifyUrl}</span>
+                  <p style="margin:0 0 12px;color:#3f3f46;font-size:11px;line-height:1.8;">
+                    Si no solicitaste esto, ignora este correo.
                   </p>
+                  <table cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td style="border:1px solid #3f3f46;">
+                        <a href="${verifyUrl}"
+                           style="display:inline-block;padding:8px 20px;color:#71717a;font-size:11px;
+                                  text-decoration:none;letter-spacing:0.05em;">
+                          Ver link de confirmación
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
                 </td>
               </tr>
             </table>
@@ -112,8 +121,8 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
 
           <!-- Footer -->
           <tr>
-            <td style="padding-top:24px;">
-              <p style="margin:0;color:#3f3f46;font-size:10px;letter-spacing:0.05em;">
+            <td align="center" style="padding-top:24px;">
+              <p style="margin:0;color:#3f3f46;font-size:10px;letter-spacing:0.05em;text-align:center;">
                 AI First Founders &mdash; Martes 7&ndash;8 pm
               </p>
             </td>

@@ -62,7 +62,7 @@ export default function GraciasPage() {
             }
           >
             <ExternalLink className="h-4 w-4 mr-2" />
-            Seguirnos en LinkedIn
+            Síguenos en LinkedIn
           </Button>
         </div>
       </div>
