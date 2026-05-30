@@ -21,24 +21,24 @@ export default async function PostularPage() {
 
   return (
     <>
-    <main className="min-h-screen px-6 py-12">
-      <div className="max-w-5xl mx-auto space-y-10">
+    <main className="min-h-screen px-4 sm:px-6 py-8 sm:py-12">
+      <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
         <div>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 min-h-[44px] touch-manipulation"
           >
             <ArrowLeft className="h-4 w-4" />
             Volver al inicio
           </Link>
 
-          <h1 className="text-4xl font-black tracking-tight">
-            Elige tu <span className="gradient-text">martes</span>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
+            ¡Convocatoria abierta: AIFF – <span className="gradient-text">Call for speakers!</span>
           </h1>
-          <p className="text-muted-foreground mt-2 max-w-xl">
-            Estos son los próximos 8 martes disponibles. Selecciona el que mejor te quede
-            para dar tu charla de 7–8 pm.
-          </p>
+          <div className="text-sm sm:text-base text-muted-foreground mt-3 max-w-4xl space-y-3 leading-relaxed">
+            <p>¿Estás construyendo una startup o desarrollando productos con inteligencia artificial?</p>
+            <p>Tu experiencia, aprendizajes y desafíos pueden inspirar a la próxima generación de founders y builders. No importa si es tu primera vez como speaker o si ya has compartido en escenarios antes y sé parte de AIFF Speakers.</p>
+          </div>
         </div>
 
         {slots.length === 0 ? (

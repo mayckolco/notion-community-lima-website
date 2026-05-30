@@ -24,8 +24,8 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen px-6 py-12">
-        <div className="max-w-5xl mx-auto space-y-10">
+      <main className="min-h-screen px-4 sm:px-6 py-8 sm:py-12">
+        <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
 
           {/* Back */}
           <Link
@@ -37,7 +37,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
           </Link>
 
           {/* Hero */}
-          <div className="relative border border-border/60 bg-card p-8 flex flex-col sm:flex-row gap-8">
+          <div className="relative border border-border/60 bg-card p-5 sm:p-8 flex flex-col sm:flex-row gap-6 sm:gap-8">
             <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
             <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
 
@@ -105,22 +105,24 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
               <p className="text-[10px] font-mono text-primary uppercase tracking-widest">
                 Webinars
               </p>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {webinars.map((w, i) => {
                   const num = String(i + 1).padStart(2, "0");
                   return (
                     <div
                       key={w.id}
-                      className="relative border border-border/60 bg-card p-5 flex flex-col gap-3 group"
+                      className="relative border border-border/60 bg-card p-5 flex flex-col gap-3 group
+                        hover:border-primary/60 hover:bg-card/80 hover:shadow-[0_0_24px_-4px_hsl(var(--primary)/0.25)]
+                        hover:-translate-y-0.5 transition-all duration-300 ease-out"
                     >
                       <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">
                         {num}
                       </span>
-                      <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
-                      <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
+                      <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20 group-hover:border-primary/50 transition-colors duration-300" />
+                      <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20 group-hover:border-primary/50 transition-colors duration-300" />
 
                       <div className="pt-3">
-                        <p className="font-black text-sm leading-tight">{w.titulo}</p>
+                        <p className="font-black text-sm leading-tight group-hover:text-primary transition-colors duration-300">{w.titulo}</p>
                       </div>
 
                       {w.herramientas.length > 0 && (
@@ -128,7 +130,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                           {w.herramientas.map((tool) => (
                             <span
                               key={tool}
-                              className="text-[10px] font-mono border border-border/60 px-2 py-0.5 text-muted-foreground"
+                              className="text-[10px] font-mono border border-border/60 px-2 py-0.5 text-muted-foreground group-hover:border-primary/30 group-hover:text-foreground transition-all duration-300"
                             >
                               {tool}
                             </span>
@@ -137,12 +139,12 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                       )}
 
                       {w.webinarUrl && (
-                        <div className="mt-auto pt-2 border-t border-border/30">
+                        <div className="mt-auto pt-2 border-t border-border/30 group-hover:border-primary/20 transition-colors duration-300">
                           <a
                             href={w.webinarUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-[10px] font-mono text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"
+                            className="inline-flex items-center gap-1.5 text-[10px] font-mono text-primary hover:gap-2.5 transition-all duration-300 uppercase tracking-wider"
                           >
                             <PlayCircle className="h-3 w-3" />
                             Ver grabación

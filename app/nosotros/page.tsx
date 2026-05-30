@@ -38,31 +38,17 @@ export default function NosotrosPage() {
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Somos una comunidad de founders que construyen negocios usando inteligencia artificial
-              como primer recurso. Cada martes de 7 a 8 pm, un builder comparte en vivo lo que está
+              como primer recurso. Cada semana, un builder comparte en vivo lo que está
               construyendo, qué herramientas usa y qué aprendió en el camino.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              Creemos que la IA no es el futuro — es el presente. Nuestra misión es conectar a los
+              Creemos que la IA no es el futuro, es el presente. Nuestra misión es conectar a los
               founders que ya están construyendo con IA y ayudarlos a crecer más rápido compartiendo
               experiencias reales, errores incluidos.
             </p>
           </div>
 
-          {/* Stats */}
-          <div className="grid gap-px border border-border/50 sm:grid-cols-3 bg-border/50">
-            {[
-              { value: "7–8 pm", label: "Cada martes" },
-              { value: "100%", label: "Builders con IA" },
-              { value: "0", label: "Teoría, solo práctica" },
-            ].map(({ value, label }) => (
-              <div key={label} className="bg-card px-8 py-8 space-y-1">
-                <p className="text-3xl font-black gradient-text">{value}</p>
-                <p className="text-sm text-muted-foreground">{label}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Founders */}
+{/* Founders */}
           <div className="space-y-8">
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Equipo fundador</p>

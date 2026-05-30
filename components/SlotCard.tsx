@@ -4,11 +4,40 @@ import { format, getISOWeek, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { Slot } from "@/lib/schemas";
+
+const LIMA_TZONES = ["America/Lima", "America/Bogota"];
+
+function useLocalSlotTime(fecha: string) {
+  const [timeDisplay, setTimeDisplay] = useState("7:00 – 8:00 pm");
+  const [localNote, setLocalNote] = useState<string | null>(null);
+
+  useEffect(() => {
+    const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (LIMA_TZONES.includes(userTz)) return;
+
+    const fmt = (d: Date) =>
+      d.toLocaleTimeString("es", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: userTz,
+      });
+
+    const start = new Date(`${fecha}T19:00:00-05:00`);
+    const end = new Date(`${fecha}T20:00:00-05:00`);
+
+    setTimeDisplay(`${fmt(start)} – ${fmt(end)}`);
+    setLocalNote("hora local · Lima: 7:00 – 8:00 pm");
+  }, [fecha]);
+
+  return { timeDisplay, localNote };
+}
 
 interface SlotCardProps {
   slot: Slot;
@@ -45,6 +74,7 @@ export function SlotCard({ slot }: SlotCardProps) {
   const dayName = format(date, "EEEE", { locale: es });
   const dayNum = format(date, "d");
   const monthYear = format(date, "MMMM yyyy", { locale: es });
+  const { timeDisplay, localNote } = useLocalSlotTime(slot.fecha);
 
   return (
     <Card
@@ -70,9 +100,14 @@ export function SlotCard({ slot }: SlotCardProps) {
           </Badge>
         </div>
 
-        <div className="flex items-center gap-1.5 mt-4 text-sm text-muted-foreground">
-          <Clock className="h-3.5 w-3.5" />
-          <span>7:00 – 8:00 pm</span>
+        <div className="mt-4 space-y-0.5">
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Clock className="h-3.5 w-3.5 shrink-0" />
+            <span>{timeDisplay}</span>
+          </div>
+          {localNote && (
+            <p className="text-[10px] text-muted-foreground/50 font-mono pl-5">{localNote}</p>
+          )}
         </div>
 
       </CardContent>
@@ -80,8 +115,7 @@ export function SlotCard({ slot }: SlotCardProps) {
       <CardFooter className="pt-0">
         {available ? (
           <Button
-            className="w-full"
-            size="sm"
+            className="w-full min-h-[44px] touch-manipulation"
             render={<Link href={`/postular/${slot.id}`} />}
           >
             <Calendar className="h-4 w-4 mr-2" />
@@ -92,13 +126,13 @@ export function SlotCard({ slot }: SlotCardProps) {
             href={slot.lumaUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full inline-flex items-center justify-center gap-1.5 text-sm font-medium border border-primary/40 text-primary hover:bg-primary/10 transition-colors px-4 py-2"
+            className="w-full min-h-[44px] inline-flex items-center justify-center gap-1.5 text-sm font-medium border border-primary/40 text-primary hover:bg-primary/10 active:bg-primary/20 transition-colors px-4 touch-manipulation"
           >
             <ExternalLink className="h-4 w-4" />
             Ver en Luma
           </a>
         ) : (
-          <Button disabled className="w-full" size="sm" variant="outline">
+          <Button disabled className="w-full min-h-[44px]" variant="outline">
             No disponible
           </Button>
         )}

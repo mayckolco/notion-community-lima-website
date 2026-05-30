@@ -13,10 +13,10 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Postula como Speaker · AI First Founders",
   description:
-    "Comparte lo que construiste con IA. Postula para hablar un martes de 7–8 pm en la comunidad AI First Founders.",
+    "Comparte tu experiencia construyendo con IA. Postula para hablar un martes de 7–8 pm en la comunidad AI First Founders.",
   openGraph: {
     title: "Postula como Speaker · AI First Founders",
-    description: "Comparte lo que construiste con IA en la comunidad AI First Founders.",
+    description: "Comparte tu experiencia construyendo con IA en la comunidad AI First Founders.",
     type: "website",
   },
 };

@@ -12,48 +12,47 @@ export default async function LandingPage() {
     <main className="flex flex-col min-h-screen">
       <Navbar />
 
-      <section className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
-        <div className="max-w-3xl mx-auto space-y-8">
+      <section className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-24 text-center">
+        <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm text-primary font-medium">
             <Brain className="h-4 w-4" />
             Comunidad AI First Founders
           </div>
 
-          <h1 className="text-5xl sm:text-6xl font-black leading-tight tracking-tight text-balance">
-            Comparte lo que{" "}
-            <span className="gradient-text">construiste con IA</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tight text-balance">
+            Comparte tu experiencia{" "}<br />
+            <span className="gradient-text">construyendo con IA</span>
           </h1>
 
-          <p className="text-xl text-muted-foreground max-w-xl mx-auto leading-relaxed">
-            Cada martes, un builder comparte su experiencia construyendo con inteligencia
-            artificial. Elige tu fecha, postula y habla ante la comunidad.
-          </p>
+          <div className="text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed space-y-4 text-center sm:text-left px-2 sm:px-0">
+            <p>Buscamos founders, builders y makers que compartan aprendizajes, experiencias y casos reales que ayuden a otros emprendedores a crecer más rápido.</p>
+          </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-base font-bold" render={<Link href="/postular" />}>
-              Postular como speaker
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
+            <Button size="lg" className="text-base font-bold min-h-[52px] touch-manipulation" render={<Link href="/postular" />}>
+              Postula tu charla
               <ArrowRight className="h-5 w-5 ml-2" />
             </Button>
           </div>
         </div>
       </section>
 
-      <section className="border-t border-border/50 px-6 py-16">
-        <div className="max-w-5xl mx-auto grid gap-8 sm:grid-cols-3">
+      <section className="border-t border-border/50 px-4 sm:px-6 py-12 sm:py-16">
+        <div className="max-w-5xl mx-auto grid gap-4 sm:gap-8 sm:grid-cols-3">
           <FeatureCard
             icon={<Calendar className="h-6 w-6 text-primary" />}
-            title="Elige tu martes"
-            description="Martes disponibles y reserva el que mejor te quede"
+            title="Elige tu sesión"
+            description="Selecciona la fecha que mejor se adapte a tu agenda y reserva tu lugar para participar."
           />
           <FeatureCard
             icon={<Brain className="h-6 w-6 text-primary" />}
-            title="Comparte tu historia"
-            description="Cuéntanos qué construiste, qué herramientas usaste y qué aprendiste."
+            title="Comparte tu experiencia"
+            description="Cuéntanos qué estás construyendo con IA, qué herramientas utilizas y cuáles han sido los aprendizajes más valiosos en el camino."
           />
           <FeatureCard
             icon={<Users className="h-6 w-6 text-primary" />}
-            title="Conecta con founders"
-            description="Habla frente a una comunidad de builders que están construyendo."
+            title="Conecta con otros builders"
+            description="Comparte tus ideas frente a una comunidad de builders, emprendedores y creadores que están construyendo el futuro con IA."
           />
         </div>
       </section>
