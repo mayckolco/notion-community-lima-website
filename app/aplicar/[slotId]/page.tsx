@@ -13,7 +13,7 @@ export default async function SlotFormPage({ params }: PageProps) {
   const slot = await getSlot(params.slotId);
 
   if (!slot) notFound();
-  if (slot.estado !== "Disponible") redirect("/postular");
+  if (slot.estado !== "Disponible") redirect("/aplicar");
 
   const slotLabel = formatSlotDate(slot.fecha);
 
@@ -22,7 +22,7 @@ export default async function SlotFormPage({ params }: PageProps) {
       <div className="max-w-2xl mx-auto space-y-8">
         <div>
           <Link
-            href="/postular"
+            href="/aplicar"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -30,7 +30,7 @@ export default async function SlotFormPage({ params }: PageProps) {
           </Link>
 
           <h1 className="text-3xl font-black tracking-tight">
-            Postula como <span className="gradient-text">speaker</span>
+            Aplica como <span className="gradient-text">speaker</span>
           </h1>
           <p className="text-muted-foreground mt-2">
             Confirma tu disponibilidad como Speaker. Este formulario toma menos de 2 minutos.

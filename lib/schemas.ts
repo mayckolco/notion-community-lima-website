@@ -76,9 +76,20 @@ export type SlotEstado =
   | "Bloqueado"
   | "Realizado";
 
+export interface SlotSpeaker {
+  nombre: string;
+  foto: string | null;
+  rol: string | null;
+  empresa: string | null;
+}
+
 export interface Slot {
   id: string;
   fecha: string;
   estado: SlotEstado;
   lumaUrl: string | null;
+  titulo: string | null;
+  descripcion: string | null;
+  herramientas: string[];
+  speaker: SlotSpeaker | null;
 }

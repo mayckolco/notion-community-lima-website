@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 const NAV_LINKS = [
   { label: "Nosotros",   href: "/nosotros",    external: false },
   { label: "Directorio", href: "/directorio",  external: false },
+  { label: "Calendario", href: "/calendario",  external: false },
   { label: "Comunidad",  href: "https://chat.whatsapp.com/CmU70iqgxWKBlFjKp37XLe", external: true },
   { label: "Aprende",    href: "https://www.skool.com/ai-first-founders-8064/about", external: true },
   { label: "Servicios",  href: "https://nucleo.la/", external: true },
@@ -53,8 +54,8 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button size="sm" render={<Link href="/postular" />}>
-            Postular
+          <Button size="sm" render={<Link href="/aplicar" />}>
+            Aplicar
           </Button>
 
           <button

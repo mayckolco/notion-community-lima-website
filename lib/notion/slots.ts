@@ -1,6 +1,6 @@
 import { addWeeks, isBefore, parseISO, startOfDay } from "date-fns";
 import { getDbSlotsId, getNotionClient } from "./client";
-import type { Slot, SlotEstado } from "@/lib/schemas";
+import type { Slot, SlotEstado, SlotSpeaker } from "@/lib/schemas";
 
 const NOTION_VERSION = "2022-06-28";
 
@@ -29,6 +29,59 @@ function extractDate(props: Record<string, unknown>): string | null {
 function extractLumaUrl(props: Record<string, unknown>): string | null {
   const p = props as Record<string, { url?: string | null }>;
   return p["Luma URL"]?.url ?? null;
+}
+
+function extractTitulo(props: Record<string, unknown>): string | null {
+  const p = props as Record<string, { title?: Array<{ plain_text?: string }> }>;
+  return p["Título"]?.title?.[0]?.plain_text ?? null;
+}
+
+function extractDescripcion(props: Record<string, unknown>): string | null {
+  const p = props as Record<string, { rich_text?: Array<{ plain_text?: string }> }>;
+  return p["Descripción"]?.rich_text?.[0]?.plain_text ?? null;
+}
+
+function extractHerramientas(props: Record<string, unknown>): string[] {
+  const p = props as Record<string, { multi_select?: Array<{ name?: string }> }>;
+  return p["Herramientas"]?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
+}
+
+function extractSpeakerIds(props: Record<string, unknown>): string[] {
+  const p = props as Record<string, { relation?: Array<{ id: string }> }>;
+  return p["Speaker"]?.relation?.map((r) => r.id) ?? [];
+}
+
+async function fetchSpeakerBasic(speakerId: string): Promise<SlotSpeaker | null> {
+  const res = await fetch(notionUrl(`pages/${speakerId}`), {
+    headers: authHeaders(),
+  });
+  if (!res.ok) return null;
+  const page = (await res.json()) as { properties: Record<string, unknown> };
+  const p = page.properties;
+
+  const nombre =
+    (p["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
+      ?.title?.[0]?.plain_text ?? "";
+  if (!nombre) return null;
+
+  const rol =
+    (p["Rol"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? null;
+
+  const empresa =
+    (p["Empresa"] as { rich_text?: Array<{ plain_text?: string }> })
+      ?.rich_text?.[0]?.plain_text ?? null;
+
+  const fotosRaw = (p["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
+  let foto: string | null = null;
+  for (const f of fotosRaw) {
+    if (f.type === "file_upload") foto = (f.file_upload as { url?: string })?.url ?? null;
+    else if (f.type === "external") foto = (f.external as { url?: string })?.url ?? null;
+    else if (f.type === "file") foto = (f.file as { url?: string })?.url ?? null;
+    if (foto) break;
+  }
+
+  return { nombre, foto, rol, empresa };
 }
 
 async function queryDatabase(
@@ -72,9 +125,58 @@ export async function listSlots(): Promise<Slot[]> {
         fecha: extractDate(props) ?? "",
         estado: extractStatus(props),
         lumaUrl: extractLumaUrl(props),
+        titulo: extractTitulo(props),
+        descripcion: extractDescripcion(props),
+        herramientas: extractHerramientas(props),
+        speaker: null,
       };
     })
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
+}
+
+export async function listConfirmedSlots(): Promise<Slot[]> {
+  const now = new Date();
+  const until = addWeeks(now, 20);
+
+  const data = await queryDatabase(getDbSlotsId(), {
+    filter: {
+      and: [
+        { property: "Estado", status: { equals: "Confirmado" } },
+        { property: "Fecha", date: { on_or_after: now.toISOString() } },
+        { property: "Fecha", date: { on_or_before: until.toISOString() } },
+      ],
+    },
+    sorts: [{ property: "Fecha", direction: "ascending" }],
+  });
+
+  const today = startOfDay(now);
+
+  const slots = data.results
+    .map((page) => {
+      const props = page.properties as Record<string, unknown>;
+      return {
+        id: ((page.id as string) ?? "").replace(/-/g, ""),
+        fecha: extractDate(props) ?? "",
+        estado: extractStatus(props),
+        lumaUrl: extractLumaUrl(props),
+        titulo: extractTitulo(props),
+        descripcion: extractDescripcion(props),
+        herramientas: extractHerramientas(props),
+        speakerIds: extractSpeakerIds(props),
+      };
+    })
+    .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
+
+  const withSpeakers = await Promise.all(
+    slots.map(async ({ speakerIds, ...slot }) => {
+      const speaker = speakerIds.length > 0
+        ? await fetchSpeakerBasic(speakerIds[0])
+        : null;
+      return { ...slot, speaker };
+    })
+  );
+
+  return withSpeakers;
 }
 
 export async function getSlot(slotId: string): Promise<Slot | null> {
@@ -88,6 +190,10 @@ export async function getSlot(slotId: string): Promise<Slot | null> {
       fecha: extractDate(props) ?? "",
       estado: extractStatus(props),
       lumaUrl: extractLumaUrl(props),
+      titulo: extractTitulo(props),
+      descripcion: extractDescripcion(props),
+      herramientas: extractHerramientas(props),
+      speaker: null,
     };
   } catch {
     return null;

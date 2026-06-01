@@ -29,9 +29,13 @@ export default async function LandingPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">
-            <Button size="lg" className="text-base font-bold min-h-[52px] touch-manipulation" render={<Link href="/postular" />}>
-              Postula tu charla
+            <Button size="lg" className="text-base font-bold min-h-[52px] touch-manipulation" render={<Link href="/aplicar" />}>
+              Aplica tu charla
               <ArrowRight className="h-5 w-5 ml-2" />
+            </Button>
+            <Button size="lg" variant="outline" className="text-base font-bold min-h-[52px] touch-manipulation" render={<Link href="/calendario" />}>
+              <Calendar className="h-5 w-5 mr-2" />
+              Calendario
             </Button>
           </div>
         </div>

@@ -116,7 +116,7 @@ export function SlotCard({ slot }: SlotCardProps) {
         {available ? (
           <Button
             className="w-full min-h-[44px] touch-manipulation"
-            render={<Link href={`/postular/${slot.id}`} />}
+            render={<Link href={`/aplicar/${slot.id}`} />}
           >
             <Calendar className="h-4 w-4 mr-2" />
             Aplicar aquí

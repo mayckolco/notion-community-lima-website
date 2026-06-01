@@ -18,9 +18,9 @@ const ERRORS: Record<string, {
   link_expirado: {
     icon: Clock,
     title: "Link expirado",
-    body: "El link de verificación venció (tiene validez de 24 horas). Vuelve a postularte para recibir uno nuevo.",
-    cta: "Postularme de nuevo",
-    href: "/postular",
+    body: "El link de verificación venció (tiene validez de 24 horas). Vuelve a aplicar para recibir uno nuevo.",
+    cta: "Aplicar de nuevo",
+    href: "/aplicar",
   },
   token_invalido: {
     icon: AlertCircle,
@@ -34,7 +34,7 @@ const ERRORS: Record<string, {
     title: "Fecha ya reservada",
     body: "Alguien más confirmó esta fecha antes que tú. Elige otro martes disponible e intenta de nuevo.",
     cta: "Ver fechas disponibles",
-    href: "/postular",
+    href: "/aplicar",
   },
   error_interno: {
     icon: ServerCrash,

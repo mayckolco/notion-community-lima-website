@@ -11,12 +11,12 @@ async function getSlots(): Promise<Slot[]> {
   try {
     return await listSlots();
   } catch (err) {
-    console.error("[/postular] listSlots failed:", err);
+    console.error("[/aplicar] listSlots failed:", err);
     return [];
   }
 }
 
-export default async function PostularPage() {
+export default async function AplicarPage() {
   const slots = await getSlots();
 
   return (

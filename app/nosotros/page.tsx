@@ -1,6 +1,28 @@
 import Image from "next/image";
+import { Target, Users, Zap } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+
+const VALUES = [
+  {
+    icon: <Target className="h-6 w-6 text-primary" />,
+    titulo: "Builders que ejecutan",
+    descripcion:
+      "No teoría. Cada sesión es un caso real: qué se construyó, con qué herramientas y qué salió mal. Aprendizajes que se pueden aplicar el mismo día.",
+  },
+  {
+    icon: <Users className="h-6 w-6 text-primary" />,
+    titulo: "Comunidad primero",
+    descripcion:
+      "La red que construyes con otros founders vale tanto como el contenido. Conectamos a personas que ya están usando IA para crecer, no a las que hablan de usarla.",
+  },
+  {
+    icon: <Zap className="h-6 w-6 text-primary" />,
+    titulo: "IA como primer recurso",
+    descripcion:
+      "No como ayuda, como base. Todos los que participan aquí ya tomaron la decisión de construir diferente. Eso cambia el nivel de la conversación.",
+  },
+];
 
 const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[] = [
   {
@@ -46,6 +68,28 @@ export default function NosotrosPage() {
               founders que ya están construyendo con IA y ayudarlos a crecer más rápido compartiendo
               experiencias reales, errores incluidos.
             </p>
+          </div>
+
+          {/* Valores */}
+          <div className="space-y-8">
+            <div className="space-y-1">
+              <p className="text-xs font-mono text-primary uppercase tracking-widest">Nuestros valores</p>
+              <h2 className="text-2xl font-black tracking-tight">
+                Lo que nos <span className="gradient-text">define</span>
+              </h2>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {VALUES.map((v) => (
+                <div key={v.titulo} className="border border-border/50 bg-card p-6 space-y-3">
+                  <div className="w-10 h-10 bg-primary/10 flex items-center justify-center">
+                    {v.icon}
+                  </div>
+                  <h3 className="font-black">{v.titulo}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{v.descripcion}</p>
+                </div>
+              ))}
+            </div>
           </div>
 
 {/* Founders */}
