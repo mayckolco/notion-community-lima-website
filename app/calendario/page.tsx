@@ -116,14 +116,15 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
         {slot.speaker && (
           <div className="flex items-center gap-3 pt-1">
             {slot.speaker.foto ? (
-              <Image
-                src={slot.speaker.foto}
-                alt={slot.speaker.nombre}
-                width={36}
-                height={36}
-                className="rounded-full object-cover shrink-0"
-                unoptimized
-              />
+              <div className="relative w-9 h-9 rounded-full overflow-hidden shrink-0">
+                <Image
+                  src={slot.speaker.foto}
+                  alt={slot.speaker.nombre}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
             ) : (
               <div className="w-9 h-9 rounded-full bg-primary/20 shrink-0 flex items-center justify-center text-xs font-bold text-primary">
                 {slot.speaker.nombre.charAt(0)}
