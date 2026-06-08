@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { sendGAEvent } from "@next/third-parties/google";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, X, Mail } from "lucide-react";
@@ -27,6 +28,13 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
   const [showOtherInput, setShowOtherInput] = useState(false);
   const [otherInput, setOtherInput] = useState("");
   const [customTools, setCustomTools] = useState<string[]>([]);
+  const hasStartedRef = useRef(false);
+
+  const handleFormFocus = () => {
+    if (hasStartedRef.current) return;
+    hasStartedRef.current = true;
+    sendGAEvent("event", "start_application", { slot_date: slotLabel });
+  };
 
   const {
     register,
@@ -105,6 +113,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       return;
     }
     if (res.status === 202) {
+      sendGAEvent("event", "submit_application", { slot_date: slotLabel });
       setSubmittedEmail(data.email);
       return;
     }
@@ -138,7 +147,12 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" noValidate>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onFocusCapture={handleFormFocus}
+      className="space-y-6"
+      noValidate
+    >
       <input type="hidden" {...register("slotId")} />
 
       <div className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
