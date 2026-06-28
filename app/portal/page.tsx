@@ -42,7 +42,6 @@ export default async function PortalPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <SpeakerHeader speaker={speaker} />
         <CharlaCards slots={speaker.slots} speaker={speaker} />
-        <ChecklistSection confirmed={hasConfirmed} />
         {hasConfirmed && <KitSection slots={confirmedSlots} />}
         <RecursosSection />
         {nextConfirmedSlot && <DiaEventoSection slot={nextConfirmedSlot} />}
