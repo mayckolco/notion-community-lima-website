@@ -76,7 +76,7 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
         ?.rich_text?.[0]?.plain_text ?? null,
     fecha: (p["Fecha"] as { date?: { start?: string } })?.date?.start ?? null,
     lumaUrl: (p["Luma URL"] as { url?: string | null })?.url ?? null,
-    webinarUrl: (p["Webinar URL"] as { url?: string | null })?.url ?? null,
+    webinarUrl: (p["Meet URL"] as { url?: string | null })?.url ?? null,
     herramientas:
       (p["Herramientas"] as { multi_select?: Array<{ name?: string }> })?.multi_select
         ?.map((t) => t.name ?? "")

@@ -62,7 +62,7 @@ export default async function CharlaDetailPage({
         <div className="max-w-2xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-4">
           <Link
             href="/portal"
-            className="text-xs text-muted-foreground border border-border/50 px-3 py-1.5 hover:text-foreground hover:border-border transition-colors"
+            className="text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
           >
             Volver al portal
           </Link>
