@@ -193,7 +193,7 @@ export default async function CharlaDetailPage({
               <span className="text-xs text-muted-foreground/50">{slot.covers.length} archivos</span>
             </div>
             <p className="text-xs text-muted-foreground/60">
-              Usa estos covers para promocionar tu charla. Haz clic en "Vista previa" para verlos en grande o "Descargar" para guardarlos.
+              Usa estos covers para promocionar tu charla. Haz clic en Vista previa para verlos en grande o Descargar para guardarlos.
             </p>
             <CoversGallery covers={slot.covers} />
           </div>
