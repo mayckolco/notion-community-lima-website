@@ -128,6 +128,92 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
 </html>`;
 }
 
+interface SendMagicLinkParams {
+  to: string;
+  nombre: string;
+  magicUrl: string;
+}
+
+export async function sendMagicLinkEmail(params: SendMagicLinkParams): Promise<void> {
+  const from = process.env.RESEND_FROM_EMAIL ?? "AI First Founders <noreply@aifirstfounders.com>";
+  await getResend().emails.send({
+    from,
+    to: params.to,
+    subject: "Tu acceso al portal de Speaker · AI First Founders",
+    html: buildMagicLinkHtml(params),
+  });
+}
+
+function buildMagicLinkHtml({ nombre, magicUrl }: SendMagicLinkParams): string {
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso a tu portal de Speaker</title>
+</head>
+<body style="margin:0;padding:0;background:#09090b;font-family:ui-monospace,'JetBrains Mono',monospace;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#09090b;padding:48px 20px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+          <tr>
+            <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
+              <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
+                AI FIRST FOUNDERS
+              </p>
+            </td>
+          </tr>
+          <tr><td style="padding:32px 0 0;">
+            <table width="100%" cellpadding="0" cellspacing="0"
+                   style="border:1px solid #27272a;background:#18181b;padding:40px;">
+              <tr>
+                <td>
+                  <p style="margin:0 0 16px;color:#fafafa;font-size:16px;font-weight:700;line-height:1.5;">
+                    Hola ${escHtml(nombre)},
+                  </p>
+                  <p style="margin:0 0 16px;color:#71717a;font-size:14px;line-height:1.8;">
+                    Solicitaste acceso a tu portal de speaker. Haz clic en el siguiente botón para ingresar:
+                  </p>
+                  <table cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
+                    <tr>
+                      <td style="background:#fafafa;">
+                        <a href="${magicUrl}"
+                           style="display:inline-block;padding:13px 32px;color:#09090b;font-size:13px;
+                                  font-weight:700;text-decoration:none;letter-spacing:0.08em;
+                                  text-transform:uppercase;">
+                          Ingresar al portal
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                  <p style="margin:0 0 16px;color:#52525b;font-size:12px;line-height:1.8;">
+                    Este link expira en 15 minutos. Si no lo solicitaste, ignora este correo.
+                  </p>
+                  <hr style="border:none;border-top:1px solid #27272a;margin:20px 0;" />
+                  <table cellpadding="0" cellspacing="0">
+                    <tr>
+                      <td style="border:1px solid #3f3f46;">
+                        <a href="${magicUrl}"
+                           style="display:inline-block;padding:8px 20px;color:#71717a;font-size:11px;
+                                  text-decoration:none;letter-spacing:0.05em;">
+                          Ver link de acceso
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td></tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
 function escHtml(str: string): string {
   return str
     .replace(/&/g, "&amp;")

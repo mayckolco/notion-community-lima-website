@@ -54,8 +54,8 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button size="sm" render={<Link href="/aplicar" />}>
-            Aplicar
+          <Button size="sm" render={<Link href="/login" />}>
+            Ingresar
           </Button>
 
           <button
