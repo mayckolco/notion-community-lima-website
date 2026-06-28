@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById, fetchSlot } from "@/lib/notion/portal";
-import type { PortalSlot, PortalSpeaker } from "@/lib/notion/portal";
 
 function formatFecha(fecha: string): string {
   return new Date(fecha).toLocaleString("es-PE", {
