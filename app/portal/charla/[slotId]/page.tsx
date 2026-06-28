@@ -144,7 +144,7 @@ export default async function CharlaDetailPage({
             </div>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-3">
             {slot.lumaUrl ? (
               <a
                 href={slot.lumaUrl}
@@ -180,6 +180,24 @@ export default async function CharlaDetailPage({
                 <p className="text-sm">Disponible al confirmar</p>
               </div>
             ) : null}
+
+            {slot.grabacionUrl ? (
+              <a
+                href={slot.grabacionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="border border-orange-500/40 bg-orange-950/20 p-4 hover:bg-orange-950/40 transition-colors group block"
+              >
+                <p className="text-xs uppercase tracking-wider mb-1 text-orange-500/70">Grabación</p>
+                <p className="text-sm font-medium text-orange-400 group-hover:text-orange-300">Ver grabación</p>
+                <p className="text-xs text-orange-400/50 mt-0.5 truncate">{slot.grabacionUrl}</p>
+              </a>
+            ) : (
+              <div className="border border-border/30 p-4 text-muted-foreground/40">
+                <p className="text-xs uppercase tracking-wider mb-1">Grabación</p>
+                <p className="text-sm">Disponible tras el evento</p>
+              </div>
+            )}
           </div>
         </div>
 

@@ -6,7 +6,6 @@ import { getSpeakerPortalById } from "@/lib/notion/portal";
 import type { PortalSpeaker, PortalSlot } from "@/lib/notion/portal";
 import { CharlaCard } from "@/components/CharlaCard";
 
-
 const ESTADO_LABELS: Record<string, string> = {
   Aplicado: "En revisión",
   Confirmado: "Confirmado",
@@ -31,10 +30,6 @@ export default async function PortalPage() {
   const speaker = await getSpeakerPortalById(session.speakerId);
   if (!speaker) redirect("/login?error=no_encontrado");
 
-  const confirmedSlots = speaker.slots.filter((s) => isConfirmed(s.estado));
-  const hasConfirmed = confirmedSlots.length > 0 || isConfirmed(speaker.estado);
-  const nextConfirmedSlot = confirmedSlots[0] ?? null;
-
   return (
     <main className="min-h-screen bg-background">
       <PortalNav nombre={speaker.nombre} />
@@ -42,9 +37,6 @@ export default async function PortalPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <SpeakerHeader speaker={speaker} />
         <CharlaCards slots={speaker.slots} speaker={speaker} />
-        {hasConfirmed && <KitSection slots={confirmedSlots} />}
-        <RecursosSection />
-        {nextConfirmedSlot && <DiaEventoSection slot={nextConfirmedSlot} />}
       </div>
     </main>
   );
@@ -166,158 +158,6 @@ function CharlaCards({ slots, speaker }: { slots: PortalSlot[]; speaker: PortalS
 }
 
 
-function ChecklistSection({ confirmed }: { confirmed: boolean }) {
-  const items = [
-    { text: "Confirmar tu bio y foto de perfil", done: true },
-    { text: "Tener el tema de tu charla listo", done: true },
-    { text: "Probar audio y video antes del evento", done: false },
-    ...(confirmed
-      ? [
-          { text: "Compartir el kit de difusión en tus redes", done: false },
-          { text: "Unirte 10 min antes para prueba técnica", done: false },
-        ]
-      : []),
-  ];
-
-  return (
-    <section className="border border-border/50 bg-card p-6 space-y-4">
-      <SectionTitle>Checklist de preparación</SectionTitle>
-      <ul className="space-y-2.5">
-        {items.map((item, i) => (
-          <li key={i} className="flex items-start gap-3 text-sm">
-            <span
-              className={`mt-0.5 flex-shrink-0 w-4 h-4 border flex items-center justify-center text-xs ${
-                item.done
-                  ? "border-primary/50 bg-primary/10 text-primary"
-                  : "border-border/50 text-muted-foreground"
-              }`}
-            >
-              {item.done ? "✓" : "·"}
-            </span>
-            <span className={item.done ? "text-muted-foreground line-through" : "text-muted-foreground"}>
-              {item.text}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-function KitSection({ slots }: { slots: PortalSlot[] }) {
-  const slot = slots[0] ?? null;
-  const tema = slot?.titulo ?? "[tema]";
-  const lumaLink = slot?.lumaUrl ?? "[link Luma]";
-
-  const copys = [
-    {
-      label: "Post para LinkedIn / redes",
-      text: `El martes que viene daré una charla en la comunidad AI First Founders sobre ${tema}. Si quieres aprender cómo uso IA para lograrlo, únete: ${lumaLink}`,
-    },
-    {
-      label: "Story corta",
-      text: `Hablo el martes en @AIFirstFounders sobre ${tema}. Link en bio.`,
-    },
-  ];
-
-  return (
-    <section className="border border-border/50 bg-card p-6 space-y-5">
-      <SectionTitle>Kit de difusión</SectionTitle>
-      <p className="text-sm text-muted-foreground">
-        Comparte tu charla antes del evento para llegar a más personas.
-      </p>
-      <div className="space-y-4">
-        {copys.map((c) => (
-          <div key={c.label} className="space-y-2">
-            <p className="text-xs text-muted-foreground uppercase tracking-wider">{c.label}</p>
-            <div className="border border-border/40 bg-muted/20 p-4">
-              <p className="text-sm text-muted-foreground leading-relaxed italic">{c.text}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-      <p className="text-xs text-muted-foreground border-t border-border/30 pt-4">
-        Los covers descargables serán compartidos por el equipo AIFF al confirmar tu slot.
-      </p>
-    </section>
-  );
-}
-
-function RecursosSection() {
-  const links = [
-    { label: "Comunidad WhatsApp", href: "https://chat.whatsapp.com/CmU70iqgxWKBlFjKp37XLe", desc: "Grupo principal AIFF" },
-    { label: "Skool — Aprende", href: "https://www.skool.com/ai-first-founders-8064/about", desc: "Recursos y comunidad" },
-    { label: "Calendario de eventos", href: "/calendario", desc: "Próximos slots disponibles", internal: true },
-    { label: "Aplicar a otra charla", href: "/aplicar", desc: "Postula a un nuevo slot", internal: true },
-  ];
-
-  return (
-    <section className="border border-border/50 bg-card p-6 space-y-4">
-      <SectionTitle>Recursos AIFF</SectionTitle>
-      <div className="grid gap-3 sm:grid-cols-2">
-        {links.map((l) =>
-          l.internal ? (
-            <Link
-              key={l.label}
-              href={l.href}
-              className="border border-border/40 p-4 hover:border-border transition-colors group"
-            >
-              <p className="text-sm font-medium group-hover:text-foreground text-muted-foreground">{l.label}</p>
-              <p className="text-xs text-muted-foreground/60 mt-0.5">{l.desc}</p>
-            </Link>
-          ) : (
-            <a
-              key={l.label}
-              href={l.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border border-border/40 p-4 hover:border-border transition-colors group"
-            >
-              <p className="text-sm font-medium group-hover:text-foreground text-muted-foreground">{l.label}</p>
-              <p className="text-xs text-muted-foreground/60 mt-0.5">{l.desc}</p>
-            </a>
-          )
-        )}
-      </div>
-    </section>
-  );
-}
-
-function DiaEventoSection({ slot }: { slot: PortalSlot }) {
-  const estructura = [
-    { tiempo: "0–5 min", actividad: "Apertura y bienvenida por el equipo AIFF" },
-    { tiempo: "5–40 min", actividad: "Tu charla" },
-    { tiempo: "40–55 min", actividad: "Q&A con los asistentes" },
-    { tiempo: "55–60 min", actividad: "Foto grupal y cierre" },
-  ];
-
-  return (
-    <section className="border border-border/50 bg-card p-6 space-y-5">
-      <SectionTitle>Día del evento</SectionTitle>
-      <div className="space-y-2">
-        {estructura.map((e) => (
-          <div key={e.tiempo} className="flex gap-4 text-sm">
-            <span className="text-muted-foreground/60 font-mono flex-shrink-0 w-20">{e.tiempo}</span>
-            <span className="text-muted-foreground">{e.actividad}</span>
-          </div>
-        ))}
-      </div>
-      {slot.webinarUrl && (
-        <div className="border-t border-border/30 pt-4">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-3">Link de acceso</p>
-          <a
-            href={slot.webinarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-primary hover:underline underline-offset-4 break-all"
-          >
-            {slot.webinarUrl}
-          </a>
-        </div>
-      )}
-    </section>
-  );
-}
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (

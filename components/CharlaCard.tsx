@@ -48,15 +48,15 @@ export function CharlaCard({
   const slotConfirmed = isConfirmed(slot.estado);
 
   return (
-    <article className="border border-border/50 bg-card flex flex-col">
+    <article className="group border border-border/40 bg-card flex flex-col transition-colors duration-200 hover:border-orange-500/60 hover:bg-orange-950/20">
       {/* Cover image */}
       {slot.fotos.length > 0 && (
-        <div className="relative h-28 overflow-hidden border-b border-border/30 flex-shrink-0">
+        <div className="relative h-28 overflow-hidden border-b border-border/30 group-hover:border-orange-500/20 flex-shrink-0 transition-colors">
           <Image
             src={slot.fotos[0]}
             alt={slot.titulo ?? "Evento"}
             fill
-            className="object-cover"
+            className="object-cover transition-all duration-200 group-hover:brightness-90"
             unoptimized
           />
         </div>
@@ -72,7 +72,9 @@ export function CharlaCard({
               </p>
             )}
             {slot.titulo ? (
-              <p className="font-bold text-xs leading-snug">{slot.titulo}</p>
+              <p className="font-bold text-xs leading-snug transition-colors group-hover:text-orange-300">
+                {slot.titulo}
+              </p>
             ) : (
               <p className="text-xs text-muted-foreground/60 italic">Sin título aún</p>
             )}
@@ -84,7 +86,7 @@ export function CharlaCard({
 
         {/* Description — 2 lines */}
         {slot.descripcion && (
-          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 transition-colors group-hover:text-muted-foreground/80">
             {slot.descripcion}
           </p>
         )}
@@ -95,7 +97,7 @@ export function CharlaCard({
             {slot.herramientas.map((h) => (
               <span
                 key={h}
-                className="text-xs border border-border/50 bg-muted/30 px-1.5 py-0.5 text-muted-foreground leading-none"
+                className="text-xs border border-border/50 bg-muted/30 px-1.5 py-0.5 text-muted-foreground leading-none transition-colors group-hover:border-orange-500/30 group-hover:text-orange-300/70"
               >
                 {h}
               </span>
@@ -105,7 +107,7 @@ export function CharlaCard({
 
         {/* Date */}
         {slot.fecha && (
-          <div className="border-t border-border/30 pt-3 flex items-start gap-2">
+          <div className="border-t border-border/30 group-hover:border-orange-500/20 pt-3 flex items-start gap-2 transition-colors">
             {speakerFoto && (
               <div className="relative w-6 h-6 flex-shrink-0 overflow-hidden border border-border/40">
                 <Image src={speakerFoto} alt="" fill className="object-cover" unoptimized />
@@ -115,14 +117,16 @@ export function CharlaCard({
               <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-0.5 leading-none">
                 Fecha
               </p>
-              <p className="text-xs font-medium capitalize">{formatFecha(slot.fecha)}</p>
+              <p className="text-xs font-medium capitalize transition-colors group-hover:text-orange-200/80">
+                {formatFecha(slot.fecha)}
+              </p>
               <p className="text-xs text-muted-foreground/50 mt-0.5">Lima (PET, UTC-5)</p>
             </div>
           </div>
         )}
 
-        {/* Footer: quick actions + Ver más */}
-        <div className="flex items-center gap-2 border-t border-border/30 pt-3 mt-auto flex-wrap">
+        {/* Footer */}
+        <div className="flex items-center gap-2 border-t border-border/30 group-hover:border-orange-500/20 pt-3 mt-auto flex-wrap transition-colors">
           {slot.lumaUrl && (
             <a
               href={slot.lumaUrl}
@@ -143,9 +147,19 @@ export function CharlaCard({
               Meet
             </a>
           )}
+          {slot.grabacionUrl && (
+            <a
+              href={slot.grabacionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs border border-orange-500/40 bg-orange-950/30 text-orange-400 px-2.5 py-1 hover:bg-orange-950/60 transition-colors"
+            >
+              Ver grabación
+            </a>
+          )}
           <Link
             href={`/portal/charla/${slot.id}`}
-            className="ml-auto text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            className="ml-auto text-xs text-muted-foreground/60 hover:text-orange-400 transition-colors"
           >
             Ver más
           </Link>
