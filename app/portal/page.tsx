@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById } from "@/lib/notion/portal";
 import type { PortalSpeaker, PortalSlot } from "@/lib/notion/portal";
+
 function formatFecha(fecha: string): string {
   return new Date(fecha).toLocaleString("es-PE", {
     timeZone: "America/Lima",
@@ -39,23 +40,21 @@ export default async function PortalPage() {
   const speaker = await getSpeakerPortalById(session.speakerId);
   if (!speaker) redirect("/login?error=no_encontrado");
 
+  const confirmedSlots = speaker.slots.filter((s) => isConfirmed(s.estado));
+  const hasConfirmed = confirmedSlots.length > 0 || isConfirmed(speaker.estado);
+  const nextConfirmedSlot = confirmedSlots[0] ?? null;
+
   return (
     <main className="min-h-screen bg-background">
       <PortalNav nombre={speaker.nombre} />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <SpeakerHeader speaker={speaker} />
-        {speaker.slot ? (
-          <CharlaSection slot={speaker.slot} confirmed={isConfirmed(speaker.estado)} />
-        ) : (
-          <SinSlotSection estado={speaker.estado} />
-        )}
-        <ChecklistSection confirmed={isConfirmed(speaker.estado)} />
-        {isConfirmed(speaker.estado) && <KitSection />}
+        <CharlaCards slots={speaker.slots} speaker={speaker} />
+        <ChecklistSection confirmed={hasConfirmed} />
+        {hasConfirmed && <KitSection slots={confirmedSlots} />}
         <RecursosSection />
-        {isConfirmed(speaker.estado) && speaker.slot && (
-          <DiaEventoSection slot={speaker.slot} />
-        )}
+        {nextConfirmedSlot && <DiaEventoSection slot={nextConfirmedSlot} />}
       </div>
     </main>
   );
@@ -148,81 +147,151 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
   );
 }
 
-function CharlaSection({ slot, confirmed }: { slot: PortalSlot; confirmed: boolean }) {
+function CharlaCards({ slots, speaker }: { slots: PortalSlot[]; speaker: PortalSpeaker }) {
+  if (slots.length === 0) {
+    return (
+      <section className="border border-border/50 bg-card p-6 space-y-2">
+        <SectionTitle>Tu charla</SectionTitle>
+        <p className="text-sm text-muted-foreground">
+          Aún no tienes un slot asignado. Te notificaremos cuando tu charla sea programada.
+        </p>
+      </section>
+    );
+  }
+
+  const titulo = slots.length === 1 ? "Tu charla" : `Tus charlas (${slots.length})`;
+
   return (
-    <section className="border border-border/50 bg-card p-6 space-y-4">
-      <SectionTitle>Tu charla</SectionTitle>
-
-      {slot.titulo && (
-        <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Título</p>
-          <p className="font-bold">{slot.titulo}</p>
-        </div>
-      )}
-
-      {slot.descripcion && (
-        <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Descripción</p>
-          <p className="text-sm text-muted-foreground leading-relaxed">{slot.descripcion}</p>
-        </div>
-      )}
-
-      {slot.herramientas.length > 0 && (
-        <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Herramientas / Tags</p>
-          <div className="flex flex-wrap gap-2">
-            {slot.herramientas.map((h) => (
-              <span key={h} className="text-xs border border-border/50 bg-muted/30 px-2 py-0.5 text-muted-foreground">
-                {h}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {slot.fecha && (
-        <div className="border-t border-border/30 pt-4">
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Fecha y hora</p>
-          <p className="text-sm font-medium capitalize">{formatFecha(slot.fecha)}</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Hora Lima (PET, UTC-5)</p>
-        </div>
-      )}
-
-      <div className="flex flex-wrap gap-3 border-t border-border/30 pt-4">
-        {slot.lumaUrl && (
-          <a
-            href={slot.lumaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm border border-primary/40 bg-primary/10 text-primary px-4 py-2 hover:bg-primary/20 transition-colors"
-          >
-            Ver evento en Luma
-          </a>
-        )}
-        {confirmed && slot.webinarUrl && (
-          <a
-            href={slot.webinarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-sm border border-border/50 px-4 py-2 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-          >
-            Link de acceso al evento
-          </a>
-        )}
+    <section className="space-y-4">
+      <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
+        {titulo}
+      </h2>
+      <div className={slots.length >= 2 ? "grid gap-4 sm:grid-cols-2" : ""}>
+        {slots.map((slot, i) => (
+          <CharlaCard key={slot.id} slot={slot} index={i} speakerFoto={speaker.foto} total={slots.length} />
+        ))}
       </div>
     </section>
   );
 }
 
-function SinSlotSection({ estado }: { estado: string }) {
-  if (estado !== "Aplicado") return null;
+function CharlaCard({
+  slot,
+  index,
+  speakerFoto,
+  total,
+}: {
+  slot: PortalSlot;
+  index: number;
+  speakerFoto: string | null;
+  total: number;
+}) {
+  const estadoLabel = ESTADO_LABELS[slot.estado] ?? slot.estado;
+  const estadoColor = ESTADO_COLORS[slot.estado] ?? ESTADO_COLORS.Aplicado;
+  const slotConfirmed = isConfirmed(slot.estado);
+
   return (
-    <section className="border border-border/50 bg-card p-6 space-y-2">
-      <SectionTitle>Tu charla</SectionTitle>
-      <p className="text-sm text-muted-foreground">
-        Aún no tienes un slot asignado. Te notificaremos cuando tu charla sea programada.
-      </p>
-    </section>
+    <article className="border border-border/50 bg-card p-5 space-y-4 flex flex-col">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="space-y-0.5 min-w-0">
+          {total > 1 && (
+            <p className="text-xs font-mono text-muted-foreground/50">
+              Charla #{String(index + 1).padStart(2, "0")}
+            </p>
+          )}
+          {slot.titulo && (
+            <p className="font-bold text-sm leading-snug">{slot.titulo}</p>
+          )}
+          {!slot.titulo && (
+            <p className="text-sm text-muted-foreground/60 italic">Sin título aún</p>
+          )}
+        </div>
+        <span className={`text-xs border px-2 py-0.5 flex-shrink-0 ${estadoColor}`}>
+          {estadoLabel}
+        </span>
+      </div>
+
+      {/* Cover image */}
+      {slot.fotos.length > 0 && (
+        <div className="relative h-36 overflow-hidden border border-border/30">
+          <Image
+            src={slot.fotos[0]}
+            alt={slot.titulo ?? "Evento"}
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        </div>
+      )}
+
+      {/* Description */}
+      {slot.descripcion && (
+        <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+          {slot.descripcion}
+        </p>
+      )}
+
+      {/* Tools */}
+      {slot.herramientas.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {slot.herramientas.map((h) => (
+            <span
+              key={h}
+              className="text-xs border border-border/50 bg-muted/30 px-2 py-0.5 text-muted-foreground"
+            >
+              {h}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Date + speaker photo */}
+      {slot.fecha && (
+        <div className="border-t border-border/30 pt-3 flex items-start gap-3">
+          {speakerFoto && (
+            <div className="relative w-8 h-8 flex-shrink-0 overflow-hidden border border-border/40">
+              <Image src={speakerFoto} alt="" fill className="object-cover" unoptimized />
+            </div>
+          )}
+          <div>
+            <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-0.5">
+              Fecha y hora
+            </p>
+            <p className="text-sm font-medium capitalize">{formatFecha(slot.fecha)}</p>
+            <p className="text-xs text-muted-foreground/50 mt-0.5">Lima (PET, UTC-5)</p>
+          </div>
+        </div>
+      )}
+
+      {/* Action buttons */}
+      <div className="flex flex-wrap gap-2 border-t border-border/30 pt-3 mt-auto">
+        {slot.lumaUrl ? (
+          <a
+            href={slot.lumaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-xs border border-primary/40 bg-primary/10 text-primary px-3 py-1.5 hover:bg-primary/20 transition-colors"
+          >
+            Ver evento en Luma
+          </a>
+        ) : (
+          <span className="text-xs text-muted-foreground/50 py-1.5">
+            Enlace de evento pendiente
+          </span>
+        )}
+        {slotConfirmed && slot.webinarUrl && (
+          <a
+            href={slot.webinarUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-xs border border-border/50 px-3 py-1.5 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+          >
+            Link del meet
+          </a>
+        )}
+      </div>
+    </article>
   );
 }
 
@@ -245,7 +314,13 @@ function ChecklistSection({ confirmed }: { confirmed: boolean }) {
       <ul className="space-y-2.5">
         {items.map((item, i) => (
           <li key={i} className="flex items-start gap-3 text-sm">
-            <span className={`mt-0.5 flex-shrink-0 w-4 h-4 border flex items-center justify-center text-xs ${item.done ? "border-primary/50 bg-primary/10 text-primary" : "border-border/50 text-muted-foreground"}`}>
+            <span
+              className={`mt-0.5 flex-shrink-0 w-4 h-4 border flex items-center justify-center text-xs ${
+                item.done
+                  ? "border-primary/50 bg-primary/10 text-primary"
+                  : "border-border/50 text-muted-foreground"
+              }`}
+            >
               {item.done ? "✓" : "·"}
             </span>
             <span className={item.done ? "text-muted-foreground line-through" : "text-muted-foreground"}>
@@ -258,15 +333,19 @@ function ChecklistSection({ confirmed }: { confirmed: boolean }) {
   );
 }
 
-function KitSection() {
+function KitSection({ slots }: { slots: PortalSlot[] }) {
+  const slot = slots[0] ?? null;
+  const tema = slot?.titulo ?? "[tema]";
+  const lumaLink = slot?.lumaUrl ?? "[link Luma]";
+
   const copys = [
     {
       label: "Post para LinkedIn / redes",
-      text: "El martes que viene daré una charla en la comunidad AI First Founders sobre [tema]. Si quieres aprender cómo uso IA para [beneficio], únete: [link Luma]",
+      text: `El martes que viene daré una charla en la comunidad AI First Founders sobre ${tema}. Si quieres aprender cómo uso IA para lograrlo, únete: ${lumaLink}`,
     },
     {
       label: "Story corta",
-      text: "Hablo el martes en @AIFirstFounders sobre [tema]. Link en bio.",
+      text: `Hablo el martes en @AIFirstFounders sobre ${tema}. Link en bio.`,
     },
   ];
 

@@ -9,6 +9,7 @@ export interface PortalSlot {
   webinarUrl: string | null;
   herramientas: string[];
   estado: string;
+  fotos: string[];
 }
 
 export interface PortalSpeaker {
@@ -21,7 +22,7 @@ export interface PortalSpeaker {
   empresa: string | null;
   linkedin: string | null;
   estado: string;
-  slot: PortalSlot | null;
+  slots: PortalSlot[];
 }
 
 const NOTION_BASE = "https://api.notion.com/v1";
@@ -43,6 +44,17 @@ function extractFoto(files: Array<Record<string, unknown>>): string | null {
     if (url) return url;
   }
   return null;
+}
+
+function extractFotos(files: Array<Record<string, unknown>>): string[] {
+  return files
+    .map((f) => {
+      if (f.type === "file_upload") return (f.file_upload as { url?: string })?.url ?? null;
+      if (f.type === "external") return (f.external as { url?: string })?.url ?? null;
+      if (f.type === "file") return (f.file as { url?: string })?.url ?? null;
+      return null;
+    })
+    .filter((url): url is string => url !== null && url !== "");
 }
 
 async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
@@ -70,6 +82,9 @@ async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
         ?.map((t) => t.name ?? "")
         .filter(Boolean) ?? [],
     estado: (p["Estado"] as { status?: { name?: string } })?.status?.name ?? "Disponible",
+    fotos: extractFotos(
+      (p["Fotos"] as { files?: Array<Record<string, unknown>> })?.files ?? []
+    ),
   };
 }
 
@@ -78,7 +93,15 @@ async function buildPortalSpeaker(page: Record<string, unknown>): Promise<Portal
 
   const slotRelation =
     (props["Slot"] as { relation?: Array<{ id: string }> })?.relation ?? [];
-  const slot = slotRelation.length > 0 ? await fetchSlot(slotRelation[0].id) : null;
+
+  const fetchedSlots = await Promise.all(slotRelation.map((r) => fetchSlot(r.id)));
+  const slots = fetchedSlots
+    .filter((s): s is PortalSlot => s !== null)
+    .sort((a, b) => {
+      if (!a.fecha) return 1;
+      if (!b.fecha) return -1;
+      return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+    });
 
   return {
     id: page.id as string,
@@ -101,7 +124,7 @@ async function buildPortalSpeaker(page: Record<string, unknown>): Promise<Portal
     linkedin: (props["LinkedIn"] as { url?: string | null })?.url ?? null,
     estado:
       (props["Estado"] as { status?: { name?: string } })?.status?.name ?? "Aplicado",
-    slot,
+    slots,
   };
 }
 
