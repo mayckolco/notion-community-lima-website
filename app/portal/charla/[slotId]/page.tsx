@@ -45,8 +45,9 @@ export default async function CharlaDetailPage({
   const speaker = await getSpeakerPortalById(session.speakerId);
   if (!speaker) redirect("/login?error=no_encontrado");
 
-  // Verify the slot belongs to this speaker
-  const slotBelongs = speaker.slots.some((s) => s.id.replace(/-/g, "") === params.slotId.replace(/-/g, ""));
+  const slotBelongs = speaker.slots.some(
+    (s) => s.id.replace(/-/g, "") === params.slotId.replace(/-/g, "")
+  );
   if (!slotBelongs) notFound();
 
   const slot = await fetchSlot(params.slotId);
@@ -92,11 +93,9 @@ export default async function CharlaDetailPage({
         {/* Header */}
         <div className="border border-border/50 bg-card p-6 space-y-4">
           <div className="flex items-start justify-between gap-4">
-            <div className="space-y-1 min-w-0">
-              <h1 className="text-2xl font-black tracking-tight leading-tight">
-                {slot.titulo ?? "Sin título aún"}
-              </h1>
-            </div>
+            <h1 className="text-2xl font-black tracking-tight leading-tight">
+              {slot.titulo ?? "Sin título aún"}
+            </h1>
             <span className={`text-xs border px-2 py-0.5 flex-shrink-0 ${estadoColor}`}>
               {estadoLabel}
             </span>
@@ -122,78 +121,104 @@ export default async function CharlaDetailPage({
           )}
         </div>
 
-        {/* Fecha y accesos */}
+        {/* Estructura del evento — ANTES de accesos */}
         <div className="border border-border/50 bg-card p-6 space-y-4">
           <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
-            Fecha y accesos
+            Estructura del webinar
+          </h2>
+          <div className="space-y-0">
+            {[
+              { tiempo: "0–5 min",   actividad: "Apertura y bienvenida",         desc: "El equipo AIFF presenta al speaker y contextualiza el tema." },
+              { tiempo: "5–10 min",  actividad: "Intro del speaker",             desc: "Presentación breve: quién eres, qué haces, por qué este tema." },
+              { tiempo: "10–40 min", actividad: "Charla principal",              desc: "Tu contenido. Enfocado, con demos o casos reales si aplica." },
+              { tiempo: "40–50 min", actividad: "Q&A en vivo",                  desc: "Preguntas del chat moderadas por el equipo." },
+              { tiempo: "50–55 min", actividad: "Recursos y próximos pasos",    desc: "Links, herramientas, dónde seguirte y cómo contactarte." },
+              { tiempo: "55–60 min", actividad: "Foto grupal y cierre",         desc: "Screenshot de pantalla y despedida del equipo AIFF." },
+            ].map((e) => (
+              <div key={e.tiempo} className="flex gap-4 py-3 border-b border-border/20 last:border-0">
+                <span className="text-muted-foreground/50 font-mono text-xs flex-shrink-0 w-20 pt-0.5">{e.tiempo}</span>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">{e.actividad}</p>
+                  <p className="text-xs text-muted-foreground/50 mt-0.5 leading-relaxed">{e.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Accesos (antes: "Fecha y accesos") */}
+        <div className="border border-border/50 bg-card p-6 space-y-4">
+          <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
+            Accesos
           </h2>
 
-          <div className="flex items-start gap-4">
-            {speaker.foto && (
-              <div className="relative w-10 h-10 flex-shrink-0 overflow-hidden border border-border/40">
-                <Image src={speaker.foto} alt={speaker.nombre} fill className="object-cover" unoptimized />
-              </div>
-            )}
-            <div className="space-y-0.5">
-              <p className="font-medium capitalize text-sm">
-                {slot.fecha ? formatFecha(slot.fecha) : "Fecha por confirmar"}
-              </p>
-              {slot.fecha && (
-                <p className="text-xs text-muted-foreground/60">Lima (PET, UTC-5)</p>
+          {slot.fecha && (
+            <div className="flex items-start gap-4">
+              {speaker.foto && (
+                <div className="relative w-10 h-10 flex-shrink-0 overflow-hidden border border-border/40">
+                  <Image src={speaker.foto} alt={speaker.nombre} fill className="object-cover" unoptimized />
+                </div>
               )}
+              <div className="space-y-0.5">
+                <p className="font-medium capitalize text-sm">{formatFecha(slot.fecha)}</p>
+                <p className="text-xs text-muted-foreground/60">Lima (PET, UTC-5)</p>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="grid gap-3 sm:grid-cols-3">
+            {/* Luma */}
             {slot.lumaUrl ? (
               <a
                 href={slot.lumaUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-primary/40 bg-primary/10 text-primary p-4 hover:bg-primary/20 transition-colors group block"
+                className="border border-border/30 p-4 transition-colors group hover:border-orange-500/50 hover:bg-orange-950/20 block"
               >
-                <p className="text-xs uppercase tracking-wider mb-1 text-primary/70">Evento</p>
-                <p className="text-sm font-medium">Ver en Luma</p>
-                <p className="text-xs text-primary/60 mt-0.5 truncate">{slot.lumaUrl}</p>
+                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/40 group-hover:text-orange-500/70 transition-colors">Evento</p>
+                <p className="text-sm font-medium text-muted-foreground group-hover:text-orange-300 transition-colors">Ver en Luma</p>
+                <p className="text-xs text-muted-foreground/30 mt-0.5 truncate group-hover:text-orange-400/50 transition-colors">{slot.lumaUrl}</p>
               </a>
             ) : (
-              <div className="border border-border/30 p-4 text-muted-foreground/40">
+              <div className="border border-border/30 p-4 text-muted-foreground/30">
                 <p className="text-xs uppercase tracking-wider mb-1">Evento</p>
                 <p className="text-sm">Enlace pendiente</p>
               </div>
             )}
 
+            {/* Meet */}
             {slotConfirmed && slot.webinarUrl ? (
               <a
                 href={slot.webinarUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-border/50 p-4 hover:border-border transition-colors group block"
+                className="border border-border/30 p-4 transition-colors group hover:border-orange-500/50 hover:bg-orange-950/20 block"
               >
-                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/60">Meet / Webinar</p>
-                <p className="text-sm font-medium text-muted-foreground group-hover:text-foreground">Unirse al meet</p>
-                <p className="text-xs text-muted-foreground/50 mt-0.5 truncate">{slot.webinarUrl}</p>
+                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/40 group-hover:text-orange-500/70 transition-colors">Meet</p>
+                <p className="text-sm font-medium text-muted-foreground group-hover:text-orange-300 transition-colors">Unirse al meet</p>
+                <p className="text-xs text-muted-foreground/30 mt-0.5 truncate group-hover:text-orange-400/50 transition-colors">{slot.webinarUrl}</p>
               </a>
-            ) : !slotConfirmed ? (
-              <div className="border border-border/30 p-4 text-muted-foreground/40">
-                <p className="text-xs uppercase tracking-wider mb-1">Meet / Webinar</p>
+            ) : (
+              <div className="border border-border/30 p-4 text-muted-foreground/30">
+                <p className="text-xs uppercase tracking-wider mb-1">Meet</p>
                 <p className="text-sm">Disponible al confirmar</p>
               </div>
-            ) : null}
+            )}
 
+            {/* Grabación */}
             {slot.grabacionUrl ? (
               <a
                 href={slot.grabacionUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-orange-500/40 bg-orange-950/20 p-4 hover:bg-orange-950/40 transition-colors group block"
+                className="border border-border/30 p-4 transition-colors group hover:border-orange-500/50 hover:bg-orange-950/20 block"
               >
-                <p className="text-xs uppercase tracking-wider mb-1 text-orange-500/70">Grabación</p>
-                <p className="text-sm font-medium text-orange-400 group-hover:text-orange-300">Ver grabación</p>
-                <p className="text-xs text-orange-400/50 mt-0.5 truncate">{slot.grabacionUrl}</p>
+                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/40 group-hover:text-orange-500/70 transition-colors">Grabación</p>
+                <p className="text-sm font-medium text-muted-foreground group-hover:text-orange-300 transition-colors">Ver grabación</p>
+                <p className="text-xs text-muted-foreground/30 mt-0.5 truncate group-hover:text-orange-400/50 transition-colors">{slot.grabacionUrl}</p>
               </a>
             ) : (
-              <div className="border border-border/30 p-4 text-muted-foreground/40">
+              <div className="border border-border/30 p-4 text-muted-foreground/30">
                 <p className="text-xs uppercase tracking-wider mb-1">Grabación</p>
                 <p className="text-sm">Disponible tras el evento</p>
               </div>
@@ -201,14 +226,14 @@ export default async function CharlaDetailPage({
           </div>
         </div>
 
-        {/* Covers descargables */}
+        {/* KIT (antes: "Kit de difusión — Covers") */}
         {slot.covers.length > 0 && (
           <div className="border border-border/50 bg-card p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-border/30 pb-3">
               <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
-                Kit de difusión — Covers
+                Kit
               </h2>
-              <span className="text-xs text-muted-foreground/50">{slot.covers.length} archivos</span>
+              <span className="text-xs text-muted-foreground/50">{slot.covers.length} covers</span>
             </div>
             <p className="text-xs text-muted-foreground/60">
               Usa estos covers para promocionar tu charla. Haz clic en Vista previa para verlos en grande o Descargar para guardarlos.
@@ -233,17 +258,24 @@ export default async function CharlaDetailPage({
           </div>
         )}
 
-        {/* Próximo contenido */}
+        {/* Contenido del evento — solo estadísticas + campos futuros en Notion */}
         <div className="border border-border/50 bg-card p-6 space-y-4">
-          <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
-            Contenido del evento
-          </h2>
+          <div className="flex items-center justify-between border-b border-border/30 pb-3">
+            <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+              Estadísticas del evento
+            </h2>
+            <span className="text-xs text-muted-foreground/30 border border-dashed border-border/30 px-2 py-0.5">
+              Post-evento
+            </span>
+          </div>
           <div className="space-y-2">
             {[
-              { label: "Grabación de la charla", desc: "Video completo disponible después del evento" },
-              { label: "Slides y materiales", desc: "Presentación y recursos compartidos" },
-              { label: "Notas del organizador", desc: "Feedback y observaciones del equipo AIFF" },
-              { label: "Estadísticas de asistencia", desc: "Número de participantes y engagement" },
+              { label: "Registrados en Luma",     desc: "Total de personas que se registraron al evento",          notion: "Registrados" },
+              { label: "Asistentes en vivo",       desc: "Pico de asistentes simultáneos durante la sesión",        notion: "Asistentes" },
+              { label: "Tasa de asistencia",       desc: "% de registrados que asistieron en vivo",                 notion: "Tasa Asistencia" },
+              { label: "Preguntas en Q&A",         desc: "Número de preguntas recibidas en el chat",                notion: "Preguntas QA" },
+              { label: "Clip destacado",           desc: "Reel o fragmento corto del momento más relevante",        notion: "Clip URL" },
+              { label: "Testimonio del speaker",   desc: "Feedback del speaker sobre la experiencia",               notion: "Testimonio" },
             ].map((item) => (
               <div
                 key={item.label}
@@ -253,30 +285,15 @@ export default async function CharlaDetailPage({
                   <p className="text-sm text-muted-foreground/50">{item.label}</p>
                   <p className="text-xs text-muted-foreground/30 mt-0.5">{item.desc}</p>
                 </div>
-                <span className="text-xs text-muted-foreground/30 flex-shrink-0">Próximamente</span>
+                <span className="text-xs text-muted-foreground/25 font-mono flex-shrink-0 border border-dashed border-border/20 px-1.5 py-0.5">
+                  {item.notion}
+                </span>
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Estructura del evento */}
-        <div className="border border-border/50 bg-card p-6 space-y-4">
-          <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
-            Estructura del evento
-          </h2>
-          <div className="space-y-2">
-            {[
-              { tiempo: "0–5 min", actividad: "Apertura y bienvenida por el equipo AIFF" },
-              { tiempo: "5–40 min", actividad: "Tu charla" },
-              { tiempo: "40–55 min", actividad: "Q&A con los asistentes" },
-              { tiempo: "55–60 min", actividad: "Foto grupal y cierre" },
-            ].map((e) => (
-              <div key={e.tiempo} className="flex gap-4 text-sm">
-                <span className="text-muted-foreground/60 font-mono flex-shrink-0 w-20">{e.tiempo}</span>
-                <span className="text-muted-foreground">{e.actividad}</span>
-              </div>
-            ))}
-          </div>
+          <p className="text-xs text-muted-foreground/30 border-t border-border/20 pt-3">
+            Crear estas propiedades en la base de datos Speaker Slots de Notion para poblarlas tras cada evento.
+          </p>
         </div>
 
       </div>
