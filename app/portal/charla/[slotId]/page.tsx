@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById, fetchSlot } from "@/lib/notion/portal";
+import { CoversGallery } from "@/components/CoversGallery";
 
 function formatFecha(fecha: string): string {
   return new Date(fecha).toLocaleString("es-PE", {
@@ -192,36 +193,9 @@ export default async function CharlaDetailPage({
               <span className="text-xs text-muted-foreground/50">{slot.covers.length} archivos</span>
             </div>
             <p className="text-xs text-muted-foreground/60">
-              Usa estos covers para promocionar tu charla en redes sociales. Haz clic en cada imagen para descargar.
+              Usa estos covers para promocionar tu charla. Haz clic en "Vista previa" para verlos en grande o "Descargar" para guardarlos.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {slot.covers.map((cover, i) => (
-                <a
-                  key={i}
-                  href={cover}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download
-                  className="group relative aspect-square overflow-hidden border border-border/40 hover:border-orange-500/60 transition-colors block"
-                >
-                  <Image
-                    src={cover}
-                    alt={`Cover ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
-                    <span className="text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity border border-white/60 px-3 py-1.5">
-                      Descargar
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/40 px-2 py-1">
-                    <span className="text-xs text-white/70">Cover {i + 1}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
+            <CoversGallery covers={slot.covers} />
           </div>
         )}
 
