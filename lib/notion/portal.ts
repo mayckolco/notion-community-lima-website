@@ -12,6 +12,9 @@ export interface PortalSlot {
   estado: string;
   fotos: string[];
   covers: string[];
+  registrados: number | null;
+  asistentes: number | null;
+  tasaAsistencia: number | null;
 }
 
 export interface PortalSpeaker {
@@ -91,6 +94,12 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
     covers: extractFotos(
       (p["Cover"] as { files?: Array<Record<string, unknown>> })?.files ?? []
     ),
+    registrados: (p["Registrados"] as { number?: number | null })?.number ?? null,
+    asistentes: (p["Asistentes"] as { number?: number | null })?.number ?? null,
+    tasaAsistencia:
+      (p["Tasa Asistencia"] as { number?: number | null })?.number ??
+      (p["Tasa de Asistencia"] as { formula?: { number?: number | null } })?.formula?.number ??
+      null,
   };
 }
 

@@ -258,7 +258,7 @@ export default async function CharlaDetailPage({
           </div>
         )}
 
-        {/* Contenido del evento — solo estadísticas + campos futuros en Notion */}
+        {/* Estadísticas del evento */}
         <div className="border border-border/50 bg-card p-6 space-y-4">
           <div className="flex items-center justify-between border-b border-border/30 pb-3">
             <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
@@ -268,32 +268,43 @@ export default async function CharlaDetailPage({
               Post-evento
             </span>
           </div>
-          <div className="space-y-2">
-            {[
-              { label: "Registrados en Luma",     desc: "Total de personas que se registraron al evento",          notion: "Registrados" },
-              { label: "Asistentes en vivo",       desc: "Pico de asistentes simultáneos durante la sesión",        notion: "Asistentes" },
-              { label: "Tasa de asistencia",       desc: "% de registrados que asistieron en vivo",                 notion: "Tasa Asistencia" },
-              { label: "Preguntas en Q&A",         desc: "Número de preguntas recibidas en el chat",                notion: "Preguntas QA" },
-              { label: "Clip destacado",           desc: "Reel o fragmento corto del momento más relevante",        notion: "Clip URL" },
-              { label: "Testimonio del speaker",   desc: "Feedback del speaker sobre la experiencia",               notion: "Testimonio" },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="border border-dashed border-border/30 px-4 py-3 flex items-center justify-between gap-4"
-              >
-                <div>
-                  <p className="text-sm text-muted-foreground/50">{item.label}</p>
-                  <p className="text-xs text-muted-foreground/30 mt-0.5">{item.desc}</p>
-                </div>
-                <span className="text-xs text-muted-foreground/25 font-mono flex-shrink-0 border border-dashed border-border/20 px-1.5 py-0.5">
-                  {item.notion}
-                </span>
-              </div>
-            ))}
+
+          <div className="grid grid-cols-3 gap-3">
+            {/* Registrados */}
+            <div className="border border-border/30 p-4 space-y-1">
+              <p className="text-xs text-muted-foreground/50 uppercase tracking-wider">Registrados</p>
+              {slot.registrados !== null ? (
+                <p className="text-2xl font-black">{slot.registrados}</p>
+              ) : (
+                <p className="text-lg font-black text-muted-foreground/20">—</p>
+              )}
+              <p className="text-xs text-muted-foreground/30">en Luma</p>
+            </div>
+
+            {/* Asistentes */}
+            <div className="border border-border/30 p-4 space-y-1">
+              <p className="text-xs text-muted-foreground/50 uppercase tracking-wider">Asistentes</p>
+              {slot.asistentes !== null ? (
+                <p className="text-2xl font-black">{slot.asistentes}</p>
+              ) : (
+                <p className="text-lg font-black text-muted-foreground/20">—</p>
+              )}
+              <p className="text-xs text-muted-foreground/30">en vivo</p>
+            </div>
+
+            {/* Tasa de asistencia */}
+            <div className="border border-border/30 p-4 space-y-1">
+              <p className="text-xs text-muted-foreground/50 uppercase tracking-wider">Tasa</p>
+              {slot.tasaAsistencia !== null ? (
+                <p className="text-2xl font-black text-orange-400">
+                  {Math.round(slot.tasaAsistencia * 100)}%
+                </p>
+              ) : (
+                <p className="text-lg font-black text-muted-foreground/20">—</p>
+              )}
+              <p className="text-xs text-muted-foreground/30">de asistencia</p>
+            </div>
           </div>
-          <p className="text-xs text-muted-foreground/30 border-t border-border/20 pt-3">
-            Crear estas propiedades en la base de datos Speaker Slots de Notion para poblarlas tras cada evento.
-          </p>
         </div>
 
       </div>
