@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { PortalSlot } from "@/lib/notion/portal";
 
 const ESTADO_LABELS: Record<string, string> = {
@@ -43,8 +43,6 @@ export function CharlaCard({
   speakerFoto: string | null;
   total: number;
 }) {
-  const [expanded, setExpanded] = useState(false);
-
   const estadoLabel = ESTADO_LABELS[slot.estado] ?? slot.estado;
   const estadoColor = ESTADO_COLORS[slot.estado] ?? ESTADO_COLORS.Aplicado;
   const slotConfirmed = isConfirmed(slot.estado);
@@ -84,13 +82,9 @@ export function CharlaCard({
           </span>
         </div>
 
-        {/* Description — collapsed: 2 lines, expanded: full */}
+        {/* Description — 2 lines */}
         {slot.descripcion && (
-          <p
-            className={`text-xs text-muted-foreground leading-relaxed ${
-              expanded ? "" : "line-clamp-2"
-            }`}
-          >
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
             {slot.descripcion}
           </p>
         )}
@@ -127,86 +121,9 @@ export function CharlaCard({
           </div>
         )}
 
-        {/* Expanded content */}
-        {expanded && (
-          <div className="border-t border-border/30 pt-3 space-y-3">
-            {/* URLs */}
-            <div className="space-y-2">
-              {slot.lumaUrl && (
-                <div>
-                  <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-1">
-                    Evento
-                  </p>
-                  <a
-                    href={slot.lumaUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline underline-offset-4 break-all"
-                  >
-                    {slot.lumaUrl}
-                  </a>
-                </div>
-              )}
-              {slotConfirmed && slot.webinarUrl && (
-                <div>
-                  <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-1">
-                    Meet / Webinar
-                  </p>
-                  <a
-                    href={slot.webinarUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-primary hover:underline underline-offset-4 break-all"
-                  >
-                    {slot.webinarUrl}
-                  </a>
-                </div>
-              )}
-            </div>
-
-            {/* Placeholder sections for future content */}
-            <div className="space-y-2">
-              <p className="text-xs text-muted-foreground/60 uppercase tracking-wider">
-                Próximamente
-              </p>
-              {[
-                "Grabación del evento",
-                "Materiales y slides",
-                "Notas del organizador",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border border-dashed border-border/30 px-3 py-2 text-xs text-muted-foreground/40"
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-
-            {/* All event photos */}
-            {slot.fotos.length > 1 && (
-              <div>
-                <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-2">
-                  Fotos del evento
-                </p>
-                <div className="grid grid-cols-3 gap-1">
-                  {slot.fotos.slice(1).map((foto, i) => (
-                    <div
-                      key={i}
-                      className="relative aspect-square overflow-hidden border border-border/30"
-                    >
-                      <Image src={foto} alt="" fill className="object-cover" unoptimized />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Footer: action buttons + Ver más */}
+        {/* Footer: quick actions + Ver más */}
         <div className="flex items-center gap-2 border-t border-border/30 pt-3 mt-auto flex-wrap">
-          {slot.lumaUrl && !expanded && (
+          {slot.lumaUrl && (
             <a
               href={slot.lumaUrl}
               target="_blank"
@@ -216,7 +133,7 @@ export function CharlaCard({
               Luma
             </a>
           )}
-          {slotConfirmed && slot.webinarUrl && !expanded && (
+          {slotConfirmed && slot.webinarUrl && (
             <a
               href={slot.webinarUrl}
               target="_blank"
@@ -226,12 +143,12 @@ export function CharlaCard({
               Meet
             </a>
           )}
-          <button
-            onClick={() => setExpanded((v) => !v)}
+          <Link
+            href={`/portal/charla/${slot.id}`}
             className="ml-auto text-xs text-muted-foreground/60 hover:text-muted-foreground transition-colors"
           >
-            {expanded ? "Ver menos" : "Ver más"}
-          </button>
+            Ver más
+          </Link>
         </div>
       </div>
     </article>

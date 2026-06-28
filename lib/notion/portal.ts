@@ -57,7 +57,7 @@ function extractFotos(files: Array<Record<string, unknown>>): string[] {
     .filter((url): url is string => url !== null && url !== "");
 }
 
-async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
+export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
   const res = await fetch(`${NOTION_BASE}/pages/${slotId}`, {
     headers: authHeaders(),
     cache: "no-store",
