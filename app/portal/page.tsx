@@ -4,17 +4,8 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById } from "@/lib/notion/portal";
 import type { PortalSpeaker, PortalSlot } from "@/lib/notion/portal";
+import { CharlaCard } from "@/components/CharlaCard";
 
-function formatFecha(fecha: string): string {
-  return new Date(fecha).toLocaleString("es-PE", {
-    timeZone: "America/Lima",
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 const ESTADO_LABELS: Record<string, string> = {
   Aplicado: "En revisión",
@@ -166,7 +157,7 @@ function CharlaCards({ slots, speaker }: { slots: PortalSlot[]; speaker: PortalS
       <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
         {titulo}
       </h2>
-      <div className={slots.length >= 2 ? "grid gap-4 sm:grid-cols-2" : ""}>
+      <div className={slots.length >= 2 ? "grid gap-4 grid-cols-2 lg:grid-cols-3" : ""}>
         {slots.map((slot, i) => (
           <CharlaCard key={slot.id} slot={slot} index={i} speakerFoto={speaker.foto} total={slots.length} />
         ))}
@@ -175,125 +166,6 @@ function CharlaCards({ slots, speaker }: { slots: PortalSlot[]; speaker: PortalS
   );
 }
 
-function CharlaCard({
-  slot,
-  index,
-  speakerFoto,
-  total,
-}: {
-  slot: PortalSlot;
-  index: number;
-  speakerFoto: string | null;
-  total: number;
-}) {
-  const estadoLabel = ESTADO_LABELS[slot.estado] ?? slot.estado;
-  const estadoColor = ESTADO_COLORS[slot.estado] ?? ESTADO_COLORS.Aplicado;
-  const slotConfirmed = isConfirmed(slot.estado);
-
-  return (
-    <article className="border border-border/50 bg-card p-5 space-y-4 flex flex-col">
-      {/* Header */}
-      <div className="flex items-start justify-between gap-3">
-        <div className="space-y-0.5 min-w-0">
-          {total > 1 && (
-            <p className="text-xs font-mono text-muted-foreground/50">
-              Charla #{String(index + 1).padStart(2, "0")}
-            </p>
-          )}
-          {slot.titulo && (
-            <p className="font-bold text-sm leading-snug">{slot.titulo}</p>
-          )}
-          {!slot.titulo && (
-            <p className="text-sm text-muted-foreground/60 italic">Sin título aún</p>
-          )}
-        </div>
-        <span className={`text-xs border px-2 py-0.5 flex-shrink-0 ${estadoColor}`}>
-          {estadoLabel}
-        </span>
-      </div>
-
-      {/* Cover image */}
-      {slot.fotos.length > 0 && (
-        <div className="relative h-36 overflow-hidden border border-border/30">
-          <Image
-            src={slot.fotos[0]}
-            alt={slot.titulo ?? "Evento"}
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        </div>
-      )}
-
-      {/* Description */}
-      {slot.descripcion && (
-        <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-          {slot.descripcion}
-        </p>
-      )}
-
-      {/* Tools */}
-      {slot.herramientas.length > 0 && (
-        <div className="flex flex-wrap gap-1.5">
-          {slot.herramientas.map((h) => (
-            <span
-              key={h}
-              className="text-xs border border-border/50 bg-muted/30 px-2 py-0.5 text-muted-foreground"
-            >
-              {h}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Date + speaker photo */}
-      {slot.fecha && (
-        <div className="border-t border-border/30 pt-3 flex items-start gap-3">
-          {speakerFoto && (
-            <div className="relative w-8 h-8 flex-shrink-0 overflow-hidden border border-border/40">
-              <Image src={speakerFoto} alt="" fill className="object-cover" unoptimized />
-            </div>
-          )}
-          <div>
-            <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-0.5">
-              Fecha y hora
-            </p>
-            <p className="text-sm font-medium capitalize">{formatFecha(slot.fecha)}</p>
-            <p className="text-xs text-muted-foreground/50 mt-0.5">Lima (PET, UTC-5)</p>
-          </div>
-        </div>
-      )}
-
-      {/* Action buttons */}
-      <div className="flex flex-wrap gap-2 border-t border-border/30 pt-3 mt-auto">
-        {slot.lumaUrl ? (
-          <a
-            href={slot.lumaUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs border border-primary/40 bg-primary/10 text-primary px-3 py-1.5 hover:bg-primary/20 transition-colors"
-          >
-            Ver evento en Luma
-          </a>
-        ) : (
-          <span className="text-xs text-muted-foreground/50 py-1.5">
-            Enlace de evento pendiente
-          </span>
-        )}
-        {slotConfirmed && slot.webinarUrl && (
-          <a
-            href={slot.webinarUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs border border-border/50 px-3 py-1.5 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-          >
-            Link del meet
-          </a>
-        )}
-      </div>
-    </article>
-  );
-}
 
 function ChecklistSection({ confirmed }: { confirmed: boolean }) {
   const items = [
