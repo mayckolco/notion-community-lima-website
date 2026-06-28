@@ -182,6 +182,49 @@ export default async function CharlaDetailPage({
           </div>
         </div>
 
+        {/* Covers descargables */}
+        {slot.covers.length > 0 && (
+          <div className="border border-border/50 bg-card p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-border/30 pb-3">
+              <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+                Kit de difusión — Covers
+              </h2>
+              <span className="text-xs text-muted-foreground/50">{slot.covers.length} archivos</span>
+            </div>
+            <p className="text-xs text-muted-foreground/60">
+              Usa estos covers para promocionar tu charla en redes sociales. Haz clic en cada imagen para descargar.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {slot.covers.map((cover, i) => (
+                <a
+                  key={i}
+                  href={cover}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="group relative aspect-square overflow-hidden border border-border/40 hover:border-orange-500/60 transition-colors block"
+                >
+                  <Image
+                    src={cover}
+                    alt={`Cover ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-colors flex items-center justify-center">
+                    <span className="text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity border border-white/60 px-3 py-1.5">
+                      Descargar
+                    </span>
+                  </div>
+                  <div className="absolute bottom-0 left-0 right-0 bg-black/40 px-2 py-1">
+                    <span className="text-xs text-white/70">Cover {i + 1}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Fotos adicionales */}
         {slot.fotos.length > 1 && (
           <div className="border border-border/50 bg-card p-6 space-y-4">
