@@ -65,26 +65,28 @@ export function GrabacionEditor({ slotId, initialUrl, label, endpoint }: Props) 
     <div className="border border-border/30 p-4 space-y-2">
       <p className="text-xs uppercase tracking-wider text-muted-foreground/40">{label}</p>
       {currentUrl ? (
-        <>
+        <p className="text-xs text-muted-foreground/30 truncate">{currentUrl}</p>
+      ) : (
+        <p className="text-sm text-muted-foreground/30">Sin URL aún</p>
+      )}
+      <div className="flex gap-2">
+        {currentUrl && (
           <a
             href={currentUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-muted-foreground hover:text-orange-300 transition-colors block"
+            className="text-xs border border-border/50 px-2 py-1 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
           >
-            Abrir enlace
+            Abrir
           </a>
-          <p className="text-xs text-muted-foreground/30 truncate">{currentUrl}</p>
-        </>
-      ) : (
-        <p className="text-sm text-muted-foreground/30">Sin URL aún</p>
-      )}
-      <button
-        onClick={() => setEditing(true)}
-        className="text-xs border border-border/50 px-2 py-1 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-      >
-        {saved ? "Guardado" : currentUrl ? "Editar URL" : "Agregar URL"}
-      </button>
+        )}
+        <button
+          onClick={() => setEditing(true)}
+          className="text-xs border border-border/50 px-2 py-1 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+        >
+          {saved ? "Guardado" : currentUrl ? "Editar" : "Agregar URL"}
+        </button>
+      </div>
     </div>
   );
 }
