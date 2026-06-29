@@ -218,6 +218,16 @@ export async function confirmWebinar(
   });
 }
 
+export async function updateGrabacionUrl(slotId: string, url: string | null): Promise<void> {
+  const notion = getNotionClient();
+  await notion.pages.update({
+    page_id: slotId,
+    properties: {
+      "Webinar URL": { url: url ?? null },
+    },
+  });
+}
+
 export async function upsertSlot(params: {
   fecha: string;
   lumaEventId?: string;

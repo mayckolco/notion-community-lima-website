@@ -6,6 +6,7 @@ import { getSpeakerPortalById, fetchSlot } from "@/lib/notion/portal";
 import { getSpeakerEtiqueta, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 import { CoversGallery } from "@/components/CoversGallery";
 import { CopyButton } from "@/components/CopyButton";
+import { GrabacionEditor } from "@/components/GrabacionEditor";
 
 function formatFecha(fecha: string): string {
   return new Date(fecha).toLocaleString("es-PE", {
@@ -217,7 +218,9 @@ export default async function CharlaDetailPage({
             )}
 
             {/* Grabación */}
-            {slot.grabacionUrl ? (
+            {isPrivileged ? (
+              <GrabacionEditor slotId={slot.id} initialUrl={slot.grabacionUrl} />
+            ) : slot.grabacionUrl ? (
               <a
                 href={slot.grabacionUrl}
                 target="_blank"
