@@ -1,4 +1,5 @@
 import { getNotionClient, getDbSpeakersId } from "./client";
+import { getSpeakerEtiqueta } from "@/lib/config/roles";
 
 export interface PortalSlot {
   id: string;
@@ -145,8 +146,9 @@ async function buildPortalSpeaker(page: Record<string, unknown>): Promise<Portal
     linkedin: (props["LinkedIn"] as { url?: string | null })?.url ?? null,
     estado:
       (props["Estado"] as { status?: { name?: string } })?.status?.name ?? "Aplicado",
-    etiqueta:
-      (((props["Etiqueta"] as { select?: { name?: string } })?.select?.name) as "speaker" | "admin" | "colaborador") ?? "speaker",
+    etiqueta: getSpeakerEtiqueta(
+      (props["Email"] as { email?: string })?.email ?? ""
+    ),
     slots,
   };
 }

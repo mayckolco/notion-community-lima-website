@@ -1,4 +1,5 @@
 import { getDbSlotsId, getDbSpeakersId } from "./client";
+import { getSpeakerEtiqueta } from "@/lib/config/roles";
 import type { AdminSlot, AdminSpeaker, SpeakerEtiqueta, SlotEstado } from "@/lib/schemas";
 
 const NOTION_BASE = "https://api.notion.com/v1";
@@ -34,9 +35,7 @@ async function fetchSpeakerAdmin(speakerId: string): Promise<AdminSpeaker | null
   const empresa =
     (p["Empresa"] as { rich_text?: Array<{ plain_text?: string }> })
       ?.rich_text?.[0]?.plain_text ?? null;
-  const etiqueta =
-    ((p["Etiqueta"] as { select?: { name?: string } })?.select?.name as SpeakerEtiqueta) ??
-    "speaker";
+  const etiqueta = getSpeakerEtiqueta(email);
 
   const fotosRaw = (p["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
   let foto: string | null = null;
@@ -126,9 +125,7 @@ export async function listAllSpeakersAdmin(): Promise<AdminSpeaker[]> {
       const empresa =
         (p["Empresa"] as { rich_text?: Array<{ plain_text?: string }> })
           ?.rich_text?.[0]?.plain_text ?? null;
-      const etiqueta =
-        ((p["Etiqueta"] as { select?: { name?: string } })?.select?.name as SpeakerEtiqueta) ??
-        "speaker";
+      const etiqueta = getSpeakerEtiqueta(email);
 
       const fotosRaw = (p["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
       let foto: string | null = null;
