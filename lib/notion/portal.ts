@@ -17,6 +17,8 @@ export interface PortalSlot {
   registrados: number | null;
   asistentes: number | null;
   tasaAsistencia: number | null;
+  speakerFoto: string | null;
+  speakerNombre: string | null;
 }
 
 export interface PortalSpeaker {
@@ -65,6 +67,24 @@ function extractFotos(files: Array<Record<string, unknown>>): string[] {
     .filter((url): url is string => url !== null && url !== "");
 }
 
+async function fetchSpeakerFotoNombre(
+  speakerId: string
+): Promise<{ foto: string | null; nombre: string | null }> {
+  const res = await fetch(`${NOTION_BASE}/pages/${speakerId}`, {
+    headers: authHeaders(),
+  });
+  if (!res.ok) return { foto: null, nombre: null };
+  const page = (await res.json()) as { properties: Record<string, unknown> };
+  const p = page.properties;
+  const nombre =
+    (p["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
+      ?.title?.[0]?.plain_text ?? null;
+  const foto = extractFoto(
+    (p["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? []
+  );
+  return { foto, nombre };
+}
+
 export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
   const res = await fetch(`${NOTION_BASE}/pages/${slotId}`, {
     headers: authHeaders(),
@@ -74,6 +94,17 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
 
   const page = (await res.json()) as { id: string; properties: Record<string, unknown> };
   const p = page.properties;
+
+  const speakerIds =
+    (p["Speaker"] as { relation?: Array<{ id: string }> })?.relation?.map((r) => r.id) ?? [];
+
+  let speakerFoto: string | null = null;
+  let speakerNombre: string | null = null;
+  if (speakerIds.length > 0) {
+    const info = await fetchSpeakerFotoNombre(speakerIds[0]);
+    speakerFoto = info.foto;
+    speakerNombre = info.nombre;
+  }
 
   return {
     id: page.id,
@@ -107,6 +138,8 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
     tasaAsistencia:
       (p["Tasa de asistencia"] as { formula?: { number?: number | null } })?.formula?.number ??
       null,
+    speakerFoto,
+    speakerNombre,
   };
 }
 

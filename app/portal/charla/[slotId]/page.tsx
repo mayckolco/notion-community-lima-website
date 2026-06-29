@@ -166,9 +166,15 @@ export default async function CharlaDetailPage({
 
           {slot.fecha && (
             <div className="flex items-start gap-4">
-              {speaker?.foto && (
+              {(slot.speakerFoto ?? speaker?.foto) && (
                 <div className="relative w-10 h-10 flex-shrink-0 overflow-hidden border border-border/40">
-                  <Image src={speaker.foto} alt={speaker.nombre} fill className="object-cover" unoptimized />
+                  <Image
+                    src={(slot.speakerFoto ?? speaker?.foto)!}
+                    alt={slot.speakerNombre ?? speaker?.nombre ?? "Speaker"}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
                 </div>
               )}
               <div className="space-y-0.5">
