@@ -1,6 +1,6 @@
 import { getDbSlotsId, getDbSpeakersId } from "./client";
 import { getSpeakerEtiqueta } from "@/lib/config/roles";
-import type { AdminSlot, AdminSpeaker, SpeakerEtiqueta, SlotEstado } from "@/lib/schemas";
+import type { AdminSlot, AdminSpeaker, SlotEstado } from "@/lib/schemas";
 
 const NOTION_BASE = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
