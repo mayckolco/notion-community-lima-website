@@ -28,6 +28,7 @@ export interface PortalSpeaker {
   empresa: string | null;
   linkedin: string | null;
   estado: string;
+  etiqueta: "speaker" | "admin" | "colaborador";
   slots: PortalSlot[];
 }
 
@@ -144,6 +145,8 @@ async function buildPortalSpeaker(page: Record<string, unknown>): Promise<Portal
     linkedin: (props["LinkedIn"] as { url?: string | null })?.url ?? null,
     estado:
       (props["Estado"] as { status?: { name?: string } })?.status?.name ?? "Aplicado",
+    etiqueta:
+      (((props["Etiqueta"] as { select?: { name?: string } })?.select?.name) as "speaker" | "admin" | "colaborador") ?? "speaker",
     slots,
   };
 }

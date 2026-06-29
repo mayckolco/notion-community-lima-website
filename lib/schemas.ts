@@ -93,3 +93,24 @@ export interface Slot {
   herramientas: string[];
   speaker: SlotSpeaker | null;
 }
+
+export type SpeakerEtiqueta = "speaker" | "admin" | "colaborador";
+
+export interface AdminSpeaker {
+  nombre: string;
+  email: string;
+  foto: string | null;
+  rol: string | null;
+  empresa: string | null;
+  etiqueta: SpeakerEtiqueta;
+}
+
+export interface AdminSlot {
+  id: string;
+  titulo: string | null;
+  fecha: string | null;
+  estado: SlotEstado;
+  registrados: number | null;
+  asistentes: number | null;
+  speaker: AdminSpeaker | null;
+}
