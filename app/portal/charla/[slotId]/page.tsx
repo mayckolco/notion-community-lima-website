@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById, fetchSlot } from "@/lib/notion/portal";
+import { getSpeakerEtiqueta, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 import { CoversGallery } from "@/components/CoversGallery";
 import { CopyButton } from "@/components/CopyButton";
 
@@ -43,13 +44,22 @@ export default async function CharlaDetailPage({
   const session = getSession();
   if (!session) redirect("/login");
 
-  const speaker = await getSpeakerPortalById(session.speakerId);
-  if (!speaker) redirect("/login?error=no_encontrado");
+  const etiqueta = getSpeakerEtiqueta(session.email);
+  const isPrivileged = etiqueta === "admin" || etiqueta === "colaborador";
 
-  const slotBelongs = speaker.slots.some(
-    (s) => s.id.replace(/-/g, "") === params.slotId.replace(/-/g, "")
-  );
-  if (!slotBelongs) notFound();
+  const speaker =
+    session.speakerId !== ADMIN_SPEAKER_ID
+      ? await getSpeakerPortalById(session.speakerId)
+      : null;
+
+  if (!isPrivileged && !speaker) redirect("/login?error=no_encontrado");
+
+  if (!isPrivileged) {
+    const slotBelongs = speaker!.slots.some(
+      (s) => s.id.replace(/-/g, "") === params.slotId.replace(/-/g, "")
+    );
+    if (!slotBelongs) notFound();
+  }
 
   const slot = await fetchSlot(params.slotId);
   if (!slot) notFound();
@@ -64,10 +74,10 @@ export default async function CharlaDetailPage({
       <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-4">
           <Link
-            href="/portal"
+            href={isPrivileged ? "/portal/admin" : "/portal"}
             className="text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
           >
-            Volver al portal
+            {isPrivileged ? "Volver al panel" : "Volver al portal"}
           </Link>
           <span className="text-muted-foreground/30 text-xs">/</span>
           <span className="text-xs text-muted-foreground truncate">
@@ -155,7 +165,7 @@ export default async function CharlaDetailPage({
 
           {slot.fecha && (
             <div className="flex items-start gap-4">
-              {speaker.foto && (
+              {speaker?.foto && (
                 <div className="relative w-10 h-10 flex-shrink-0 overflow-hidden border border-border/40">
                   <Image src={speaker.foto} alt={speaker.nombre} fill className="object-cover" unoptimized />
                 </div>

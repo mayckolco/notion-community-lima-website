@@ -103,7 +103,9 @@ export default async function AdminPage() {
           ) : (
             <div className="space-y-2">
               {slots.map((slot) => (
-                <WebinarRow key={slot.id} slot={slot} />
+                <Link key={slot.id} href={`/portal/charla/${slot.id}`} className="block group">
+                  <WebinarRow slot={slot} />
+                </Link>
               ))}
             </div>
           )}
@@ -178,7 +180,7 @@ function WebinarRow({ slot }: { slot: AdminSlot }) {
 
   return (
     <div
-      className={`border border-border/50 bg-card px-4 py-3 flex items-center gap-4 ${
+      className={`border border-border/50 bg-card px-4 py-3 flex items-center gap-4 group-hover:border-orange-500/40 group-hover:bg-orange-950/10 transition-colors ${
         isPast ? "opacity-60" : ""
       }`}
     >
