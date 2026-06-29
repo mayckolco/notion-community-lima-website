@@ -75,7 +75,7 @@ export function GrabacionEditor({ slotId, initialUrl, label, endpoint }: Props) 
             href={currentUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs border border-border/50 px-2 py-1 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+            className="text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors"
           >
             Abrir
           </a>

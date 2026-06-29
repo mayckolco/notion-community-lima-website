@@ -188,63 +188,51 @@ export default async function CharlaDetailPage({
             {/* Luma */}
             {isPrivileged ? (
               <GrabacionEditor slotId={slot.id} initialUrl={slot.lumaUrl} label="Evento (Luma)" endpoint="luma" />
-            ) : slot.lumaUrl ? (
-              <a
-                href={slot.lumaUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-border/30 p-4 transition-colors group hover:border-orange-500/50 hover:bg-orange-950/20 block"
-              >
-                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/40 group-hover:text-orange-500/70 transition-colors">Evento</p>
-                <p className="text-sm font-medium text-muted-foreground group-hover:text-orange-300 transition-colors">Ver en Luma</p>
-                <p className="text-xs text-muted-foreground/30 mt-0.5 truncate group-hover:text-orange-400/50 transition-colors">{slot.lumaUrl}</p>
-              </a>
             ) : (
-              <div className="border border-border/30 p-4 text-muted-foreground/30">
-                <p className="text-xs uppercase tracking-wider mb-1">Evento</p>
-                <p className="text-sm">Enlace pendiente</p>
+              <div className="border border-border/30 p-4 space-y-2">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Evento (Luma)</p>
+                {slot.lumaUrl ? (
+                  <a href={slot.lumaUrl} target="_blank" rel="noopener noreferrer"
+                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                    Abrir
+                  </a>
+                ) : (
+                  <p className="text-sm text-muted-foreground/30">Enlace pendiente</p>
+                )}
               </div>
             )}
 
             {/* Meet */}
             {isPrivileged ? (
               <GrabacionEditor slotId={slot.id} initialUrl={slot.webinarUrl} label="Meet" endpoint="meet" />
-            ) : slotConfirmed && slot.webinarUrl ? (
-              <a
-                href={slot.webinarUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-border/30 p-4 transition-colors group hover:border-orange-500/50 hover:bg-orange-950/20 block"
-              >
-                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/40 group-hover:text-orange-500/70 transition-colors">Meet</p>
-                <p className="text-sm font-medium text-muted-foreground group-hover:text-orange-300 transition-colors">Unirse al meet</p>
-                <p className="text-xs text-muted-foreground/30 mt-0.5 truncate group-hover:text-orange-400/50 transition-colors">{slot.webinarUrl}</p>
-              </a>
             ) : (
-              <div className="border border-border/30 p-4 text-muted-foreground/30">
-                <p className="text-xs uppercase tracking-wider mb-1">Meet</p>
-                <p className="text-sm">Disponible al confirmar</p>
+              <div className="border border-border/30 p-4 space-y-2">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Meet</p>
+                {slotConfirmed && slot.webinarUrl ? (
+                  <a href={slot.webinarUrl} target="_blank" rel="noopener noreferrer"
+                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                    Abrir
+                  </a>
+                ) : (
+                  <p className="text-sm text-muted-foreground/30">Disponible al confirmar</p>
+                )}
               </div>
             )}
 
             {/* Grabación */}
             {isPrivileged ? (
               <GrabacionEditor slotId={slot.id} initialUrl={slot.grabacionUrl} label="Grabación" endpoint="grabacion" />
-            ) : slot.grabacionUrl ? (
-              <a
-                href={slot.grabacionUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="border border-border/30 p-4 transition-colors group hover:border-orange-500/50 hover:bg-orange-950/20 block"
-              >
-                <p className="text-xs uppercase tracking-wider mb-1 text-muted-foreground/40 group-hover:text-orange-500/70 transition-colors">Grabación</p>
-                <p className="text-sm font-medium text-muted-foreground group-hover:text-orange-300 transition-colors">Ver grabación</p>
-                <p className="text-xs text-muted-foreground/30 mt-0.5 truncate group-hover:text-orange-400/50 transition-colors">{slot.grabacionUrl}</p>
-              </a>
             ) : (
-              <div className="border border-border/30 p-4 text-muted-foreground/30">
-                <p className="text-xs uppercase tracking-wider mb-1">Grabación</p>
-                <p className="text-sm">Disponible tras el evento</p>
+              <div className="border border-border/30 p-4 space-y-2">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Grabación</p>
+                {slot.grabacionUrl ? (
+                  <a href={slot.grabacionUrl} target="_blank" rel="noopener noreferrer"
+                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                    Abrir
+                  </a>
+                ) : (
+                  <p className="text-sm text-muted-foreground/30">Disponible tras el evento</p>
+                )}
               </div>
             )}
           </div>
