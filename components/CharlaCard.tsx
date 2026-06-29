@@ -7,14 +7,14 @@ import type { PortalSlot } from "@/lib/notion/portal";
 const ESTADO_LABELS: Record<string, string> = {
   Aplicado: "En revisión",
   Confirmado: "Confirmado",
-  Realizado: "Realizado",
+  Publicado: "Publicado",
   Bloqueado: "Inactivo",
 };
 
 const ESTADO_COLORS: Record<string, string> = {
   Aplicado: "text-yellow-400 border-yellow-900/50 bg-yellow-950/30",
   Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
-  Realizado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
+  Publicado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
   Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950/30",
 };
 

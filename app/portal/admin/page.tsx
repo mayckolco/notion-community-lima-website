@@ -12,7 +12,7 @@ const ESTADO_COLORS: Record<string, string> = {
   Reservado: "text-yellow-400 border-yellow-900/50 bg-yellow-950/30",
   Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
   Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950",
-  Realizado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
+  Publicado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
   "En promoción": "text-orange-400 border-orange-500/60 bg-orange-950/30",
 };
 
@@ -47,7 +47,7 @@ export default async function AdminPage() {
   const slots = await listAllSlotsAdmin(isAdmin ? undefined : "En promoción");
 
   const total = slots.length;
-  const realizados = slots.filter((s) => s.estado === "Realizado").length;
+  const publicados = slots.filter((s) => s.estado === "Publicado").length;
   const confirmados = slots.filter((s) => s.estado === "Confirmado").length;
   const enPromocion = slots.filter((s) => s.estado === "En promoción").length;
   const disponibles = slots.filter((s) => s.estado === "Disponible").length;
@@ -80,7 +80,7 @@ export default async function AdminPage() {
           <StatCard label="Total" value={total} />
           {isAdmin ? (
             <>
-              <StatCard label="Realizados" value={realizados} accent="blue" />
+              <StatCard label="Publicados" value={publicados} accent="blue" />
               <StatCard label="Confirmados" value={confirmados} accent="green" />
               <StatCard label="Disponibles" value={disponibles} />
             </>
@@ -88,7 +88,7 @@ export default async function AdminPage() {
             <>
               <StatCard label="En promoción" value={enPromocion} accent="orange" />
               <StatCard label="Confirmados" value={confirmados} accent="green" />
-              <StatCard label="Realizados" value={realizados} accent="blue" />
+              <StatCard label="Publicados" value={publicados} accent="blue" />
             </>
           )}
         </div>

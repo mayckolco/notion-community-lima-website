@@ -61,7 +61,7 @@ const ESTADO_CONFIG = {
     label: "No disponible",
     className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
   },
-  Realizado: {
+  Publicado: {
     label: "Ocupado",
     className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
   },
