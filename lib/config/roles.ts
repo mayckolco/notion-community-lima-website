@@ -1,11 +1,12 @@
 import type { SpeakerEtiqueta } from "@/lib/schemas";
 
 const ADMIN_EMAILS: string[] = [
-  // "email@ejemplo.com",
+  "mayckolco@gmail.com",
 ];
 
 const COLABORADOR_EMAILS: string[] = [
-  // "email@ejemplo.com",
+  "scondoripan@unsa.edu.pe",
+  "jfloresmacias99@gmail.com",
 ];
 
 export function getSpeakerEtiqueta(email: string): SpeakerEtiqueta {

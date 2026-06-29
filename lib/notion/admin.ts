@@ -49,13 +49,16 @@ async function fetchSpeakerAdmin(speakerId: string): Promise<AdminSpeaker | null
   return { nombre, email, foto, rol, empresa, etiqueta };
 }
 
-export async function listAllSlotsAdmin(): Promise<AdminSlot[]> {
+export async function listAllSlotsAdmin(filterEstado?: string): Promise<AdminSlot[]> {
   const res = await fetch(`${NOTION_BASE}/databases/${getDbSlotsId()}/query`, {
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify({
       page_size: 100,
       sorts: [{ property: "Fecha", direction: "descending" }],
+      ...(filterEstado
+        ? { filter: { property: "Estado", status: { equals: filterEstado } } }
+        : {}),
     }),
     cache: "no-store",
   });

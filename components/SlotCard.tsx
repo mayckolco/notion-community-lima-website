@@ -65,6 +65,10 @@ const ESTADO_CONFIG = {
     label: "Ocupado",
     className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
   },
+  "En promoción": {
+    label: "En promoción",
+    className: "bg-orange-500/15 text-orange-400 border-orange-500/20",
+  },
 } as const;
 
 export function SlotCard({ slot }: SlotCardProps) {

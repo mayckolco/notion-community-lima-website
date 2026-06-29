@@ -74,7 +74,8 @@ export type SlotEstado =
   | "Reservado"
   | "Confirmado"
   | "Bloqueado"
-  | "Realizado";
+  | "Realizado"
+  | "En promoción";
 
 export interface SlotSpeaker {
   nombre: string;

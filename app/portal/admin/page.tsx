@@ -12,6 +12,7 @@ const ESTADO_COLORS: Record<string, string> = {
   Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
   Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950",
   Realizado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
+  "En promoción": "text-orange-400 border-orange-500/60 bg-orange-950/30",
 };
 
 const ETIQUETA_COLORS: Record<SpeakerEtiqueta, string> = {
@@ -33,25 +34,32 @@ export default async function AdminPage() {
   if (!session) redirect("/login");
 
   const speaker = await getSpeakerPortalById(session.speakerId);
-  if (!speaker || speaker.etiqueta !== "admin") redirect("/portal");
+  const etiqueta = speaker?.etiqueta;
+  if (!speaker || (etiqueta !== "admin" && etiqueta !== "colaborador")) redirect("/portal");
 
-  const slots = await listAllSlotsAdmin();
+  const isAdmin = etiqueta === "admin";
+  const slots = await listAllSlotsAdmin(isAdmin ? undefined : "En promoción");
 
   const total = slots.length;
   const realizados = slots.filter((s) => s.estado === "Realizado").length;
   const confirmados = slots.filter((s) => s.estado === "Confirmado").length;
+  const enPromocion = slots.filter((s) => s.estado === "En promoción").length;
   const disponibles = slots.filter((s) => s.estado === "Disponible").length;
 
   return (
     <main className="min-h-screen bg-background">
-      <AdminNav nombre={speaker.nombre} />
+      <AdminNav nombre={speaker.nombre} etiqueta={etiqueta!} />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-black tracking-tight">Panel de administración</h1>
+            <h1 className="text-2xl font-black tracking-tight">
+              {isAdmin ? "Panel de administración" : "Webinars en promoción"}
+            </h1>
             <p className="text-sm text-muted-foreground mt-1">
-              Vista general de todos los webinars
+              {isAdmin
+                ? "Vista general de todos los webinars"
+                : "Webinars actualmente en etapa de promoción"}
             </p>
           </div>
           <Link
@@ -64,14 +72,24 @@ export default async function AdminPage() {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <StatCard label="Total" value={total} />
-          <StatCard label="Realizados" value={realizados} accent="blue" />
-          <StatCard label="Confirmados" value={confirmados} accent="green" />
-          <StatCard label="Disponibles" value={disponibles} />
+          {isAdmin ? (
+            <>
+              <StatCard label="Realizados" value={realizados} accent="blue" />
+              <StatCard label="Confirmados" value={confirmados} accent="green" />
+              <StatCard label="Disponibles" value={disponibles} />
+            </>
+          ) : (
+            <>
+              <StatCard label="En promoción" value={enPromocion} accent="orange" />
+              <StatCard label="Confirmados" value={confirmados} accent="green" />
+              <StatCard label="Realizados" value={realizados} accent="blue" />
+            </>
+          )}
         </div>
 
         <section className="space-y-3">
           <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
-            Todos los webinars ({total})
+            {isAdmin ? `Todos los webinars (${total})` : `Webinars en promoción (${total})`}
           </h2>
 
           {slots.length === 0 ? (
@@ -89,7 +107,7 @@ export default async function AdminPage() {
   );
 }
 
-function AdminNav({ nombre }: { nombre: string }) {
+function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqueta }) {
   return (
     <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
@@ -100,8 +118,8 @@ function AdminNav({ nombre }: { nombre: string }) {
           >
             AI First <span className="gradient-text">Founders</span>
           </Link>
-          <span className="text-xs border border-orange-500/60 text-orange-400 px-2 py-0.5">
-            admin
+          <span className={`text-xs border px-2 py-0.5 ${ETIQUETA_COLORS[etiqueta]}`}>
+            {etiqueta}
           </span>
         </div>
         <div className="flex items-center gap-3">
@@ -129,7 +147,7 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  accent?: "blue" | "green" | "orange";
+  accent?: "blue" | "green" | "orange" | "purple";
 }) {
   const valueClass =
     accent === "blue"
