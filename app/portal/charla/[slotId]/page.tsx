@@ -180,7 +180,9 @@ export default async function CharlaDetailPage({
 
           <div className="grid gap-3 sm:grid-cols-3">
             {/* Luma */}
-            {slot.lumaUrl ? (
+            {isPrivileged ? (
+              <GrabacionEditor slotId={slot.id} initialUrl={slot.lumaUrl} label="Evento (Luma)" endpoint="luma" />
+            ) : slot.lumaUrl ? (
               <a
                 href={slot.lumaUrl}
                 target="_blank"
@@ -199,7 +201,9 @@ export default async function CharlaDetailPage({
             )}
 
             {/* Meet */}
-            {slotConfirmed && slot.webinarUrl ? (
+            {isPrivileged ? (
+              <GrabacionEditor slotId={slot.id} initialUrl={slot.webinarUrl} label="Meet" endpoint="meet" />
+            ) : slotConfirmed && slot.webinarUrl ? (
               <a
                 href={slot.webinarUrl}
                 target="_blank"
@@ -219,7 +223,7 @@ export default async function CharlaDetailPage({
 
             {/* Grabación */}
             {isPrivileged ? (
-              <GrabacionEditor slotId={slot.id} initialUrl={slot.grabacionUrl} />
+              <GrabacionEditor slotId={slot.id} initialUrl={slot.grabacionUrl} label="Grabación" endpoint="grabacion" />
             ) : slot.grabacionUrl ? (
               <a
                 href={slot.grabacionUrl}

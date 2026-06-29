@@ -5,9 +5,11 @@ import { useState } from "react";
 interface Props {
   slotId: string;
   initialUrl: string | null;
+  label: string;
+  endpoint: string;
 }
 
-export function GrabacionEditor({ slotId, initialUrl }: Props) {
+export function GrabacionEditor({ slotId, initialUrl, label, endpoint }: Props) {
   const [url, setUrl] = useState(initialUrl ?? "");
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,7 @@ export function GrabacionEditor({ slotId, initialUrl }: Props) {
 
   async function handleSave() {
     setLoading(true);
-    await fetch(`/api/slots/${slotId}/grabacion`, {
+    await fetch(`/api/slots/${slotId}/${endpoint}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ url: url.trim() || null }),
@@ -31,12 +33,12 @@ export function GrabacionEditor({ slotId, initialUrl }: Props) {
   if (editing) {
     return (
       <div className="border border-orange-500/40 bg-orange-950/10 p-4 space-y-2">
-        <p className="text-xs uppercase tracking-wider text-orange-500/70">Grabación</p>
+        <p className="text-xs uppercase tracking-wider text-orange-500/70">{label}</p>
         <input
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://youtube.com/..."
+          placeholder="https://..."
           autoFocus
           className="w-full text-xs bg-background border border-border/50 px-2 py-1.5 text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:border-orange-500/50"
         />
@@ -61,7 +63,7 @@ export function GrabacionEditor({ slotId, initialUrl }: Props) {
 
   return (
     <div className="border border-border/30 p-4 space-y-2">
-      <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Grabación</p>
+      <p className="text-xs uppercase tracking-wider text-muted-foreground/40">{label}</p>
       {currentUrl ? (
         <>
           <a
@@ -70,7 +72,7 @@ export function GrabacionEditor({ slotId, initialUrl }: Props) {
             rel="noopener noreferrer"
             className="text-sm font-medium text-muted-foreground hover:text-orange-300 transition-colors block"
           >
-            Ver grabación
+            Abrir enlace
           </a>
           <p className="text-xs text-muted-foreground/30 truncate">{currentUrl}</p>
         </>

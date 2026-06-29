@@ -222,9 +222,23 @@ export async function updateGrabacionUrl(slotId: string, url: string | null): Pr
   const notion = getNotionClient();
   await notion.pages.update({
     page_id: slotId,
-    properties: {
-      "Webinar URL": { url: url ?? null },
-    },
+    properties: { "Webinar URL": { url: url ?? null } },
+  });
+}
+
+export async function updateLumaUrl(slotId: string, url: string | null): Promise<void> {
+  const notion = getNotionClient();
+  await notion.pages.update({
+    page_id: slotId,
+    properties: { "Luma URL": { url: url ?? null } },
+  });
+}
+
+export async function updateMeetUrl(slotId: string, url: string | null): Promise<void> {
+  const notion = getNotionClient();
+  await notion.pages.update({
+    page_id: slotId,
+    properties: { "Meet URL": { url: url ?? null } },
   });
 }
 
