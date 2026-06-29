@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyMagicLinkToken } from "@/lib/auth/magic-link";
 import { findSpeakerByEmail } from "@/lib/notion/speakers";
 import { createSessionToken, sessionCookieOptions } from "@/lib/auth/session";
-import { isAdminEmail, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
+import { isAdminEmail, isColaboradorEmail, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 
 export async function GET(req: NextRequest) {
   const baseUrl =
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
   let speakerId = await findSpeakerByEmail(payload.email);
   if (!speakerId) {
-    if (isAdminEmail(payload.email)) {
+    if (isAdminEmail(payload.email) || isColaboradorEmail(payload.email)) {
       speakerId = ADMIN_SPEAKER_ID;
     } else {
       return NextResponse.redirect(`${baseUrl}/login?error=no_encontrado`);
