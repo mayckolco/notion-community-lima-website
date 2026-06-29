@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById, fetchSlot } from "@/lib/notion/portal";
 import { CoversGallery } from "@/components/CoversGallery";
+import { CopyButton } from "@/components/CopyButton";
 
 function formatFecha(fecha: string): string {
   return new Date(fecha).toLocaleString("es-PE", {
@@ -239,6 +240,24 @@ export default async function CharlaDetailPage({
               Usa estos covers para promocionar tu charla. Haz clic en Vista previa para verlos en grande o Descargar para guardarlos.
             </p>
             <CoversGallery covers={slot.covers} />
+          </div>
+        )}
+
+        {/* Copy de LinkedIn */}
+        {slot.linkedinCopy && (
+          <div className="border border-border/50 bg-card p-6 space-y-4">
+            <div className="flex items-center justify-between border-b border-border/30 pb-3">
+              <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+                LinkedIn
+              </h2>
+              <CopyButton text={slot.linkedinCopy} />
+            </div>
+            <p className="text-xs text-muted-foreground/50 italic">
+              (úsalo como referencia y no olvides etiquetarnos)
+            </p>
+            <pre className="text-xs text-muted-foreground/70 whitespace-pre-wrap leading-relaxed font-sans bg-muted/20 border border-border/30 p-4">
+              {slot.linkedinCopy}
+            </pre>
           </div>
         )}
 

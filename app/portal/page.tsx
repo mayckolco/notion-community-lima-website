@@ -87,11 +87,21 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
           </div>
         )}
         <div className="flex-1 min-w-0 space-y-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <h1 className="text-xl font-black tracking-tight">{speaker.nombre}</h1>
-            <span className={`text-xs border px-2 py-0.5 ${estadoColor}`}>
-              {estadoLabel}
-            </span>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-xl font-black tracking-tight">{speaker.nombre}</h1>
+              <span className={`text-xs border px-2 py-0.5 ${estadoColor}`}>
+                {estadoLabel}
+              </span>
+            </div>
+            <a
+              href="https://calendar.notion.so/meet/mayckolco/speakers-aiff"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
+            >
+              Agendar llamada
+            </a>
           </div>
           {(speaker.rol || speaker.empresa) && (
             <p className="text-sm text-muted-foreground">

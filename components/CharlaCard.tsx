@@ -29,9 +29,6 @@ function formatFecha(fecha: string): string {
   });
 }
 
-const isConfirmed = (estado: string) =>
-  estado === "Confirmado" || estado === "Realizado";
-
 export function CharlaCard({
   slot,
   index,
@@ -45,7 +42,6 @@ export function CharlaCard({
 }) {
   const estadoLabel = ESTADO_LABELS[slot.estado] ?? slot.estado;
   const estadoColor = ESTADO_COLORS[slot.estado] ?? ESTADO_COLORS.Aplicado;
-  const slotConfirmed = isConfirmed(slot.estado);
 
   return (
     <article className="group border border-border/40 bg-card flex flex-col transition-colors duration-200 hover:border-orange-500/60 hover:bg-orange-950/20">
@@ -64,24 +60,24 @@ export function CharlaCard({
 
       <div className="p-4 space-y-3 flex flex-col flex-1">
         {/* Header */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="space-y-0.5 min-w-0">
-            {total > 1 && (
+        <div className="space-y-1">
+          <div className="flex items-center justify-between gap-2">
+            {total > 1 ? (
               <p className="text-xs font-mono text-muted-foreground/50">
                 #{String(index + 1).padStart(2, "0")}
               </p>
-            )}
-            {slot.titulo ? (
-              <p className="font-bold text-xs leading-snug transition-colors group-hover:text-orange-300">
-                {slot.titulo}
-              </p>
-            ) : (
-              <p className="text-xs text-muted-foreground/60 italic">Sin título aún</p>
-            )}
+            ) : <span />}
+            <span className={`text-xs border px-1.5 py-0.5 flex-shrink-0 leading-none ${estadoColor}`}>
+              {estadoLabel}
+            </span>
           </div>
-          <span className={`text-xs border px-1.5 py-0.5 flex-shrink-0 leading-none ${estadoColor}`}>
-            {estadoLabel}
-          </span>
+          {slot.titulo ? (
+            <p className="font-bold text-xs leading-snug transition-colors group-hover:text-orange-300">
+              {slot.titulo}
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground/60 italic">Sin título aún</p>
+          )}
         </div>
 
         {/* Description — 2 lines */}
@@ -126,40 +122,10 @@ export function CharlaCard({
         )}
 
         {/* Footer */}
-        <div className="flex items-center gap-2 border-t border-border/30 group-hover:border-orange-500/20 pt-3 mt-auto flex-wrap transition-colors">
-          {slot.lumaUrl && (
-            <a
-              href={slot.lumaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs border border-primary/40 bg-primary/10 text-primary px-2.5 py-1 hover:bg-primary/20 transition-colors"
-            >
-              Luma
-            </a>
-          )}
-          {slotConfirmed && slot.webinarUrl && (
-            <a
-              href={slot.webinarUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs border border-border/50 px-2.5 py-1 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
-            >
-              Meet
-            </a>
-          )}
-          {slot.grabacionUrl && (
-            <a
-              href={slot.grabacionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs border border-orange-500/40 bg-orange-950/30 text-orange-400 px-2.5 py-1 hover:bg-orange-950/60 transition-colors"
-            >
-              Ver grabación
-            </a>
-          )}
+        <div className="flex justify-center border-t border-border/30 group-hover:border-orange-500/20 pt-3 mt-auto transition-colors">
           <Link
             href={`/portal/charla/${slot.id}`}
-            className="ml-auto text-xs text-muted-foreground/60 hover:text-orange-400 transition-colors"
+            className="text-xs border border-orange-500/50 bg-orange-950/20 text-orange-400 px-4 py-1.5 hover:bg-orange-950/50 hover:border-orange-500 transition-colors"
           >
             Ver más
           </Link>

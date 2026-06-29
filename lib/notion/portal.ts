@@ -12,6 +12,7 @@ export interface PortalSlot {
   estado: string;
   fotos: string[];
   covers: string[];
+  linkedinCopy: string | null;
   registrados: number | null;
   asistentes: number | null;
   tasaAsistencia: number | null;
@@ -94,11 +95,15 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
     covers: extractFotos(
       (p["Cover"] as { files?: Array<Record<string, unknown>> })?.files ?? []
     ),
+    linkedinCopy:
+      (p["LinkedIn"] as { formula?: { string?: string | null } })?.formula?.string ??
+      ((p["LinkedIn"] as { rich_text?: Array<{ plain_text?: string }> })?.rich_text
+        ?.map((t) => t.plain_text ?? "")
+        .join("") || null),
     registrados: (p["Registrados"] as { number?: number | null })?.number ?? null,
     asistentes: (p["Asistentes"] as { number?: number | null })?.number ?? null,
     tasaAsistencia:
-      (p["Tasa Asistencia"] as { number?: number | null })?.number ??
-      (p["Tasa de Asistencia"] as { formula?: { number?: number | null } })?.formula?.number ??
+      (p["Tasa de asistencia"] as { formula?: { number?: number | null } })?.formula?.number ??
       null,
   };
 }
