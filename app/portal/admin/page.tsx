@@ -30,7 +30,13 @@ function formatFecha(fecha: string | null): string {
   return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
 }
 
-export default async function AdminPage() {
+const ADMIN_ESTADOS = ["Disponible", "Reservado", "Confirmado", "En promoción", "Publicado", "Bloqueado"] as const;
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: { estado?: string };
+}) {
   const session = getSession();
   if (!session) redirect("/login");
 
@@ -44,13 +50,18 @@ export default async function AdminPage() {
   const displayName = speaker?.nombre ?? session.email.split("@")[0];
 
   const isAdmin = etiqueta === "admin";
-  const slots = await listAllSlotsAdmin(isAdmin ? undefined : "En promoción");
+  const allSlots = await listAllSlotsAdmin(isAdmin ? undefined : "En promoción");
 
-  const total = slots.length;
-  const publicados = slots.filter((s) => s.estado === "Publicado").length;
-  const confirmados = slots.filter((s) => s.estado === "Confirmado").length;
-  const enPromocion = slots.filter((s) => s.estado === "En promoción").length;
-  const disponibles = slots.filter((s) => s.estado === "Disponible").length;
+  const estadoFilter = searchParams.estado ?? "";
+  const slots = estadoFilter
+    ? allSlots.filter((s) => s.estado === estadoFilter)
+    : allSlots;
+
+  const total = allSlots.length;
+  const publicados = allSlots.filter((s) => s.estado === "Publicado").length;
+  const confirmados = allSlots.filter((s) => s.estado === "Confirmado").length;
+  const enPromocion = allSlots.filter((s) => s.estado === "En promoción").length;
+  const disponibles = allSlots.filter((s) => s.estado === "Disponible").length;
 
   return (
     <main className="min-h-screen bg-background">
@@ -93,13 +104,18 @@ export default async function AdminPage() {
           )}
         </div>
 
-        <section className="space-y-3">
-          <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
-            {isAdmin ? `Todos los webinars (${total})` : `Webinars en promoción (${total})`}
-          </h2>
+        <section className="space-y-4">
+          <div className="flex items-center justify-between border-b border-border/30 pb-3">
+            <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+              {estadoFilter ? `${estadoFilter} (${slots.length})` : `Todos los webinars (${total})`}
+            </h2>
+            {isAdmin && (
+              <EstadoFilter current={estadoFilter} />
+            )}
+          </div>
 
           {slots.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">No hay webinars registrados.</p>
+            <p className="text-sm text-muted-foreground py-4">No hay webinars con este estado.</p>
           ) : (
             <div className="space-y-2">
               {slots.map((slot) => (
@@ -112,6 +128,36 @@ export default async function AdminPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+function EstadoFilter({ current }: { current: string }) {
+  return (
+    <div className="flex items-center gap-1.5 flex-wrap justify-end">
+      <Link
+        href="/portal/admin"
+        className={`text-xs px-2.5 py-1 border transition-colors ${
+          !current
+            ? "border-orange-500/60 text-orange-400 bg-orange-950/30"
+            : "border-border/50 text-muted-foreground hover:border-border hover:text-foreground"
+        }`}
+      >
+        Todos
+      </Link>
+      {ADMIN_ESTADOS.map((estado) => (
+        <Link
+          key={estado}
+          href={`/portal/admin?estado=${encodeURIComponent(estado)}`}
+          className={`text-xs px-2.5 py-1 border transition-colors ${
+            current === estado
+              ? `${ESTADO_COLORS[estado]} border-current`
+              : "border-border/50 text-muted-foreground hover:border-border hover:text-foreground"
+          }`}
+        >
+          {estado}
+        </Link>
+      ))}
+    </div>
   );
 }
 
