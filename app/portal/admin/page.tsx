@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById } from "@/lib/notion/portal";
 import { listAllSlotsAdmin } from "@/lib/notion/admin";
+import { getSpeakerEtiqueta, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 import type { AdminSlot, AdminSpeaker, SpeakerEtiqueta } from "@/lib/schemas";
 
 const ESTADO_COLORS: Record<string, string> = {
@@ -33,9 +34,14 @@ export default async function AdminPage() {
   const session = getSession();
   if (!session) redirect("/login");
 
-  const speaker = await getSpeakerPortalById(session.speakerId);
-  const etiqueta = speaker?.etiqueta;
-  if (!speaker || (etiqueta !== "admin" && etiqueta !== "colaborador")) redirect("/portal");
+  const etiqueta = getSpeakerEtiqueta(session.email);
+  if (etiqueta !== "admin" && etiqueta !== "colaborador") redirect("/portal");
+
+  const speaker =
+    session.speakerId !== ADMIN_SPEAKER_ID
+      ? await getSpeakerPortalById(session.speakerId)
+      : null;
+  const displayName = speaker?.nombre ?? session.email.split("@")[0];
 
   const isAdmin = etiqueta === "admin";
   const slots = await listAllSlotsAdmin(isAdmin ? undefined : "En promoción");
@@ -48,7 +54,7 @@ export default async function AdminPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <AdminNav nombre={speaker.nombre} etiqueta={etiqueta!} />
+      <AdminNav nombre={displayName} etiqueta={etiqueta} />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <div className="flex items-start justify-between gap-4">

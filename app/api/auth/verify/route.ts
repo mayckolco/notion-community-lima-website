@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyMagicLinkToken } from "@/lib/auth/magic-link";
 import { findSpeakerByEmail } from "@/lib/notion/speakers";
 import { createSessionToken, sessionCookieOptions } from "@/lib/auth/session";
+import { isAdminEmail, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 
 export async function GET(req: NextRequest) {
   const baseUrl =
@@ -18,13 +19,18 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(`${baseUrl}/login?error=link_expirado`);
   }
 
-  const speakerId = await findSpeakerByEmail(payload.email);
+  let speakerId = await findSpeakerByEmail(payload.email);
   if (!speakerId) {
-    return NextResponse.redirect(`${baseUrl}/login?error=no_encontrado`);
+    if (isAdminEmail(payload.email)) {
+      speakerId = ADMIN_SPEAKER_ID;
+    } else {
+      return NextResponse.redirect(`${baseUrl}/login?error=no_encontrado`);
+    }
   }
 
   const sessionToken = createSessionToken({ speakerId, email: payload.email });
-  const response = NextResponse.redirect(`${baseUrl}/portal`);
+  const redirectPath = speakerId === ADMIN_SPEAKER_ID ? "/portal/admin" : "/portal";
+  const response = NextResponse.redirect(`${baseUrl}${redirectPath}`);
   response.cookies.set(sessionCookieOptions(sessionToken));
 
   return response;

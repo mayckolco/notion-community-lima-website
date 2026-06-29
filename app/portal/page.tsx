@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById } from "@/lib/notion/portal";
+import { ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 import type { PortalSpeaker, PortalSlot } from "@/lib/notion/portal";
 import { CharlaCard } from "@/components/CharlaCard";
 
@@ -26,6 +27,7 @@ const isConfirmed = (estado: string) =>
 export default async function PortalPage() {
   const session = getSession();
   if (!session) redirect("/login");
+  if (session.speakerId === ADMIN_SPEAKER_ID) redirect("/portal/admin");
 
   const speaker = await getSpeakerPortalById(session.speakerId);
   if (!speaker) redirect("/login?error=no_encontrado");

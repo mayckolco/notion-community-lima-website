@@ -15,3 +15,10 @@ export function getSpeakerEtiqueta(email: string): SpeakerEtiqueta {
   if (COLABORADOR_EMAILS.includes(normalized)) return "colaborador";
   return "speaker";
 }
+
+export function isAdminEmail(email: string): boolean {
+  return ADMIN_EMAILS.includes(email.toLowerCase());
+}
+
+// Sentinel speakerId used for admin users not in the speakers DB
+export const ADMIN_SPEAKER_ID = "__admin__";

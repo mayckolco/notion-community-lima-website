@@ -3,6 +3,7 @@ import { findSpeakerByEmail, getSpeakerById } from "@/lib/notion/speakers";
 import { createMagicLinkToken } from "@/lib/auth/magic-link";
 import { sendMagicLinkEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { isAdminEmail } from "@/lib/config/roles";
 
 export async function POST(req: NextRequest) {
   // Rate limit: 3 requests per 10 minutes per IP
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
 
   // Always return success to avoid leaking which emails are registered
   const speakerId = await findSpeakerByEmail(email);
-  if (!speakerId) {
+  if (!speakerId && !isAdminEmail(email)) {
     return NextResponse.json({ ok: true });
   }
 
@@ -35,10 +36,12 @@ export async function POST(req: NextRequest) {
     `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
   const magicUrl = `${baseUrl}/api/auth/verify?token=${encodeURIComponent(token)}`;
 
-  let nombre = "Speaker";
+  let nombre = "Admin";
   try {
-    const speaker = await getSpeakerById(speakerId);
-    if (speaker?.nombre) nombre = speaker.nombre.split(" ")[0];
+    if (speakerId) {
+      const speaker = await getSpeakerById(speakerId);
+      if (speaker?.nombre) nombre = speaker.nombre.split(" ")[0];
+    }
   } catch {
     // use fallback
   }
