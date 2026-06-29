@@ -94,14 +94,22 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
                 {estadoLabel}
               </span>
             </div>
-            <a
-              href="https://calendar.notion.so/meet/mayckolco/speakers-aiff"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
-            >
-              Agendar llamada
-            </a>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <Link
+                href="/aplicar"
+                className="text-xs font-medium border border-orange-500/60 text-orange-400 hover:bg-orange-950/40 px-3 py-1.5 transition-colors"
+              >
+                Propón un tema
+              </Link>
+              <a
+                href="https://calendar.notion.so/meet/mayckolco/speakers-aiff"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
+              >
+                Agendar llamada
+              </a>
+            </div>
           </div>
           {(speaker.rol || speaker.empresa) && (
             <p className="text-sm text-muted-foreground">
