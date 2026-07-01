@@ -9,7 +9,10 @@ import { CopyButton } from "@/components/CopyButton";
 import { GrabacionEditor } from "@/components/GrabacionEditor";
 
 function formatFecha(fecha: string): string {
-  return new Date(fecha).toLocaleString("es-PE", {
+  // Notion date-only strings (YYYY-MM-DD) are parsed as UTC midnight, which shifts
+  // the day back 1 when converted to Lima (UTC-5). Treat them as Lima midnight instead.
+  const d = fecha.includes("T") ? new Date(fecha) : new Date(fecha + "T00:00:00-05:00");
+  return d.toLocaleString("es-PE", {
     timeZone: "America/Lima",
     weekday: "long",
     day: "numeric",
