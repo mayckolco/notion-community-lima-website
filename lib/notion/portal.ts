@@ -70,11 +70,11 @@ function extractFotos(files: Array<Record<string, unknown>>): string[] {
 
 async function fetchSpeakerFotoNombre(
   speakerId: string
-): Promise<{ foto: string | null; nombre: string | null }> {
+): Promise<{ foto: string | null; nombre: string | null; linkedin: string | null }> {
   const res = await fetch(`${NOTION_BASE}/pages/${speakerId}`, {
     headers: authHeaders(),
   });
-  if (!res.ok) return { foto: null, nombre: null };
+  if (!res.ok) return { foto: null, nombre: null, linkedin: null };
   const page = (await res.json()) as { properties: Record<string, unknown> };
   const p = page.properties;
   const nombre =
@@ -83,7 +83,8 @@ async function fetchSpeakerFotoNombre(
   const foto = extractFoto(
     (p["Foto"] as { files?: Array<Record<string, unknown>> })?.files ?? []
   );
-  return { foto, nombre };
+  const linkedin = (p["LinkedIn"] as { url?: string | null })?.url ?? null;
+  return { foto, nombre, linkedin };
 }
 
 export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
@@ -101,10 +102,12 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
 
   let speakerFoto: string | null = null;
   let speakerNombre: string | null = null;
+  let speakerLinkedin: string | null = null;
   if (speakerIds.length > 0) {
     const info = await fetchSpeakerFotoNombre(speakerIds[0]);
     speakerFoto = info.foto;
     speakerNombre = info.nombre;
+    speakerLinkedin = info.linkedin;
   }
 
   return {
@@ -118,7 +121,7 @@ export async function fetchSlot(slotId: string): Promise<PortalSlot | null> {
     lumaUrl: (p["Luma URL"] as { url?: string | null })?.url ?? null,
     webinarUrl: (p["Meet URL"] as { url?: string | null })?.url ?? null,
     grabacionUrl: (p["Webinar URL"] as { url?: string | null })?.url ?? null,
-    linkedinUrl: (p["LinkedIn"] as { url?: string | null })?.url ?? null,
+    linkedinUrl: speakerLinkedin,
     herramientas:
       (p["Herramientas"] as { multi_select?: Array<{ name?: string }> })?.multi_select
         ?.map((t) => t.name ?? "")

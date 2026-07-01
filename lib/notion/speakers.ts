@@ -357,3 +357,11 @@ export async function archiveSpeaker(speakerId: string): Promise<void> {
   const notion = getNotionClient();
   await notion.pages.update({ page_id: speakerId, archived: true });
 }
+
+export async function updateSpeakerLinkedinUrl(speakerId: string, url: string | null): Promise<void> {
+  const notion = getNotionClient();
+  await notion.pages.update({
+    page_id: speakerId,
+    properties: { LinkedIn: { url: url ?? null } },
+  });
+}
