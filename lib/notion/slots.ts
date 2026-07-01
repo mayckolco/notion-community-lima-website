@@ -246,7 +246,7 @@ export async function updateLinkedinUrl(slotId: string, url: string | null): Pro
   const notion = getNotionClient();
   await notion.pages.update({
     page_id: slotId,
-    properties: { "LinkedIn URL": { url: url ?? null } },
+    properties: { "LinkedIn": { url: url ?? null } },
   });
 }
 
