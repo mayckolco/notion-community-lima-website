@@ -254,18 +254,16 @@ function WebinarRow({ slot }: { slot: AdminSlot }) {
         )}
       </div>
 
-      {(slot.registrados !== null || slot.asistentes !== null) && (
-        <div className="w-24 flex-shrink-0 text-right">
-          <p className="text-xs text-muted-foreground">
-            {slot.registrados ?? "—"} / {slot.asistentes ?? "—"}
-          </p>
-          <p className="text-xs text-muted-foreground/60">
-            {slot.registrados && slot.asistentes
-              ? `${Math.round((slot.asistentes / slot.registrados) * 100)}% asistencia`
-              : "reg/asi"}
-          </p>
-        </div>
-      )}
+      <div className="w-24 flex-shrink-0 text-right">
+        <p className="text-xs text-muted-foreground">
+          {slot.registrados ?? 0} / {slot.asistentes ?? 0}
+        </p>
+        <p className="text-xs text-muted-foreground/60">
+          {slot.registrados && slot.asistentes
+            ? `${Math.round((slot.asistentes / slot.registrados) * 100)}%`
+            : "0%"}
+        </p>
+      </div>
     </div>
   );
 }
