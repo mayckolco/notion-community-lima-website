@@ -9,9 +9,36 @@ import { CopyButton } from "@/components/CopyButton";
 import { GrabacionEditor } from "@/components/GrabacionEditor";
 
 function formatFecha(fecha: string): string {
-  // Notion date-only strings (YYYY-MM-DD) are parsed as UTC midnight, which shifts
-  // the day back 1 when converted to Lima (UTC-5). Treat them as Lima midnight instead.
-  const d = fecha.includes("T") ? new Date(fecha) : new Date(fecha + "T00:00:00-05:00");
+  // Dates stored in Notion may be:
+  //   "2026-07-14"               → date-only (UTC midnight when parsed)
+  //   "2026-07-14T00:00:00.000Z" → midnight UTC (Lima = Monday 7 PM, wrong day)
+  //   "2026-07-14T19:00:00.000Z" → actual datetime in UTC
+  // For date-only or midnight-UTC cases we use UTC display to preserve the intended date.
+  if (!fecha.includes("T")) {
+    const d = new Date(fecha + "T12:00:00Z");
+    return d.toLocaleString("es-PE", {
+      timeZone: "UTC",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
+  const d = new Date(fecha);
+  const isMidnightUTC =
+    d.getUTCHours() === 0 && d.getUTCMinutes() === 0 && d.getUTCSeconds() === 0;
+
+  if (isMidnightUTC) {
+    return d.toLocaleString("es-PE", {
+      timeZone: "UTC",
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  }
+
   return d.toLocaleString("es-PE", {
     timeZone: "America/Lima",
     weekday: "long",
