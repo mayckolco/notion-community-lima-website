@@ -242,6 +242,14 @@ export async function updateMeetUrl(slotId: string, url: string | null): Promise
   });
 }
 
+export async function updateLinkedinUrl(slotId: string, url: string | null): Promise<void> {
+  const notion = getNotionClient();
+  await notion.pages.update({
+    page_id: slotId,
+    properties: { "LinkedIn URL": { url: url ?? null } },
+  });
+}
+
 export async function upsertSlot(params: {
   fecha: string;
   lumaEventId?: string;

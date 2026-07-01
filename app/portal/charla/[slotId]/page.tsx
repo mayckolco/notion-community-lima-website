@@ -184,7 +184,7 @@ export default async function CharlaDetailPage({
             </div>
           )}
 
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
             {/* Luma */}
             {isPrivileged ? (
               <GrabacionEditor slotId={slot.id} initialUrl={slot.lumaUrl} label="Evento (Luma)" endpoint="luma" />
@@ -232,6 +232,23 @@ export default async function CharlaDetailPage({
                   </a>
                 ) : (
                   <p className="text-sm text-muted-foreground/30">Disponible tras el evento</p>
+                )}
+              </div>
+            )}
+
+            {/* LinkedIn */}
+            {isPrivileged ? (
+              <GrabacionEditor slotId={slot.id} initialUrl={slot.linkedinUrl} label="LinkedIn" endpoint="linkedin" />
+            ) : (
+              <div className="border border-border/30 p-4 space-y-2">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground/40">LinkedIn</p>
+                {slot.linkedinUrl ? (
+                  <a href={slot.linkedinUrl} target="_blank" rel="noopener noreferrer"
+                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                    Abrir
+                  </a>
+                ) : (
+                  <p className="text-sm text-muted-foreground/30">Sin URL aún</p>
                 )}
               </div>
             )}
