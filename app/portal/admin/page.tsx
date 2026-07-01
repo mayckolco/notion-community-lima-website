@@ -256,7 +256,7 @@ function WebinarRow({ slot }: { slot: AdminSlot }) {
 
       <div className="w-24 flex-shrink-0 text-right">
         <p className="text-xs text-muted-foreground">
-          {slot.registrados ?? 0} / {slot.asistentes ?? 0}
+          {slot.asistentes ?? 0} / {slot.registrados ?? 0}
         </p>
         <p className="text-xs text-muted-foreground/60">
           {slot.registrados && slot.asistentes
