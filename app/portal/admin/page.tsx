@@ -255,11 +255,15 @@ function WebinarRow({ slot }: { slot: AdminSlot }) {
       </div>
 
       {(slot.registrados !== null || slot.asistentes !== null) && (
-        <div className="w-20 flex-shrink-0 text-right">
+        <div className="w-24 flex-shrink-0 text-right">
           <p className="text-xs text-muted-foreground">
             {slot.registrados ?? "—"} / {slot.asistentes ?? "—"}
           </p>
-          <p className="text-xs text-muted-foreground/60">reg/asi</p>
+          <p className="text-xs text-muted-foreground/60">
+            {slot.registrados && slot.asistentes
+              ? `${Math.round((slot.asistentes / slot.registrados) * 100)}% asistencia`
+              : "reg/asi"}
+          </p>
         </div>
       )}
     </div>
