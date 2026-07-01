@@ -59,7 +59,9 @@ export default async function AdminPage({
 
   const total = allSlots.length;
   const publicados = allSlots.filter((s) => s.estado === "Publicado").length;
-  const confirmados = allSlots.filter((s) => s.estado === "Confirmado").length;
+  const confirmados = allSlots.filter((s) =>
+    ["Confirmado", "Cover lista", "Copys listos", "En promoción"].includes(s.estado)
+  ).length;
   const enPromocion = allSlots.filter((s) => s.estado === "En promoción").length;
   const disponibles = allSlots.filter((s) => s.estado === "Disponible").length;
 

@@ -57,6 +57,14 @@ const ESTADO_CONFIG = {
     label: "Confirmado",
     className: "bg-rose-500/15 text-rose-400 border-rose-500/20",
   },
+  "Cover lista": {
+    label: "Cover lista",
+    className: "bg-rose-500/15 text-rose-400 border-rose-500/20",
+  },
+  "Copys listos": {
+    label: "Copys listos",
+    className: "bg-rose-500/15 text-rose-400 border-rose-500/20",
+  },
   Bloqueado: {
     label: "No disponible",
     className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",

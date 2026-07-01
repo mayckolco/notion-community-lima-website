@@ -73,6 +73,8 @@ export type SlotEstado =
   | "Disponible"
   | "Reservado"
   | "Confirmado"
+  | "Cover lista"
+  | "Copys listos"
   | "Bloqueado"
   | "Publicado"
   | "En promoción";
