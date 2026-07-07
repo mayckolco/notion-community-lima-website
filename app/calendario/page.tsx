@@ -5,26 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { listConfirmedSlots, listAvailableSlots } from "@/lib/notion/slots";
+import { listConfirmedSlots } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
 
 export const revalidate = 0;
 
-type CalendarEntry = { type: "confirmed"; slot: Slot } | { type: "available"; slot: Slot };
-
 export default async function CalendarioPage() {
-  let confirmedSlots: Slot[] = [];
-  let availableSlots: Slot[] = [];
-
-  [confirmedSlots, availableSlots] = await Promise.all([
-    listConfirmedSlots().catch(() => []),
-    listAvailableSlots().catch(() => []),
-  ]);
-
-  const entries: CalendarEntry[] = [
-    ...confirmedSlots.map((slot): CalendarEntry => ({ type: "confirmed", slot })),
-    ...availableSlots.map((slot): CalendarEntry => ({ type: "available", slot })),
-  ].sort((a, b) => a.slot.fecha.localeCompare(b.slot.fecha));
+  const slots = await listConfirmedSlots().catch(() => []);
 
   return (
     <>
@@ -44,7 +31,7 @@ export default async function CalendarioPage() {
             </p>
           </div>
 
-          {entries.length === 0 ? (
+          {slots.length === 0 ? (
             <div className="border border-border/50 bg-card p-12 text-center space-y-3">
               <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto" />
               <p className="text-lg font-semibold">No hay sesiones confirmadas aún</p>
@@ -54,13 +41,9 @@ export default async function CalendarioPage() {
             </div>
           ) : (
             <div className="flex flex-col gap-4">
-              {entries.map((entry) =>
-                entry.type === "confirmed" ? (
-                  <ConfirmedSlotCard key={entry.slot.id} slot={entry.slot} />
-                ) : (
-                  <AvailableSlotCard key={entry.slot.id} slot={entry.slot} />
-                )
-              )}
+              {slots.map((slot) => (
+                <ConfirmedSlotCard key={slot.id} slot={slot} />
+              ))}
             </div>
           )}
 
@@ -103,38 +86,6 @@ export default async function CalendarioPage() {
   );
 }
 
-function AvailableSlotCard({ slot }: { slot: Slot }) {
-  const date = parseISO(slot.fecha);
-  const dayName = format(date, "EEEE d MMM", { locale: es });
-  const hora = "11:30am Bogotá";
-
-  return (
-    <div className="border border-border/20 bg-card/50 rounded-lg overflow-hidden flex flex-col sm:flex-row opacity-70">
-      <div className="flex-1 p-6 sm:p-8 space-y-3 flex flex-col">
-        <div className="flex items-center gap-3">
-          <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-            {dayName} · {hora}
-          </p>
-          <span className="text-xs font-semibold px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
-            Disponible
-          </span>
-        </div>
-        <h2 className="text-lg font-semibold text-muted-foreground">
-          Fecha abierta para speaker
-        </h2>
-        <div className="pt-2 mt-auto">
-          <Link
-            href="/aplicar"
-            className="inline-flex items-center gap-2 min-h-[44px] px-5 text-sm font-semibold border border-border/60 text-foreground hover:bg-muted/30 transition-colors touch-manipulation"
-          >
-            Aplicar para esta fecha
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function ConfirmedSlotCard({ slot }: { slot: Slot }) {
   const date = parseISO(slot.fecha);
