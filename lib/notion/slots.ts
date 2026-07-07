@@ -134,16 +134,56 @@ export async function listSlots(): Promise<Slot[]> {
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
 }
 
-export async function listConfirmedSlots(): Promise<Slot[]> {
+export async function listAvailableSlots(): Promise<Slot[]> {
   const now = new Date();
   const until = addWeeks(now, 20);
 
   const data = await queryDatabase(getDbSlotsId(), {
     filter: {
       and: [
-        { property: "Estado", status: { equals: "Confirmado" } },
+        { property: "Estado", status: { equals: "Disponible" } },
         { property: "Fecha", date: { on_or_after: now.toISOString() } },
         { property: "Fecha", date: { on_or_before: until.toISOString() } },
+      ],
+    },
+    sorts: [{ property: "Fecha", direction: "ascending" }],
+  });
+
+  const today = startOfDay(now);
+
+  return data.results
+    .map((page) => {
+      const props = page.properties as Record<string, unknown>;
+      return {
+        id: ((page.id as string) ?? "").replace(/-/g, ""),
+        fecha: extractDate(props) ?? "",
+        estado: extractStatus(props),
+        lumaUrl: extractLumaUrl(props),
+        titulo: extractTitulo(props),
+        descripcion: extractDescripcion(props),
+        herramientas: extractHerramientas(props),
+        speaker: null,
+      };
+    })
+    .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
+}
+
+export async function listConfirmedSlots(): Promise<Slot[]> {
+  const now = new Date();
+  const until = addWeeks(now, 20);
+
+  const dateFilters = [
+    { property: "Fecha", date: { on_or_after: now.toISOString() } },
+    { property: "Fecha", date: { on_or_before: until.toISOString() } },
+  ];
+
+  const data = await queryDatabase(getDbSlotsId(), {
+    filter: {
+      or: [
+        { and: [{ property: "Estado", status: { equals: "Confirmado" } }, ...dateFilters] },
+        { and: [{ property: "Estado", status: { equals: "Cover lista" } }, ...dateFilters] },
+        { and: [{ property: "Estado", status: { equals: "Copys listos" } }, ...dateFilters] },
+        { and: [{ property: "Estado", status: { equals: "En promoción" } }, ...dateFilters] },
       ],
     },
     sorts: [{ property: "Fecha", direction: "ascending" }],
