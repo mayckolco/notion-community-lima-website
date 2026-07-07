@@ -172,8 +172,9 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
   const now = new Date();
   const until = addWeeks(now, 20);
 
+  const todayStart = startOfDay(now);
   const dateFilters = [
-    { property: "Fecha", date: { on_or_after: now.toISOString() } },
+    { property: "Fecha", date: { on_or_after: todayStart.toISOString() } },
     { property: "Fecha", date: { on_or_before: until.toISOString() } },
   ];
 
