@@ -112,7 +112,7 @@ export async function createSpeakerProfile(
       ...(whatsappNum !== null ? { Whatsapp: { number: whatsappNum } } : {}),
       Rol: { rich_text: [{ text: { content: data.rol } }] },
       Empresa: { rich_text: [{ text: { content: data.empresa } }] },
-      Estado: { status: { name: "Aplicado" } },
+      Estado: { status: { name: "Registrado" } },
       ...fotoProperty,
     },
   });
