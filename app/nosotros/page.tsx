@@ -56,7 +56,7 @@ export default function NosotrosPage() {
           <div className="space-y-6">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
             <h1 className="text-5xl font-serif tracking-tight leading-tight">
-              Claude <span className="gradient-text">Perú</span>
+              Claude<span className="ml-0.5 gradient-text">Perú</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Somos una comunidad de founders que construyen negocios usando inteligencia artificial

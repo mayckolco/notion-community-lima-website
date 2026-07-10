@@ -170,9 +170,9 @@ function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqu
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity"
+            className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity whitespace-nowrap"
           >
-            Claude <span className="text-muted-foreground">Perú</span>
+            Claude<span className="ml-0.5 text-muted-foreground">Perú</span>
           </Link>
           <span className={`text-xs border rounded-full px-2 py-0.5 ${ETIQUETA_COLORS[etiqueta]}`}>
             {etiqueta}

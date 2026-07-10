@@ -18,7 +18,7 @@ function authHeaders() {
 
 function extractStatus(props: Record<string, unknown>): SlotEstado {
   const p = props as Record<string, { status?: { name?: string } }>;
-  return (p["Estado"]?.status?.name ?? "Bloqueado") as SlotEstado;
+  return (p["Status"]?.status?.name ?? p["Estado"]?.status?.name ?? "Bloqueado") as SlotEstado;
 }
 
 function extractDate(props: Record<string, unknown>): string | null {
@@ -101,6 +101,69 @@ async function queryDatabase(
   return res.json() as Promise<{ results: Array<Record<string, unknown>> }>;
 }
 
+async function queryDatabaseOptional(
+  databaseId: string,
+  body: Record<string, unknown>
+): Promise<Array<Record<string, unknown>> | null> {
+  const res = await fetch(notionUrl(`databases/${databaseId}/query`), {
+    method: "POST",
+    headers: authHeaders(),
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) return null;
+
+  const data = (await res.json()) as { results: Array<Record<string, unknown>> };
+  return data.results;
+}
+
+function mapPageToSlot(page: Record<string, unknown>): Slot {
+  const props = page.properties as Record<string, unknown>;
+  return {
+    id: ((page.id as string) ?? "").replace(/-/g, ""),
+    fecha: extractDate(props) ?? "",
+    estado: extractStatus(props),
+    lumaUrl: extractLumaUrl(props),
+    titulo: extractTitulo(props),
+    descripcion: extractDescripcion(props),
+    herramientas: extractHerramientas(props),
+    speaker: null,
+  };
+}
+
+function futureDateFilters(todayStart: Date, until: Date) {
+  return [
+    { property: "Fecha", date: { on_or_after: todayStart.toISOString() } },
+    { property: "Fecha", date: { on_or_before: until.toISOString() } },
+  ];
+}
+
+async function querySlotsByStatus(
+  statusProperty: string,
+  statusValue: string,
+  dateFilters: Array<Record<string, unknown>>
+): Promise<Array<Record<string, unknown>> | null> {
+  return queryDatabaseOptional(getDbSlotsId(), {
+    filter: {
+      and: [{ property: statusProperty, status: { equals: statusValue } }, ...dateFilters],
+    },
+    sorts: [{ property: "Fecha", direction: "ascending" }],
+  });
+}
+
+async function queryAvailableSlotPages(
+  dateFilters: Array<Record<string, unknown>>
+): Promise<Array<Record<string, unknown>>> {
+  const fromStatus = await querySlotsByStatus("Status", "Disponible", dateFilters);
+  if (fromStatus !== null) return fromStatus;
+
+  const fromEstado = await querySlotsByStatus("Estado", "Disponible", dateFilters);
+  if (fromEstado !== null) return fromEstado;
+
+  console.error("[listAvailableSlots] Could not query slots by Status or Estado");
+  return [];
+}
+
 export async function listSlots(): Promise<Slot[]> {
   const now = new Date();
   const until = addWeeks(now, 20);
@@ -137,34 +200,13 @@ export async function listSlots(): Promise<Slot[]> {
 export async function listAvailableSlots(): Promise<Slot[]> {
   const now = new Date();
   const until = addWeeks(now, 20);
-
-  const data = await queryDatabase(getDbSlotsId(), {
-    filter: {
-      and: [
-        { property: "Estado", status: { equals: "Disponible" } },
-        { property: "Fecha", date: { on_or_after: now.toISOString() } },
-        { property: "Fecha", date: { on_or_before: until.toISOString() } },
-      ],
-    },
-    sorts: [{ property: "Fecha", direction: "ascending" }],
-  });
-
   const today = startOfDay(now);
+  const dateFilters = futureDateFilters(today, until);
 
-  return data.results
-    .map((page) => {
-      const props = page.properties as Record<string, unknown>;
-      return {
-        id: ((page.id as string) ?? "").replace(/-/g, ""),
-        fecha: extractDate(props) ?? "",
-        estado: extractStatus(props),
-        lumaUrl: extractLumaUrl(props),
-        titulo: extractTitulo(props),
-        descripcion: extractDescripcion(props),
-        herramientas: extractHerramientas(props),
-        speaker: null,
-      };
-    })
+  const results = await queryAvailableSlotPages(dateFilters);
+
+  return results
+    .map(mapPageToSlot)
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
 }
 
@@ -173,26 +215,29 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
   const until = addWeeks(now, 20);
 
   const todayStart = startOfDay(now);
-  const dateFilters = [
-    { property: "Fecha", date: { on_or_after: todayStart.toISOString() } },
-    { property: "Fecha", date: { on_or_before: until.toISOString() } },
-  ];
+  const dateFilters = futureDateFilters(todayStart, until);
 
-  const data = await queryDatabase(getDbSlotsId(), {
-    filter: {
-      or: [
-        { and: [{ property: "Estado", status: { equals: "Confirmado" } }, ...dateFilters] },
-        { and: [{ property: "Estado", status: { equals: "Cover lista" } }, ...dateFilters] },
-        { and: [{ property: "Estado", status: { equals: "Copys listos" } }, ...dateFilters] },
-        { and: [{ property: "Estado", status: { equals: "En promoción" } }, ...dateFilters] },
-      ],
-    },
-    sorts: [{ property: "Fecha", direction: "ascending" }],
-  });
+  const confirmedStatuses = ["Confirmado", "Cover lista", "Copys listos", "En promoción"] as const;
+
+  async function queryConfirmed(statusProperty: string) {
+    return queryDatabaseOptional(getDbSlotsId(), {
+      filter: {
+        or: confirmedStatuses.map((status) => ({
+          and: [{ property: statusProperty, status: { equals: status } }, ...dateFilters],
+        })),
+      },
+      sorts: [{ property: "Fecha", direction: "ascending" }],
+    });
+  }
+
+  const results =
+    (await queryConfirmed("Status")) ??
+    (await queryConfirmed("Estado")) ??
+    [];
 
   const today = startOfDay(now);
 
-  const slots = data.results
+  const slots = results
     .map((page) => {
       const props = page.properties as Record<string, unknown>;
       return {
@@ -247,15 +292,26 @@ export async function confirmWebinar(
   talk: { titulo: string; herramientas: string[]; descripcion: string }
 ): Promise<void> {
   const notion = getNotionClient();
+  const baseProps = {
+    Título: { title: [{ text: { content: talk.titulo } }] },
+    Herramientas: { multi_select: talk.herramientas.map((name) => ({ name })) },
+    Descripción: { rich_text: [{ text: { content: talk.descripcion } }] },
+    Speaker: { relation: [{ id: speakerId }] },
+  };
+
+  try {
+    await notion.pages.update({
+      page_id: slotId,
+      properties: { ...baseProps, Status: { status: { name: "Confirmado" } } },
+    });
+    return;
+  } catch {
+    // Claude Perú DB uses Status; legacy AIFF DB uses Estado
+  }
+
   await notion.pages.update({
     page_id: slotId,
-    properties: {
-      Título: { title: [{ text: { content: talk.titulo } }] },
-      Herramientas: { multi_select: talk.herramientas.map((name) => ({ name })) },
-      Descripción: { rich_text: [{ text: { content: talk.descripcion } }] },
-      Speaker: { relation: [{ id: speakerId }] },
-      Estado: { status: { name: "Confirmado" } },
-    },
+    properties: { ...baseProps, Estado: { status: { name: "Confirmado" } } },
   });
 }
 

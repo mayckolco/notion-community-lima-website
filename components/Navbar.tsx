@@ -6,12 +6,12 @@ import { Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
-  { label: "Nosotros",   href: "/nosotros",    external: false },
-  { label: "Directorio", href: "/directorio",  external: false },
-  { label: "Calendario", href: "/calendario",  external: false },
-  { label: "Comunidad",  href: "https://chat.whatsapp.com/CmU70iqgxWKBlFjKp37XLe", external: true },
-  { label: "Aprende",    href: "https://www.skool.com/ai-first-founders-8064/about", external: true },
-  { label: "Servicios",  href: "https://nucleo.la/", external: true },
+  { label: "Speakers",       href: "/directorio", external: false },
+  { label: "Calendario",     href: "/calendario", external: false },
+  { label: "Proyectos",      href: "/proyectos",  external: false },
+  { label: "Recursos",       href: "/recursos",   external: false },
+  { label: "Programas",      href: "/programas",  external: false },
+  { label: "Sobre nosotros", href: "/nosotros",   external: false },
 ];
 
 export function Navbar() {
@@ -23,12 +23,14 @@ export function Navbar() {
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="flex items-center gap-2.5 font-serif text-lg tracking-tight hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2 font-serif text-lg tracking-tight hover:opacity-80 transition-opacity"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
+          <span className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground shrink-0">
             <Sparkles className="h-4 w-4" strokeWidth={1.75} />
           </span>
-          Claude <span className="text-muted-foreground">Perú</span>
+          <span className="whitespace-nowrap">
+            Claude<span className="ml-0.5 text-muted-foreground">Perú</span>
+          </span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">

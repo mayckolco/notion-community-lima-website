@@ -63,11 +63,13 @@ export function Footer() {
   return (
     <footer className="border-t border-border/60">
       <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center gap-5">
-        <div className="flex items-center gap-2.5">
-          <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
+        <div className="flex items-center gap-2">
+          <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground shrink-0">
             <Sparkles className="h-3.5 w-3.5" strokeWidth={1.75} />
           </span>
-          <span className="font-serif text-sm tracking-tight">Claude Perú</span>
+          <span className="font-serif text-sm tracking-tight whitespace-nowrap">
+            Claude<span className="ml-0.5 text-muted-foreground">Perú</span>
+          </span>
         </div>
 
         <div className="flex items-center gap-5 flex-wrap justify-center">

@@ -2,16 +2,16 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { SlotCarousel } from "@/components/SlotCarousel";
 import { Footer } from "@/components/Footer";
-import { listSlots } from "@/lib/notion/slots";
+import { listAvailableSlots } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
 
 export const revalidate = 0;
 
 async function getSlots(): Promise<Slot[]> {
   try {
-    return await listSlots();
+    return await listAvailableSlots();
   } catch (err) {
-    console.error("[/aplicar] listSlots failed:", err);
+    console.error("[/aplicar] listAvailableSlots failed:", err);
     return [];
   }
 }

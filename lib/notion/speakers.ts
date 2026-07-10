@@ -132,10 +132,24 @@ export interface PastSpeaker {
   herramientas: string[];
   foto: string | null;
   linkedin: string | null;
+  web: string | null;
+  email: string | null;
   webinarUrl: string | null;
 }
 
-async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
+const CONFIRMED_SPEAKER_FILTER = {
+  property: "Status",
+  status: { equals: "Confirmado" },
+} as const;
+
+const CONFIRMED_SPEAKER_FILTER_LEGACY = {
+  property: "Estado",
+  status: { equals: "Confirmado" },
+} as const;
+
+async function fetchSpeakerPages(
+  filter: Record<string, unknown>
+): Promise<Array<Record<string, unknown>> | null> {
   const allResults: Array<Record<string, unknown>> = [];
   let cursor: string | undefined = undefined;
 
@@ -150,7 +164,7 @@ async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          filter: { property: "Estado", status: { equals: "Confirmado" } },
+          filter,
           sorts: [{ timestamp: "created_time", direction: "descending" }],
           page_size: 100,
           ...(cursor ? { start_cursor: cursor } : {}),
@@ -158,7 +172,7 @@ async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
         cache: "no-store",
       }
     );
-    if (!res.ok) break;
+    if (!res.ok) return null;
     const data = (await res.json()) as {
       results: Array<Record<string, unknown>>;
       has_more: boolean;
@@ -171,27 +185,64 @@ async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
   return allResults;
 }
 
+async function querySpeakers(): Promise<Array<Record<string, unknown>>> {
+  const fromStatus = await fetchSpeakerPages(CONFIRMED_SPEAKER_FILTER);
+  if (fromStatus !== null) return fromStatus;
+
+  const fromEstado = await fetchSpeakerPages(CONFIRMED_SPEAKER_FILTER_LEGACY);
+  if (fromEstado !== null) return fromEstado;
+
+  console.error("[querySpeakers] Could not query speakers by Status or Estado");
+  return [];
+}
+
+function getTitleText(props: Record<string, unknown>, ...keys: string[]): string {
+  for (const key of keys) {
+    const value = (props[key] as { title?: Array<{ plain_text?: string }> })?.title?.[0]
+      ?.plain_text;
+    if (value) return value;
+  }
+  return "";
+}
+
+function getRichText(props: Record<string, unknown>, ...keys: string[]): string | null {
+  for (const key of keys) {
+    const value = (props[key] as { rich_text?: Array<{ plain_text?: string }> })?.rich_text?.[0]
+      ?.plain_text;
+    if (value) return value;
+  }
+  return null;
+}
+
+function getSlotRelation(props: Record<string, unknown>): Array<{ id: string }> {
+  return (
+    (props["Sesiones"] as { relation?: Array<{ id: string }> })?.relation ??
+    (props["Slot"] as { relation?: Array<{ id: string }> })?.relation ??
+    (props["slots"] as { relation?: Array<{ id: string }> })?.relation ??
+    []
+  );
+}
+
 function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
   const props = page.properties as Record<string, unknown>;
 
-  const nombre =
-    (props["Nombre completo"] as { title?: Array<{ plain_text?: string }> })
-      ?.title?.[0]?.plain_text ?? "";
+  const nombre = getTitleText(props, "Nombre", "Nombre completo");
 
   const linkedin =
     (props["LinkedIn"] as { url?: string | null })?.url ?? null;
 
-  const descripcion =
-    (props["Descripción"] as { rich_text?: Array<{ plain_text?: string }> })
-      ?.rich_text?.[0]?.plain_text ?? null;
+  const web = (props["Web"] as { url?: string | null })?.url ?? null;
 
-  const rol =
-    (props["Rol"] as { rich_text?: Array<{ plain_text?: string }> })
-      ?.rich_text?.[0]?.plain_text ?? null;
+  const email =
+    (props["Mail"] as { email?: string | null })?.email ??
+    (props["Email"] as { email?: string | null })?.email ??
+    null;
 
-  const empresa =
-    (props["Empresa"] as { rich_text?: Array<{ plain_text?: string }> })
-      ?.rich_text?.[0]?.plain_text ?? null;
+  const descripcion = getRichText(props, "Descripcion", "Descripción");
+
+  const rol = getRichText(props, "Cargo", "Rol");
+
+  const empresa = getRichText(props, "Empresa");
 
   const webinarRollup = props["Webinar URL"] as {
     rollup?: { array?: Array<{ url?: string }> };
@@ -215,16 +266,13 @@ function parseSpeakerPage(page: Record<string, unknown>): PastSpeaker {
     if (foto) break;
   }
 
-  const biografia =
-    (props["Biografía"] as { rich_text?: Array<{ plain_text?: string }> })
-      ?.rich_text?.[0]?.plain_text ?? null;
+  const biografia = getRichText(props, "Biografía");
 
-  // titulo and herramientas come from the linked Webinar — not stored in Speaker
   const titulo = "";
   const herramientas: string[] = [];
   const slug = slugify(nombre);
 
-  return { id: page.id as string, slug, nombre, rol, empresa, titulo, descripcion, biografia, herramientas, foto, linkedin, webinarUrl };
+  return { id: page.id as string, slug, nombre, rol, empresa, titulo, descripcion, biografia, herramientas, foto, linkedin, web, email, webinarUrl };
 }
 
 export async function listPastSpeakers(): Promise<PastSpeaker[]> {
@@ -240,32 +288,8 @@ export async function listDirectorySpeakers(): Promise<PastSpeaker[]> {
 }
 
 export async function getSpeakerBySlug(slug: string): Promise<PastSpeaker | null> {
-  const allResults: Array<Record<string, unknown>> = [];
-  let cursor: string | undefined = undefined;
-
-  do {
-    const res = await fetch(`${NOTION_BASE}/databases/${getDbSpeakersId()}/query`, {
-      method: "POST",
-      headers: { ...authHeaders(), "Content-Type": "application/json" },
-      body: JSON.stringify({
-        page_size: 100,
-        sorts: [{ timestamp: "created_time", direction: "descending" }],
-        ...(cursor ? { start_cursor: cursor } : {}),
-      }),
-      cache: "no-store",
-    });
-    if (!res.ok) break;
-    const data = (await res.json()) as {
-      results: Array<Record<string, unknown>>;
-      has_more: boolean;
-      next_cursor: string | null;
-    };
-    allResults.push(...data.results);
-    cursor = data.has_more && data.next_cursor ? data.next_cursor : undefined;
-  } while (cursor);
-
-  const match = allResults.map(parseSpeakerPage).find((s) => s.slug === slug);
-  return match ?? null;
+  const speakers = await listDirectorySpeakers();
+  return speakers.find((s) => s.slug === slug) ?? null;
 }
 
 export async function getSpeakerById(id: string): Promise<PastSpeaker | null> {
@@ -276,7 +300,7 @@ export async function getSpeakerById(id: string): Promise<PastSpeaker | null> {
 
     // Resolve herramientas from the linked Webinar
     const props = (page as Record<string, unknown>).properties as Record<string, unknown>;
-    const slotRelation = (props["Slot"] as { relation?: Array<{ id: string }> })?.relation ?? [];
+    const slotRelation = getSlotRelation(props);
     if (slotRelation.length > 0) {
       try {
         const webinarPage = await notion.pages.retrieve({ page_id: slotRelation[0].id });
@@ -299,8 +323,16 @@ export interface SpeakerWebinar {
   id: string;
   titulo: string;
   fecha: string | null;
-  webinarUrl: string | null;
+  grabacionUrl: string | null;
   herramientas: string[];
+}
+
+function getUrlProp(props: Record<string, unknown>, ...keys: string[]): string | null {
+  for (const key of keys) {
+    const url = (props[key] as { url?: string | null })?.url;
+    if (url) return url;
+  }
+  return null;
 }
 
 export async function getWebinarsBySpeakerId(speakerId: string): Promise<SpeakerWebinar[]> {
@@ -314,7 +346,7 @@ export async function getWebinarsBySpeakerId(speakerId: string): Promise<Speaker
   }
 
   const props = page.properties as Record<string, unknown>;
-  const slotRelation = (props["Slot"] as { relation?: Array<{ id: string }> })?.relation ?? [];
+  const slotRelation = getSlotRelation(props);
   if (slotRelation.length === 0) return [];
 
   const webinarPages = await Promise.all(
@@ -329,14 +361,17 @@ export async function getWebinarsBySpeakerId(speakerId: string): Promise<Speaker
       const w = (wp as Record<string, unknown>).properties as Record<string, unknown>;
 
       const titulo =
-        (w["Título"] as { title?: Array<{ plain_text?: string }> })
-          ?.title?.[0]?.plain_text ?? "";
+        getTitleText(w, "Título", "Titulo");
 
       const fecha =
         (w["Fecha"] as { date?: { start?: string } })?.date?.start ?? null;
 
-      const webinarUrl =
-        (w["Webinar URL"] as { url?: string | null })?.url ?? null;
+      const grabacionUrl = getUrlProp(
+        w,
+        "Grabación URL",
+        "Grabacion URL",
+        "Webinar URL"
+      );
 
       const herramientas =
         (w["Herramientas"] as { multi_select?: Array<{ name?: string }> })
@@ -346,7 +381,7 @@ export async function getWebinarsBySpeakerId(speakerId: string): Promise<Speaker
         id: (wp as Record<string, unknown>).id as string,
         titulo,
         fecha,
-        webinarUrl,
+        grabacionUrl,
         herramientas,
       };
     })

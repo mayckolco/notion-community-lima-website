@@ -13,8 +13,8 @@ export function getNotionClient(): Client {
 }
 
 export function getDbSlotsId(): string {
-  const id = process.env.DB_SLOTS_ID;
-  if (!id) throw new Error("DB_SLOTS_ID env var is required");
+  const id = process.env.DB_SLOTS_ID ?? process.env.DB_SESSIONS_ID;
+  if (!id) throw new Error("DB_SLOTS_ID or DB_SESSIONS_ID env var is required");
   return id;
 }
 
