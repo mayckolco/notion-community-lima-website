@@ -54,7 +54,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                 />
               ) : (
                 <div className="w-full h-full bg-muted-foreground/10 flex items-center justify-center">
-                  <span className="text-4xl font-black text-muted-foreground/30">
+                  <span className="text-4xl font-serif text-muted-foreground/30">
                     {speaker.nombre.charAt(0)}
                   </span>
                 </div>
@@ -64,7 +64,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
             {/* Info */}
             <div className="flex flex-col flex-1 min-w-0 gap-4">
               <div>
-                <h1 className="text-3xl font-black tracking-tight">{speaker.nombre}</h1>
+                <h1 className="text-3xl font-serif tracking-tight">{speaker.nombre}</h1>
                 {(speaker.rol || speaker.empresa) && (
                   <p className="text-sm text-primary font-mono mt-1">
                     {[speaker.rol, speaker.empresa].filter(Boolean).join(" · ")}
@@ -122,7 +122,7 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
                       <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20 group-hover:border-primary/50 transition-colors duration-300" />
 
                       <div className="pt-3">
-                        <p className="font-black text-sm leading-tight group-hover:text-primary transition-colors duration-300">{w.titulo}</p>
+                        <p className="font-serif text-sm leading-tight group-hover:text-primary transition-colors duration-300">{w.titulo}</p>
                       </div>
 
                       {w.herramientas.length > 0 && (

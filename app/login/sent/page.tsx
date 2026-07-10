@@ -13,7 +13,7 @@ export default function LoginSentPage() {
             <div className="w-12 h-12 bg-primary/10 border border-primary/20 mx-auto flex items-center justify-center">
               <span className="text-primary text-xl">✉</span>
             </div>
-            <h1 className="text-2xl font-black tracking-tight">Revisa tu correo</h1>
+            <h1 className="text-2xl font-serif tracking-tight">Revisa tu correo</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Si tu email está registrado, te enviamos un link de acceso.
               Expira en <strong className="text-foreground">15 minutos</strong>.

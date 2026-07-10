@@ -22,7 +22,7 @@ export default async function CalendarioPage() {
             <p className="text-xs font-mono text-primary uppercase tracking-widest">
               Próximas sesiones
             </p>
-            <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
               Calendario de <span className="gradient-text">webinars</span>
             </h1>
             <p className="text-muted-foreground max-w-xl">
@@ -49,7 +49,7 @@ export default async function CalendarioPage() {
 
           <div className="border border-border/40 bg-card rounded-lg p-8 sm:p-12 text-center space-y-6">
             <div className="space-y-2">
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-serif tracking-tight">
                 ¿Quieres ser el próximo <span className="gradient-text">speaker</span>?
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
@@ -100,11 +100,11 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
         </p>
 
         {slot.titulo ? (
-          <h2 className="text-xl sm:text-2xl font-black leading-snug">
+          <h2 className="text-xl sm:text-2xl font-serif leading-snug">
             {slot.titulo}
           </h2>
         ) : (
-          <h2 className="text-xl sm:text-2xl font-black leading-snug text-muted-foreground">
+          <h2 className="text-xl sm:text-2xl font-serif leading-snug text-muted-foreground">
             Sesión confirmada
           </h2>
         )}

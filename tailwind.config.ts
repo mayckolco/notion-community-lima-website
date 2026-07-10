@@ -42,6 +42,15 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        clay: {
+          DEFAULT: "var(--clay)",
+          soft: "var(--clay-soft)",
+        },
+        paper: {
+          DEFAULT: "var(--paper)",
+          deep: "var(--paper-deep)",
+        },
+        ink: "var(--ink)",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -50,7 +59,12 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "Inter", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "JetBrains Mono", "monospace"],
+        serif: ["var(--font-serif)", "Fraunces", "Georgia", "serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
+      },
+      boxShadow: {
+        soft: "0 1px 2px rgba(43,38,34,.04), 0 4px 12px rgba(43,38,34,.06)",
+        clay: "0 6px 20px -6px rgba(217,119,87,.55)",
       },
     },
   },

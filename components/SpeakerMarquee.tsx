@@ -3,7 +3,7 @@ import type { PastSpeaker } from "@/lib/notion/speakers";
 
 function PhotoCard({ speaker }: { speaker: PastSpeaker }) {
   return (
-    <div className="relative flex-shrink-0 w-36 h-48 rounded-2xl overflow-hidden ring-1 ring-white/10">
+    <div className="relative flex-shrink-0 w-36 h-48 rounded-xl overflow-hidden border border-border shadow-soft">
       {speaker.foto ? (
         <Image
           src={speaker.foto}
@@ -14,7 +14,7 @@ function PhotoCard({ speaker }: { speaker: PastSpeaker }) {
         />
       ) : (
         <div className="w-full h-full bg-muted-foreground/10 flex items-center justify-center">
-          <span className="text-3xl font-black text-muted-foreground/30">
+          <span className="text-3xl font-serif text-muted-foreground/30">
             {speaker.nombre.charAt(0)}
           </span>
         </div>
@@ -31,7 +31,7 @@ export function SpeakerMarquee({ speakers }: { speakers: PastSpeaker[] }) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-center text-2xl font-bold text-white px-4">
+      <h2 className="text-center font-serif text-2xl text-foreground px-4">
         Voces que están construyendo con IA
       </h2>
       <div

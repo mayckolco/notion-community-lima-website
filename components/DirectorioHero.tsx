@@ -9,7 +9,7 @@ interface DirectorioHeroProps {
 
 function SpeakerCard({ speaker }: { speaker: PastSpeaker }) {
   return (
-    <div className="relative flex-shrink-0 w-52 h-72 overflow-hidden bg-muted">
+    <div className="relative flex-shrink-0 w-52 h-72 overflow-hidden rounded-xl bg-muted border border-border">
       {speaker.foto ? (
         <Image
           src={speaker.foto}
@@ -20,7 +20,7 @@ function SpeakerCard({ speaker }: { speaker: PastSpeaker }) {
         />
       ) : (
         <div className="w-full h-full bg-muted-foreground/20 flex items-center justify-center">
-          <span className="text-4xl font-black text-muted-foreground/30">
+          <span className="font-serif text-4xl text-muted-foreground/30">
             {speaker.nombre.charAt(0)}
           </span>
         </div>
@@ -40,7 +40,7 @@ function SpeakerCard({ speaker }: { speaker: PastSpeaker }) {
 
       {/* name */}
       <div className="absolute bottom-3 left-3 right-3">
-        <p className="text-sm font-black text-white leading-tight">
+        <p className="text-sm font-medium text-paper leading-tight">
           {speaker.nombre}
         </p>
       </div>
@@ -79,17 +79,17 @@ export function DirectorioHero({ speakers }: DirectorioHeroProps) {
         {/* ─── LEFT: text content ─── */}
         <div className="flex flex-col justify-center px-8 sm:px-12 lg:px-16 xl:px-24 py-20 lg:py-0">
           <div className="space-y-7 max-w-xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-sm text-primary font-medium w-fit">
+            <p className="text-xs uppercase tracking-widest text-primary">
               Solo builders con experiencia real
-            </div>
+            </p>
 
-            <h1 className="text-4xl sm:text-5xl xl:text-6xl font-black leading-[1.1] tracking-tight text-balance">
+            <h1 className="font-serif text-4xl sm:text-5xl xl:text-6xl leading-[1.05] tracking-tight text-balance">
               Los que construyen con{" "}
               <span className="gradient-text">IA en LATAM</span>{" "}
               comparten su camino
             </h1>
 
-            <p className="text-base sm:text-lg text-primary/80 leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
               Fundadores, makers y builders que presentaron en AI First Founders.
               Sin teoría. Solo experiencia real.
             </p>
@@ -97,14 +97,14 @@ export function DirectorioHero({ speakers }: DirectorioHeroProps) {
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/aplicar"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-bold px-6 py-3 text-sm hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-2 rounded-md bg-primary text-primary-foreground font-medium px-6 py-3 text-sm shadow-clay hover:opacity-90 transition-opacity"
               >
                 Postula tu charla
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <a
                 href="#speakers"
-                className="inline-flex items-center gap-2 border border-border/80 text-foreground font-semibold px-6 py-3 text-sm hover:border-primary/60 hover:text-primary transition-colors"
+                className="inline-flex items-center gap-2 rounded-md border border-border text-foreground font-medium px-6 py-3 text-sm hover:bg-accent transition-colors"
               >
                 Explorar speakers
               </a>

@@ -45,14 +45,13 @@ export function CoversGallery({
 
   return (
     <>
-      {/* Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {covers.map((cover, i) => {
           const label = labels[i] ?? `Cover ${i + 1}`;
           return (
             <div
               key={i}
-              className="group relative aspect-square overflow-hidden border border-border/40 hover:border-orange-500/60 transition-colors"
+              className="group relative aspect-square overflow-hidden rounded-lg border border-border hover:border-primary/50 transition-colors"
             >
               <Image
                 src={cover}
@@ -62,74 +61,66 @@ export function CoversGallery({
                 unoptimized
               />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/65 transition-colors flex flex-col items-center justify-center gap-2">
+              <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/60 transition-colors flex flex-col items-center justify-center gap-2">
                 <button
                   onClick={() => setPreview(i)}
-                  className="text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity border border-white/60 px-3 py-1.5 hover:bg-white/20"
+                  className="text-paper text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity rounded-md border border-paper/60 px-3 py-1.5 hover:bg-paper/20"
                 >
                   Vista previa
                 </button>
                 <a
                   href={downloadUrl(cover, label)}
-                  className="text-white text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity border border-orange-400/80 bg-orange-500/80 px-3 py-1.5 hover:bg-orange-500"
+                  className="text-primary-foreground text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity rounded-md bg-primary px-3 py-1.5 hover:opacity-90 shadow-clay"
                   onClick={(e) => e.stopPropagation()}
                 >
                   Descargar
                 </a>
               </div>
 
-              {/* Label bar */}
-              <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1.5">
-                <span className="text-xs text-white/80 font-medium">{label}</span>
+              <div className="absolute bottom-0 left-0 right-0 bg-ink/60 px-2 py-1.5">
+                <span className="text-xs text-paper/80 font-medium">{label}</span>
               </div>
             </div>
           );
         })}
       </div>
 
-      {/* Lightbox */}
       {preview !== null && (
         <div
-          className="fixed inset-0 z-50 bg-black/92 flex items-center justify-center"
+          className="fixed inset-0 z-50 bg-ink/92 flex items-center justify-center"
           onClick={close}
         >
-          {/* Close */}
           <button
             onClick={close}
-            className="absolute top-4 right-4 text-white/70 hover:text-white text-2xl leading-none w-9 h-9 flex items-center justify-center border border-white/20 hover:border-white/50 transition-colors"
+            className="absolute top-4 right-4 text-paper/70 hover:text-paper text-2xl leading-none w-9 h-9 flex items-center justify-center rounded-md border border-paper/20 hover:border-paper/50 transition-colors"
           >
             ×
           </button>
 
-          {/* Counter + label */}
           <div className="absolute top-4 left-4 flex items-center gap-3">
-            <span className="text-xs text-white/50">{preview + 1} / {covers.length}</span>
-            <span className="text-xs font-medium text-white/80 border border-white/20 px-2 py-0.5">
+            <span className="text-xs text-paper/50">{preview + 1} / {covers.length}</span>
+            <span className="text-xs font-medium text-paper/80 rounded-md border border-paper/20 px-2 py-0.5">
               {labels[preview] ?? `Cover ${preview + 1}`}
             </span>
           </div>
 
-          {/* Download button */}
           <a
             href={downloadUrl(covers[preview], labels[preview] ?? `cover-${preview + 1}`)}
-            className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-6 py-2.5 transition-colors"
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs font-medium rounded-md bg-primary text-primary-foreground px-6 py-2.5 shadow-clay hover:opacity-90 transition-opacity"
             onClick={(e) => e.stopPropagation()}
           >
             Descargar {labels[preview] ?? `Cover ${preview + 1}`}
           </a>
 
-          {/* Prev */}
           {covers.length > 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); prev(); }}
-              className="absolute left-4 text-white/60 hover:text-white text-3xl w-10 h-10 flex items-center justify-center border border-white/20 hover:border-white/50 transition-colors"
+              className="absolute left-4 text-paper/60 hover:text-paper text-3xl w-10 h-10 flex items-center justify-center rounded-md border border-paper/20 hover:border-paper/50 transition-colors"
             >
               ‹
             </button>
           )}
 
-          {/* Image */}
           <div
             className="relative max-w-2xl w-full mx-16 aspect-square"
             onClick={(e) => e.stopPropagation()}
@@ -143,11 +134,10 @@ export function CoversGallery({
             />
           </div>
 
-          {/* Next */}
           {covers.length > 1 && (
             <button
               onClick={(e) => { e.stopPropagation(); next(); }}
-              className="absolute right-4 text-white/60 hover:text-white text-3xl w-10 h-10 flex items-center justify-center border border-white/20 hover:border-white/50 transition-colors"
+              className="absolute right-4 text-paper/60 hover:text-paper text-3xl w-10 h-10 flex items-center justify-center rounded-md border border-paper/20 hover:border-paper/50 transition-colors"
             >
               ›
             </button>

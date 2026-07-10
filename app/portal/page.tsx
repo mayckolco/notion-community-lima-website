@@ -15,10 +15,10 @@ const ESTADO_LABELS: Record<string, string> = {
 };
 
 const ESTADO_COLORS: Record<string, string> = {
-  Aplicado: "text-yellow-400 border-yellow-900/50 bg-yellow-950/30",
-  Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
-  Publicado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
-  Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950/30",
+  Aplicado: "text-amber-700 border-amber-200 bg-amber-50",
+  Confirmado: "text-emerald-700 border-emerald-200 bg-emerald-50",
+  Publicado: "text-sky-700 border-sky-200 bg-sky-50",
+  Bloqueado: "text-muted-foreground border-border bg-muted",
 };
 
 const isConfirmed = (estado: string) =>
@@ -46,10 +46,10 @@ export default async function PortalPage() {
 
 function PortalNav({ nombre }: { nombre: string }) {
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="font-black text-lg tracking-tight hover:opacity-80 transition-opacity">
-          AI First <span className="gradient-text">Founders</span>
+        <Link href="/" className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity">
+          AI First <span className="text-muted-foreground">Founders</span>
         </Link>
         <div className="flex items-center gap-3">
           <span className="hidden sm:block text-sm text-muted-foreground">
@@ -75,7 +75,7 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
   const primerNombre = speaker.nombre.split(" ")[0];
 
   return (
-    <section className="border border-border/50 bg-card p-6 space-y-5">
+    <section className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-5">
       <div className="flex items-start gap-4">
         {speaker.foto && (
           <div className="relative w-16 h-16 flex-shrink-0 overflow-hidden border border-border/50">
@@ -91,15 +91,15 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
         <div className="flex-1 min-w-0 space-y-1">
           <div className="flex items-start justify-between gap-2">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl font-black tracking-tight">{speaker.nombre}</h1>
-              <span className={`text-xs border px-2 py-0.5 ${estadoColor}`}>
+              <h1 className="font-serif text-xl tracking-tight">{speaker.nombre}</h1>
+              <span className={`text-xs border rounded-full px-2 py-0.5 ${estadoColor}`}>
                 {estadoLabel}
               </span>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <Link
                 href="/aplicar"
-                className="text-xs font-medium border border-orange-500/60 text-orange-400 hover:bg-orange-950/40 px-3 py-1.5 transition-colors"
+                className="text-xs font-medium rounded-md border border-primary/40 text-primary hover:bg-primary/10 px-3 py-1.5 transition-colors"
               >
                 Propón un tema
               </Link>
@@ -107,7 +107,7 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
                 href="https://calendar.notion.so/meet/mayckolco/speakers-aiff"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
+                className="text-xs font-medium rounded-md bg-primary text-primary-foreground px-3 py-1.5 shadow-clay hover:opacity-90 transition-opacity"
               >
                 Agendar llamada
               </a>
@@ -139,8 +139,8 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
       )}
 
       {!isConfirmed(speaker.estado) && (
-        <div className="border border-yellow-900/50 bg-yellow-950/20 px-4 py-3">
-          <p className="text-sm text-yellow-300/90 leading-relaxed">
+        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3">
+          <p className="text-sm text-amber-800 leading-relaxed">
             Hola {primerNombre}, tu aplicación está en revisión. Te avisaremos cuando tu charla sea confirmada y tendrás acceso completo al kit de speaker.
           </p>
         </div>
@@ -152,7 +152,7 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
 function CharlaCards({ slots, speaker }: { slots: PortalSlot[]; speaker: PortalSpeaker }) {
   if (slots.length === 0) {
     return (
-      <section className="border border-border/50 bg-card p-6 space-y-2">
+      <section className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-2">
         <SectionTitle>Tu charla</SectionTitle>
         <p className="text-sm text-muted-foreground">
           Aún no tienes un slot asignado. Te notificaremos cuando tu charla sea programada.

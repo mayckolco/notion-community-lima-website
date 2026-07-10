@@ -32,27 +32,27 @@ export function GrabacionEditor({ slotId, initialUrl, label, endpoint }: Props) 
 
   if (editing) {
     return (
-      <div className="border border-orange-500/40 bg-orange-950/10 p-4 space-y-2">
-        <p className="text-xs uppercase tracking-wider text-orange-500/70">{label}</p>
+      <div className="rounded-lg border border-primary/30 bg-primary/5 p-4 space-y-2">
+        <p className="text-xs uppercase tracking-widest text-primary">{label}</p>
         <input
           type="url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://..."
           autoFocus
-          className="w-full text-xs bg-background border border-border/50 px-2 py-1.5 text-foreground placeholder:text-muted-foreground/30 focus:outline-none focus:border-orange-500/50"
+          className="w-full text-xs rounded-md bg-background border border-border px-2 py-1.5 text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40"
         />
         <div className="flex gap-2">
           <button
             onClick={handleSave}
             disabled={loading}
-            className="text-xs bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 transition-colors disabled:opacity-50"
+            className="text-xs rounded-md bg-primary text-primary-foreground px-3 py-1 shadow-clay hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {loading ? "Guardando..." : "Guardar"}
           </button>
           <button
             onClick={() => { setUrl(initialUrl ?? ""); setEditing(false); }}
-            className="text-xs border border-border/50 px-3 py-1 text-muted-foreground hover:text-foreground transition-colors"
+            className="text-xs rounded-md border border-border px-3 py-1 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
           >
             Cancelar
           </button>
@@ -62,12 +62,12 @@ export function GrabacionEditor({ slotId, initialUrl, label, endpoint }: Props) 
   }
 
   return (
-    <div className="border border-border/30 p-4 space-y-2">
-      <p className="text-xs uppercase tracking-wider text-muted-foreground/40">{label}</p>
+    <div className="rounded-lg border border-border p-4 space-y-2">
+      <p className="text-xs uppercase tracking-widest text-muted-foreground">{label}</p>
       {currentUrl ? (
-        <p className="text-xs text-muted-foreground/30 truncate">{currentUrl}</p>
+        <p className="text-xs text-muted-foreground truncate">{currentUrl}</p>
       ) : (
-        <p className="text-sm text-muted-foreground/30">Sin URL aún</p>
+        <p className="text-sm text-muted-foreground">Sin URL aún</p>
       )}
       <div className="flex gap-2">
         {currentUrl && (
@@ -75,14 +75,14 @@ export function GrabacionEditor({ slotId, initialUrl, label, endpoint }: Props) 
             href={currentUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors"
+            className="text-xs rounded-md bg-primary text-primary-foreground px-2 py-1 shadow-clay hover:opacity-90 transition-opacity"
           >
             Abrir
           </a>
         )}
         <button
           onClick={() => setEditing(true)}
-          className="text-xs border border-border/50 px-2 py-1 text-muted-foreground hover:text-foreground hover:border-border transition-colors"
+          className="text-xs rounded-md border border-border px-2 py-1 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
         >
           {saved ? "Guardado" : currentUrl ? "Editar" : "Agregar URL"}
         </button>

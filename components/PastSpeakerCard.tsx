@@ -14,9 +14,8 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
   return (
     <Link
       href={`/directorio/${speaker.slug}`}
-      className="relative border border-border/60 bg-card p-4 sm:p-5 flex flex-col gap-4 group touch-manipulation
-        hover:border-primary/60 hover:bg-card/80 hover:shadow-[0_0_24px_-4px_hsl(var(--primary)/0.25)]
-        hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out"
+      className="relative rounded-xl border border-border bg-card p-4 sm:p-5 flex flex-col gap-4 group touch-manipulation shadow-soft
+        hover:border-primary/40 hover:shadow-soft hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-300 ease-out"
     >
       {/* corner brackets */}
       <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">{num}</span>
@@ -39,9 +38,9 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
           )}
         </div>
         <div className="min-w-0">
-          <p className="font-black text-sm leading-tight group-hover:text-primary transition-colors duration-300">{speaker.nombre}</p>
+          <p className="font-serif text-sm leading-tight group-hover:text-primary transition-colors duration-300">{speaker.nombre}</p>
           {(speaker.rol || speaker.empresa) && (
-            <p className="text-xs text-primary/80 font-mono leading-tight mt-0.5 break-words">
+            <p className="text-xs text-muted-foreground font-mono leading-tight mt-0.5 break-words">
               {[speaker.rol, speaker.empresa].filter(Boolean).join(" · ")}
             </p>
           )}
@@ -54,7 +53,7 @@ export function PastSpeakerCard({ speaker, index }: PastSpeakerCardProps) {
           {speaker.herramientas.slice(0, 4).map((tool) => (
             <span
               key={tool}
-              className="text-[10px] font-mono border border-border/60 px-2 py-0.5 text-muted-foreground group-hover:border-primary/30 group-hover:text-foreground transition-all duration-300"
+              className="text-[10px] font-mono rounded-full border border-border px-2 py-0.5 text-muted-foreground group-hover:border-primary/30 group-hover:text-foreground transition-all duration-300"
             >
               {tool}
             </span>

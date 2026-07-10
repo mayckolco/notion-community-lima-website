@@ -19,7 +19,7 @@ function LoginError() {
   };
 
   return (
-    <p className="text-sm text-red-400 border border-red-900/50 bg-red-950/30 px-4 py-3">
+    <p className="text-sm text-destructive border border-destructive/20 bg-destructive/5 rounded-md px-4 py-3">
       {messages[error] ?? "Ocurrió un error. Intenta de nuevo."}
     </p>
   );
@@ -73,12 +73,12 @@ function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="tu@email.com"
-          className="w-full bg-background border border-border/70 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/60 transition-colors"
+          className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-red-400 border border-red-900/50 bg-red-950/30 px-4 py-3">
+        <p className="text-sm text-destructive border border-destructive/20 bg-destructive/5 rounded-md px-4 py-3">
           {error}
         </p>
       )}
@@ -101,13 +101,13 @@ export default function LoginPage() {
             <p className="text-xs text-muted-foreground tracking-widest uppercase">
               Portal de Speakers
             </p>
-            <h1 className="text-2xl font-black tracking-tight">Ingresa a tu portal</h1>
+            <h1 className="text-2xl font-serif tracking-tight">Ingresa a tu portal</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Ingresa el email con el que aplicaste. Te enviaremos un link de acceso directo.
             </p>
           </div>
 
-          <div className="border border-border/50 bg-card p-6 space-y-4">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
             <Suspense fallback={null}>
               <LoginError />
             </Suspense>

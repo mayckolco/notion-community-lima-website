@@ -47,35 +47,35 @@ interface SlotCardProps {
 const ESTADO_CONFIG = {
   Disponible: {
     label: "Disponible",
-    className: "bg-emerald-500/15 text-emerald-400 border-emerald-500/20",
+    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
   Reservado: {
     label: "Reservado",
-    className: "bg-amber-500/15 text-amber-400 border-amber-500/20",
+    className: "bg-amber-50 text-amber-700 border-amber-200",
   },
   Confirmado: {
     label: "Confirmado",
-    className: "bg-rose-500/15 text-rose-400 border-rose-500/20",
+    className: "bg-rose-50 text-rose-700 border-rose-200",
   },
   "Cover lista": {
     label: "Cover lista",
-    className: "bg-rose-500/15 text-rose-400 border-rose-500/20",
+    className: "bg-rose-50 text-rose-700 border-rose-200",
   },
   "Copys listos": {
     label: "Copys listos",
-    className: "bg-rose-500/15 text-rose-400 border-rose-500/20",
+    className: "bg-rose-50 text-rose-700 border-rose-200",
   },
   Bloqueado: {
     label: "No disponible",
-    className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
+    className: "bg-muted text-muted-foreground border-border",
   },
   Publicado: {
     label: "Ocupado",
-    className: "bg-zinc-500/15 text-zinc-400 border-zinc-500/20",
+    className: "bg-muted text-muted-foreground border-border",
   },
   "En promoción": {
     label: "En promoción",
-    className: "bg-orange-500/15 text-orange-400 border-orange-500/20",
+    className: "bg-primary/10 text-primary border-primary/20",
   },
 } as const;
 
@@ -94,8 +94,8 @@ export function SlotCard({ slot }: SlotCardProps) {
       className={cn(
         "border transition-all duration-200",
         available
-          ? "border-primary/30 hover:border-primary/60 hover:shadow-[0_0_20px_rgba(255,107,43,0.1)]"
-          : "border-border/50 opacity-60"
+          ? "border-primary/30 hover:border-primary/50 hover:shadow-soft"
+          : "border-border opacity-60"
       )}
     >
       <CardContent className="pt-6">
@@ -105,7 +105,7 @@ export function SlotCard({ slot }: SlotCardProps) {
               Semana {getISOWeek(date)}
             </p>
             <p className="text-lg font-bold capitalize leading-tight">{dayName}</p>
-            <p className="text-3xl font-black text-primary leading-none">{dayNum}</p>
+            <p className="font-serif text-3xl text-primary leading-none">{dayNum}</p>
             <p className="text-sm text-muted-foreground capitalize">{monthYear}</p>
           </div>
           <Badge variant="outline" className={cn("text-xs shrink-0", config.className)}>

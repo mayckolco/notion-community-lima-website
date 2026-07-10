@@ -8,18 +8,18 @@ import { getSpeakerEtiqueta, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
 import type { AdminSlot, AdminSpeaker, SpeakerEtiqueta } from "@/lib/schemas";
 
 const ESTADO_COLORS: Record<string, string> = {
-  Disponible: "text-zinc-400 border-zinc-700 bg-zinc-900/50",
-  Reservado: "text-yellow-400 border-yellow-900/50 bg-yellow-950/30",
-  Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
-  Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950",
-  Publicado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
-  "En promoción": "text-orange-400 border-orange-500/60 bg-orange-950/30",
+  Disponible: "text-muted-foreground border-border bg-muted",
+  Reservado: "text-amber-700 border-amber-200 bg-amber-50",
+  Confirmado: "text-emerald-700 border-emerald-200 bg-emerald-50",
+  Bloqueado: "text-muted-foreground border-border bg-muted",
+  Publicado: "text-sky-700 border-sky-200 bg-sky-50",
+  "En promoción": "text-primary border-primary/20 bg-primary/10",
 };
 
 const ETIQUETA_COLORS: Record<SpeakerEtiqueta, string> = {
-  speaker: "text-blue-400 border-blue-900/50 bg-blue-950/30",
-  admin: "text-orange-400 border-orange-500/60 bg-orange-950/30",
-  colaborador: "text-purple-400 border-purple-900/50 bg-purple-950/30",
+  speaker: "text-sky-700 border-sky-200 bg-sky-50",
+  admin: "text-primary border-primary/20 bg-primary/10",
+  colaborador: "text-violet-700 border-violet-200 bg-violet-50",
 };
 
 function formatFecha(fecha: string | null): string {
@@ -72,7 +72,7 @@ export default async function AdminPage({
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-black tracking-tight">
+            <h1 className="font-serif text-2xl tracking-tight">
               {isAdmin ? "Panel de administración" : "Webinars en promoción"}
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
@@ -83,7 +83,7 @@ export default async function AdminPage({
           </div>
           <Link
             href="/portal"
-            className="text-xs border border-border/50 px-3 py-1.5 text-muted-foreground hover:text-foreground hover:border-border transition-colors flex-shrink-0"
+            className="text-xs rounded-md border border-border px-3 py-1.5 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors flex-shrink-0"
           >
             ← Mi portal
           </Link>
@@ -99,7 +99,7 @@ export default async function AdminPage({
             </>
           ) : (
             <>
-              <StatCard label="En promoción" value={enPromocion} accent="orange" />
+              <StatCard label="En promoción" value={enPromocion} accent="primary" />
               <StatCard label="Confirmados" value={confirmados} accent="green" />
               <StatCard label="Publicados" value={publicados} accent="blue" />
             </>
@@ -107,7 +107,7 @@ export default async function AdminPage({
         </div>
 
         <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-border/30 pb-3">
+          <div className="flex items-center justify-between border-b border-border pb-3">
             <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
               {estadoFilter ? `${estadoFilter} (${slots.length})` : `Todos los webinars (${total})`}
             </h2>
@@ -138,10 +138,10 @@ function EstadoFilter({ current }: { current: string }) {
     <div className="flex items-center gap-1.5 flex-wrap justify-end">
       <Link
         href="/portal/admin"
-        className={`text-xs px-2.5 py-1 border transition-colors ${
+        className={`text-xs rounded-md px-2.5 py-1 border transition-colors ${
           !current
-            ? "border-orange-500/60 text-orange-400 bg-orange-950/30"
-            : "border-border/50 text-muted-foreground hover:border-border hover:text-foreground"
+            ? "border-primary/40 text-primary bg-primary/10"
+            : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
         }`}
       >
         Todos
@@ -150,10 +150,10 @@ function EstadoFilter({ current }: { current: string }) {
         <Link
           key={estado}
           href={`/portal/admin?estado=${encodeURIComponent(estado)}`}
-          className={`text-xs px-2.5 py-1 border transition-colors ${
+          className={`text-xs rounded-md px-2.5 py-1 border transition-colors ${
             current === estado
               ? `${ESTADO_COLORS[estado]} border-current`
-              : "border-border/50 text-muted-foreground hover:border-border hover:text-foreground"
+              : "border-border text-muted-foreground hover:bg-accent hover:text-foreground"
           }`}
         >
           {estado}
@@ -165,16 +165,16 @@ function EstadoFilter({ current }: { current: string }) {
 
 function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqueta }) {
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
+    <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="font-black text-lg tracking-tight hover:opacity-80 transition-opacity"
+            className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity"
           >
-            AI First <span className="gradient-text">Founders</span>
+            AI First <span className="text-muted-foreground">Founders</span>
           </Link>
-          <span className={`text-xs border px-2 py-0.5 ${ETIQUETA_COLORS[etiqueta]}`}>
+          <span className={`text-xs border rounded-full px-2 py-0.5 ${ETIQUETA_COLORS[etiqueta]}`}>
             {etiqueta}
           </span>
         </div>
@@ -185,7 +185,7 @@ function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqu
           <form action="/api/auth/logout" method="POST">
             <button
               type="submit"
-              className="text-xs text-muted-foreground border border-border/50 px-3 py-1.5 hover:text-foreground hover:border-border transition-colors"
+              className="text-xs rounded-md text-muted-foreground border border-border px-3 py-1.5 hover:text-foreground hover:bg-accent transition-colors"
             >
               Salir
             </button>
@@ -203,21 +203,21 @@ function StatCard({
 }: {
   label: string;
   value: number;
-  accent?: "blue" | "green" | "orange" | "purple";
+  accent?: "blue" | "green" | "primary" | "purple";
 }) {
   const valueClass =
     accent === "blue"
-      ? "text-blue-400"
+      ? "text-sky-700"
       : accent === "green"
-      ? "text-green-400"
-      : accent === "orange"
-      ? "text-orange-400"
+      ? "text-emerald-700"
+      : accent === "primary"
+      ? "text-primary"
       : "text-foreground";
 
   return (
-    <div className="border border-border/50 bg-card p-4 space-y-1">
-      <p className="text-xs text-muted-foreground uppercase tracking-wider">{label}</p>
-      <p className={`text-2xl font-black ${valueClass}`}>{value}</p>
+    <div className="rounded-xl border border-border bg-card p-4 shadow-soft space-y-1">
+      <p className="text-xs text-muted-foreground uppercase tracking-widest">{label}</p>
+      <p className={`font-serif text-2xl ${valueClass}`}>{value}</p>
     </div>
   );
 }
@@ -228,7 +228,7 @@ function WebinarRow({ slot }: { slot: AdminSlot }) {
 
   return (
     <div
-      className={`border border-border/50 bg-card px-4 py-3 flex items-center gap-4 group-hover:border-orange-500/40 group-hover:bg-orange-950/10 transition-colors ${
+      className={`rounded-xl border border-border bg-card px-4 py-3 flex items-center gap-4 group-hover:border-primary/40 group-hover:bg-primary/5 transition-colors ${
         isPast ? "opacity-60" : ""
       }`}
     >
@@ -243,7 +243,7 @@ function WebinarRow({ slot }: { slot: AdminSlot }) {
       </div>
 
       <div className="flex-shrink-0">
-        <span className={`text-xs border px-2 py-0.5 ${estadoColor}`}>{slot.estado}</span>
+        <span className={`text-xs border rounded-full px-2 py-0.5 ${estadoColor}`}>{slot.estado}</span>
       </div>
 
       <div className="w-48 flex-shrink-0">
@@ -274,7 +274,7 @@ function SpeakerChip({ speaker }: { speaker: AdminSpeaker }) {
   return (
     <div className="flex items-center gap-2">
       {speaker.foto && (
-        <div className="relative w-6 h-6 flex-shrink-0 overflow-hidden border border-border/50">
+        <div className="relative w-6 h-6 flex-shrink-0 overflow-hidden rounded-full border border-border">
           <Image
             src={speaker.foto}
             alt={speaker.nombre}
@@ -286,7 +286,7 @@ function SpeakerChip({ speaker }: { speaker: AdminSpeaker }) {
       )}
       <div className="min-w-0">
         <p className="text-xs font-medium truncate">{speaker.nombre}</p>
-        <span className={`text-xs border px-1.5 py-0 ${etiquetaColor}`}>
+        <span className={`text-xs border rounded-full px-1.5 py-0 ${etiquetaColor}`}>
           {speaker.etiqueta}
         </span>
       </div>

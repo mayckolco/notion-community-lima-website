@@ -58,10 +58,10 @@ const ESTADO_LABELS: Record<string, string> = {
 };
 
 const ESTADO_COLORS: Record<string, string> = {
-  Aplicado: "text-yellow-400 border-yellow-900/50 bg-yellow-950/30",
-  Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
-  Publicado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
-  Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950/30",
+  Aplicado: "text-amber-700 border-amber-200 bg-amber-50",
+  Confirmado: "text-emerald-700 border-emerald-200 bg-emerald-50",
+  Publicado: "text-sky-700 border-sky-200 bg-sky-50",
+  Bloqueado: "text-muted-foreground border-border bg-muted",
 };
 
 const isConfirmed = (estado: string) =>
@@ -102,11 +102,11 @@ export default async function CharlaDetailPage({
   return (
     <main className="min-h-screen bg-background">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-4">
           <Link
             href={isPrivileged ? "/portal/admin" : "/portal"}
-            className="text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 transition-colors"
+            className="text-xs font-medium rounded-md bg-primary text-primary-foreground px-3 py-1.5 shadow-clay hover:opacity-90 transition-opacity"
           >
             {isPrivileged ? "Volver al panel" : "Volver al portal"}
           </Link>
@@ -121,7 +121,7 @@ export default async function CharlaDetailPage({
 
         {/* Cover image */}
         {slot.fotos.length > 0 && (
-          <div className="relative h-56 sm:h-72 overflow-hidden border border-border/50">
+          <div className="relative h-56 sm:h-72 overflow-hidden rounded-xl border border-border">
             <Image
               src={slot.fotos[0]}
               alt={slot.titulo ?? "Evento"}
@@ -133,12 +133,12 @@ export default async function CharlaDetailPage({
         )}
 
         {/* Header */}
-        <div className="border border-border/50 bg-card p-6 space-y-4">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
           <div className="flex items-start justify-between gap-4">
-            <h1 className="text-2xl font-black tracking-tight leading-tight">
+            <h1 className="font-serif text-2xl tracking-tight leading-tight">
               {slot.titulo ?? "Sin título aún"}
             </h1>
-            <span className={`text-xs border px-2 py-0.5 flex-shrink-0 ${estadoColor}`}>
+            <span className={`text-xs border rounded-full px-2 py-0.5 flex-shrink-0 ${estadoColor}`}>
               {estadoLabel}
             </span>
           </div>
@@ -154,7 +154,7 @@ export default async function CharlaDetailPage({
               {slot.herramientas.map((h) => (
                 <span
                   key={h}
-                  className="text-xs border border-border/50 bg-muted/30 px-2 py-0.5 text-muted-foreground"
+                  className="text-xs rounded-full border border-border bg-background px-2 py-0.5 text-muted-foreground"
                 >
                   {h}
                 </span>
@@ -164,7 +164,7 @@ export default async function CharlaDetailPage({
         </div>
 
         {/* Estructura del evento — ANTES de accesos */}
-        <div className="border border-border/50 bg-card p-6 space-y-4">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
           <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
             Estructura del webinar
           </h2>
@@ -189,7 +189,7 @@ export default async function CharlaDetailPage({
         </div>
 
         {/* Accesos (antes: "Fecha y accesos") */}
-        <div className="border border-border/50 bg-card p-6 space-y-4">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
           <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
             Accesos
           </h2>
@@ -223,7 +223,7 @@ export default async function CharlaDetailPage({
                 <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Evento (Luma)</p>
                 {slot.lumaUrl ? (
                   <a href={slot.lumaUrl} target="_blank" rel="noopener noreferrer"
-                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                     className="inline-block text-xs rounded-md bg-primary text-primary-foreground px-2 py-1 shadow-clay hover:opacity-90 transition-opacity">
                     Abrir
                   </a>
                 ) : (
@@ -240,7 +240,7 @@ export default async function CharlaDetailPage({
                 <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Meet</p>
                 {slotConfirmed && slot.webinarUrl ? (
                   <a href={slot.webinarUrl} target="_blank" rel="noopener noreferrer"
-                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                     className="inline-block text-xs rounded-md bg-primary text-primary-foreground px-2 py-1 shadow-clay hover:opacity-90 transition-opacity">
                     Abrir
                   </a>
                 ) : (
@@ -257,7 +257,7 @@ export default async function CharlaDetailPage({
                 <p className="text-xs uppercase tracking-wider text-muted-foreground/40">Grabación</p>
                 {slot.grabacionUrl ? (
                   <a href={slot.grabacionUrl} target="_blank" rel="noopener noreferrer"
-                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                     className="inline-block text-xs rounded-md bg-primary text-primary-foreground px-2 py-1 shadow-clay hover:opacity-90 transition-opacity">
                     Abrir
                   </a>
                 ) : (
@@ -274,7 +274,7 @@ export default async function CharlaDetailPage({
                 <p className="text-xs uppercase tracking-wider text-muted-foreground/40">LinkedIn</p>
                 {slot.linkedinUrl ? (
                   <a href={slot.linkedinUrl} target="_blank" rel="noopener noreferrer"
-                     className="inline-block text-xs bg-orange-500 hover:bg-orange-600 text-white px-2 py-1 transition-colors">
+                     className="inline-block text-xs rounded-md bg-primary text-primary-foreground px-2 py-1 shadow-clay hover:opacity-90 transition-opacity">
                     Abrir
                   </a>
                 ) : (
@@ -287,7 +287,7 @@ export default async function CharlaDetailPage({
 
         {/* KIT (antes: "Kit de difusión — Covers") */}
         {slot.covers.length > 0 && (
-          <div className="border border-border/50 bg-card p-6 space-y-4">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
             <div className="flex items-center justify-between border-b border-border/30 pb-3">
               <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
                 Kit
@@ -303,7 +303,7 @@ export default async function CharlaDetailPage({
 
         {/* Copy de LinkedIn */}
         {slot.linkedinCopy && (
-          <div className="border border-border/50 bg-card p-6 space-y-4">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
             <div className="flex items-center justify-between border-b border-border/30 pb-3">
               <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
                 LinkedIn
@@ -321,7 +321,7 @@ export default async function CharlaDetailPage({
 
         {/* Fotos adicionales */}
         {slot.fotos.length > 1 && (
-          <div className="border border-border/50 bg-card p-6 space-y-4">
+          <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
             <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
               Fotos del evento
             </h2>
@@ -336,7 +336,7 @@ export default async function CharlaDetailPage({
         )}
 
         {/* Estadísticas del evento */}
-        <div className="border border-border/50 bg-card p-6 space-y-4">
+        <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
           <div className="flex items-center justify-between border-b border-border/30 pb-3">
             <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
               Estadísticas del evento
@@ -351,9 +351,9 @@ export default async function CharlaDetailPage({
             <div className="border border-border/30 p-4 space-y-1">
               <p className="text-xs text-muted-foreground/50 uppercase tracking-wider">Registrados</p>
               {slot.registrados !== null ? (
-                <p className="text-2xl font-black">{slot.registrados}</p>
+                <p className="font-serif text-2xl">{slot.registrados}</p>
               ) : (
-                <p className="text-lg font-black text-muted-foreground/20">—</p>
+                <p className="font-serif text-lg text-muted-foreground/30">—</p>
               )}
               <p className="text-xs text-muted-foreground/30">en Luma</p>
             </div>
@@ -362,9 +362,9 @@ export default async function CharlaDetailPage({
             <div className="border border-border/30 p-4 space-y-1">
               <p className="text-xs text-muted-foreground/50 uppercase tracking-wider">Asistentes</p>
               {slot.asistentes !== null ? (
-                <p className="text-2xl font-black">{slot.asistentes}</p>
+                <p className="font-serif text-2xl">{slot.asistentes}</p>
               ) : (
-                <p className="text-lg font-black text-muted-foreground/20">—</p>
+                <p className="font-serif text-lg text-muted-foreground/30">—</p>
               )}
               <p className="text-xs text-muted-foreground/30">en vivo</p>
             </div>
@@ -373,11 +373,11 @@ export default async function CharlaDetailPage({
             <div className="border border-border/30 p-4 space-y-1">
               <p className="text-xs text-muted-foreground/50 uppercase tracking-wider">Tasa</p>
               {slot.tasaAsistencia !== null ? (
-                <p className="text-2xl font-black text-orange-400">
+                <p className="font-serif text-2xl text-primary">
                   {Math.round(slot.tasaAsistencia * 100)}%
                 </p>
               ) : (
-                <p className="text-lg font-black text-muted-foreground/20">—</p>
+                <p className="font-serif text-lg text-muted-foreground/30">—</p>
               )}
               <p className="text-xs text-muted-foreground/30">de asistencia</p>
             </div>

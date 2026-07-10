@@ -64,7 +64,7 @@ export default function VerificandoPage({ searchParams }: Props) {
           </div>
 
           <div className="space-y-3">
-            <h1 className="text-3xl font-black tracking-tight">{entry.title}</h1>
+            <h1 className="text-3xl font-serif tracking-tight">{entry.title}</h1>
             <p className="text-muted-foreground leading-relaxed">{entry.body}</p>
           </div>
 

@@ -22,7 +22,7 @@ export default async function DirectorioPage() {
 
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Directorio</p>
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-serif tracking-tight">
                 Todos los <span className="gradient-text">speakers</span>
               </h2>
             </div>

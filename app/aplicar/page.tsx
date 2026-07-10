@@ -32,7 +32,7 @@ export default async function AplicarPage() {
             Volver al inicio
           </Link>
 
-          <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
             ¡Convocatoria abierta: AIFF – <span className="gradient-text">Call for speakers!</span>
           </h1>
           <div className="text-sm sm:text-base text-muted-foreground mt-3 max-w-4xl space-y-3 leading-relaxed">

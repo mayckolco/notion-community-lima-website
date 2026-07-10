@@ -27,19 +27,19 @@ const VALUES = [
 const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[] = [
   {
     nombre: "Javier Flores",
-    titulo: "Co-fundador · AI First Founders",
+    titulo: "Co-fundador · Claude Perú",
     bio: "",
     foto: "/founders/javier-flores.jpeg",
   },
   {
     nombre: "Mayckol Cruzado",
-    titulo: "Co-fundador · AI First Founders",
+    titulo: "Co-fundador · Claude Perú",
     bio: "",
     foto: "/founders/mayckol-cruzado.jpeg",
   },
   {
     nombre: "Ignacio Velásquez",
-    titulo: "Co-fundador · AI First Founders",
+    titulo: "Co-fundador · Claude Perú",
     bio: "",
     foto: "/founders/ignacio-velasquez.jpeg",
   },
@@ -55,8 +55,8 @@ export default function NosotrosPage() {
           {/* Hero */}
           <div className="space-y-6">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
-            <h1 className="text-5xl font-black tracking-tight leading-tight">
-              AI First <span className="gradient-text">Founders</span>
+            <h1 className="text-5xl font-serif tracking-tight leading-tight">
+              Claude <span className="gradient-text">Perú</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Somos una comunidad de founders que construyen negocios usando inteligencia artificial
@@ -74,18 +74,18 @@ export default function NosotrosPage() {
           <div className="space-y-8">
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Nuestros valores</p>
-              <h2 className="text-2xl font-black tracking-tight">
+              <h2 className="text-2xl font-serif tracking-tight">
                 Lo que nos <span className="gradient-text">define</span>
               </h2>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
               {VALUES.map((v) => (
-                <div key={v.titulo} className="border border-border/50 bg-card p-6 space-y-3">
-                  <div className="w-10 h-10 bg-primary/10 flex items-center justify-center">
+                <div key={v.titulo} className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-3">
+                  <div className="grid h-9 w-9 place-items-center rounded-md bg-primary/10 text-primary">
                     {v.icon}
                   </div>
-                  <h3 className="font-black">{v.titulo}</h3>
+                  <h3 className="font-serif text-lg">{v.titulo}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{v.descripcion}</p>
                 </div>
               ))}
@@ -96,7 +96,7 @@ export default function NosotrosPage() {
           <div className="space-y-8">
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Equipo fundador</p>
-              <h2 className="text-2xl font-black tracking-tight">
+              <h2 className="text-2xl font-serif tracking-tight">
                 Las personas detrás de <span className="gradient-text">la comunidad</span>
               </h2>
             </div>
@@ -107,7 +107,7 @@ export default function NosotrosPage() {
                 return (
                   <div
                     key={f.nombre}
-                    className="relative border border-border/60 bg-card p-6 space-y-4 group hover:border-primary/40 transition-colors"
+                    className="relative rounded-xl border border-border bg-card p-6 shadow-soft space-y-4 group hover:border-primary/40 transition-colors"
                   >
                     <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">
                       {num}
@@ -126,14 +126,14 @@ export default function NosotrosPage() {
                           sizes="64px"
                         />
                       ) : (
-                        <span className="text-xl font-black text-muted-foreground/30">
+                        <span className="text-xl font-serif text-muted-foreground/30">
                           {f.nombre.charAt(0)}
                         </span>
                       )}
                     </div>
 
                     <div>
-                      <p className="font-black">{f.nombre}</p>
+                      <p className="font-serif">{f.nombre}</p>
                       <p className="text-xs text-primary font-mono mt-0.5">{f.titulo}</p>
                     </div>
                     {f.bio && (

@@ -132,7 +132,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
           </div>
         </div>
         <div className="space-y-2">
-          <h2 className="text-2xl font-black tracking-tight">Revisa tu correo</h2>
+          <h2 className="text-2xl font-serif tracking-tight">Revisa tu correo</h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             Enviamos un link de confirmación a<br />
             <span className="font-mono text-foreground">{submittedEmail}</span>

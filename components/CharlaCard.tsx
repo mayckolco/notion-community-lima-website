@@ -12,10 +12,10 @@ const ESTADO_LABELS: Record<string, string> = {
 };
 
 const ESTADO_COLORS: Record<string, string> = {
-  Aplicado: "text-yellow-400 border-yellow-900/50 bg-yellow-950/30",
-  Confirmado: "text-green-400 border-green-900/50 bg-green-950/30",
-  Publicado: "text-blue-400 border-blue-900/50 bg-blue-950/30",
-  Bloqueado: "text-zinc-500 border-zinc-800 bg-zinc-950/30",
+  Aplicado: "text-amber-700 border-amber-200 bg-amber-50",
+  Confirmado: "text-emerald-700 border-emerald-200 bg-emerald-50",
+  Publicado: "text-sky-700 border-sky-200 bg-sky-50",
+  Bloqueado: "text-muted-foreground border-border bg-muted",
 };
 
 function formatFecha(fecha: string): string {
@@ -44,22 +44,20 @@ export function CharlaCard({
   const estadoColor = ESTADO_COLORS[slot.estado] ?? ESTADO_COLORS.Aplicado;
 
   return (
-    <article className="group border border-border/40 bg-card flex flex-col transition-colors duration-200 hover:border-orange-500/60 hover:bg-orange-950/20">
-      {/* Cover image */}
+    <article className="group rounded-xl border border-border bg-card flex flex-col shadow-soft transition-colors duration-200 hover:border-primary/40 hover:bg-primary/5">
       {slot.fotos.length > 0 && (
-        <div className="relative h-28 overflow-hidden border-b border-border/30 group-hover:border-orange-500/20 flex-shrink-0 transition-colors">
+        <div className="relative h-28 overflow-hidden rounded-t-xl border-b border-border flex-shrink-0 transition-colors">
           <Image
             src={slot.fotos[0]}
             alt={slot.titulo ?? "Evento"}
             fill
-            className="object-cover transition-all duration-200 group-hover:brightness-90"
+            className="object-cover transition-all duration-200 group-hover:brightness-95"
             unoptimized
           />
         </div>
       )}
 
       <div className="p-4 space-y-3 flex flex-col flex-1">
-        {/* Header */}
         <div className="space-y-1">
           <div className="flex items-center justify-between gap-2">
             {total > 1 ? (
@@ -67,33 +65,31 @@ export function CharlaCard({
                 #{String(index + 1).padStart(2, "0")}
               </p>
             ) : <span />}
-            <span className={`text-xs border px-1.5 py-0.5 flex-shrink-0 leading-none ${estadoColor}`}>
+            <span className={`text-xs border rounded-full px-2 py-0.5 flex-shrink-0 leading-none ${estadoColor}`}>
               {estadoLabel}
             </span>
           </div>
           {slot.titulo ? (
-            <p className="font-bold text-xs leading-snug transition-colors group-hover:text-orange-300">
+            <p className="font-serif text-sm leading-snug transition-colors group-hover:text-primary">
               {slot.titulo}
             </p>
           ) : (
-            <p className="text-xs text-muted-foreground/60 italic">Sin título aún</p>
+            <p className="text-xs text-muted-foreground italic">Sin título aún</p>
           )}
         </div>
 
-        {/* Description — 2 lines */}
         {slot.descripcion && (
-          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 transition-colors group-hover:text-muted-foreground/80">
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
             {slot.descripcion}
           </p>
         )}
 
-        {/* Tools */}
         {slot.herramientas.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {slot.herramientas.map((h) => (
               <span
                 key={h}
-                className="text-xs border border-border/50 bg-muted/30 px-1.5 py-0.5 text-muted-foreground leading-none transition-colors group-hover:border-orange-500/30 group-hover:text-orange-300/70"
+                className="text-xs rounded-full border border-border bg-background px-2 py-0.5 text-muted-foreground leading-none"
               >
                 {h}
               </span>
@@ -101,31 +97,29 @@ export function CharlaCard({
           </div>
         )}
 
-        {/* Date */}
         {slot.fecha && (
-          <div className="border-t border-border/30 group-hover:border-orange-500/20 pt-3 flex items-start gap-2 transition-colors">
+          <div className="border-t border-border pt-3 flex items-start gap-2">
             {speakerFoto && (
-              <div className="relative w-6 h-6 flex-shrink-0 overflow-hidden border border-border/40">
+              <div className="relative w-6 h-6 flex-shrink-0 overflow-hidden rounded-full border border-border">
                 <Image src={speakerFoto} alt="" fill className="object-cover" unoptimized />
               </div>
             )}
             <div>
-              <p className="text-xs text-muted-foreground/60 uppercase tracking-wider mb-0.5 leading-none">
+              <p className="text-xs text-muted-foreground uppercase tracking-widest mb-0.5 leading-none">
                 Fecha
               </p>
-              <p className="text-xs font-medium capitalize transition-colors group-hover:text-orange-200/80">
+              <p className="text-xs font-medium capitalize">
                 {formatFecha(slot.fecha)}
               </p>
-              <p className="text-xs text-muted-foreground/50 mt-0.5">Lima (PET, UTC-5)</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Lima (PET, UTC-5)</p>
             </div>
           </div>
         )}
 
-        {/* Footer */}
-        <div className="flex justify-center border-t border-border/30 group-hover:border-orange-500/20 pt-3 mt-auto transition-colors">
+        <div className="flex justify-center border-t border-border pt-3 mt-auto">
           <Link
             href={`/portal/charla/${slot.id}`}
-            className="text-xs border border-orange-500/50 bg-orange-950/20 text-orange-400 px-4 py-1.5 hover:bg-orange-950/50 hover:border-orange-500 transition-colors"
+            className="text-xs rounded-md border border-primary/40 bg-primary/10 text-primary px-4 py-1.5 hover:bg-primary/15 hover:border-primary/60 transition-colors"
           >
             Ver más
           </Link>

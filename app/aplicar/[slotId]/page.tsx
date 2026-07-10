@@ -29,7 +29,7 @@ export default async function SlotFormPage({ params }: PageProps) {
             Volver a las fechas
           </Link>
 
-          <h1 className="text-3xl font-black tracking-tight">
+          <h1 className="text-3xl font-serif tracking-tight">
             Aplica como <span className="gradient-text">speaker</span>
           </h1>
           <p className="text-muted-foreground mt-2">

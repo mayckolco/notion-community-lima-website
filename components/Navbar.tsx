@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
@@ -18,17 +18,19 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-sm">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <Link
           href="/"
           onClick={() => setOpen(false)}
-          className="font-black text-lg tracking-tight hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2.5 font-serif text-lg tracking-tight hover:opacity-80 transition-opacity"
         >
-          AI First <span className="gradient-text">Founders</span>
+          <span className="grid h-8 w-8 place-items-center rounded-md bg-primary text-primary-foreground">
+            <Sparkles className="h-4 w-4" strokeWidth={1.75} />
+          </span>
+          Claude <span className="text-muted-foreground">Perú</span>
         </Link>
 
-        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-6">
           {NAV_LINKS.map(({ label, href, external }) =>
             external ? (
@@ -59,18 +61,17 @@ export function Navbar() {
           </Button>
 
           <button
-            className="flex md:hidden items-center justify-center w-11 h-11 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors touch-manipulation"
+            className="flex md:hidden items-center justify-center w-11 h-11 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors touch-manipulation"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {open ? <X className="h-5 w-5" strokeWidth={1.75} /> : <Menu className="h-5 w-5" strokeWidth={1.75} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {open && (
-        <div className="md:hidden border-t border-border/50 bg-background/95 backdrop-blur-sm">
+        <div className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur">
           {NAV_LINKS.map(({ label, href, external }) =>
             external ? (
               <a
@@ -79,7 +80,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex items-center px-6 py-4 text-base text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors border-b border-border/30 last:border-0"
+                className="flex items-center px-6 py-4 text-base text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-b border-border/60 last:border-0"
               >
                 {label}
               </a>
@@ -88,7 +89,7 @@ export function Navbar() {
                 key={label}
                 href={href}
                 onClick={() => setOpen(false)}
-                className="flex items-center px-6 py-4 text-base text-muted-foreground hover:text-foreground hover:bg-muted/30 transition-colors border-b border-border/30 last:border-0"
+                className="flex items-center px-6 py-4 text-base text-muted-foreground hover:text-foreground hover:bg-muted transition-colors border-b border-border/60 last:border-0"
               >
                 {label}
               </Link>

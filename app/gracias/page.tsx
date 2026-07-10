@@ -15,7 +15,7 @@ export default function GraciasPage() {
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-4xl font-black tracking-tight">
+          <h1 className="text-4xl font-serif tracking-tight">
             ¡Postulación <span className="gradient-text">confirmada!</span>
           </h1>
           <p className="text-lg text-muted-foreground">

@@ -1,15 +1,21 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, Fraunces } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
-const jetbrainsMono = JetBrains_Mono({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["400", "600"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600"],
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
@@ -25,8 +31,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es" className={`${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+    <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
+      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         {children}
         <Toaster />
         <Analytics />

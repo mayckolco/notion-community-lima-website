@@ -3,30 +3,35 @@
 @tailwind utilities;
 
 @layer base {
-  /* Núcleo brand — dark theme */
   :root {
-    --background: 240 20% 4%;         /* #0A0A0F Void Black */
-    --foreground: 0 0% 96%;
-    --card: 240 12% 7%;
-    --card-foreground: 0 0% 96%;
-    --popover: 240 12% 7%;
-    --popover-foreground: 0 0% 96%;
-    /* Núcleo Orange #FF6000 → HSL(23, 100%, 50%) */
-    --primary: 23 100% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 240 8% 11%;
-    --secondary-foreground: 0 0% 96%;
-    --muted: 240 8% 11%;
-    --muted-foreground: 0 0% 50%;
-    --accent: 23 100% 50%;
-    --accent-foreground: 0 0% 100%;
-    /* Núcleo Red #E63946 → HSL(356, 78%, 56%) */
-    --destructive: 356 78% 56%;
+    /* Claude Perú — warm editorial palette */
+    --paper: #F5F1EB;
+    --paper-deep: #EDE6DA;
+    --ink: #2B2622;
+    --clay: #D97757;
+    --clay-soft: #EBC7B4;
+    --peru-red: #C8102E;
+
+    --background: 38 33% 94%;
+    --foreground: 27 12% 15%;
+    --card: 40 45% 97%;
+    --card-foreground: 27 12% 15%;
+    --popover: 40 45% 97%;
+    --popover-foreground: 27 12% 15%;
+    --primary: 16 62% 60%;
+    --primary-foreground: 38 33% 94%;
+    --secondary: 38 29% 89%;
+    --secondary-foreground: 27 12% 15%;
+    --muted: 37 27% 88%;
+    --muted-foreground: 34 8% 40%;
+    --accent: 38 29% 89%;
+    --accent-foreground: 27 12% 15%;
+    --destructive: 348 85% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 240 8% 16%;
-    --input: 240 8% 16%;
-    --ring: 23 100% 50%;
-    --radius: 0.5rem;
+    --border: 36 25% 79%;
+    --input: 36 25% 79%;
+    --ring: 16 62% 60%;
+    --radius: 0.625rem;
   }
 
   * {
@@ -38,6 +43,10 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  h1, h2, h3, h4 {
+    @apply font-serif tracking-tight;
+  }
 }
 
 @layer utilities {
@@ -45,16 +54,16 @@
     text-wrap: balance;
   }
 
-  /* Núcleo signature gradient: orange → red */
-  .gradient-brand {
-    background: linear-gradient(135deg, #FF6000, #E63946);
+  .gradient-text {
+    @apply font-serif italic text-primary;
   }
 
-  .gradient-text {
-    background: linear-gradient(135deg, #FF6000, #E63946);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .shadow-soft {
+    box-shadow: 0 1px 2px rgba(43, 38, 34, 0.04), 0 4px 12px rgba(43, 38, 34, 0.06);
+  }
+
+  .shadow-clay {
+    box-shadow: 0 6px 20px -6px rgba(217, 119, 87, 0.55);
   }
 }
 

@@ -1,3 +1,5 @@
+import { Sparkles } from "lucide-react";
+
 const SOCIALS = [
   {
     label: "Instagram",
@@ -59,11 +61,14 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border/50 bg-card/30">
-      <div className="max-w-5xl mx-auto px-6 py-10 flex flex-col items-center gap-5">
-        <span className="font-black text-lg tracking-tight">
-          AI First <span className="gradient-text">Founders</span>
-        </span>
+    <footer className="border-t border-border/60">
+      <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col items-center gap-5">
+        <div className="flex items-center gap-2.5">
+          <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
+            <Sparkles className="h-3.5 w-3.5" strokeWidth={1.75} />
+          </span>
+          <span className="font-serif text-sm tracking-tight">AI First Founders</span>
+        </div>
 
         <div className="flex items-center gap-5 flex-wrap justify-center">
           {SOCIALS.map(({ label, href, svg }) => (
@@ -80,8 +85,8 @@ export function Footer() {
           ))}
         </div>
 
-        <p className="text-xs text-muted-foreground/60">
-          © {year} AI First Founders. Todos los derechos reservados.
+        <p className="text-xs text-muted-foreground">
+          © {year} AI First Founders. Comunidad independiente · Todos los derechos reservados.
         </p>
       </div>
     </footer>
