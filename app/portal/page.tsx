@@ -49,7 +49,7 @@ function PortalNav({ nombre }: { nombre: string }) {
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
         <Link href="/" className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity">
-          AI First <span className="text-muted-foreground">Founders</span>
+          Claude <span className="text-muted-foreground">Perú</span>
         </Link>
         <div className="flex items-center gap-3">
           <span className="hidden sm:block text-sm text-muted-foreground">

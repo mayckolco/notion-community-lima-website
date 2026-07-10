@@ -170,12 +170,12 @@ export default async function CharlaDetailPage({
           </h2>
           <div className="space-y-0">
             {[
-              { tiempo: "0–5 min",   actividad: "Apertura y bienvenida",         desc: "El equipo AIFF presenta al speaker y contextualiza el tema." },
+              { tiempo: "0–5 min",   actividad: "Apertura y bienvenida",         desc: "El equipo de Claude Perú presenta al speaker y contextualiza el tema." },
               { tiempo: "5–10 min",  actividad: "Intro del speaker",             desc: "Presentación breve: quién eres, qué haces, por qué este tema." },
               { tiempo: "10–40 min", actividad: "Charla principal",              desc: "Tu contenido. Enfocado, con demos o casos reales si aplica." },
               { tiempo: "40–50 min", actividad: "Q&A en vivo",                  desc: "Preguntas del chat moderadas por el equipo." },
               { tiempo: "50–55 min", actividad: "Recursos y próximos pasos",    desc: "Links, herramientas, dónde seguirte y cómo contactarte." },
-              { tiempo: "55–60 min", actividad: "Foto grupal y cierre",         desc: "Screenshot de pantalla y despedida del equipo AIFF." },
+              { tiempo: "55–60 min", actividad: "Foto grupal y cierre",         desc: "Screenshot de pantalla y despedida del equipo de Claude Perú." },
             ].map((e) => (
               <div key={e.tiempo} className="flex gap-4 py-3 border-b border-border/20 last:border-0">
                 <span className="text-muted-foreground/50 font-mono text-xs flex-shrink-0 w-20 pt-0.5">{e.tiempo}</span>

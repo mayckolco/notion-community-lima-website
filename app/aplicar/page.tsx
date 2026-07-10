@@ -33,11 +33,11 @@ export default async function AplicarPage() {
           </Link>
 
           <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
-            ¡Convocatoria abierta: AIFF – <span className="gradient-text">Call for speakers!</span>
+            ¡Convocatoria abierta: Claude Perú – <span className="gradient-text">Call for speakers!</span>
           </h1>
           <div className="text-sm sm:text-base text-muted-foreground mt-3 max-w-4xl space-y-3 leading-relaxed">
             <p>¿Estás construyendo una startup o desarrollando productos con inteligencia artificial?</p>
-            <p>Tu experiencia, aprendizajes y desafíos pueden inspirar a la próxima generación de founders y builders. No importa si es tu primera vez como speaker o si ya has compartido en escenarios antes y sé parte de AIFF Speakers.</p>
+            <p>Tu experiencia, aprendizajes y desafíos pueden inspirar a la próxima generación de founders y builders. No importa si es tu primera vez como speaker o si ya has compartido en escenarios antes y sé parte de Speakers de Claude Perú.</p>
           </div>
         </div>
 

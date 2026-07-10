@@ -172,7 +172,7 @@ function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqu
             href="/"
             className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity"
           >
-            AI First <span className="text-muted-foreground">Founders</span>
+            Claude <span className="text-muted-foreground">Perú</span>
           </Link>
           <span className={`text-xs border rounded-full px-2 py-0.5 ${ETIQUETA_COLORS[etiqueta]}`}>
             {etiqueta}

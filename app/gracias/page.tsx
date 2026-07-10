@@ -36,7 +36,7 @@ export default function GraciasPage() {
               <span className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary text-xs font-bold">
                 2
               </span>
-              El equipo de AI First Founders coordinará contigo la logística del evento.
+              El equipo de Claude Perú coordinará contigo la logística del evento.
             </li>
             <li className="flex items-start gap-3">
               <span className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary text-xs font-bold">

@@ -18,11 +18,11 @@ interface SendVerificationParams {
 }
 
 export async function sendVerificationEmail(params: SendVerificationParams): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "AI First Founders <noreply@aifirstfounders.com>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Confirma tu postulación como Speaker [AI First Founders]",
+    subject: "Confirma tu postulación como Speaker [Claude Perú]",
     html: buildEmailHtml(params),
   });
 }
@@ -45,7 +45,7 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
           <tr>
             <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
               <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
-                AI FIRST FOUNDERS
+                CLAUDE PERÚ
               </p>
             </td>
           </tr>
@@ -95,7 +95,7 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
 
                   <p style="margin:0 0 28px;color:#a1a1aa;font-size:14px;line-height:1.8;">
                     Un abrazo,<br/>
-                    <strong style="color:#fafafa;">Equipo AIFF</strong>
+                    <strong style="color:#fafafa;">Equipo Claude Perú</strong>
                   </p>
 
                   <hr style="border:none;border-top:1px solid #27272a;margin:0 0 20px;" />
@@ -135,11 +135,11 @@ interface SendMagicLinkParams {
 }
 
 export async function sendMagicLinkEmail(params: SendMagicLinkParams): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "AI First Founders <noreply@aifirstfounders.com>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Tu acceso al portal de Speaker · AI First Founders",
+    subject: "Tu acceso al portal de Speaker · Claude Perú",
     html: buildMagicLinkHtml(params),
   });
 }
@@ -160,7 +160,7 @@ function buildMagicLinkHtml({ nombre, magicUrl }: SendMagicLinkParams): string {
           <tr>
             <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
               <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
-                AI FIRST FOUNDERS
+                CLAUDE PERÚ
               </p>
             </td>
           </tr>

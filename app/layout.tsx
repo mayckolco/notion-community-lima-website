@@ -19,12 +19,12 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Postula como Speaker · AI First Founders",
+  title: "Postula como Speaker · Claude Perú",
   description:
-    "Comparte tu experiencia construyendo con IA. Postula para hablar un martes de 7–8 pm en la comunidad AI First Founders.",
+    "Comparte tu experiencia construyendo con IA. Postula para hablar un martes de 7–8 pm en la comunidad Claude Perú.",
   openGraph: {
-    title: "Postula como Speaker · AI First Founders",
-    description: "Comparte tu experiencia construyendo con IA en la comunidad AI First Founders.",
+    title: "Postula como Speaker · Claude Perú",
+    description: "Comparte tu experiencia construyendo con IA en la comunidad Claude Perú.",
     type: "website",
   },
 };

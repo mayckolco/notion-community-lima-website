@@ -67,7 +67,7 @@ export function Footer() {
           <span className="grid h-7 w-7 place-items-center rounded-md bg-primary text-primary-foreground">
             <Sparkles className="h-3.5 w-3.5" strokeWidth={1.75} />
           </span>
-          <span className="font-serif text-sm tracking-tight">AI First Founders</span>
+          <span className="font-serif text-sm tracking-tight">Claude Perú</span>
         </div>
 
         <div className="flex items-center gap-5 flex-wrap justify-center">
@@ -86,7 +86,7 @@ export function Footer() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          © {year} AI First Founders. Comunidad independiente · Todos los derechos reservados.
+          © {year} Claude Perú. Comunidad independiente · Todos los derechos reservados.
         </p>
       </div>
     </footer>

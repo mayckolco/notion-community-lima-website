@@ -1,6 +1,6 @@
-# AIFF Speakers — AGENTS.md
+# Claude Perú Speakers — AGENTS.md
 
-Plataforma de speakers para AI First Founders.
+Plataforma de speakers para Claude Perú.
 Notion es el único backend. La web lee/escribe vía Notion API.
 
 **Producción**: `https://speakers.mayckolco.com`
@@ -124,7 +124,7 @@ DB_SPEAKERS_ID=c0ab88424420478482abb29790b1a872
 EMAIL_VERIFICATION_SECRET
 CRON_SECRET
 RESEND_API_KEY
-RESEND_FROM_EMAIL=AI First Founders <hola@mayckolco.com>
+RESEND_FROM_EMAIL=Claude Perú <hola@mayckolco.com>
 NEXT_PUBLIC_BASE_URL=https://speakers.mayckolco.com
 NEXT_PUBLIC_GA_MEASUREMENT_ID=G-FGDCTV5ZEV
 ```

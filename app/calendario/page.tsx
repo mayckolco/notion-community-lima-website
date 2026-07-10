@@ -53,7 +53,7 @@ export default async function CalendarioPage() {
                 ¿Quieres ser el próximo <span className="gradient-text">speaker</span>?
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
-                Comparte tu experiencia construyendo con IA frente a la comunidad AI First Founders.
+                Comparte tu experiencia construyendo con IA frente a la comunidad Claude Perú.
               </p>
             </div>
 
