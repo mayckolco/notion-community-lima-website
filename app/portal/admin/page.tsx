@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getSpeakerPortalById } from "@/lib/notion/portal";
-import { listAllSlotsAdmin } from "@/lib/notion/admin";
+import { listAllSlotsAdmin, listAllSpeakersAdmin } from "@/lib/notion/admin";
 import { getSpeakerEtiqueta, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
-import type { AdminSlot, AdminSpeaker, SpeakerEtiqueta } from "@/lib/schemas";
+import { AdminPanel } from "@/components/admin/AdminPanel";
+import type { SpeakerEtiqueta } from "@/lib/schemas";
+
+const ADMIN_ESTADOS = ["Disponible", "Reservado", "Confirmado", "En promoción", "Publicado", "Bloqueado"] as const;
 
 const ESTADO_COLORS: Record<string, string> = {
   Disponible: "text-muted-foreground border-border bg-muted",
@@ -15,22 +17,6 @@ const ESTADO_COLORS: Record<string, string> = {
   Publicado: "text-sky-700 border-sky-200 bg-sky-50",
   "En promoción": "text-primary border-primary/20 bg-primary/10",
 };
-
-const ETIQUETA_COLORS: Record<SpeakerEtiqueta, string> = {
-  speaker: "text-sky-700 border-sky-200 bg-sky-50",
-  admin: "text-primary border-primary/20 bg-primary/10",
-  colaborador: "text-violet-700 border-violet-200 bg-violet-50",
-};
-
-function formatFecha(fecha: string | null): string {
-  if (!fecha) return "Sin fecha";
-  const dateStr = fecha.split("T")[0];
-  const [year, month, day] = dateStr.split("-");
-  const months = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
-  return `${parseInt(day)} ${months[parseInt(month) - 1]} ${year}`;
-}
-
-const ADMIN_ESTADOS = ["Disponible", "Reservado", "Confirmado", "En promoción", "Publicado", "Bloqueado"] as const;
 
 export default async function AdminPage({
   searchParams,
@@ -50,7 +36,10 @@ export default async function AdminPage({
   const displayName = speaker?.nombre ?? session.email.split("@")[0];
 
   const isAdmin = etiqueta === "admin";
-  const allSlots = await listAllSlotsAdmin(isAdmin ? undefined : "En promoción");
+  const [allSlots, allSpeakers] = await Promise.all([
+    listAllSlotsAdmin(isAdmin ? undefined : "En promoción"),
+    isAdmin ? listAllSpeakersAdmin() : Promise.resolve([]),
+  ]);
 
   const estadoFilter = searchParams.estado ?? "";
   const slots = estadoFilter
@@ -77,7 +66,7 @@ export default async function AdminPage({
             </h1>
             <p className="text-sm text-muted-foreground mt-1">
               {isAdmin
-                ? "Vista general de todos los webinars"
+                ? "Vista general de webinars, speakers y accesos rápidos"
                 : "Webinars actualmente en etapa de promoción"}
             </p>
           </div>
@@ -106,28 +95,14 @@ export default async function AdminPage({
           )}
         </div>
 
-        <section className="space-y-4">
-          <div className="flex items-center justify-between border-b border-border pb-3">
-            <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
-              {estadoFilter ? `${estadoFilter} (${slots.length})` : `Todos los webinars (${total})`}
-            </h2>
-            {isAdmin && (
-              <EstadoFilter current={estadoFilter} />
-            )}
-          </div>
+        {isAdmin && <EstadoFilter current={estadoFilter} />}
 
-          {slots.length === 0 ? (
-            <p className="text-sm text-muted-foreground py-4">No hay webinars con este estado.</p>
-          ) : (
-            <div className="space-y-2">
-              {slots.map((slot) => (
-                <Link key={slot.id} href={`/portal/charla/${slot.id}`} className="block group">
-                  <WebinarRow slot={slot} />
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
+        <AdminPanel
+          slots={slots}
+          speakers={allSpeakers}
+          isAdmin={isAdmin}
+          estadoFilter={estadoFilter}
+        />
       </div>
     </main>
   );
@@ -135,7 +110,7 @@ export default async function AdminPage({
 
 function EstadoFilter({ current }: { current: string }) {
   return (
-    <div className="flex items-center gap-1.5 flex-wrap justify-end">
+    <div className="flex items-center gap-1.5 flex-wrap">
       <Link
         href="/portal/admin"
         className={`text-xs rounded-md px-2.5 py-1 border transition-colors ${
@@ -164,6 +139,12 @@ function EstadoFilter({ current }: { current: string }) {
 }
 
 function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqueta }) {
+  const etiquetaColors: Record<SpeakerEtiqueta, string> = {
+    speaker: "text-sky-700 border-sky-200 bg-sky-50",
+    admin: "text-primary border-primary/20 bg-primary/10",
+    colaborador: "text-violet-700 border-violet-200 bg-violet-50",
+  };
+
   return (
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
@@ -174,7 +155,7 @@ function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqu
           >
             Claude<span className="ml-0.5 text-muted-foreground">Perú</span>
           </Link>
-          <span className={`text-xs border rounded-full px-2 py-0.5 ${ETIQUETA_COLORS[etiqueta]}`}>
+          <span className={`text-xs border rounded-full px-2 py-0.5 ${etiquetaColors[etiqueta]}`}>
             {etiqueta}
           </span>
         </div>
@@ -207,9 +188,9 @@ function StatCard({
 }) {
   const valueClass =
     accent === "blue"
-      ? "text-sky-700"
+      ? "text-sky-700 dark:text-sky-300"
       : accent === "green"
-      ? "text-emerald-700"
+      ? "text-emerald-700 dark:text-emerald-300"
       : accent === "primary"
       ? "text-primary"
       : "text-foreground";
@@ -218,78 +199,6 @@ function StatCard({
     <div className="rounded-xl border border-border bg-card p-4 shadow-soft space-y-1">
       <p className="text-xs text-muted-foreground uppercase tracking-widest">{label}</p>
       <p className={`font-serif text-2xl ${valueClass}`}>{value}</p>
-    </div>
-  );
-}
-
-function WebinarRow({ slot }: { slot: AdminSlot }) {
-  const estadoColor = ESTADO_COLORS[slot.estado] ?? ESTADO_COLORS.Disponible;
-  const isPast = slot.fecha ? new Date(slot.fecha) < new Date() : false;
-
-  return (
-    <div
-      className={`rounded-xl border border-border bg-card px-4 py-3 flex items-center gap-4 group-hover:border-primary/40 group-hover:bg-primary/5 transition-colors ${
-        isPast ? "opacity-60" : ""
-      }`}
-    >
-      <div className="w-28 flex-shrink-0">
-        <p className="text-xs text-muted-foreground">{formatFecha(slot.fecha)}</p>
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <p className={`text-sm font-medium truncate ${!slot.titulo ? "text-muted-foreground italic" : ""}`}>
-          {slot.titulo ?? "Sin título"}
-        </p>
-      </div>
-
-      <div className="flex-shrink-0">
-        <span className={`text-xs border rounded-full px-2 py-0.5 ${estadoColor}`}>{slot.estado}</span>
-      </div>
-
-      <div className="w-48 flex-shrink-0">
-        {slot.speaker ? (
-          <SpeakerChip speaker={slot.speaker} />
-        ) : (
-          <p className="text-xs text-muted-foreground italic">Sin speaker</p>
-        )}
-      </div>
-
-      <div className="w-24 flex-shrink-0 text-right">
-        <p className="text-xs text-muted-foreground">
-          {slot.asistentes ?? 0} / {slot.registrados ?? 0}
-        </p>
-        <p className="text-xs text-muted-foreground/60">
-          {slot.registrados && slot.asistentes
-            ? `${Math.round((slot.asistentes / slot.registrados) * 100)}%`
-            : "0%"}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function SpeakerChip({ speaker }: { speaker: AdminSpeaker }) {
-  const etiquetaColor = ETIQUETA_COLORS[speaker.etiqueta];
-
-  return (
-    <div className="flex items-center gap-2">
-      {speaker.foto && (
-        <div className="relative w-6 h-6 flex-shrink-0 overflow-hidden rounded-full border border-border">
-          <Image
-            src={speaker.foto}
-            alt={speaker.nombre}
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        </div>
-      )}
-      <div className="min-w-0">
-        <p className="text-xs font-medium truncate">{speaker.nombre}</p>
-        <span className={`text-xs border rounded-full px-1.5 py-0 ${etiquetaColor}`}>
-          {speaker.etiqueta}
-        </span>
-      </div>
     </div>
   );
 }

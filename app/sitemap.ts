@@ -1,18 +1,33 @@
 import { MetadataRoute } from "next";
+import { listDirectorySpeakers } from "@/lib/notion/speakers";
+import { SITE_URL } from "@/lib/seo/site";
 
-const BASE = "https://claude.mayckolco.com";
+const STATIC_ROUTES: MetadataRoute.Sitemap = [
+  { url: SITE_URL, changeFrequency: "weekly", priority: 1 },
+  { url: `${SITE_URL}/eventos`, changeFrequency: "weekly", priority: 0.9 },
+  { url: `${SITE_URL}/recursos`, changeFrequency: "weekly", priority: 0.8 },
+  { url: `${SITE_URL}/proyectos`, changeFrequency: "monthly", priority: 0.7 },
+  { url: `${SITE_URL}/nosotros`, changeFrequency: "monthly", priority: 0.8 },
+  { url: `${SITE_URL}/directorio`, changeFrequency: "weekly", priority: 0.8 },
+  { url: `${SITE_URL}/aplicar`, changeFrequency: "weekly", priority: 0.9 },
+  { url: `${SITE_URL}/programas`, changeFrequency: "monthly", priority: 0.7 },
+  { url: `${SITE_URL}/programas/profesionales`, changeFrequency: "monthly", priority: 0.7 },
+  { url: `${SITE_URL}/programas/empresas`, changeFrequency: "monthly", priority: 0.7 },
+];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
+  const speakers = await listDirectorySpeakers().catch(() => []);
+
+  const speakerRoutes: MetadataRoute.Sitemap = speakers.map((speaker) => ({
+    url: `${SITE_URL}/directorio/${speaker.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
   return [
-    { url: BASE, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
-    { url: `${BASE}/nosotros`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/aplicar`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
-    { url: `${BASE}/directorio`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${BASE}/eventos`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: `${BASE}/programas`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/programas/profesionales`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/programas/empresas`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: `${BASE}/proyectos`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
-    { url: `${BASE}/recursos`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    ...STATIC_ROUTES.map((route) => ({ ...route, lastModified: now })),
+    ...speakerRoutes,
   ];
 }

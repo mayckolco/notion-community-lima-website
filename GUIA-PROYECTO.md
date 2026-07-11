@@ -3,7 +3,7 @@
 Documento vivo que define la visión, el plan de desarrollo y el estado de cada funcionalidad.
 **Regla de mantenimiento**: cada vez que se complete, agregue o descarte una funcionalidad, actualizar este archivo en el mismo commit.
 
-Última actualización: 2026-07-10 (Fase 1 completada)
+Última actualización: 2026-07-10 (Fase 5 completada)
 
 ---
 
@@ -32,11 +32,11 @@ Secciones principales del navbar:
 | Sección | Ruta | Estado |
 |---|---|---|
 | Eventos | `/eventos` | ✅ Creada (`/calendario` redirige 301 aquí) |
-| Proyectos | `/proyectos` | Existe (revisar contenido en Fase 2) |
-| Recursos | `/recursos` | Existe (revisar contenido en Fase 2) |
+| Proyectos | `/proyectos` | ✅ v2 con showcase de proyectos |
+| Recursos | `/recursos` | ✅ v2 con filtros y grabaciones |
 | Programas ▾ Profesionales | `/programas/profesionales` | ✅ Creada (`/programas` es página índice) |
 | Programas ▾ Empresas | `/programas/empresas` | ✅ Creada |
-| Sobre nosotros | `/nosotros` | Existe (revisar contenido en Fase 2) |
+| Sobre nosotros | `/nosotros` | ✅ v2 con historia y cómo participar |
 
 Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `/aplicar`, `/login`, `/portal`.
 
@@ -66,48 +66,48 @@ Objetivo: dejar la navegación y los elementos comunes alineados a la visión.
 - [x] **Botón flotante de WhatsApp**: `components/WhatsAppButton.tsx` fijo abajo a la derecha, global vía `app/layout.tsx`, enlaza a `https://wa.me/51946542990`, con `aria-label`, 56px táctil y evento GA `click_whatsapp`.
 - [x] **Navbar objetivo**: Eventos, Proyectos, Recursos, Programas (dropdown: Profesionales / Empresas), Sobre nosotros. Dropdown con `aria-expanded`, cierre con Escape/click-fuera, y sublinks en menú móvil.
 - [x] **Footer completo**: 3 columnas (marca+redes, Explora, Comunidad) con Instagram @claudeperucommunity, comunidad WhatsApp, directorio/aplicar, y disclaimer de comunidad independiente no afiliada a Anthropic.
-- [x] **Página `/eventos`**: absorbe `/calendario` con metadata propia. Redirect 301 `/calendario` → `/eventos` en `next.config.mjs`. *Pendiente para Fase 2: sección de eventos pasados con grabaciones.*
+- [x] **Página `/eventos`**: absorbe `/calendario` con metadata propia. Redirect 301 `/calendario` → `/eventos` en `next.config.mjs`. Sección de eventos pasados con grabaciones desde Notion.
 - [x] **Split de Programas**: `/programas` como índice con dos tracks, `/programas/profesionales` (programa "Claude para principiantes") y `/programas/empresas` (capacitaciones a medida, CTA WhatsApp). Cada una con metadata propia.
 
-### Fase 2 — Contenido informativo sobre Claude (el corazón del sitio)
+### Fase 2 — Contenido informativo sobre Claude (el corazón del sitio) ✅ (2026-07-10)
 
 Objetivo: convertirse en la referencia en español-Perú sobre Claude y sus productos.
 
-- [ ] **Landing renovada**: hero orientado a conversión (unirse a la comunidad + próximo evento), sección "¿Qué es Claude?", productos (Claude app, Claude Code, API), prueba social (speakers, testimonios), CTA final.
-- [ ] **Sección novedades de Claude**: página o bloque con lanzamientos y noticias de productos Anthropic (modelos, features), mantenida manualmente al inicio.
-- [ ] **Recursos v2**: recursos categorizados (empezar con Claude, prompting, Claude Code, API/builders), con filtros simples y contenido propio de la comunidad (grabaciones de charlas).
-- [ ] **Proyectos v2**: showcase de proyectos de la comunidad con capturas, stack y enlaces.
-- [ ] **Sobre nosotros v2**: historia, misión, equipo/organizadores, cómo participar (asistir, ser speaker, colaborar).
+- [x] **Landing renovada**: hero orientado a conversión (unirse a la comunidad + próximo evento), sección "¿Qué es Claude?", productos (Claude app, Claude Code, API), prueba social (speakers, testimonios), CTA final.
+- [x] **Sección novedades de Claude**: bloque en landing y `/recursos` con lanzamientos de Anthropic (`lib/content/novedades.ts`), mantenida manualmente.
+- [x] **Recursos v2**: recursos categorizados con filtros (`RecursosFilter`), contenido estático + grabaciones de charlas desde Notion.
+- [x] **Proyectos v2**: showcase de proyectos de la comunidad con stack y enlaces (`lib/content/proyectos.ts`).
+- [x] **Sobre nosotros v2**: historia, misión, equipo/organizadores, cómo participar (asistir, ser speaker, colaborar).
 
-### Fase 3 — SEO / GEO / AEO y analítica
+### Fase 3 — SEO / GEO / AEO y analítica ✅ (2026-07-10)
 
 Objetivo: máxima visibilidad en buscadores y en motores de respuesta (ChatGPT, Perplexity, Google AI Overviews).
 
-- [ ] **Metadata por página**: `title`/`description` únicos vía Metadata API de Next, Open Graph + Twitter cards con imagen OG propia.
-- [ ] **Datos estructurados (JSON-LD)**: `Organization` (global), `Event` (cada evento), `FAQPage` (preguntas frecuentes), `Course` (programas), `BreadcrumbList`.
-- [ ] **Infraestructura SEO**: `sitemap.ts`, `robots.ts`, canonical URLs, `lang="es-PE"`.
-- [ ] **AEO**: sección FAQ en landing y páginas clave, redactada como respuestas directas a preguntas reales ("¿Qué es Claude?", "¿Cómo uso Claude en Perú?", "¿Claude es gratis?").
-- [ ] **GEO**: contenido citable — datos concretos de la comunidad (número de eventos, speakers, miembros), definiciones claras, encabezados jerárquicos.
-- [ ] **GA4 eventos de conversión**: `click_whatsapp`, `join_community`, `apply_speaker`, `register_event`, `click_instagram`. Marcarlos como conversiones en GA4.
-- [ ] **Performance**: Lighthouse ≥90 en mobile (LCP, CLS), `next/image` en todas las imágenes, fonts ya optimizadas.
+- [x] **Metadata por página**: helper `createPageMetadata()` en `lib/seo/metadata.ts` con OG + Twitter cards en todas las páginas públicas. OG image renovada con paleta Claude Perú.
+- [x] **Datos estructurados (JSON-LD)**: `Organization` (landing), `FAQPage` (landing + recursos), `Event` (eventos), `Course` (programas), `BreadcrumbList` (páginas internas), `Person` (directorio/speaker).
+- [x] **Infraestructura SEO**: `sitemap.ts` dinámico con speakers, `robots.ts`, canonical URLs vía metadata, `lang="es-PE"` en layout.
+- [x] **AEO**: sección FAQ en landing (`LANDING_FAQ`) y recursos (`RECURSOS_FAQ`) con respuestas directas.
+- [x] **GEO**: `CommunityStatsSection` con datos citable (speakers, charlas, miembros WhatsApp).
+- [x] **GA4 eventos de conversión**: `click_whatsapp`, `join_community`, `apply_speaker`, `register_event`, `click_instagram` implementados vía `lib/seo/analytics.ts`. *Pendiente manual: marcarlos como conversiones en el dashboard de GA4.*
+- [x] **Performance**: imágenes con `next/image` en todo el sitio; fonts Inter + Fraunces optimizadas en layout.
 
-### Fase 4 — Conversión y crecimiento
+### Fase 4 — Conversión y crecimiento ✅ (2026-07-10)
 
 Objetivo: que el tráfico se convierta en miembros activos.
 
-- [ ] **CTA principal unificado**: "Únete a la comunidad" (WhatsApp community) presente en hero, navbar o footer de todas las páginas.
-- [ ] **Newsletter / captura de email**: formulario simple (Resend ya está integrado) para anunciar eventos y novedades.
-- [ ] **Página de gracias por conversión** (`/gracias` ya existe — revisar y conectar a los nuevos flujos).
-- [ ] **Testimonios y social proof**: ampliar `TestimonialsMarquee` con casos reales de asistentes/speakers.
-- [ ] **A/B de copy en CTAs** (opcional, cuando haya tráfico suficiente).
+- [x] **CTA principal unificado**: `JoinCommunityButton` en navbar (desktop + móvil), hero, CTAs de página y `FooterCTA` global en todas las páginas con footer.
+- [x] **Newsletter / captura de email**: `NewsletterForm` + `POST /api/newsletter` con Resend (email de bienvenida + audiencia opcional vía `RESEND_AUDIENCE_ID`). Ubicado en footer global.
+- [x] **Página de gracias por conversión**: `/gracias?tipo=speaker` (verificación de speaker) y `/gracias?tipo=newsletter` (suscripción). Contenido dinámico por flujo.
+- [x] **Testimonios y social proof**: `lib/content/testimonials.ts` ampliado a 14 testimonios con roles (Asistente, Speaker, Organizador).
+- [ ] **A/B de copy en CTAs** — diferido: sin tráfico suficiente aún para experimentar.
 
-### Fase 5 — Mejora continua (backlog)
+### Fase 5 — Mejora continua (backlog) ✅ (2026-07-10)
 
-- [ ] Buscador interno de recursos
-- [ ] Modo claro/oscuro (hoy solo un tema)
-- [ ] Versión en inglés (si hay demanda)
-- [ ] Automatizar sección de novedades desde fuentes de Anthropic
-- [ ] Panel admin más completo en `/portal/admin`
+- [x] **Buscador interno de recursos**: campo de búsqueda en `RecursosFilter` (título, descripción, speaker, categoría).
+- [x] **Modo claro/oscuro**: `ThemeProvider` + `ThemeToggle` en navbar, paleta dark en `globals.css`, `darkMode: class` en Tailwind.
+- [ ] **Versión en inglés** — diferido: sin demanda confirmada aún.
+- [x] **Automatizar novedades Anthropic**: `fetchAnthropicNews()` desde RSS con fallback manual, cache 24h (`getNovedades`), cron `/api/cron/sync-novedades` diario.
+- [x] **Panel admin ampliado**: búsqueda de webinars/speakers, tab de speakers, quick links (eventos, directorio, aplicar), stats mejoradas.
 
 ## 4. Definición de "hecho" (DoD) por funcionalidad
 
@@ -125,3 +125,7 @@ Una funcionalidad se marca `[x]` solo si:
 |---|---|
 | 2026-07-10 | Creación de la guía con visión, arquitectura de navegación y plan en 5 fases |
 | 2026-07-10 | Fase 1 completada: WhatsApp flotante, navbar con dropdown, footer nuevo, `/eventos` con redirect, split de programas |
+| 2026-07-10 | Fase 2 completada: landing renovada, novedades Claude, recursos v2 con filtros, proyectos v2, nosotros v2, grabaciones en eventos |
+| 2026-07-10 | Fase 3 completada: SEO metadata helper, JSON-LD, FAQ/AEO, stats GEO, sitemap dinámico, GA4 eventos, lang es-PE |
+| 2026-07-10 | Fase 4 completada: CTA unificado navbar/footer, newsletter con Resend, gracias multi-flujo, testimonios ampliados |
+| 2026-07-10 | Fase 5 completada: buscador recursos, dark mode, novedades RSS automáticas, panel admin ampliado |

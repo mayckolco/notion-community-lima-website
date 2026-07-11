@@ -2,19 +2,42 @@ import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
 import { Button } from "@/components/ui/button";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, courseJsonLd } from "@/lib/seo/json-ld";
+import { SITE_URL } from "@/lib/seo/site";
 
-export const metadata: Metadata = {
-  title: "Programas para profesionales · Claude Perú",
+const COURSE_NAME = "Claude para principiantes";
+const COURSE_DESCRIPTION =
+  "Programa introductorio para empezar con Claude desde cero. Aprende fundamentos, casos de uso prácticos e integración en tu día a día.";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Programas para profesionales",
   description:
     "Formaciones prácticas para dominar Claude en tu trabajo: fundamentos, prompting y casos de uso reales. Empieza desde cero con la comunidad Claude Perú.",
-};
+  path: "/programas/profesionales",
+});
 
 const PRE_RESERVA_URL = "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3";
 
 export default function ProgramasProfesionalesPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Inicio", path: "/" },
+            { name: "Programas", path: "/programas" },
+            { name: "Profesionales", path: "/programas/profesionales" },
+          ]),
+          courseJsonLd({
+            name: COURSE_NAME,
+            description: COURSE_DESCRIPTION,
+            url: `${SITE_URL}/programas/profesionales`,
+          }),
+        ]}
+      />
       <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-16 sm:py-24">
         <div className="max-w-4xl mx-auto space-y-10">

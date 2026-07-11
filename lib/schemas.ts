@@ -49,6 +49,13 @@ export const applySchema = z.object({
 
 export type ApplyInput = z.infer<typeof applySchema>;
 
+export const newsletterSchema = z.object({
+  email: z.string().min(1, "El email es requerido").email("Email inválido"),
+  nombre: z.string().max(80).optional().or(z.literal("")),
+});
+
+export type NewsletterInput = z.infer<typeof newsletterSchema>;
+
 export const HERRAMIENTAS_OPTIONS = [
   "Notion",
   "Make",

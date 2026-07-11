@@ -1,6 +1,7 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
+import { GA_EVENTS } from "@/lib/seo/analytics";
 
 const WHATSAPP_URL = "https://wa.me/51946542990";
 
@@ -12,7 +13,7 @@ export function WhatsAppButton() {
       rel="noopener noreferrer"
       aria-label="Escríbenos por WhatsApp"
       onClick={() =>
-        sendGAEvent("event", "click_whatsapp", { location: "floating_button" })
+        sendGAEvent("event", GA_EVENTS.clickWhatsapp, { location: "floating_button" })
       }
       className="fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_8px_24px_-6px_rgba(0,0,0,0.45)] hover:scale-105 active:scale-95 transition-transform touch-manipulation"
     >

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,6 +6,9 @@ import { ArrowLeft, Globe, Mail, PlayCircle } from "lucide-react";
 import { getSpeakerBySlug, getWebinarsBySpeakerId } from "@/lib/notion/speakers";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, personJsonLd } from "@/lib/seo/json-ld";
 
 export const revalidate = 0;
 
@@ -13,6 +17,23 @@ interface PageProps {
 }
 
 const SLUG_RE = /^[a-z0-9-]{2,100}$/;
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  if (!SLUG_RE.test(params.slug)) return {};
+
+  const speaker = await getSpeakerBySlug(params.slug);
+  if (!speaker) return {};
+
+  const description =
+    speaker.biografia ??
+    `Speaker de Claude Perú${speaker.rol ? ` · ${speaker.rol}` : ""}${speaker.empresa ? ` en ${speaker.empresa}` : ""}.`;
+
+  return createPageMetadata({
+    title: speaker.nombre,
+    description,
+    path: `/directorio/${speaker.slug}`,
+  });
+}
 
 export default async function SpeakerDetailPage({ params }: PageProps) {
   if (!SLUG_RE.test(params.slug)) notFound();
@@ -23,6 +44,16 @@ export default async function SpeakerDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Inicio", path: "/" },
+            { name: "Directorio", path: "/directorio" },
+            { name: speaker.nombre, path: `/directorio/${speaker.slug}` },
+          ]),
+          personJsonLd(speaker),
+        ]}
+      />
       <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-8 sm:py-12">
         <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">

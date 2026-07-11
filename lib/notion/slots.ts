@@ -46,6 +46,16 @@ function extractHerramientas(props: Record<string, unknown>): string[] {
   return p["Herramientas"]?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
 }
 
+function extractGrabacionUrl(props: Record<string, unknown>): string | null {
+  const p = props as Record<string, { url?: string | null }>;
+  return (
+    p["Webinar URL"]?.url ??
+    p["Grabación URL"]?.url ??
+    p["Grabacion URL"]?.url ??
+    null
+  );
+}
+
 function extractSpeakerIds(props: Record<string, unknown>): string[] {
   const p = props as Record<string, { relation?: Array<{ id: string }> }>;
   return p["Speaker"]?.relation?.map((r) => r.id) ?? [];
@@ -208,6 +218,67 @@ export async function listAvailableSlots(): Promise<Slot[]> {
   return results
     .map(mapPageToSlot)
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
+}
+
+export interface PastSlotRecord extends Slot {
+  grabacionUrl: string;
+}
+
+export async function listPastSlotsWithRecordings(): Promise<PastSlotRecord[]> {
+  const now = new Date();
+  const today = startOfDay(now);
+
+  const pastStatuses = ["Publicado", "Realizado"] as const;
+
+  async function queryPast(statusProperty: string) {
+    return queryDatabaseOptional(getDbSlotsId(), {
+      filter: {
+        or: pastStatuses.map((status) => ({
+          and: [
+            { property: statusProperty, status: { equals: status } },
+            { property: "Fecha", date: { before: today.toISOString() } },
+          ],
+        })),
+      },
+      sorts: [{ property: "Fecha", direction: "descending" }],
+    });
+  }
+
+  const results =
+    (await queryPast("Status")) ??
+    (await queryPast("Estado")) ??
+    [];
+
+  const slots = results
+    .map((page) => {
+      const props = page.properties as Record<string, unknown>;
+      const grabacionUrl = extractGrabacionUrl(props);
+      if (!grabacionUrl) return null;
+
+      return {
+        id: ((page.id as string) ?? "").replace(/-/g, ""),
+        fecha: extractDate(props) ?? "",
+        estado: extractStatus(props),
+        lumaUrl: extractLumaUrl(props),
+        titulo: extractTitulo(props),
+        descripcion: extractDescripcion(props),
+        herramientas: extractHerramientas(props),
+        speakerIds: extractSpeakerIds(props),
+        grabacionUrl,
+      };
+    })
+    .filter((slot): slot is NonNullable<typeof slot> => slot !== null && !!slot.fecha);
+
+  const withSpeakers = await Promise.all(
+    slots.map(async ({ speakerIds, ...slot }) => {
+      const speaker = speakerIds.length > 0
+        ? await fetchSpeakerBasic(speakerIds[0])
+        : null;
+      return { ...slot, speaker };
+    })
+  );
+
+  return withSpeakers;
 }
 
 export async function listConfirmedSlots(): Promise<Slot[]> {

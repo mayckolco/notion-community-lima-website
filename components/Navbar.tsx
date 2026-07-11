@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { JoinCommunityButton } from "@/components/JoinCommunityButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const NAV_LINKS = [
   { label: "Eventos",   href: "/eventos" },
@@ -117,7 +119,13 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button size="sm" render={<Link href="/login" />}>
+          <ThemeToggle />
+          <div className="hidden sm:block">
+            <JoinCommunityButton location="navbar" size="sm" showArrow={false}>
+              Únete
+            </JoinCommunityButton>
+          </div>
+          <Button size="sm" variant="outline" render={<Link href="/login" />}>
             Ingresar
           </Button>
 
@@ -165,6 +173,18 @@ export function Navbar() {
           >
             {ABOUT_LINK.label}
           </Link>
+
+          <div className="px-6 py-4 border-t border-border/60 space-y-3">
+            <JoinCommunityButton location="navbar_mobile" showArrow={false} />
+            <Button
+              size="sm"
+              variant="outline"
+              className="w-full"
+              render={<Link href="/login" onClick={closeAll} />}
+            >
+              Ingresar al portal
+            </Button>
+          </div>
         </div>
       )}
     </nav>

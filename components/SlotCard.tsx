@@ -5,6 +5,7 @@ import { es } from "date-fns/locale";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
+import { GA_EVENTS } from "@/lib/seo/analytics";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -132,7 +133,9 @@ export function SlotCard({ slot }: SlotCardProps) {
             render={
               <Link
                 href={`/aplicar/${slot.id}`}
-                onClick={() => sendGAEvent("event", "select_slot", { slot_date: slot.fecha })}
+                onClick={() =>
+                  sendGAEvent("event", GA_EVENTS.applySpeaker, { slot_date: slot.fecha })
+                }
               />
             }
           >

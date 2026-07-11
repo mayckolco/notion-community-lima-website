@@ -3,12 +3,16 @@ import Link from "next/link";
 import { ArrowRight, Briefcase, GraduationCap } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
-export const metadata: Metadata = {
-  title: "Programas · Claude Perú",
+export const metadata: Metadata = createPageMetadata({
+  title: "Programas",
   description:
     "Formaciones de Claude Perú para profesionales y empresas. Aprende a usar Claude y la IA aplicada, desde cero o en tu organización.",
-};
+  path: "/programas",
+});
 
 const TRACKS = [
   {
@@ -32,6 +36,12 @@ const TRACKS = [
 export default function ProgramasPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Programas", path: "/programas" },
+        ])}
+      />
       <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-16 sm:py-24">
         <div className="max-w-4xl mx-auto space-y-10">

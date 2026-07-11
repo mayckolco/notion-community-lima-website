@@ -1,10 +1,21 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
 import { PastSpeakerCard } from "@/components/PastSpeakerCard";
 import { DirectorioHero } from "@/components/DirectorioHero";
 import { listDirectorySpeakers } from "@/lib/notion/speakers";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
 export const revalidate = 0;
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Directorio de speakers",
+  description:
+    "Conoce a los builders peruanos que han compartido en Claude Perú. Directorio de speakers con charlas, herramientas y grabaciones.",
+  path: "/directorio",
+});
 
 export default async function DirectorioPage() {
   const speakers = (await listDirectorySpeakers()).sort((a, b) =>
@@ -13,6 +24,12 @@ export default async function DirectorioPage() {
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Directorio", path: "/directorio" },
+        ])}
+      />
       <Navbar />
       <main className="min-h-screen">
         <DirectorioHero speakers={speakers} />

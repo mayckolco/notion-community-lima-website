@@ -221,3 +221,59 @@ function escHtml(str: string): string {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 }
+
+interface SendNewsletterWelcomeParams {
+  to: string;
+  nombre?: string;
+}
+
+export async function sendNewsletterWelcomeEmail(
+  params: SendNewsletterWelcomeParams
+): Promise<void> {
+  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
+  const greeting = params.nombre ? escHtml(params.nombre) : "builder";
+
+  await getResend().emails.send({
+    from,
+    to: params.to,
+    subject: "Bienvenido a las novedades de Claude Perú",
+    html: `<!DOCTYPE html>
+<html lang="es">
+<body style="margin:0;padding:40px 20px;background:#F5F1EB;font-family:sans-serif;">
+  <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #EDE6DA;border-radius:12px;padding:32px;">
+    <p style="margin:0 0 8px;color:#D97757;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Claude Perú</p>
+    <h1 style="margin:0 0 16px;color:#2B2622;font-size:22px;">¡Gracias por suscribirte!</h1>
+    <p style="margin:0 0 16px;color:#6B6560;font-size:15px;line-height:1.6;">
+      Hola ${greeting}, te avisaremos sobre próximos eventos, lanzamientos de Claude y recursos nuevos de la comunidad.
+    </p>
+    <p style="margin:0 0 24px;color:#6B6560;font-size:15px;line-height:1.6;">
+      Mientras tanto, únete al grupo de WhatsApp para no perderte ningún webinar.
+    </p>
+    <a href="https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3"
+       style="display:inline-block;padding:12px 24px;background:#D97757;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:14px;">
+      Unirme a la comunidad
+    </a>
+  </div>
+</body>
+</html>`,
+  });
+}
+
+export async function addNewsletterContact(
+  email: string,
+  nombre?: string
+): Promise<void> {
+  const audienceId = process.env.RESEND_AUDIENCE_ID;
+  if (!audienceId) return;
+
+  const [firstName, ...rest] = (nombre ?? "").trim().split(/\s+/).filter(Boolean);
+  const lastName = rest.join(" ") || undefined;
+
+  await getResend().contacts.create({
+    audienceId,
+    email,
+    ...(firstName ? { firstName } : {}),
+    ...(lastName ? { lastName } : {}),
+    unsubscribed: false,
+  });
+}

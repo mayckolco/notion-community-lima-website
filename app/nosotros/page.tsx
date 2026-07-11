@@ -1,7 +1,13 @@
+import type { Metadata } from "next";
 import Image from "next/image";
-import { Target, Users, Zap } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Calendar, Handshake, Mic, Target, Users, Zap } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
+import { JoinCommunityButton } from "@/components/JoinCommunityButton";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
 const VALUES = [
   {
@@ -23,6 +29,43 @@ const VALUES = [
       "No como ayuda, como base. Todos los que participan aquí ya tomaron la decisión de construir diferente. Eso cambia el nivel de la conversación.",
   },
 ];
+
+const PARTICIPAR = [
+  {
+    icon: Calendar,
+    titulo: "Asistir a eventos",
+    descripcion:
+      "Únete a los webinars semanales y meetups en Lima. Regístrate en Luma y aprende de casos reales.",
+    href: "/eventos",
+    cta: "Ver eventos",
+    externo: false,
+  },
+  {
+    icon: Mic,
+    titulo: "Ser speaker",
+    descripcion:
+      "Comparte lo que estás construyendo con Claude en un webinar en vivo. Aplica con tu charla y fecha.",
+    href: "/aplicar",
+    cta: "Aplicar ahora",
+    externo: false,
+  },
+  {
+    icon: Handshake,
+    titulo: "Colaborar",
+    descripcion:
+      "Ayuda a organizar eventos, crear contenido o conectar a la comunidad. Escríbenos y conversemos.",
+    href: "https://wa.me/51946542990",
+    cta: "Escribir por WhatsApp",
+    externo: true,
+  },
+] as const;
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Sobre nosotros",
+  description:
+    "Historia, misión y equipo de Claude Perú. Comunidad de builders peruanos que aprenden y construyen con Claude.",
+  path: "/nosotros",
+});
 
 const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[] = [
   {
@@ -48,6 +91,12 @@ const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[]
 export default function NosotrosPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Sobre nosotros", path: "/nosotros" },
+        ])}
+      />
       <Navbar />
       <main className="min-h-screen px-6 py-16">
         <div className="max-w-5xl mx-auto space-y-20">
@@ -67,6 +116,10 @@ export default function NosotrosPage() {
               Creemos que la IA no es el futuro, es el presente. Nuestra misión es conectar a los
               founders que ya están construyendo con IA y ayudarlos a crecer más rápido compartiendo
               experiencias reales, errores incluidos.
+            </p>
+            <p className="text-sm text-muted-foreground/80 leading-relaxed">
+              Nacimos en 2024 como un grupo de founders en Lima que querían ir más allá de la teoría
+              sobre IA. Hoy somos la comunidad de referencia en Perú para aprender y construir con Claude.
             </p>
           </div>
 
@@ -89,6 +142,57 @@ export default function NosotrosPage() {
                   <p className="text-sm text-muted-foreground leading-relaxed">{v.descripcion}</p>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Cómo participar */}
+          <div className="space-y-8">
+            <div className="space-y-1">
+              <p className="text-xs font-mono text-primary uppercase tracking-widest">Participa</p>
+              <h2 className="text-2xl font-serif tracking-tight">
+                Cómo formar parte de{" "}
+                <span className="gradient-text">la comunidad</span>
+              </h2>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              {PARTICIPAR.map(({ icon: Icon, titulo, descripcion, href, cta, externo }) => (
+                <div
+                  key={titulo}
+                  className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4 flex flex-col"
+                >
+                  <div className="grid h-9 w-9 place-items-center rounded-md bg-primary/10 text-primary">
+                    <Icon className="h-5 w-5" strokeWidth={1.75} />
+                  </div>
+                  <h3 className="font-serif text-lg">{titulo}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                    {descripcion}
+                  </p>
+                  {externo ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline touch-manipulation"
+                    >
+                      {cta}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </a>
+                  ) : (
+                    <Link
+                      href={href}
+                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline touch-manipulation"
+                    >
+                      {cta}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center pt-4">
+              <JoinCommunityButton location="nosotros_cta" />
             </div>
           </div>
 

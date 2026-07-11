@@ -1,27 +1,45 @@
 import type { Metadata } from "next";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
-import { Calendar, MessageCircle, ArrowRight } from "lucide-react";
+import { Calendar, MessageCircle, ArrowRight, Play } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { listConfirmedSlots } from "@/lib/notion/slots";
+import { JsonLd } from "@/components/JsonLd";
+import { RegisterEventLink } from "@/components/RegisterEventLink";
+import { listConfirmedSlots, listPastSlotsWithRecordings } from "@/lib/notion/slots";
+import type { PastSlotRecord } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, eventJsonLd } from "@/lib/seo/json-ld";
 
 export const revalidate = 0;
 
-export const metadata: Metadata = {
-  title: "Eventos · Claude Perú",
+export const metadata: Metadata = createPageMetadata({
+  title: "Eventos",
   description:
     "Próximos eventos y webinars de la comunidad Claude Perú. Sesiones con builders y founders que comparten sus experiencias construyendo con IA.",
-};
+  path: "/eventos",
+});
 
 export default async function EventosPage() {
-  const slots = await listConfirmedSlots().catch(() => []);
+  const [slots, pastSlots] = await Promise.all([
+    listConfirmedSlots().catch(() => []),
+    listPastSlotsWithRecordings().catch(() => []),
+  ]);
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Inicio", path: "/" },
+            { name: "Eventos", path: "/eventos" },
+          ]),
+          ...slots.map((slot) => eventJsonLd(slot)),
+        ]}
+      />
       <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-12 sm:py-16">
         <div className="max-w-3xl mx-auto space-y-10">
@@ -52,6 +70,27 @@ export default async function EventosPage() {
                 <ConfirmedSlotCard key={slot.id} slot={slot} />
               ))}
             </div>
+          )}
+
+          {pastSlots.length > 0 && (
+            <section className="space-y-6 pt-6 border-t border-border/60">
+              <div className="space-y-2">
+                <p className="text-xs font-mono text-primary uppercase tracking-widest">
+                  Eventos pasados
+                </p>
+                <h2 className="text-2xl font-serif tracking-tight">
+                  Grabaciones de <span className="gradient-text">charlas anteriores</span>
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Revive los webinars con casos reales de la comunidad.
+                </p>
+              </div>
+              <div className="flex flex-col gap-4">
+                {pastSlots.map((slot) => (
+                  <PastSlotCard key={slot.id} slot={slot} />
+                ))}
+              </div>
+            </section>
           )}
 
           <div className="border border-border/40 bg-card rounded-lg p-8 sm:p-12 text-center space-y-6">
@@ -93,6 +132,41 @@ export default async function EventosPage() {
   );
 }
 
+
+function PastSlotCard({ slot }: { slot: PastSlotRecord }) {
+  const date = parseISO(slot.fecha);
+  const dayName = format(date, "EEEE d MMM yyyy", { locale: es });
+
+  return (
+    <div className="border border-border/30 bg-card rounded-lg p-6 sm:p-8 space-y-4">
+      <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+        {dayName}
+      </p>
+
+      <h3 className="text-lg sm:text-xl font-serif leading-snug">
+        {slot.titulo ?? "Charla de la comunidad"}
+      </h3>
+
+      {slot.speaker && (
+        <p className="text-sm text-muted-foreground">
+          {slot.speaker.nombre}
+          {(slot.speaker.rol || slot.speaker.empresa) &&
+            ` · ${[slot.speaker.rol, slot.speaker.empresa].filter(Boolean).join(" · ")}`}
+        </p>
+      )}
+
+      <a
+        href={slot.grabacionUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-2 min-h-[44px] px-5 text-sm font-semibold border border-primary/40 text-primary hover:bg-primary/5 transition-colors touch-manipulation"
+      >
+        <Play className="h-4 w-4" />
+        Ver grabación
+      </a>
+    </div>
+  );
+}
 
 function ConfirmedSlotCard({ slot }: { slot: Slot }) {
   const date = parseISO(slot.fecha);
@@ -150,14 +224,13 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
 
         <div className="pt-2 mt-auto">
           {slot.lumaUrl ? (
-            <a
-              href={slot.lumaUrl!}
-              target="_blank"
-              rel="noopener noreferrer"
+            <RegisterEventLink
+              href={slot.lumaUrl}
+              slotId={slot.id}
               className="inline-flex items-center gap-2 min-h-[48px] px-6 text-sm font-bold bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 transition-colors touch-manipulation"
             >
               Apartar mi lugar →
-            </a>
+            </RegisterEventLink>
           ) : null}
         </div>
       </div>

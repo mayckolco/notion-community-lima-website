@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
+import { GA_EVENTS } from "@/lib/seo/analytics";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2, X, Mail } from "lucide-react";
@@ -113,6 +114,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
       return;
     }
     if (res.status === 202) {
+      sendGAEvent("event", GA_EVENTS.applySpeaker, { slot_date: slotLabel });
       sendGAEvent("event", "submit_application", { slot_date: slotLabel });
       setSubmittedEmail(data.email);
       return;

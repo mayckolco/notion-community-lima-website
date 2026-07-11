@@ -2,13 +2,22 @@ import type { Metadata } from "next";
 import { CheckCircle2, MessageCircle } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { JsonLd } from "@/components/JsonLd";
 import { Button } from "@/components/ui/button";
+import { createPageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbJsonLd, courseJsonLd } from "@/lib/seo/json-ld";
+import { SITE_URL } from "@/lib/seo/site";
 
-export const metadata: Metadata = {
-  title: "Programas para empresas · Claude Perú",
+const COURSE_NAME = "Capacitaciones de IA para empresas";
+const COURSE_DESCRIPTION =
+  "Capacitaciones a medida para equipos que quieren adoptar Claude e IA aplicada con talleres in-house y casos de su industria.";
+
+export const metadata: Metadata = createPageMetadata({
+  title: "Programas para empresas",
   description:
     "Capacitaciones de IA a medida para equipos: talleres in-house de Claude, casos aplicados a tu industria y acompañamiento en la adopción.",
-};
+  path: "/programas/empresas",
+});
 
 const WHATSAPP_URL = "https://wa.me/51946542990";
 
@@ -22,6 +31,20 @@ const BENEFITS = [
 export default function ProgramasEmpresasPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbJsonLd([
+            { name: "Inicio", path: "/" },
+            { name: "Programas", path: "/programas" },
+            { name: "Empresas", path: "/programas/empresas" },
+          ]),
+          courseJsonLd({
+            name: COURSE_NAME,
+            description: COURSE_DESCRIPTION,
+            url: `${SITE_URL}/programas/empresas`,
+          }),
+        ]}
+      />
       <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-16 sm:py-24">
         <div className="max-w-4xl mx-auto space-y-10">

@@ -48,5 +48,5 @@ export async function GET(req: NextRequest) {
     return redirect("error_interno");
   }
 
-  return NextResponse.redirect(`${baseUrl}/gracias`);
+  return NextResponse.redirect(`${baseUrl}/gracias?tipo=speaker`);
 }
