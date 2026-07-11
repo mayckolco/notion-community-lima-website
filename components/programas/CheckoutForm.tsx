@@ -29,6 +29,7 @@ import type { BootcampFecha } from "@/lib/content/bootcamp";
 import {
   BOOTCAMP_HERRAMIENTAS_OPTIONS,
   BOOTCAMP_NIVEL_IA_OPTIONS,
+  bootcampEncuestaSchema,
 } from "@/lib/schemas";
 import { GA_EVENTS } from "@/lib/seo/analytics";
 import { cn } from "@/lib/utils";
@@ -152,7 +153,26 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
 
   async function handleEncuesta(e: React.FormEvent) {
     e.preventDefault();
-    if (!leadId) return;
+    if (!leadId) {
+      setError("No encontramos tu inscripción. Recarga la página e intenta de nuevo.");
+      return;
+    }
+
+    const payload = {
+      leadId,
+      dedicacion: dedicacion.trim(),
+      nivelIa,
+      problema: problema.trim(),
+      herramientas,
+      expectativas: expectativas.trim(),
+    };
+
+    const parsed = bootcampEncuestaSchema.safeParse(payload);
+    if (!parsed.success) {
+      setError(parsed.error.issues.map((issue) => issue.message).join(" "));
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
@@ -160,18 +180,21 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
       const res = await fetch("/api/bootcamp/encuesta", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          leadId,
-          dedicacion: dedicacion.trim(),
-          nivelIa,
-          problema: problema.trim(),
-          herramientas,
-          expectativas: expectativas.trim(),
-        }),
+        body: JSON.stringify(parsed.data),
       });
+      const data = (await res.json()) as {
+        error?: string;
+        details?: Array<{ message: string }>;
+      };
 
       if (!res.ok) {
-        setError("No pudimos guardar la encuesta. Intenta de nuevo.");
+        const detailMsg = data.details?.map((d) => d.message).join(" ");
+        setError(
+          detailMsg ||
+            (data.error === "update_failed"
+              ? "No pudimos guardar en Notion. Intenta de nuevo."
+              : "Revisa los campos e intenta de nuevo.")
+        );
         return;
       }
 
@@ -515,6 +538,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                           value={dedicacion}
                           onChange={(e) => setDedicacion(e.target.value)}
                           className={inputClass}
+                          minLength={2}
                           required
                         />
                       </div>
@@ -555,8 +579,10 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                           onChange={(e) => setProblema(e.target.value)}
                           rows={3}
                           className={cn(inputClass, "resize-y")}
+                          minLength={5}
                           required
                         />
+                        <p className="text-xs text-muted-foreground mt-1">Mínimo 5 caracteres</p>
                       </div>
 
                       <div>
@@ -580,6 +606,9 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                             </button>
                           ))}
                         </div>
+                        {herramientas.length === 0 && (
+                          <p className="text-xs text-muted-foreground mt-1">Elige al menos una opción</p>
+                        )}
                       </div>
 
                       <div>
@@ -592,8 +621,10 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                           onChange={(e) => setExpectativas(e.target.value)}
                           rows={3}
                           className={cn(inputClass, "resize-y")}
+                          minLength={5}
                           required
                         />
+                        <p className="text-xs text-muted-foreground mt-1">Mínimo 5 caracteres</p>
                       </div>
 
                       {error && <p className="text-sm text-destructive">{error}</p>}

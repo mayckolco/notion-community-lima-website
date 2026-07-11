@@ -104,7 +104,7 @@ export const bootcampEncuestaSchema = z.object({
   leadId: notionIdDashed,
   dedicacion: z.string().min(2, "Cuéntanos a qué te dedicas").max(500),
   nivelIa: z.enum(BOOTCAMP_NIVEL_IA_OPTIONS),
-  problema: z.string().min(10, "Describe tu problema con más detalle").max(2000),
+  problema: z.string().min(5, "Describe tu problema con al menos 5 caracteres").max(2000),
   herramientas: z
     .array(z.enum(BOOTCAMP_HERRAMIENTAS_OPTIONS))
     .min(1, "Elige al menos una herramienta"),
