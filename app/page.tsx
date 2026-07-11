@@ -12,7 +12,7 @@ const PILLARS = [
     icon: Video,
     title: "Webinars semanales",
     description:
-      "Charlas en vivo cada semana con builders peruanos que comparten casos reales, demos y aprendizajes construyendo con Claude.",
+      "Charlas en vivo cada lunes con builders peruanos que comparten casos reales, demos y aprendizajes construyendo con Claude.",
   },
   {
     icon: Users,
@@ -65,7 +65,7 @@ const jsonLd = {
     eventSchedule: {
       "@type": "Schedule",
       repeatFrequency: "P1W",
-      byDay: "https://schema.org/Tuesday",
+      byDay: "https://schema.org/Monday",
       startTime: "19:00",
       endTime: "20:00",
     },

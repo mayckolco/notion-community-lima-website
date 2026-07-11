@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s · Claude Community",
   },
   description:
-    "La comunidad peruana de builders que construyen con Claude. Webinars semanales, meetups en Lima y networking con founders de IA en Perú.",
+    "La comunidad peruana de builders que construyen con Claude. Webinars cada lunes, meetups en Lima y networking con founders de IA en Perú.",
   keywords: ["Claude", "Anthropic", "inteligencia artificial", "IA", "Perú", "Lima", "comunidad", "builders", "founders", "webinars"],
   authors: [{ name: "Claude Community" }],
   creator: "Claude Community",
@@ -37,14 +37,14 @@ export const metadata: Metadata = {
     siteName: "Claude Community",
     title: "Claude Community",
     description:
-      "La comunidad peruana de builders que construyen con Claude. Webinars semanales, meetups en Lima y networking con founders de IA en Perú.",
+      "La comunidad peruana de builders que construyen con Claude. Webinars cada lunes, meetups en Lima y networking con founders de IA en Perú.",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Claude Community" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Claude Community",
     description:
-      "La comunidad peruana de builders que construyen con Claude. Webinars semanales, meetups en Lima y networking con founders de IA en Perú.",
+      "La comunidad peruana de builders que construyen con Claude. Webinars cada lunes, meetups en Lima y networking con founders de IA en Perú.",
     images: ["/og-image.png"],
   },
   alternates: {
