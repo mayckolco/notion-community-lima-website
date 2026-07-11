@@ -7,7 +7,7 @@ import { BootcampModalidadCard } from "@/components/programas/BootcampModalidadC
 import { RutaBloqueadaCard } from "@/components/programas/RutaBloqueadaCard";
 import {
   BOOTCAMP_CUPOS,
-  BOOTCAMP_DURACION,
+  BOOTCAMP_HORARIO,
   CLAUDE_BOOTCAMP,
   RUTAS_BLOQUEADAS,
 } from "@/lib/content/bootcamp";
@@ -56,7 +56,7 @@ export default function ProgramasProfesionalesPage() {
             </p>
             <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
               <li>· {BOOTCAMP_CUPOS} cupos por cohorte</li>
-              <li>· {BOOTCAMP_DURACION}</li>
+              <li>· {BOOTCAMP_HORARIO}</li>
               <li>· Virtual y presencial (Lima)</li>
             </ul>
           </header>

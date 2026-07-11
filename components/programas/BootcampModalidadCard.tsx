@@ -6,7 +6,8 @@ import { Clock, Info, MapPin, Monitor, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   BOOTCAMP_CUPOS,
-  BOOTCAMP_DURACION,
+  BOOTCAMP_HORARIO,
+  bootcampUbicacion,
   CLAUDE_BOOTCAMP,
   buildBootcampInfoUrl,
   buildCheckoutUrl,
@@ -50,8 +51,7 @@ export function BootcampModalidadCard({ modalidad, location }: BootcampModalidad
           {formatBootcampPrecio(precio)}
         </p>
         <p className="text-xs text-muted-foreground">
-          {BOOTCAMP_DURACION}
-          {isVirtual ? " · En vivo por videollamada" : " · Lima, Perú"}
+          {BOOTCAMP_HORARIO} · {bootcampUbicacion(modalidad)}
         </p>
       </div>
 
@@ -62,7 +62,7 @@ export function BootcampModalidadCard({ modalidad, location }: BootcampModalidad
         </li>
         <li className="flex items-center gap-1.5">
           <Clock className="h-3.5 w-3.5 text-primary shrink-0" strokeWidth={1.75} />
-          {BOOTCAMP_DURACION}
+          {BOOTCAMP_HORARIO}
         </li>
       </ul>
 

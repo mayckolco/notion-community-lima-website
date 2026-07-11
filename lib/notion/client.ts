@@ -23,3 +23,15 @@ export function getDbSpeakersId(): string {
   if (!id) throw new Error("DB_SPEAKERS_ID env var is required");
   return id;
 }
+
+export function getDbBootcampDatesId(): string {
+  const id = process.env.DB_BOOTCAMP_DATES_ID;
+  if (!id) throw new Error("DB_BOOTCAMP_DATES_ID env var is required");
+  return id;
+}
+
+export function getDbBootcampRegistrosId(): string {
+  const id = process.env.DB_BOOTCAMP_REGISTROS_ID;
+  if (!id) throw new Error("DB_BOOTCAMP_REGISTROS_ID env var is required");
+  return id;
+}

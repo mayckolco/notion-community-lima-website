@@ -131,3 +131,4 @@ Una funcionalidad se marca `[x]` solo si:
 | 2026-07-10 | Fase 5 completada: buscador recursos, dark mode, novedades RSS automáticas, panel admin ampliado |
 | 2026-07-11 | Catálogo programas profesionales: 6 cursos, 3 programas, 3 rutas (Chat/Cowork/Code), pre-reserva WhatsApp, precios virtual/presencial |
 | 2026-07-11 | Programas empresas bloqueados (pronto): nav/footer deshabilitados, página coming soon, excluido del sitemap |
+| 2026-07-11 | Claude Bootcamp: horario 10a.m.–2p.m., virtual por Meet, checkout 4 pasos (fecha → datos → Yape → encuesta) con Notion Reservas/Leads |

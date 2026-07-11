@@ -1,22 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
-import { ArrowLeft, CheckCircle2, CreditCard, Lock, Shield } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  CheckCircle2,
+  Clock,
+  Copy,
+  MapPin,
+  Smartphone,
+  Upload,
+  Users,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CLAUDE_BOOTCAMP, formatBootcampPrecio } from "@/lib/content/bootcamp";
+import { CheckoutStepper } from "@/components/programas/checkout/CheckoutStepper";
+import { CheckoutSummary } from "@/components/programas/checkout/CheckoutSummary";
+import {
+  BOOTCAMP_YAPE,
+  CLAUDE_BOOTCAMP,
+  formatBootcampPrecio,
+  generateBootcampReferencia,
+} from "@/lib/content/bootcamp";
 import type { ProgramaModalidad } from "@/lib/content/programas";
-import { WHATSAPP_DIRECT_URL } from "@/lib/content/constants";
+import type { BootcampFecha } from "@/lib/content/bootcamp";
+import {
+  BOOTCAMP_HERRAMIENTAS_OPTIONS,
+  BOOTCAMP_NIVEL_IA_OPTIONS,
+} from "@/lib/schemas";
 import { GA_EVENTS } from "@/lib/seo/analytics";
+import { cn } from "@/lib/utils";
 
 interface CheckoutFormProps {
   modalidad: ProgramaModalidad;
 }
 
+type Step = 1 | 2 | 3 | 4;
+
+const inputClass =
+  "w-full rounded-xl border border-border/60 bg-background px-3.5 py-2.5 text-sm outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20";
+
 export function CheckoutForm({ modalidad }: CheckoutFormProps) {
-  const [step, setStep] = useState<"form" | "success">("form");
+  const [step, setStep] = useState<Step>(1);
+  const [fechas, setFechas] = useState<BootcampFecha[]>([]);
+  const [fechasLoading, setFechasLoading] = useState(true);
+  const [selectedFecha, setSelectedFecha] = useState<BootcampFecha | null>(null);
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [referencia, setReferencia] = useState("");
+  const [leadId, setLeadId] = useState<string | null>(null);
+  const [comprobante, setComprobante] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [dedicacion, setDedicacion] = useState("");
+  const [nivelIa, setNivelIa] = useState<string>(BOOTCAMP_NIVEL_IA_OPTIONS[0]);
+  const [problema, setProblema] = useState("");
+  const [herramientas, setHerramientas] = useState<string[]>([]);
+  const [expectativas, setExpectativas] = useState("");
+  const [encuestaDone, setEncuestaDone] = useState(false);
 
   const precio =
     modalidad === "virtual"
@@ -25,151 +72,565 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
 
   const modalidadLabel = modalidad === "virtual" ? "Virtual" : "Presencial";
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    sendGAEvent("event", GA_EVENTS.preReservaPrograma, {
-      location: "checkout",
-      programa: CLAUDE_BOOTCAMP.nombre,
-      modalidad,
-    });
-    await new Promise((r) => setTimeout(r, 1500));
-    setLoading(false);
-    setStep("success");
+  useEffect(() => {
+    let cancelled = false;
+    setFechasLoading(true);
+    fetch(`/api/bootcamp/fechas?modalidad=${modalidad}`)
+      .then((r) => r.json())
+      .then((data: { fechas?: BootcampFecha[] }) => {
+        if (!cancelled) setFechas(data.fechas ?? []);
+      })
+      .catch(() => {
+        if (!cancelled) setError("No pudimos cargar las fechas. Intenta de nuevo.");
+      })
+      .finally(() => {
+        if (!cancelled) setFechasLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [modalidad]);
+
+  const copyReferencia = useCallback(async () => {
+    if (!referencia) return;
+    await navigator.clipboard.writeText(referencia);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [referencia]);
+
+  function handleFileSelect(file: File | null) {
+    if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "image/webp"];
+    if (!allowed.includes(file.type) || file.size > 5 * 1024 * 1024) {
+      setError("Solo PNG, JPG o WEBP (máx. 5 MB)");
+      return;
+    }
+    setError(null);
+    setComprobante(file);
   }
 
-  if (step === "success") {
-    const confirmText = `Hola! Acabo de completar la pre-reserva de ${CLAUDE_BOOTCAMP.nombre} (${modalidadLabel}) por ${formatBootcampPrecio(precio)}. Quiero confirmar fechas y cupo. Gracias!`;
-    const whatsappUrl = `${WHATSAPP_DIRECT_URL}?text=${encodeURIComponent(confirmText)}`;
+  async function handleInscripcion() {
+    if (!selectedFecha || !comprobante || !referencia) return;
+    setLoading(true);
+    setError(null);
 
-    return (
-      <div className="text-center space-y-6 py-4">
-        <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-green-500/15 text-green-600 dark:text-green-400">
-          <CheckCircle2 className="h-7 w-7" strokeWidth={1.75} />
-        </span>
-        <div className="space-y-2">
-          <h2 className="font-serif text-2xl tracking-tight">Pre-reserva registrada</h2>
-          <p className="text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
-            Tu cupo está apartado. Escríbenos por WhatsApp para confirmar fecha y coordinar el
-            pago final.
-          </p>
-        </div>
-        <div className="rounded-xl border border-border/40 bg-card p-4 text-left text-sm space-y-1">
-          <p>
-            <span className="text-muted-foreground">Programa:</span> {CLAUDE_BOOTCAMP.nombre}
-          </p>
-          <p>
-            <span className="text-muted-foreground">Modalidad:</span> {modalidadLabel}
-          </p>
-          <p>
-            <span className="text-muted-foreground">Monto:</span>{" "}
-            <strong>{formatBootcampPrecio(precio)}</strong>
-          </p>
-        </div>
-        <Button size="lg" className="min-h-[48px] w-full sm:w-auto" render={<a href={whatsappUrl} target="_blank" rel="noopener noreferrer" />}>
-          Confirmar por WhatsApp
-        </Button>
-        <Link
-          href="/programas/profesionales"
-          className="inline-block text-sm text-muted-foreground hover:text-primary transition-colors"
-        >
-          Volver a programas
-        </Link>
-      </div>
+    const fd = new FormData();
+    fd.append("reservaId", selectedFecha.id);
+    fd.append("nombre", nombre.trim());
+    fd.append("email", email.trim());
+    fd.append("whatsapp", whatsapp.trim());
+    fd.append("referencia", referencia);
+    fd.append("comprobante", comprobante);
+
+    try {
+      const res = await fetch("/api/bootcamp/inscripcion", { method: "POST", body: fd });
+      const data = (await res.json()) as { leadId?: string; error?: string };
+
+      if (!res.ok) {
+        setError(
+          data.error === "reserva_unavailable"
+            ? "Esta fecha ya no tiene cupos. Elige otra."
+            : "No pudimos registrar tu inscripción. Intenta de nuevo."
+        );
+        return;
+      }
+
+      sendGAEvent("event", GA_EVENTS.preReservaPrograma, {
+        location: "checkout_yape",
+        programa: CLAUDE_BOOTCAMP.nombre,
+        modalidad,
+      });
+
+      setLeadId(data.leadId ?? null);
+      setStep(4);
+    } catch {
+      setError("Error de conexión. Intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleEncuesta(e: React.FormEvent) {
+    e.preventDefault();
+    if (!leadId) return;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/bootcamp/encuesta", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadId,
+          dedicacion: dedicacion.trim(),
+          nivelIa,
+          problema: problema.trim(),
+          herramientas,
+          expectativas: expectativas.trim(),
+        }),
+      });
+
+      if (!res.ok) {
+        setError("No pudimos guardar la encuesta. Intenta de nuevo.");
+        return;
+      }
+
+      setEncuestaDone(true);
+    } catch {
+      setError("Error de conexión. Intenta de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function toggleHerramienta(tool: string) {
+    setHerramientas((prev) =>
+      prev.includes(tool) ? prev.filter((t) => t !== tool) : [...prev, tool]
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="rounded-xl border border-border/40 bg-card p-5 space-y-3">
-        <h2 className="font-medium text-sm">Resumen del pedido</h2>
-        <div className="flex justify-between text-sm">
-          <span className="text-muted-foreground">{CLAUDE_BOOTCAMP.nombre} · {modalidadLabel}</span>
-          <span className="font-semibold">{formatBootcampPrecio(precio)}</span>
+    <div className="space-y-8">
+      <header className="space-y-4">
+        <div>
+          <h1 className="font-serif text-2xl sm:text-3xl tracking-tight">
+            Inscripción al curso
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {CLAUDE_BOOTCAMP.nombre} · {modalidadLabel}
+          </p>
         </div>
-        <div className="border-t border-border/40 pt-3 flex justify-between font-medium">
-          <span>Total</span>
-          <span className="font-serif text-lg">{formatBootcampPrecio(precio)}</span>
+        <CheckoutStepper current={step} />
+      </header>
+
+      <div className="grid lg:grid-cols-[1fr_280px] gap-6 lg:gap-8 items-start">
+        <div className="min-w-0">
+          {/* Paso 1 — Fecha */}
+          {step === 1 && (
+            <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-6">
+              <div>
+                <h2 className="font-serif text-xl tracking-tight">Paso 1 — Elige tu fecha</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Selecciona la sesión a la que deseas asistir.
+                </p>
+              </div>
+
+              {fechasLoading ? (
+                <p className="text-sm text-muted-foreground py-8 text-center">Cargando fechas…</p>
+              ) : fechas.length === 0 ? (
+                <div className="text-center py-8 space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    No hay fechas disponibles por ahora para modalidad {modalidadLabel}.
+                  </p>
+                  <Button variant="outline" size="sm" render={<Link href="/programas/profesionales" />}>
+                    Volver a programas
+                  </Button>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {fechas.map((fecha) => (
+                    <button
+                      key={fecha.id}
+                      type="button"
+                      onClick={() => setSelectedFecha(fecha)}
+                      className={cn(
+                        "w-full text-left rounded-xl border p-4 sm:p-5 transition-colors",
+                        selectedFecha?.id === fecha.id
+                          ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                          : "border-border/50 hover:border-primary/40"
+                      )}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                        <div className="space-y-2">
+                          <p className="font-semibold">{fecha.fechaLabel}</p>
+                          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Clock className="h-3.5 w-3.5" strokeWidth={1.75} />
+                            {fecha.horario}
+                          </p>
+                          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <MapPin className="h-3.5 w-3.5" strokeWidth={1.75} />
+                            {fecha.ubicacion}
+                          </p>
+                          <p className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
+                            <Users className="h-3.5 w-3.5" strokeWidth={1.75} />
+                            {fecha.cuposDisponibles} cupos disponibles
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <p className="text-xs text-muted-foreground">Inversión</p>
+                          <p className="font-serif text-xl font-semibold">
+                            {formatBootcampPrecio(precio)}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              <Button
+                size="lg"
+                className="w-full min-h-[48px]"
+                disabled={!selectedFecha}
+                onClick={() => setStep(2)}
+              >
+                Continuar
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+
+          {/* Paso 2 — Datos */}
+          {step === 2 && selectedFecha && (
+            <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-6">
+              <div>
+                <h2 className="font-serif text-xl tracking-tight">Paso 2 — Tus datos personales</h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Completa la información para reservar tu cupo en{" "}
+                  <strong className="text-foreground">{selectedFecha.fechaLabel}</strong>.
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+                    Nombre completo
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ej. Ana García"
+                    value={nombre}
+                    onChange={(e) => setNombre(e.target.value)}
+                    className={inputClass}
+                    required
+                  />
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+                      Correo electrónico
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="ana@ejemplo.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-medium text-muted-foreground mb-1.5 block">
+                      WhatsApp
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="9XX XXX XXX"
+                      value={whatsapp}
+                      onChange={(e) => setWhatsapp(e.target.value)}
+                      className={inputClass}
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button variant="outline" size="lg" onClick={() => setStep(1)}>
+                  <ArrowLeft className="h-4 w-4" />
+                  Volver
+                </Button>
+                <Button
+                  size="lg"
+                  className="flex-1 min-h-[48px]"
+                  disabled={!nombre.trim() || !email.trim() || !whatsapp.trim()}
+                  onClick={() => {
+                    setReferencia(generateBootcampReferencia(nombre));
+                    setStep(3);
+                  }}
+                >
+                  Continuar al pago
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Paso 3 — Pago Yape */}
+          {step === 3 && selectedFecha && (
+            <div className="space-y-4">
+              <div className="rounded-2xl border-2 border-amber-400/60 bg-amber-50/50 dark:bg-amber-950/20 p-5 sm:p-8 space-y-5">
+                <div>
+                  <h2 className="font-serif text-xl tracking-tight">Paso 3 — Realiza tu pago por Yape</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Usa el código de referencia como <strong>concepto</strong> al yapear.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-amber-300/50 bg-background p-4 space-y-2">
+                  <p className="text-[10px] uppercase tracking-widest text-amber-600 dark:text-amber-400 font-semibold">
+                    Tu código de referencia
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <p className="font-mono text-2xl sm:text-3xl font-bold tracking-wide">
+                      {referencia}
+                    </p>
+                    <Button variant="outline" size="sm" onClick={copyReferencia}>
+                      {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                      Copiar
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Escribe este código en el campo <strong>concepto</strong> de tu Yape.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border/40 bg-background p-4 space-y-3">
+                  <p className="flex items-center gap-2 text-sm font-medium">
+                    <Smartphone className="h-4 w-4 text-primary" strokeWidth={1.75} />
+                    Instrucciones de pago
+                  </p>
+                  <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+                    <dt className="text-muted-foreground">Método</dt>
+                    <dd>Yape</dd>
+                    <dt className="text-muted-foreground">Número Yape</dt>
+                    <dd className="font-medium">{BOOTCAMP_YAPE.numero}</dd>
+                    <dt className="text-muted-foreground">A nombre de</dt>
+                    <dd>{BOOTCAMP_YAPE.titular}</dd>
+                    <dt className="text-muted-foreground">Monto</dt>
+                    <dd className="font-semibold">{formatBootcampPrecio(precio)}</dd>
+                    <dt className="text-muted-foreground">Concepto</dt>
+                    <dd className="font-mono text-xs">{referencia}</dd>
+                  </dl>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-5">
+                <div>
+                  <h3 className="font-medium">Sube tu comprobante</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Toma una captura del pago realizado y súbela aquí para confirmar tu inscripción.
+                  </p>
+                </div>
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  className="hidden"
+                  onChange={(e) => handleFileSelect(e.target.files?.[0] ?? null)}
+                />
+
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    handleFileSelect(e.dataTransfer.files[0] ?? null);
+                  }}
+                  className={cn(
+                    "w-full rounded-xl border-2 border-dashed p-8 text-center transition-colors",
+                    comprobante
+                      ? "border-primary/50 bg-primary/5"
+                      : "border-border/60 hover:border-primary/40"
+                  )}
+                >
+                  <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-3" strokeWidth={1.5} />
+                  {comprobante ? (
+                    <p className="text-sm font-medium">{comprobante.name}</p>
+                  ) : (
+                    <>
+                      <p className="text-sm font-medium">Haz clic para subir o arrastra y suelta</p>
+                      <p className="text-xs text-muted-foreground mt-1">PNG, JPG o WEBP (Máx. 5 MB)</p>
+                    </>
+                  )}
+                </button>
+
+                {error && <p className="text-sm text-destructive">{error}</p>}
+
+                <Button
+                  size="lg"
+                  className="w-full min-h-[48px]"
+                  disabled={!comprobante || loading}
+                  onClick={handleInscripcion}
+                >
+                  {loading ? "Enviando…" : "Confirmar inscripción"}
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {/* Paso 4 — Encuesta */}
+          {step === 4 && (
+            <div className="rounded-2xl border border-border/40 bg-card overflow-hidden">
+              <div className="h-1 bg-primary" />
+              <div className="p-5 sm:p-8 space-y-6">
+                {encuestaDone ? (
+                  <div className="text-center space-y-6 py-4">
+                    <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-primary/15 text-primary">
+                      <CheckCircle2 className="h-7 w-7" strokeWidth={1.75} />
+                    </span>
+                    <div className="space-y-2">
+                      <h2 className="font-serif text-2xl tracking-tight">¡Inscripción completada!</h2>
+                      <p className="text-sm text-muted-foreground">
+                        Gracias por completar la encuesta. Te contactaremos pronto con los detalles.
+                      </p>
+                      {referencia && (
+                        <p className="text-xs text-muted-foreground">Referencia: {referencia}</p>
+                      )}
+                    </div>
+                    <Button size="lg" render={<Link href="/programas/profesionales" />}>
+                      Volver a programas
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="text-center space-y-2">
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/15 text-primary mx-auto">
+                        <Check className="h-5 w-5" strokeWidth={2} />
+                      </span>
+                      <h2 className="font-serif text-xl sm:text-2xl tracking-tight">
+                        ¡Comprobante recibido!
+                      </h2>
+                      {referencia && (
+                        <p className="text-sm text-muted-foreground">Referencia: {referencia}</p>
+                      )}
+                      <h3 className="font-serif text-lg tracking-tight pt-2">
+                        Cuéntanos un poco sobre ti
+                      </h3>
+                      <p className="text-sm text-muted-foreground">
+                        Esto nos ayuda a personalizar el laboratorio para ti 🎯
+                      </p>
+                    </div>
+
+                    <form onSubmit={handleEncuesta} className="space-y-5">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          1. ¿A qué te dedicas actualmente?
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Ej. Soy contador en una empresa de logística"
+                          value={dedicacion}
+                          onChange={(e) => setDedicacion(e.target.value)}
+                          className={inputClass}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          2. ¿Cuál es tu nivel actual con herramientas de IA?
+                        </label>
+                        <div className="space-y-2">
+                          {BOOTCAMP_NIVEL_IA_OPTIONS.map((opt, i) => {
+                            const emojis = ["🔰", "🌱", "⚡", "🚀"];
+                            return (
+                              <button
+                                key={opt}
+                                type="button"
+                                onClick={() => setNivelIa(opt)}
+                                className={cn(
+                                  "w-full text-left rounded-xl border px-4 py-3 text-sm transition-colors",
+                                  nivelIa === opt
+                                    ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                                    : "border-border/50 hover:border-primary/30"
+                                )}
+                              >
+                                {emojis[i]} {opt}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          3. ¿Cuál es el mayor problema en tu trabajo que quisieras resolver con IA?
+                        </label>
+                        <textarea
+                          placeholder="Cuéntanos con detalle, esto es muy importante para preparar tu sesión"
+                          value={problema}
+                          onChange={(e) => setProblema(e.target.value)}
+                          rows={3}
+                          className={cn(inputClass, "resize-y")}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          4. ¿Qué herramienta de IA te genera más curiosidad? (puedes elegir varias)
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                          {BOOTCAMP_HERRAMIENTAS_OPTIONS.map((tool) => (
+                            <button
+                              key={tool}
+                              type="button"
+                              onClick={() => toggleHerramienta(tool)}
+                              className={cn(
+                                "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors",
+                                herramientas.includes(tool)
+                                  ? "border-primary bg-primary text-primary-foreground"
+                                  : "border-border/60 hover:border-primary/40"
+                              )}
+                            >
+                              {tool}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">
+                          5. ¿Qué esperas llevarte del laboratorio?
+                        </label>
+                        <textarea
+                          placeholder="Ej. Quiero aprender a automatizar mis reportes semanales"
+                          value={expectativas}
+                          onChange={(e) => setExpectativas(e.target.value)}
+                          rows={3}
+                          className={cn(inputClass, "resize-y")}
+                          required
+                        />
+                      </div>
+
+                      {error && <p className="text-sm text-destructive">{error}</p>}
+
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full min-h-[48px]"
+                        disabled={loading || herramientas.length === 0}
+                      >
+                        {loading ? "Enviando…" : "Enviar y finalizar"}
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+
+                      <button
+                        type="button"
+                        className="w-full text-center text-sm text-muted-foreground hover:text-primary transition-colors"
+                        onClick={() => setEncuestaDone(true)}
+                      >
+                        Completar después
+                      </button>
+                    </form>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
+
+        {step < 4 && (
+          <CheckoutSummary
+            precio={precio}
+            fecha={selectedFecha}
+            referencia={step >= 3 ? referencia : undefined}
+          />
+        )}
       </div>
-
-      <div className="space-y-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <CreditCard className="h-4 w-4 text-primary" strokeWidth={1.75} />
-          Datos de pago
-          <span className="ml-auto flex items-center gap-1 text-[10px] uppercase tracking-wider">
-            <Lock className="h-3 w-3" strokeWidth={1.75} />
-            Simulado
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          <input
-            type="text"
-            placeholder="Nombre completo"
-            required
-            className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-          />
-          <input
-            type="email"
-            placeholder="Correo electrónico"
-            required
-            className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-          />
-          <input
-            type="tel"
-            placeholder="WhatsApp (+51 ...)"
-            required
-            className="w-full rounded-lg border border-border/60 bg-background px-3 py-2.5 text-sm outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-          />
-          <input
-            type="text"
-            placeholder="Número de tarjeta (simulado)"
-            defaultValue="4242 4242 4242 4242"
-            readOnly
-            className="w-full rounded-lg border border-border/60 bg-muted/40 px-3 py-2.5 text-sm text-muted-foreground cursor-not-allowed"
-          />
-          <div className="grid grid-cols-2 gap-3">
-            <input
-              type="text"
-              placeholder="MM/AA"
-              defaultValue="12/28"
-              readOnly
-              className="rounded-lg border border-border/60 bg-muted/40 px-3 py-2.5 text-sm text-muted-foreground cursor-not-allowed"
-            />
-            <input
-              type="text"
-              placeholder="CVC"
-              defaultValue="123"
-              readOnly
-              className="rounded-lg border border-border/60 bg-muted/40 px-3 py-2.5 text-sm text-muted-foreground cursor-not-allowed"
-            />
-          </div>
-        </div>
-      </div>
-
-      <p className="flex items-start gap-2 text-xs text-muted-foreground">
-        <Shield className="h-3.5 w-3.5 shrink-0 mt-0.5 text-primary" strokeWidth={1.75} />
-        Pasarela de demostración. No se procesará ningún cargo real. La pre-reserva se confirma
-        por WhatsApp.
-      </p>
-
-      <Button
-        type="submit"
-        size="lg"
-        className="w-full min-h-[48px]"
-        disabled={loading}
-      >
-        {loading ? "Procesando…" : `Pagar ${formatBootcampPrecio(precio)}`}
-      </Button>
-
-      <Link
-        href="/programas/profesionales"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" strokeWidth={1.75} />
-        Volver a programas
-      </Link>
-    </form>
+    </div>
   );
 }

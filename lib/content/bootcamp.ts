@@ -1,7 +1,14 @@
 import type { ProgramaModalidad } from "./programas";
 
 export const BOOTCAMP_CUPOS = 10;
-export const BOOTCAMP_DURACION = "3–4 horas por sesión";
+export const BOOTCAMP_HORARIO = "10a.m. - 2 p.m.";
+/** @deprecated Use BOOTCAMP_HORARIO */
+export const BOOTCAMP_DURACION = BOOTCAMP_HORARIO;
+
+export const BOOTCAMP_YAPE = {
+  numero: "961 679 031",
+  titular: "Gianmarco Guerrero",
+} as const;
 
 export const CLAUDE_BOOTCAMP = {
   slug: "claude-bootcamp",
@@ -40,7 +47,7 @@ export const RUTAS_BLOQUEADAS: RutaBloqueada[] = [
     tagline: "De cero a referente de IA en tu equipo",
     descripcion:
       "Recorrido progresivo por Chat, Cowork y Code en múltiples sesiones. La ruta completa para dominar el ecosistema Claude.",
-    duracion: "6 sesiones · 3–4 h c/u",
+    duracion: "6 sesiones · 10a.m. - 2 p.m.",
     precioReferencial: { virtual: 699, presencial: 1199 },
     pasos: [
       "Claude Chat desde cero",
@@ -57,7 +64,7 @@ export const RUTAS_BLOQUEADAS: RutaBloqueada[] = [
     tagline: "Construye soluciones sin ser developer",
     descripcion:
       "Tres sesiones para pasar de usuario casual a builder: colabora en equipo, automatiza con Code y resuelve casos propios.",
-    duracion: "3 sesiones · 3–4 h c/u",
+    duracion: "3 sesiones · 10a.m. - 2 p.m.",
     precioReferencial: { virtual: 449, presencial: 749 },
     pasos: [
       "Claude Chat desde cero",
@@ -79,4 +86,30 @@ export function buildCheckoutUrl(modalidad: ProgramaModalidad): string {
 
 export function formatBootcampPrecio(amount: number): string {
   return `S/ ${amount}`;
+}
+
+export function bootcampUbicacion(modalidad: ProgramaModalidad): string {
+  return modalidad === "virtual" ? "En vivo por Meet" : "Lima, Perú";
+}
+
+export function generateBootcampReferencia(nombre: string): string {
+  const initials = nombre
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+  const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return `CP-${initials || "XX"}-${suffix}`;
+}
+
+export interface BootcampFecha {
+  id: string;
+  fecha: string;
+  fechaLabel: string;
+  horario: string;
+  ubicacion: string;
+  modalidad: ProgramaModalidad;
+  cuposDisponibles: number;
+  programa: string;
 }

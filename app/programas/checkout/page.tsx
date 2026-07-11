@@ -8,8 +8,9 @@ import type { ProgramaModalidad } from "@/lib/content/programas";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Checkout — Claude Bootcamp",
-  description: "Pre-reserva tu cupo en Claude Bootcamp. Pasarela de demostración — confirmación final por WhatsApp.",
+  title: "Inscripción — Claude Bootcamp",
+  description:
+    "Inscríbete a Claude Bootcamp: elige fecha, completa tus datos y paga por Yape. Virtual S/ 159 o presencial S/ 249.",
   path: "/programas/checkout",
   noIndex: true,
 });
@@ -31,20 +32,18 @@ export default function CheckoutPage({ searchParams }: PageProps) {
   const modalidad = parseModalidad(searchParams.modalidad);
   if (!modalidad) notFound();
 
-  const modalidadLabel = modalidad === "virtual" ? "Virtual" : "Presencial";
-
   return (
     <>
       <Navbar />
-      <main className="min-h-screen px-4 sm:px-6 py-12 sm:py-20">
-        <div className="max-w-md mx-auto space-y-6">
-          <div className="text-center space-y-2">
-            <p className="text-xs uppercase tracking-widest text-primary">Checkout</p>
-            <h1 className="font-serif text-2xl sm:text-3xl tracking-tight">
-              Pre-reserva · {CLAUDE_BOOTCAMP.nombre}
-            </h1>
-            <p className="text-sm text-muted-foreground">Modalidad {modalidadLabel}</p>
-          </div>
+      <main
+        className="min-h-screen px-4 sm:px-6 py-12 sm:py-16"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, hsl(var(--border) / 0.4) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      >
+        <div className="max-w-4xl mx-auto">
           <CheckoutForm modalidad={modalidad} />
         </div>
       </main>

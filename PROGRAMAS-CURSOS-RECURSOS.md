@@ -15,14 +15,16 @@ Catálogo de referencia del sitio [claude.mayckolco.com](https://claude.mayckolc
 |---|---|
 | **URL** | [/programas/profesionales](https://claude.mayckolco.com/programas/profesionales) |
 | **Checkout** | `/programas/checkout?programa=claude-bootcamp&modalidad=virtual\|presencial` |
-| **Duración** | 3–4 horas por sesión |
+| **Duración** | 10a.m. - 2 p.m. |
 | **Cupos** | 10 por cohorte |
 | **Audiencia** | Personas sin conocimiento de código |
+| **Fechas (Notion)** | DB `9e574cb31d8b4cf5a0d49bea50cfab22` |
+| **Registros (Notion)** | DB `686f7d1078614a009caa15c9c8acf2a8` |
 
 | Modalidad | Precio | Acciones |
 |---|---|---|
-| **Virtual** | S/ 159 | Pre-reserva → checkout simulado · Más info → WhatsApp |
-| **Presencial** (Lima) | S/ 249 | Pre-reserva → checkout simulado · Más info → WhatsApp |
+| **Virtual** | S/ 159 | Pre-reserva → checkout Yape (4 pasos) · En vivo por Meet |
+| **Presencial** (Lima) | S/ 249 | Pre-reserva → checkout Yape (4 pasos) · Más info → WhatsApp |
 
 **Tagline:** Domina Claude en un día — sin código
 
@@ -39,12 +41,12 @@ Catálogo de referencia del sitio [claude.mayckolco.com](https://claude.mayckolc
 
 ### Ruta Fundamentos a Experto
 - **Precio referencial:** Virtual S/ 699 · Presencial S/ 1,199
-- **Duración:** 6 sesiones · 3–4 h c/u
+- **Duración:** 6 sesiones · 10a.m. - 2 p.m.
 - **Pasos:** Chat desde cero → Productividad → Cowork → Code → Casos → Flujos experto
 
 ### Ruta Builder con IA
 - **Precio referencial:** Virtual S/ 449 · Presencial S/ 749
-- **Duración:** 3 sesiones · 3–4 h c/u
+- **Duración:** 3 sesiones · 10a.m. - 2 p.m.
 - **Pasos:** Chat desde cero → Cowork → Casos prácticos
 
 ---
