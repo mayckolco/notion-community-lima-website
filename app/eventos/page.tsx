@@ -58,8 +58,8 @@ export default async function EventosPage() {
           </div>
 
           {slots.length === 0 ? (
-            <div className="border border-border/50 bg-card p-12 text-center space-y-3">
-              <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto" />
+            <div className="rounded-xl border border-border/50 bg-card p-12 text-center space-y-3">
+              <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto" aria-hidden="true" />
               <p className="text-lg font-semibold">No hay eventos disponibles aún</p>
               <p className="text-sm text-muted-foreground">
                 Vuelve pronto — los eventos se confirman semanas antes.
@@ -94,7 +94,7 @@ export default async function EventosPage() {
             </section>
           )}
 
-          <div className="border border-border/40 bg-card rounded-lg p-8 sm:p-12 text-center space-y-6">
+          <div className="border border-border/40 bg-card rounded-xl p-8 sm:p-12 text-center space-y-6">
             <div className="space-y-2">
               <h2 className="text-2xl sm:text-3xl font-serif tracking-tight">
                 ¿Quieres ser el próximo <span className="gradient-text">speaker</span>?
@@ -106,10 +106,10 @@ export default async function EventosPage() {
 
             <Link
               href="/aplicar"
-              className="inline-flex items-center gap-2 min-h-[52px] px-8 text-base font-bold bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 transition-colors touch-manipulation"
+              className="inline-flex items-center gap-2 min-h-[52px] px-8 text-base font-bold rounded-md bg-primary text-primary-foreground hover:bg-primary/90 active:bg-primary/80 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
             >
               Aplicar ahora
-              <ArrowRight className="h-5 w-5" />
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
             </Link>
 
             <div className="space-y-3 pt-2">
@@ -118,9 +118,9 @@ export default async function EventosPage() {
                 href="https://wa.me/51946542990"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 min-h-[44px] px-6 text-sm font-semibold border border-border/60 text-foreground hover:bg-muted/30 transition-colors touch-manipulation"
+                className="inline-flex items-center gap-2 min-h-[44px] px-6 text-sm font-semibold rounded-md border border-border/60 text-foreground hover:bg-muted/30 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
               >
-                <MessageCircle className="h-4 w-4 text-primary" />
+                <MessageCircle className="h-4 w-4 text-primary" aria-hidden="true" />
                 Escribir por WhatsApp
               </a>
             </div>
@@ -139,7 +139,7 @@ function PastSlotCard({ slot }: { slot: PastSlotRecord }) {
   const dayName = format(date, "EEEE d MMM yyyy", { locale: es });
 
   return (
-    <div className="border border-border/30 bg-card rounded-lg p-6 sm:p-8 space-y-4">
+    <div className="border border-border/30 bg-card rounded-xl p-6 sm:p-8 space-y-4">
       <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
         {dayName}
       </p>
@@ -160,9 +160,9 @@ function PastSlotCard({ slot }: { slot: PastSlotRecord }) {
         href={slot.grabacionUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 min-h-[44px] px-5 text-sm font-semibold border border-primary/40 text-primary hover:bg-primary/5 transition-colors touch-manipulation"
+        className="inline-flex items-center gap-2 min-h-[44px] px-5 text-sm font-semibold rounded-md border border-primary/40 text-primary hover:bg-primary/10 transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
       >
-        <Play className="h-4 w-4" />
+        <Play className="h-4 w-4" aria-hidden="true" />
         Ver grabación
       </a>
     </div>
@@ -175,7 +175,7 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
   const hora = EVENT_SLOT_HORARIO;
 
   return (
-    <div className="border border-border/30 bg-card rounded-lg overflow-hidden flex flex-col sm:flex-row">
+    <div className="border border-border/30 bg-card rounded-xl overflow-hidden flex flex-col sm:flex-row shadow-soft transition-shadow hover:shadow-clay">
       <div className="flex-1 p-6 sm:p-8 space-y-4 flex flex-col">
         <p className="text-xs font-bold uppercase tracking-widest text-primary">
           Disponible · {dayName} · {hora}

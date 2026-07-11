@@ -2,11 +2,11 @@ import { Sparkles } from "lucide-react";
 
 export function WhatIsClaudeSection() {
   return (
-    <section className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
+    <section aria-labelledby="what-is-claude-heading" className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
       <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">
         <div className="space-y-4">
           <p className="text-xs uppercase tracking-widest text-primary">¿Qué es Claude?</p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
+          <h2 id="what-is-claude-heading" className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
             El asistente de IA de{" "}
             <span className="gradient-text">Anthropic</span>
           </h2>

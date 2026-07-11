@@ -35,6 +35,7 @@ export function SpeakerMarquee({ speakers }: { speakers: PastSpeaker[] }) {
         Voces que están construyendo con IA
       </h2>
       <div
+        aria-hidden="true"
         className="overflow-hidden space-y-3 py-2"
         style={{
           maskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",

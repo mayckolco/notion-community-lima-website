@@ -61,29 +61,32 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm text-muted-foreground">
+        <label htmlFor="email" className="block text-sm font-medium text-foreground">
           Email con el que aplicaste
         </label>
         <input
           id="email"
           type="email"
           required
+          autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="tu@email.com"
-          className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+          aria-describedby={error ? "login-error" : undefined}
+          aria-invalid={error ? "true" : undefined}
+          className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors aria-invalid:border-destructive"
         />
       </div>
 
       {error && (
-        <p className="text-sm text-destructive border border-destructive/20 bg-destructive/5 rounded-md px-4 py-3">
+        <p id="login-error" role="alert" className="text-sm text-destructive border border-destructive/20 bg-destructive/5 rounded-md px-4 py-3">
           {error}
         </p>
       )}
 
-      <Button type="submit" className="w-full" disabled={loading}>
+      <Button type="submit" className="w-full min-h-[44px]" disabled={loading} aria-busy={loading}>
         {loading ? "Enviando..." : "Enviar link de acceso"}
       </Button>
     </form>

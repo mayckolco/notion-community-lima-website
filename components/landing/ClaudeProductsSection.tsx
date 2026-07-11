@@ -9,11 +9,11 @@ const PRODUCT_ICONS = {
 
 export function ClaudeProductsSection() {
   return (
-    <section className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
+    <section aria-labelledby="products-heading" className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
       <div className="max-w-6xl mx-auto space-y-10">
         <div className="space-y-3 max-w-2xl">
           <p className="text-xs uppercase tracking-widest text-primary">Productos</p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
+          <h2 id="products-heading" className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
             El ecosistema <span className="gradient-text">Claude</span>
           </h2>
           <p className="text-muted-foreground leading-relaxed">
@@ -30,7 +30,8 @@ export function ClaudeProductsSection() {
                 href={product.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`group rounded-xl border bg-card p-6 shadow-soft space-y-4 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-clay touch-manipulation ${
+                aria-label={`${product.nombre} — ${product.tagline} (abre en nueva pestaña)`}
+                className={`group rounded-xl border bg-card p-6 shadow-soft space-y-4 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-clay touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
                   product.destacado ? "border-primary/30" : "border-border"
                 }`}
               >

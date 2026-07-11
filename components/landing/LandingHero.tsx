@@ -12,13 +12,13 @@ interface LandingHeroProps {
 
 export function LandingHero({ nextEvent }: LandingHeroProps) {
   return (
-    <section className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-24 text-center">
+    <section aria-labelledby="hero-heading" className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-24 text-center">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         <p className="text-xs uppercase tracking-widest text-primary">
           La referencia en español sobre Claude en Perú
         </p>
 
-        <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-balance">
+        <h1 id="hero-heading" className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-balance">
           Aprende, construye y crece con{" "}
           <span className="gradient-text">Claude</span>
         </h1>

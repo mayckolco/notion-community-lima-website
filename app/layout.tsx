@@ -70,8 +70,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es-PE" className={`${inter.variable} ${fraunces.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased">
+        <a href="#main-content" className="skip-link">
+          Saltar al contenido principal
+        </a>
         <ThemeProvider>
-          {children}
+          <div id="main-content" tabIndex={-1} className="outline-none">
+            {children}
+          </div>
           <WhatsAppButton />
           <Toaster />
           <Analytics />

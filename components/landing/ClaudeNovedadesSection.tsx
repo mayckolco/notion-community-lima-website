@@ -37,37 +37,44 @@ export function ClaudeNovedadesSection({ novedades }: ClaudeNovedadesSectionProp
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          {items.map((item) => (
-            <article
-              key={item.id}
-              className="rounded-xl border border-border bg-card p-5 sm:p-6 shadow-soft space-y-3 hover:border-primary/30 transition-colors"
-            >
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-[10px] font-mono uppercase tracking-widest rounded-full border border-border px-2 py-0.5 text-muted-foreground">
-                  {NOVEDAD_TAGS[item.tag]}
-                </span>
-                <time
-                  dateTime={item.fecha}
-                  className="text-[10px] text-muted-foreground/70"
-                >
-                  {format(parseISO(item.fecha), "d MMM yyyy", { locale: es })}
-                </time>
-              </div>
-              <h3 className="font-serif text-lg leading-snug">{item.titulo}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{item.resumen}</p>
-              {item.url && (
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-xs text-primary hover:underline"
-                >
-                  Leer más
-                  <ArrowRight className="h-3 w-3" />
-                </a>
-              )}
-            </article>
-          ))}
+          {items.map((item) => {
+            const Wrapper = item.url ? "a" : "article";
+            const wrapperProps = item.url
+              ? {
+                  href: item.url,
+                  target: "_blank" as const,
+                  rel: "noopener noreferrer",
+                  "aria-label": item.titulo,
+                }
+              : {};
+            return (
+              <Wrapper
+                key={item.id}
+                {...wrapperProps}
+                className={`group rounded-xl border border-border bg-card p-5 sm:p-6 shadow-soft space-y-3 transition-all duration-200 hover:border-primary/40 hover:shadow-clay ${item.url ? "cursor-pointer block" : ""}`}
+              >
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-[10px] font-mono uppercase tracking-widest rounded-full border border-border px-2 py-0.5 text-muted-foreground">
+                    {NOVEDAD_TAGS[item.tag]}
+                  </span>
+                  <time
+                    dateTime={item.fecha}
+                    className="text-[10px] text-muted-foreground/70"
+                  >
+                    {format(parseISO(item.fecha), "d MMM yyyy", { locale: es })}
+                  </time>
+                </div>
+                <h3 className="font-serif text-lg leading-snug group-hover:text-primary transition-colors">{item.titulo}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.resumen}</p>
+                {item.url && (
+                  <span className="inline-flex items-center gap-1 text-xs text-primary">
+                    Leer más
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                )}
+              </Wrapper>
+            );
+          })}
         </div>
       </div>
     </section>

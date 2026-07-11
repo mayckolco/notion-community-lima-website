@@ -10,6 +10,7 @@ import {
   PROGRAMAS_EMPRESAS_LABEL,
   PROGRAMAS_EMPRESAS_PUBLIC,
 } from "@/lib/content/constants";
+import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
   { label: "Eventos",   href: "/eventos" },
@@ -28,6 +29,19 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [programasOpen, setProgramasOpen] = useState(false);
   const programasRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  const closeAll = () => {
+    setOpen(false);
+    setProgramasOpen(false);
+  };
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    closeAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname]);
 
   useEffect(() => {
     if (!programasOpen) return;
@@ -37,8 +51,13 @@ export function Navbar() {
       }
     };
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setProgramasOpen(false);
+      if (e.key === "Escape") {
+        setProgramasOpen(false);
+      }
     };
+    // Move focus into dropdown when opened via keyboard
+    const firstLink = dropdownRef.current?.querySelector<HTMLElement>("a, button");
+    firstLink?.focus();
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);
     return () => {
@@ -46,11 +65,6 @@ export function Navbar() {
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [programasOpen]);
-
-  const closeAll = () => {
-    setOpen(false);
-    setProgramasOpen(false);
-  };
 
   return (
     <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
@@ -73,7 +87,11 @@ export function Navbar() {
             <Link
               key={label}
               href={href}
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className={`text-sm transition-colors rounded-sm px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
+                pathname === href
+                  ? "text-foreground font-medium"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {label}
             </Link>
@@ -96,6 +114,7 @@ export function Navbar() {
 
             {programasOpen && (
               <div
+                ref={dropdownRef}
                 role="menu"
                 className="absolute right-0 top-full mt-2 w-52 rounded-md border border-border/60 bg-background/95 backdrop-blur shadow-lg py-1"
               >
@@ -127,7 +146,11 @@ export function Navbar() {
 
           <Link
             href={ABOUT_LINK.href}
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            className={`text-sm transition-colors rounded-sm px-1 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
+              pathname === ABOUT_LINK.href
+                ? "text-foreground font-medium"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
           >
             {ABOUT_LINK.label}
           </Link>

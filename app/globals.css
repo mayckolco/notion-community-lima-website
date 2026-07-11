@@ -67,6 +67,10 @@
     box-sizing: border-box;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -75,6 +79,16 @@
   h1, h2, h3, h4 {
     @apply font-serif tracking-tight;
   }
+
+  /* Skip-to-content link — visually hidden until focused */
+  .skip-link {
+    @apply absolute -top-full left-4 z-[200] rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    @apply top-4;
+  }
+
 }
 
 @layer utilities {
@@ -113,4 +127,10 @@
 @keyframes marquee-down {
   from { transform: translateY(-50%); }
   to   { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [style*="marquee-"] {
+    animation-play-state: paused !important;
+  }
 }

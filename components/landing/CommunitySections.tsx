@@ -32,11 +32,11 @@ const PILLARS = [
 
 export function CommunityPillarsSection() {
   return (
-    <section className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
+    <section aria-labelledby="pillars-heading" className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
       <div className="max-w-6xl mx-auto space-y-10">
         <div className="space-y-3 max-w-2xl">
           <p className="text-xs uppercase tracking-widest text-primary">Comunidad</p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
+          <h2 id="pillars-heading" className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
             Claude Perú: builders, para builders
           </h2>
         </div>
