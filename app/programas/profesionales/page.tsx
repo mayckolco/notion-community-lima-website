@@ -112,6 +112,7 @@ export default function ProgramasProfesionalesPage() {
               <PreReservaDualButtons
                 programaNombre="Ruta Desde Cero a Experto"
                 location="profesionales_hero"
+                layout="hero"
                 className="justify-center"
               />
               <Link

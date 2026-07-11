@@ -77,7 +77,7 @@ export function ProgramaCard({
           <PreReservaDualButtons
             programaNombre={programa.nombre}
             location={location}
-            compact
+            layout="card"
           />
         )}
         <Link

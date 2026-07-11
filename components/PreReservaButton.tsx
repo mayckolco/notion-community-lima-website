@@ -8,15 +8,15 @@ import type { ProgramaModalidad } from "@/lib/content/programas";
 import { GA_EVENTS } from "@/lib/seo/analytics";
 import { cn } from "@/lib/utils";
 
+export type PreReservaLayout = "card" | "detail" | "hero";
+
 interface PreReservaButtonProps {
   programaNombre: string;
   modalidad: ProgramaModalidad;
   location: string;
-  size?: "default" | "lg" | "sm";
+  layout?: PreReservaLayout;
   variant?: "default" | "outline";
   className?: string;
-  fullWidth?: boolean;
-  compact?: boolean;
 }
 
 function buildPreReservaUrl(nombre: string, modalidad: ProgramaModalidad): string {
@@ -25,34 +25,33 @@ function buildPreReservaUrl(nombre: string, modalidad: ProgramaModalidad): strin
   return `${WHATSAPP_DIRECT_URL}?text=${encodeURIComponent(text)}`;
 }
 
+function getLabel(modalidad: ProgramaModalidad, layout: PreReservaLayout): string {
+  if (layout === "hero") {
+    return modalidad === "virtual" ? "Pre-reserva virtual" : "Pre-reserva presencial";
+  }
+  return modalidad === "virtual" ? "Reservar virtual" : "Reservar presencial";
+}
+
 export function PreReservaButton({
   programaNombre,
   modalidad,
   location,
-  size = "lg",
+  layout = "detail",
   variant = "default",
   className,
-  fullWidth = false,
-  compact = false,
 }: PreReservaButtonProps) {
-  const label = compact
-    ? modalidad === "virtual"
-      ? "Reserva virtual"
-      : "Reserva presencial"
-    : modalidad === "virtual"
-      ? "Pre-reserva virtual"
-      : "Pre-reserva presencial";
-
-  const buttonSize = compact ? "sm" : size === "sm" ? "sm" : size === "lg" ? "lg" : "default";
+  const label = getLabel(modalidad, layout);
+  const isCard = layout === "card";
+  const isHero = layout === "hero";
 
   return (
     <Button
-      size={buttonSize}
+      size={isHero ? "default" : "sm"}
       variant={variant}
       className={cn(
-        !compact && size !== "sm" && "min-h-[48px]",
-        (fullWidth || compact) && "w-full max-w-full",
-        compact && "text-xs",
+        isCard && "w-full",
+        isHero && "min-h-[44px]",
+        !isCard && !isHero && "w-auto shrink-0",
         "touch-manipulation",
         className
       )}
@@ -71,8 +70,11 @@ export function PreReservaButton({
         />
       }
     >
-      <MessageCircle className={cn("shrink-0", compact ? "h-3.5 w-3.5 mr-1.5" : "h-4 w-4 mr-2")} strokeWidth={1.75} />
-      <span className="truncate">{label}</span>
+      <MessageCircle
+        className={cn("shrink-0", isCard ? "h-3.5 w-3.5 mr-1.5" : "h-4 w-4 mr-1.5")}
+        strokeWidth={1.75}
+      />
+      <span className={cn(isCard && "text-xs")}>{label}</span>
     </Button>
   );
 }
@@ -81,18 +83,20 @@ export function PreReservaDualButtons({
   programaNombre,
   location,
   className,
-  compact = false,
+  layout = "detail",
 }: {
   programaNombre: string;
   location: string;
   className?: string;
-  compact?: boolean;
+  layout?: PreReservaLayout;
 }) {
+  const isCard = layout === "card";
+
   return (
     <div
       className={cn(
         "flex gap-2 min-w-0",
-        compact ? "flex-col" : "flex-col sm:flex-row sm:gap-3",
+        isCard ? "flex-col" : "flex-row flex-wrap items-center",
         className
       )}
     >
@@ -100,16 +104,14 @@ export function PreReservaDualButtons({
         programaNombre={programaNombre}
         modalidad="virtual"
         location={location}
-        fullWidth
-        compact={compact}
+        layout={layout}
       />
       <PreReservaButton
         programaNombre={programaNombre}
         modalidad="presencial"
         location={location}
+        layout={layout}
         variant="outline"
-        fullWidth
-        compact={compact}
       />
     </div>
   );

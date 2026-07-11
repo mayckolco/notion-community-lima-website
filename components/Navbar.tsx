@@ -6,6 +6,10 @@ import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { JoinCommunityButton } from "@/components/JoinCommunityButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import {
+  PROGRAMAS_EMPRESAS_LABEL,
+  PROGRAMAS_EMPRESAS_PUBLIC,
+} from "@/lib/content/constants";
 
 const NAV_LINKS = [
   { label: "Eventos",   href: "/eventos" },
@@ -14,8 +18,8 @@ const NAV_LINKS = [
 ];
 
 const PROGRAMAS_LINKS = [
-  { label: "Para profesionales", href: "/programas/profesionales" },
-  { label: "Para empresas",      href: "/programas/empresas" },
+  { label: "Para profesionales", href: "/programas/profesionales", comingSoon: false },
+  { label: PROGRAMAS_EMPRESAS_LABEL, href: "/programas/empresas", comingSoon: !PROGRAMAS_EMPRESAS_PUBLIC },
 ];
 
 const ABOUT_LINK = { label: "Sobre nosotros", href: "/nosotros" };
@@ -95,17 +99,28 @@ export function Navbar() {
                 role="menu"
                 className="absolute right-0 top-full mt-2 w-52 rounded-md border border-border/60 bg-background/95 backdrop-blur shadow-lg py-1"
               >
-                {PROGRAMAS_LINKS.map(({ label, href }) => (
-                  <Link
-                    key={label}
-                    role="menuitem"
-                    href={href}
-                    onClick={closeAll}
-                    className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors"
-                  >
-                    {label}
-                  </Link>
-                ))}
+                {PROGRAMAS_LINKS.map(({ label, href, comingSoon }) =>
+                  comingSoon ? (
+                    <span
+                      key={label}
+                      role="menuitem"
+                      aria-disabled="true"
+                      className="block px-4 py-2.5 text-sm text-muted-foreground/50 cursor-not-allowed select-none"
+                    >
+                      {label}
+                    </span>
+                  ) : (
+                    <Link
+                      key={label}
+                      role="menuitem"
+                      href={href}
+                      onClick={closeAll}
+                      className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  )
+                )}
               </div>
             )}
           </div>
@@ -155,16 +170,26 @@ export function Navbar() {
           <p className="px-6 pt-3.5 pb-1 text-xs uppercase tracking-widest text-muted-foreground/60">
             Programas
           </p>
-          {PROGRAMAS_LINKS.map(({ label, href }) => (
-            <Link
-              key={label}
-              href={href}
-              onClick={closeAll}
-              className="block px-9 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors touch-manipulation"
-            >
-              {label}
-            </Link>
-          ))}
+          {PROGRAMAS_LINKS.map(({ label, href, comingSoon }) =>
+            comingSoon ? (
+              <span
+                key={label}
+                aria-disabled="true"
+                className="block px-9 py-3 text-sm text-muted-foreground/50 cursor-not-allowed select-none touch-manipulation"
+              >
+                {label}
+              </span>
+            ) : (
+              <Link
+                key={label}
+                href={href}
+                onClick={closeAll}
+                className="block px-9 py-3 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/40 transition-colors touch-manipulation"
+              >
+                {label}
+              </Link>
+            )
+          )}
 
           <Link
             href={ABOUT_LINK.href}

@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
 import { listDirectorySpeakers } from "@/lib/notion/speakers";
 import { ALL_PROGRAMAS } from "@/lib/content/programas";
+import { PROGRAMAS_EMPRESAS_PUBLIC } from "@/lib/content/constants";
 import { SITE_URL } from "@/lib/seo/site";
 
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
@@ -13,7 +14,9 @@ const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: `${SITE_URL}/aplicar`, changeFrequency: "weekly", priority: 0.9 },
   { url: `${SITE_URL}/programas`, changeFrequency: "monthly", priority: 0.7 },
   { url: `${SITE_URL}/programas/profesionales`, changeFrequency: "monthly", priority: 0.8 },
-  { url: `${SITE_URL}/programas/empresas`, changeFrequency: "monthly", priority: 0.7 },
+  ...(PROGRAMAS_EMPRESAS_PUBLIC
+    ? [{ url: `${SITE_URL}/programas/empresas`, changeFrequency: "monthly" as const, priority: 0.7 }]
+    : []),
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

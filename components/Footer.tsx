@@ -2,13 +2,23 @@ import Link from "next/link";
 import { Sparkles } from "lucide-react";
 import { SocialLinks } from "@/components/SocialLinks";
 import { FooterCTA } from "@/components/FooterCTA";
+import {
+  PROGRAMAS_EMPRESAS_LABEL,
+  PROGRAMAS_EMPRESAS_PUBLIC,
+} from "@/lib/content/constants";
 
 const SITE_LINKS = [
   { label: "Eventos", href: "/eventos" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Recursos", href: "/recursos" },
   { label: "Programas para profesionales", href: "/programas/profesionales" },
-  { label: "Programas para empresas", href: "/programas/empresas" },
+  {
+    label: PROGRAMAS_EMPRESAS_PUBLIC
+      ? "Programas para empresas"
+      : PROGRAMAS_EMPRESAS_LABEL,
+    href: "/programas/empresas",
+    comingSoon: !PROGRAMAS_EMPRESAS_PUBLIC,
+  },
   { label: "Sobre nosotros", href: "/nosotros" },
 ];
 
@@ -56,14 +66,20 @@ export function Footer() {
               Explora
             </p>
             <ul className="space-y-2">
-              {SITE_LINKS.map(({ label, href }) => (
+              {SITE_LINKS.map(({ label, href, comingSoon }) => (
                 <li key={label}>
-                  <Link
-                    href={href}
-                    className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {label}
-                  </Link>
+                  {comingSoon ? (
+                    <span className="text-sm text-muted-foreground/50 cursor-not-allowed select-none">
+                      {label}
+                    </span>
+                  ) : (
+                    <Link
+                      href={href}
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>

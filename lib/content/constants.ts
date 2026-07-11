@@ -10,3 +10,7 @@ export const CLAUDE_APP_URL = "https://claude.ai";
 export const CLAUDE_CODE_DOCS_URL = "https://docs.anthropic.com/en/docs/claude-code";
 
 export const CLAUDE_API_DOCS_URL = "https://docs.anthropic.com/en/api/getting-started";
+
+/** Programas para empresas — bloqueado hasta lanzamiento */
+export const PROGRAMAS_EMPRESAS_PUBLIC = false;
+export const PROGRAMAS_EMPRESAS_LABEL = "Para empresas (pronto)";
