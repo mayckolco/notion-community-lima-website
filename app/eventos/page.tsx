@@ -235,6 +235,19 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
           ) : null}
         </div>
       </div>
+
+      {slot.coverUrl && (
+        <div className="relative w-full sm:w-52 md:w-60 shrink-0 aspect-[4/3] sm:aspect-auto sm:self-stretch min-h-[180px] sm:min-h-0 border-t sm:border-t-0 sm:border-l border-border/30">
+          <Image
+            src={slot.coverUrl}
+            alt={slot.titulo ?? "Cover del evento"}
+            fill
+            className="object-cover"
+            unoptimized
+            sizes="(max-width: 640px) 100vw, 240px"
+          />
+        </div>
+      )}
     </div>
   );
 }

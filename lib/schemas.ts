@@ -160,6 +160,7 @@ export interface Slot {
   descripcion: string | null;
   herramientas: string[];
   speaker: SlotSpeaker | null;
+  coverUrl: string | null;
 }
 
 export type SpeakerEtiqueta = "speaker" | "admin" | "colaborador";

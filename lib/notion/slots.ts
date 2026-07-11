@@ -58,6 +58,24 @@ function extractGrabacionUrl(props: Record<string, unknown>): string | null {
   );
 }
 
+function extractCoverUrl(props: Record<string, unknown>): string | null {
+  const files =
+    (props["Cover"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
+  for (const f of files) {
+    if (f.type === "file_upload") {
+      const url = (f.file_upload as { url?: string })?.url;
+      if (url) return url;
+    } else if (f.type === "external") {
+      const url = (f.external as { url?: string })?.url;
+      if (url) return url;
+    } else if (f.type === "file") {
+      const url = (f.file as { url?: string })?.url;
+      if (url) return url;
+    }
+  }
+  return null;
+}
+
 function extractSpeakerIds(props: Record<string, unknown>): string[] {
   const p = props as Record<string, { relation?: Array<{ id: string }> }>;
   return (
@@ -144,6 +162,7 @@ function mapPageToSlot(page: Record<string, unknown>): Slot {
     descripcion: extractDescripcion(props),
     herramientas: extractHerramientas(props),
     speaker: null,
+    coverUrl: extractCoverUrl(props),
   };
 }
 
@@ -211,6 +230,7 @@ export async function listSlots(): Promise<Slot[]> {
         descripcion: extractDescripcion(props),
         herramientas: extractHerramientas(props),
         speaker: null,
+        coverUrl: extractCoverUrl(props),
       };
     })
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
@@ -274,6 +294,7 @@ export async function listPastSlotsWithRecordings(): Promise<PastSlotRecord[]> {
         herramientas: extractHerramientas(props),
         speakerIds: extractSpeakerIds(props),
         grabacionUrl,
+        coverUrl: extractCoverUrl(props),
       };
     })
     .filter((slot): slot is NonNullable<typeof slot> => slot !== null && !!slot.fecha);
@@ -325,6 +346,7 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
         descripcion: extractDescripcion(props),
         herramientas: extractHerramientas(props),
         speakerIds: extractSpeakerIds(props),
+        coverUrl: extractCoverUrl(props),
       };
     })
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
@@ -356,6 +378,7 @@ export async function getSlot(slotId: string): Promise<Slot | null> {
       descripcion: extractDescripcion(props),
       herramientas: extractHerramientas(props),
       speaker: null,
+      coverUrl: extractCoverUrl(props),
     };
   } catch {
     return null;
