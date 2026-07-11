@@ -141,6 +141,7 @@ export type SlotEstado =
   | "Copys listos"
   | "Bloqueado"
   | "Publicado"
+  | "En promocion"
   | "En promoción";
 
 export interface SlotSpeaker {

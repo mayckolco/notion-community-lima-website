@@ -55,8 +55,8 @@ const ESTADO_CONFIG = {
     className: "bg-amber-50 text-amber-700 border-amber-200",
   },
   Confirmado: {
-    label: "Confirmado",
-    className: "bg-rose-50 text-rose-700 border-rose-200",
+    label: "Disponible",
+    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
   "Cover lista": {
     label: "Cover lista",
@@ -74,15 +74,23 @@ const ESTADO_CONFIG = {
     label: "Ocupado",
     className: "bg-muted text-muted-foreground border-border",
   },
+  "En promocion": {
+    label: "Disponible",
+    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  },
   "En promoción": {
-    label: "En promoción",
-    className: "bg-primary/10 text-primary border-primary/20",
+    label: "Disponible",
+    className: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
 } as const;
 
 export function SlotCard({ slot }: SlotCardProps) {
   const date = parseISO(slot.fecha);
-  const available = slot.estado === "Disponible";
+  const available =
+    slot.estado === "Disponible" ||
+    slot.estado === "Confirmado" ||
+    slot.estado === "En promocion" ||
+    slot.estado === "En promoción";
   const config = ESTADO_CONFIG[slot.estado] ?? ESTADO_CONFIG.Bloqueado;
 
   const dayName = format(date, "EEEE", { locale: es });

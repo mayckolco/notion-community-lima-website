@@ -18,7 +18,9 @@ function authHeaders() {
 
 function extractStatus(props: Record<string, unknown>): SlotEstado {
   const p = props as Record<string, { status?: { name?: string } }>;
-  return (p["Status"]?.status?.name ?? p["Estado"]?.status?.name ?? "Bloqueado") as SlotEstado;
+  const raw = p["Status"]?.status?.name ?? p["Estado"]?.status?.name ?? "Bloqueado";
+  if (raw === "En promoción") return "En promocion";
+  return raw as SlotEstado;
 }
 
 function extractDate(props: Record<string, unknown>): string | null {
@@ -58,7 +60,11 @@ function extractGrabacionUrl(props: Record<string, unknown>): string | null {
 
 function extractSpeakerIds(props: Record<string, unknown>): string[] {
   const p = props as Record<string, { relation?: Array<{ id: string }> }>;
-  return p["Speaker"]?.relation?.map((r) => r.id) ?? [];
+  return (
+    p["Speakers"]?.relation?.map((r) => r.id) ??
+    p["Speaker"]?.relation?.map((r) => r.id) ??
+    []
+  );
 }
 
 async function fetchSpeakerBasic(speakerId: string): Promise<SlotSpeaker | null> {
@@ -143,10 +149,13 @@ function mapPageToSlot(page: Record<string, unknown>): Slot {
 
 function futureDateFilters(todayStart: Date, until: Date) {
   return [
-    { property: "Fecha", date: { on_or_after: todayStart.toISOString() } },
-    { property: "Fecha", date: { on_or_before: until.toISOString() } },
+    { property: "Fecha", date: { on_or_after: todayStart.toISOString().slice(0, 10) } },
+    { property: "Fecha", date: { on_or_before: until.toISOString().slice(0, 10) } },
   ];
 }
+
+/** Estados de Notion que se publican en /eventos (nombre exacto en la DB). */
+export const PUBLIC_EVENT_STATUSES = ["Confirmado", "En promocion"] as const;
 
 async function querySlotsByStatus(
   statusProperty: string,
@@ -285,15 +294,13 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
   const now = new Date();
   const until = addWeeks(now, 20);
 
-  const todayStart = startOfDay(now);
-  const dateFilters = futureDateFilters(todayStart, until);
+  const today = startOfDay(now);
+  const dateFilters = futureDateFilters(today, until);
 
-  const confirmedStatuses = ["Confirmado", "Cover lista", "Copys listos", "En promoción"] as const;
-
-  async function queryConfirmed(statusProperty: string) {
+  async function queryPublicEvents(statusProperty: string) {
     return queryDatabaseOptional(getDbSlotsId(), {
       filter: {
-        or: confirmedStatuses.map((status) => ({
+        or: PUBLIC_EVENT_STATUSES.map((status) => ({
           and: [{ property: statusProperty, status: { equals: status } }, ...dateFilters],
         })),
       },
@@ -302,11 +309,9 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
   }
 
   const results =
-    (await queryConfirmed("Status")) ??
-    (await queryConfirmed("Estado")) ??
+    (await queryPublicEvents("Status")) ??
+    (await queryPublicEvents("Estado")) ??
     [];
-
-  const today = startOfDay(now);
 
   const slots = results
     .map((page) => {
@@ -314,7 +319,7 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
       return {
         id: ((page.id as string) ?? "").replace(/-/g, ""),
         fecha: extractDate(props) ?? "",
-        estado: extractStatus(props),
+        estado: "Disponible" as const,
         lumaUrl: extractLumaUrl(props),
         titulo: extractTitulo(props),
         descripcion: extractDescripcion(props),

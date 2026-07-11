@@ -51,7 +51,7 @@ export default async function EventosPage() {
               Eventos de <span className="gradient-text">Claude Perú</span>
             </h1>
             <p className="text-muted-foreground max-w-xl">
-              Sesiones confirmadas con builders y founders que comparten sus
+              Sesiones disponibles con builders y founders que comparten sus
               experiencias construyendo con IA.
             </p>
           </div>
@@ -59,7 +59,7 @@ export default async function EventosPage() {
           {slots.length === 0 ? (
             <div className="border border-border/50 bg-card p-12 text-center space-y-3">
               <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto" />
-              <p className="text-lg font-semibold">No hay eventos confirmados aún</p>
+              <p className="text-lg font-semibold">No hay eventos disponibles aún</p>
               <p className="text-sm text-muted-foreground">
                 Vuelve pronto — los eventos se confirman semanas antes.
               </p>
@@ -177,7 +177,7 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
     <div className="border border-border/30 bg-card rounded-lg overflow-hidden flex flex-col sm:flex-row">
       <div className="flex-1 p-6 sm:p-8 space-y-4 flex flex-col">
         <p className="text-xs font-bold uppercase tracking-widest text-primary">
-          {dayName} · {hora}
+          Disponible · {dayName} · {hora}
         </p>
 
         {slot.titulo ? (
