@@ -20,13 +20,39 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "Postula como Speaker · Claude Perú",
+  metadataBase: new URL("https://claude.mayckolco.com"),
+  title: {
+    default: "Claude Community",
+    template: "%s · Claude Community",
+  },
   description:
-    "Comparte tu experiencia construyendo con IA. Postula para hablar un martes de 7–8 pm en la comunidad Claude Perú.",
+    "La comunidad peruana de builders que construyen con Claude. Webinars semanales, meetups en Lima y networking con founders de IA en Perú.",
+  keywords: ["Claude", "Anthropic", "inteligencia artificial", "IA", "Perú", "Lima", "comunidad", "builders", "founders", "webinars"],
+  authors: [{ name: "Claude Community" }],
+  creator: "Claude Community",
   openGraph: {
-    title: "Postula como Speaker · Claude Perú",
-    description: "Comparte tu experiencia construyendo con IA en la comunidad Claude Perú.",
     type: "website",
+    locale: "es_PE",
+    url: "https://claude.mayckolco.com",
+    siteName: "Claude Community",
+    title: "Claude Community",
+    description:
+      "La comunidad peruana de builders que construyen con Claude. Webinars semanales, meetups en Lima y networking con founders de IA en Perú.",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Claude Community" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Claude Community",
+    description:
+      "La comunidad peruana de builders que construyen con Claude. Webinars semanales, meetups en Lima y networking con founders de IA en Perú.",
+    images: ["/og-image.png"],
+  },
+  alternates: {
+    canonical: "https://claude.mayckolco.com",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
