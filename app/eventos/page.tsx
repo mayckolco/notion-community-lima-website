@@ -11,6 +11,7 @@ import { RegisterEventLink } from "@/components/RegisterEventLink";
 import { listConfirmedSlots, listPastSlotsWithRecordings } from "@/lib/notion/slots";
 import type { PastSlotRecord } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
+import { EVENT_SLOT_HORARIO } from "@/lib/content/constants";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd, eventJsonLd } from "@/lib/seo/json-ld";
 
@@ -171,7 +172,7 @@ function PastSlotCard({ slot }: { slot: PastSlotRecord }) {
 function ConfirmedSlotCard({ slot }: { slot: Slot }) {
   const date = parseISO(slot.fecha);
   const dayName = format(date, "EEEE d MMM", { locale: es });
-  const hora = "11:30am Bogotá";
+  const hora = EVENT_SLOT_HORARIO;
 
   return (
     <div className="border border-border/30 bg-card rounded-lg overflow-hidden flex flex-col sm:flex-row">

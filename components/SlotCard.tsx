@@ -5,6 +5,7 @@ import { es } from "date-fns/locale";
 import { Calendar, Clock, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { sendGAEvent } from "@next/third-parties/google";
+import { EVENT_SLOT_HORARIO } from "@/lib/content/constants";
 import { GA_EVENTS } from "@/lib/seo/analytics";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +17,7 @@ import type { Slot } from "@/lib/schemas";
 const LIMA_TZONES = ["America/Lima", "America/Bogota"];
 
 function useLocalSlotTime(fecha: string) {
-  const [timeDisplay, setTimeDisplay] = useState("7:00 – 8:00 pm");
+  const [timeDisplay, setTimeDisplay] = useState(EVENT_SLOT_HORARIO);
   const [localNote, setLocalNote] = useState<string | null>(null);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ function useLocalSlotTime(fecha: string) {
     const end = new Date(`${fecha}T20:00:00-05:00`);
 
     setTimeDisplay(`${fmt(start)} – ${fmt(end)}`);
-    setLocalNote("hora local · Lima: 7:00 – 8:00 pm");
+    setLocalNote(`hora local · Lima: ${EVENT_SLOT_HORARIO}`);
   }, [fecha]);
 
   return { timeDisplay, localNote };

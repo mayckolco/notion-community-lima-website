@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { sendGAEvent } from "@next/third-parties/google";
+import { EVENT_SLOT_HORARIO } from "@/lib/content/constants";
 import { GA_EVENTS } from "@/lib/seo/analytics";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -159,7 +160,7 @@ export function SpeakerForm({ slotId, slotLabel }: SpeakerFormProps) {
 
       <div className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3">
         <p className="text-sm text-muted-foreground">Fecha seleccionada</p>
-        <p className="font-semibold text-primary">{slotLabel} · 7:00 – 8:00 pm</p>
+        <p className="font-semibold text-primary">{slotLabel} · {EVENT_SLOT_HORARIO}</p>
       </div>
 
       <div className="grid gap-6 sm:grid-cols-2">
