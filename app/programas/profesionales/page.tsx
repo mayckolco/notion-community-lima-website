@@ -1,25 +1,53 @@
 import type { Metadata } from "next";
-import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, GraduationCap, Layers, Route } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
-import { Button } from "@/components/ui/button";
+import { ProgramaCard } from "@/components/programas/ProgramaCard";
+import { PreReservaDualButtons } from "@/components/PreReservaButton";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd, courseJsonLd } from "@/lib/seo/json-ld";
 import { SITE_URL } from "@/lib/seo/site";
-
-const COURSE_NAME = "Claude para principiantes";
-const COURSE_DESCRIPTION =
-  "Programa introductorio para empezar con Claude desde cero. Aprende fundamentos, casos de uso prácticos e integración en tu día a día.";
+import {
+  CURSOS,
+  PROGRAMAS,
+  RUTAS,
+  PROGRAMA_FEATURES,
+  COHORT_CUPOS,
+  DURACION_SESION,
+} from "@/lib/content/programas";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Programas para profesionales",
   description:
-    "Formaciones prácticas para dominar Claude en tu trabajo: fundamentos, prompting y casos de uso reales. Empieza desde cero con la comunidad Claude Perú.",
+    "Cursos, programas y rutas para aprender Claude desde cero hasta experto. Chat, Cowork y Code para personas no técnicas. Cohortes de 10, virtual y presencial.",
   path: "/programas/profesionales",
 });
 
-const PRE_RESERVA_URL = "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3";
+const SECTIONS = [
+  {
+    id: "cursos",
+    icon: GraduationCap,
+    title: "Cursos",
+    description:
+      "Sesiones de 3–4 horas por producto y nivel. Empieza con Claude Chat, avanza a Cowork y Code sin programar.",
+  },
+  {
+    id: "programas",
+    icon: Layers,
+    title: "Programas",
+    description:
+      "Paquetes con descuento que combinan varios cursos. La forma más eficiente de avanzar por etapas.",
+  },
+  {
+    id: "rutas",
+    icon: Route,
+    title: "Rutas de aprendizaje",
+    description:
+      "Recorridos guiados de cero a experto con el mismo mentor. Elige la ruta según tu objetivo.",
+  },
+] as const;
 
 export default function ProgramasProfesionalesPage() {
   return (
@@ -32,30 +60,40 @@ export default function ProgramasProfesionalesPage() {
             { name: "Profesionales", path: "/programas/profesionales" },
           ]),
           courseJsonLd({
-            name: COURSE_NAME,
-            description: COURSE_DESCRIPTION,
+            name: "Formaciones Claude Perú para profesionales",
+            description:
+              "Cursos, programas y rutas para aprender Claude Chat, Cowork y Code desde cero hasta experto.",
             url: `${SITE_URL}/programas/profesionales`,
           }),
         ]}
       />
       <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-16 sm:py-24">
-        <div className="max-w-4xl mx-auto space-y-10">
-          <div className="space-y-3">
+        <div className="max-w-6xl mx-auto space-y-16">
+          {/* Hero */}
+          <div className="space-y-6 max-w-3xl">
             <p className="text-xs uppercase tracking-widest text-primary">
               Programas · Profesionales
             </p>
-            <h1 className="font-serif text-3xl sm:text-4xl tracking-tight">
-              Domina Claude en tu <span className="gradient-text">trabajo diario</span>
+            <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-tight">
+              Aprende Claude de{" "}
+              <span className="gradient-text">cero a experto</span>
             </h1>
-            <p className="text-muted-foreground leading-relaxed max-w-2xl">
-              Formaciones prácticas para profesionales de cualquier área: aprende los
-              fundamentos de Claude, prompting efectivo y casos de uso aplicables desde
-              el primer día — sin experiencia previa en IA.
+            <p className="text-muted-foreground leading-relaxed text-base sm:text-lg">
+              Cursos, programas y rutas diseñados para personas{" "}
+              <strong className="text-foreground font-medium">sin conocimiento de código</strong>.
+              Cubrimos Claude Chat, Cowork y Code con mentores, casos prácticos y demos en vivo.
             </p>
+            <ul className="grid sm:grid-cols-2 gap-2 text-sm text-muted-foreground">
+              <li>· {COHORT_CUPOS} cupos por cohorte — clases personalizadas</li>
+              <li>· {DURACION_SESION} (virtual y presencial)</li>
+              <li>· Modalidad virtual y presencial (Lima)</li>
+              <li>· Pre-reserva por WhatsApp — sin pago anticipado</li>
+            </ul>
           </div>
 
-          <article className="relative overflow-hidden rounded-2xl border border-primary/25 bg-[#1c1917] px-6 py-12 sm:px-10 sm:py-16 text-center shadow-clay">
+          {/* Featured CTA */}
+          <div className="relative overflow-hidden rounded-2xl border border-primary/25 bg-[#1c1917] px-6 py-10 sm:px-10 sm:py-14">
             <div
               className="pointer-events-none absolute inset-0 opacity-40"
               style={{
@@ -63,40 +101,126 @@ export default function ProgramasProfesionalesPage() {
                   "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(217, 119, 87, 0.35), transparent 70%)",
               }}
             />
-
-            <div className="relative mx-auto max-w-2xl space-y-6 sm:space-y-8">
-              <span className="inline-block rounded-full border border-primary/50 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-primary">
-                Próximamente
-              </span>
-
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight bg-gradient-to-r from-[#fb923c] via-primary to-[#fb7185] bg-clip-text text-transparent">
-                Claude para principiantes
+            <div className="relative max-w-2xl mx-auto text-center space-y-6">
+              <h2 className="font-serif text-2xl sm:text-3xl tracking-tight text-[#f5f1eb]">
+                ¿No sabes por dónde empezar?
               </h2>
-
               <p className="text-sm sm:text-base text-[#f5f1eb]/75 leading-relaxed">
-                Programa introductorio para empezar con Claude desde cero. Aprende los
-                fundamentos, casos de uso prácticos y cómo integrarlo en tu día a día
-                como builder — sin experiencia previa en IA.
+                La <strong className="text-[#f5f1eb]">Ruta Desde Cero a Experto</strong> te guía
+                por los 6 cursos en orden. O escríbenos y te recomendamos la mejor opción.
               </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <Button
-                  size="lg"
-                  className="min-h-[52px] bg-gradient-to-r from-[#f97316] to-[#ea580c] text-white border-0 shadow-[0_8px_24px_-6px_rgba(249,115,22,0.55)] hover:opacity-95"
-                  render={
-                    <a
-                      href={PRE_RESERVA_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
-                >
-                  Pre-reserva
-                  <ArrowRight className="h-5 w-5 ml-2" strokeWidth={1.75} />
-                </Button>
-              </div>
+              <PreReservaDualButtons
+                programaNombre="Ruta Desde Cero a Experto"
+                location="profesionales_hero"
+                className="justify-center"
+              />
+              <Link
+                href="/programas/profesionales/ruta-desde-cero"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+              >
+                Ver ruta completa
+                <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+              </Link>
             </div>
-          </article>
+          </div>
+
+          {/* What's included */}
+          <section className="border border-border/40 bg-card rounded-2xl p-6 sm:p-8 space-y-4">
+            <h2 className="font-serif text-xl sm:text-2xl tracking-tight">
+              Qué incluye cada formación
+            </h2>
+            <ul className="grid sm:grid-cols-2 gap-3">
+              {PROGRAMA_FEATURES.map((feature) => (
+                <li
+                  key={feature}
+                  className="flex items-start gap-2 text-sm text-muted-foreground"
+                >
+                  <span className="text-primary mt-0.5">✓</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          {/* Sections nav */}
+          <nav className="flex flex-wrap gap-3">
+            {SECTIONS.map(({ id, icon: Icon, title }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-sm font-medium hover:border-primary/40 hover:text-primary transition-colors"
+              >
+                <Icon className="h-4 w-4" strokeWidth={1.75} />
+                {title}
+              </a>
+            ))}
+          </nav>
+
+          {/* Cursos */}
+          <section id="cursos" className="scroll-mt-24 space-y-6">
+            <div className="space-y-2">
+              <h2 className="font-serif text-2xl sm:text-3xl tracking-tight">
+                {SECTIONS[0].title}
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base max-w-2xl">
+                {SECTIONS[0].description}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {CURSOS.map((curso) => (
+                <ProgramaCard
+                  key={curso.slug}
+                  programa={curso}
+                  href={`/programas/profesionales/${curso.slug}`}
+                  location="profesionales_cursos"
+                />
+              ))}
+            </div>
+          </section>
+
+          {/* Programas */}
+          <section id="programas" className="scroll-mt-24 space-y-6">
+            <div className="space-y-2">
+              <h2 className="font-serif text-2xl sm:text-3xl tracking-tight">
+                {SECTIONS[1].title}
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base max-w-2xl">
+                {SECTIONS[1].description}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {PROGRAMAS.map((programa) => (
+                <ProgramaCard
+                  key={programa.slug}
+                  programa={programa}
+                  href={`/programas/profesionales/${programa.slug}`}
+                  location="profesionales_programas"
+                />
+              ))}
+            </div>
+          </section>
+
+          {/* Rutas */}
+          <section id="rutas" className="scroll-mt-24 space-y-6">
+            <div className="space-y-2">
+              <h2 className="font-serif text-2xl sm:text-3xl tracking-tight">
+                {SECTIONS[2].title}
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base max-w-2xl">
+                {SECTIONS[2].description}
+              </p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+              {RUTAS.map((ruta) => (
+                <ProgramaCard
+                  key={ruta.slug}
+                  programa={ruta}
+                  href={`/programas/profesionales/${ruta.slug}`}
+                  location="profesionales_rutas"
+                />
+              ))}
+            </div>
+          </section>
         </div>
       </main>
       <Footer />

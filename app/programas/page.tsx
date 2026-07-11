@@ -19,9 +19,9 @@ const TRACKS = [
     icon: GraduationCap,
     title: "Para profesionales",
     description:
-      "Formaciones prácticas para dominar Claude en tu trabajo diario: fundamentos, prompting y casos de uso reales, desde cero.",
+      "6 cursos, 3 programas y 3 rutas para aprender Claude Chat, Cowork y Code desde cero hasta experto — sin código. Cohortes de 10, virtual y presencial.",
     href: "/programas/profesionales",
-    cta: "Ver programas",
+    cta: "Ver catálogo",
   },
   {
     icon: Briefcase,

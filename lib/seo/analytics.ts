@@ -6,4 +6,5 @@ export const GA_EVENTS = {
   registerEvent: "register_event",
   clickInstagram: "click_instagram",
   newsletterSubscribe: "newsletter_subscribe",
+  preReservaPrograma: "pre_reserva_programa",
 } as const;
