@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { format, parseISO } from "date-fns";
 import { es } from "date-fns/locale";
 import { Calendar, MessageCircle, ArrowRight } from "lucide-react";
@@ -10,7 +11,13 @@ import type { Slot } from "@/lib/schemas";
 
 export const revalidate = 0;
 
-export default async function CalendarioPage() {
+export const metadata: Metadata = {
+  title: "Eventos · Claude Perú",
+  description:
+    "Próximos eventos y webinars de la comunidad Claude Perú. Sesiones con builders y founders que comparten sus experiencias construyendo con IA.",
+};
+
+export default async function EventosPage() {
   const slots = await listConfirmedSlots().catch(() => []);
 
   return (
@@ -20,10 +27,10 @@ export default async function CalendarioPage() {
         <div className="max-w-3xl mx-auto space-y-10">
           <div className="space-y-2">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">
-              Próximas sesiones
+              Próximos eventos
             </p>
             <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
-              Calendario de <span className="gradient-text">webinars</span>
+              Eventos de <span className="gradient-text">Claude Perú</span>
             </h1>
             <p className="text-muted-foreground max-w-xl">
               Sesiones confirmadas con builders y founders que comparten sus
@@ -34,9 +41,9 @@ export default async function CalendarioPage() {
           {slots.length === 0 ? (
             <div className="border border-border/50 bg-card p-12 text-center space-y-3">
               <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto" />
-              <p className="text-lg font-semibold">No hay sesiones confirmadas aún</p>
+              <p className="text-lg font-semibold">No hay eventos confirmados aún</p>
               <p className="text-sm text-muted-foreground">
-                Vuelve pronto — las sesiones se confirman semanas antes.
+                Vuelve pronto — los eventos se confirman semanas antes.
               </p>
             </div>
           ) : (
@@ -68,7 +75,7 @@ export default async function CalendarioPage() {
             <div className="space-y-3 pt-2">
               <p className="text-sm text-muted-foreground">¿Prefieres hablar con alguien antes?</p>
               <a
-                href="https://wa.me/+51946542990"
+                href="https://wa.me/51946542990"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 min-h-[44px] px-6 text-sm font-semibold border border-border/60 text-foreground hover:bg-muted/30 transition-colors touch-manipulation"

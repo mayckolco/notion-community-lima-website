@@ -12,6 +12,12 @@ const nextConfig = {
     ],
   },
 
+  async redirects() {
+    return [
+      { source: "/calendario", destination: "/eventos", permanent: true },
+    ];
+  },
+
   async headers() {
     return [
       {

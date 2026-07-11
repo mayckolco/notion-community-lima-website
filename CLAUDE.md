@@ -84,6 +84,7 @@ All user input validated with **zod**. Schemas in `lib/schemas.ts`.
 
 ## Rules
 
+- `GUIA-PROYECTO.md` is the living development roadmap — when a feature is completed, added, or dropped, update its checklist in the same commit
 - TypeScript strict — no `any`
 - All Notion API calls must be server-side (Route Handlers or Server Components)
 - Validate all input with zod at API boundaries

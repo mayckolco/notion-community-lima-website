@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Fraunces } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
+import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es" className={`${inter.variable} ${fraunces.variable}`}>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         {children}
+        <WhatsAppButton />
         <Toaster />
         <Analytics />
       </body>

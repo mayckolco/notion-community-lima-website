@@ -1,10 +1,33 @@
-import { ArrowRight } from "lucide-react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight, Briefcase, GraduationCap } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
 
-const PRE_RESERVA_URL =
-  "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3";
+export const metadata: Metadata = {
+  title: "Programas · Claude Perú",
+  description:
+    "Formaciones de Claude Perú para profesionales y empresas. Aprende a usar Claude y la IA aplicada, desde cero o en tu organización.",
+};
+
+const TRACKS = [
+  {
+    icon: GraduationCap,
+    title: "Para profesionales",
+    description:
+      "Formaciones prácticas para dominar Claude en tu trabajo diario: fundamentos, prompting y casos de uso reales, desde cero.",
+    href: "/programas/profesionales",
+    cta: "Ver programas",
+  },
+  {
+    icon: Briefcase,
+    title: "Para empresas",
+    description:
+      "Capacitaciones a medida para equipos que quieren adoptar IA: talleres in-house, casos aplicados a tu industria y acompañamiento.",
+    href: "/programas/empresas",
+    cta: "Ver propuesta",
+  },
+];
 
 export default function ProgramasPage() {
   return (
@@ -15,55 +38,36 @@ export default function ProgramasPage() {
           <div className="space-y-3">
             <p className="text-xs uppercase tracking-widest text-primary">Programas</p>
             <h1 className="font-serif text-3xl sm:text-4xl tracking-tight">
-              Iniciativas para <span className="gradient-text">builders</span>
+              Formaciones para <span className="gradient-text">cada nivel</span>
             </h1>
             <p className="text-muted-foreground leading-relaxed max-w-2xl">
-              Formaciones y experiencias de Claude Perú para distintos niveles de experiencia.
+              Formaciones y experiencias de Claude Perú, tanto para profesionales que
+              quieren dominar la IA como para empresas que buscan adoptarla en sus equipos.
             </p>
           </div>
 
-          <article className="relative overflow-hidden rounded-2xl border border-primary/25 bg-[#1c1917] px-6 py-12 sm:px-10 sm:py-16 text-center shadow-clay">
-            <div
-              className="pointer-events-none absolute inset-0 opacity-40"
-              style={{
-                background:
-                  "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(217, 119, 87, 0.35), transparent 70%)",
-              }}
-            />
-
-            <div className="relative mx-auto max-w-2xl space-y-6 sm:space-y-8">
-              <span className="inline-block rounded-full border border-primary/50 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.2em] text-primary">
-                Próximamente
-              </span>
-
-              <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl leading-tight tracking-tight bg-gradient-to-r from-[#fb923c] via-primary to-[#fb7185] bg-clip-text text-transparent">
-                Claude para principiantes
-              </h2>
-
-              <p className="text-sm sm:text-base text-[#f5f1eb]/75 leading-relaxed">
-                Programa introductorio para empezar con Claude desde cero. Aprende los fundamentos,
-                casos de uso prácticos y cómo integrarlo en tu día a día como builder — sin
-                experiencia previa en IA.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-                <Button
-                  size="lg"
-                  className="min-h-[52px] bg-gradient-to-r from-[#f97316] to-[#ea580c] text-white border-0 shadow-[0_8px_24px_-6px_rgba(249,115,22,0.55)] hover:opacity-95"
-                  render={
-                    <a
-                      href={PRE_RESERVA_URL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    />
-                  }
-                >
-                  Pre-reserva
-                  <ArrowRight className="h-5 w-5 ml-2" strokeWidth={1.75} />
-                </Button>
-              </div>
-            </div>
-          </article>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {TRACKS.map(({ icon: Icon, title, description, href, cta }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group border border-border/40 bg-card rounded-2xl p-8 space-y-4 hover:border-primary/40 transition-colors"
+              >
+                <span className="grid h-11 w-11 place-items-center rounded-lg bg-primary/10 text-primary">
+                  <Icon className="h-5 w-5" strokeWidth={1.75} />
+                </span>
+                <h2 className="font-serif text-xl sm:text-2xl tracking-tight">{title}</h2>
+                <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
+                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                  {cta}
+                  <ArrowRight
+                    className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+                    strokeWidth={1.75}
+                  />
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </main>
       <Footer />
