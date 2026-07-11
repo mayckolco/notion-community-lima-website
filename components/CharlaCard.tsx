@@ -119,7 +119,8 @@ export function CharlaCard({
         <div className="flex justify-center border-t border-border pt-3 mt-auto">
           <Link
             href={`/portal/charla/${slot.id}`}
-            className="text-xs rounded-md border border-primary/40 bg-primary/10 text-primary px-4 py-1.5 hover:bg-primary/15 hover:border-primary/60 transition-colors"
+            aria-label={slot.titulo ? `Ver detalle de "${slot.titulo}"` : "Ver detalle de charla"}
+            className="text-xs rounded-md border border-primary/40 bg-primary/10 text-primary px-4 min-h-[44px] inline-flex items-center hover:bg-primary/15 hover:border-primary/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 touch-manipulation"
           >
             Ver más
           </Link>

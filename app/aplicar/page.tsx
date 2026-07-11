@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { SlotCarousel } from "@/components/SlotCarousel";
 import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 import { JsonLd } from "@/components/JsonLd";
 import { listAvailableSlots } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
@@ -38,6 +39,7 @@ export default async function AplicarPage() {
           { name: "Aplicar como speaker", path: "/aplicar" },
         ])}
       />
+      <Navbar />
       <main className="min-h-screen px-4 sm:px-6 py-8 sm:py-12">
         <div className="max-w-5xl mx-auto space-y-8 sm:space-y-10">
           <div>
@@ -45,7 +47,7 @@ export default async function AplicarPage() {
               href="/"
               className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 min-h-[44px] touch-manipulation"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               Volver al inicio
             </Link>
 
@@ -59,7 +61,7 @@ export default async function AplicarPage() {
           </div>
 
           {slots.length === 0 ? (
-            <div className="border border-border/50 bg-card p-12 text-center space-y-3">
+            <div className="rounded-xl border border-border/50 bg-card p-12 text-center space-y-3 shadow-soft">
               <p className="text-lg font-semibold">No hay slots disponibles en este momento</p>
               <p className="text-sm text-muted-foreground">
                 Vuelve pronto o escríbenos para más información.

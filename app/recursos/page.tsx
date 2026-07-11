@@ -86,28 +86,35 @@ export default async function RecursosPage() {
               </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {novedades.map((item) => (
-                <article
-                  key={item.id}
-                  className="rounded-xl border border-border bg-card p-5 space-y-2"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-mono uppercase tracking-widest rounded-full border border-border px-2 py-0.5 text-muted-foreground">
-                      {NOVEDAD_TAGS[item.tag]}
-                    </span>
-                    <time
-                      dateTime={item.fecha}
-                      className="text-[10px] text-muted-foreground/70"
-                    >
-                      {format(parseISO(item.fecha), "d MMM yyyy", { locale: es })}
-                    </time>
-                  </div>
-                  <h3 className="font-serif text-base">{item.titulo}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {item.resumen}
-                  </p>
-                </article>
-              ))}
+              {novedades.map((item) => {
+                const Wrapper = item.url ? "a" : "article";
+                const wrapperProps = item.url
+                  ? { href: item.url, target: "_blank" as const, rel: "noopener noreferrer", "aria-label": item.titulo }
+                  : {};
+                return (
+                  <Wrapper
+                    key={item.id}
+                    {...wrapperProps}
+                    className={`group rounded-xl border border-border bg-card p-5 space-y-2 shadow-soft transition-all duration-200 hover:border-primary/40 ${item.url ? "block cursor-pointer" : ""}`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-mono uppercase tracking-widest rounded-full border border-border px-2 py-0.5 text-muted-foreground">
+                        {NOVEDAD_TAGS[item.tag]}
+                      </span>
+                      <time
+                        dateTime={item.fecha}
+                        className="text-[10px] text-muted-foreground/70"
+                      >
+                        {format(parseISO(item.fecha), "d MMM yyyy", { locale: es })}
+                      </time>
+                    </div>
+                    <h3 className="font-serif text-base group-hover:text-primary transition-colors">{item.titulo}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {item.resumen}
+                    </p>
+                  </Wrapper>
+                );
+              })}
             </div>
           </section>
 

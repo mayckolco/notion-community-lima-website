@@ -29,7 +29,7 @@ export function ProgramaCard({
   return (
     <article
       className={cn(
-        "flex flex-col min-w-0 overflow-hidden border border-border/40 bg-card rounded-2xl p-6 sm:p-8 space-y-5 hover:border-primary/30 transition-colors",
+        "flex flex-col min-w-0 overflow-hidden border border-border/40 bg-card rounded-2xl p-6 sm:p-8 space-y-5 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200 shadow-soft",
         className
       )}
     >
@@ -55,19 +55,19 @@ export function ProgramaCard({
 
       <ul className="grid grid-cols-2 gap-2 text-xs text-muted-foreground">
         <li className="flex items-center gap-1.5">
-          <Clock className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} />
+          <Clock className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} aria-hidden="true" />
           {programa.duracion}
         </li>
         <li className="flex items-center gap-1.5">
-          <Users className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} />
+          <Users className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} aria-hidden="true" />
           {programa.cupos} cupos/cohorte
         </li>
         <li className="flex items-center gap-1.5">
-          <Monitor className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} />
+          <Monitor className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} aria-hidden="true" />
           Virtual {formatPrecio(programa.precio.virtual)}
         </li>
         <li className="flex items-center gap-1.5">
-          <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} />
+          <MapPin className="h-3.5 w-3.5 shrink-0 text-primary" strokeWidth={1.75} aria-hidden="true" />
           Presencial {formatPrecio(programa.precio.presencial)}
         </li>
       </ul>
@@ -82,10 +82,10 @@ export function ProgramaCard({
         )}
         <Link
           href={href}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
+          className="inline-flex items-center gap-1.5 min-h-[44px] text-sm font-semibold text-primary hover:underline touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 rounded-sm"
         >
           Ver detalle completo
-          <ArrowRight className="h-4 w-4" strokeWidth={1.75} />
+          <ArrowRight className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
         </Link>
       </div>
     </article>

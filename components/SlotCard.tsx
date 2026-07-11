@@ -148,7 +148,7 @@ export function SlotCard({ slot }: SlotCardProps) {
               />
             }
           >
-            <Calendar className="h-4 w-4 mr-2" />
+            <Calendar className="h-4 w-4 mr-2" aria-hidden="true" />
             Aplicar aquí
           </Button>
         ) : slot.lumaUrl ? (
@@ -156,9 +156,9 @@ export function SlotCard({ slot }: SlotCardProps) {
             href={slot.lumaUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full min-h-[44px] inline-flex items-center justify-center gap-1.5 text-sm font-medium border border-primary/40 text-primary hover:bg-primary/10 active:bg-primary/20 transition-colors px-4 touch-manipulation"
+            className="w-full min-h-[44px] inline-flex items-center justify-center gap-1.5 text-sm font-medium rounded-md border border-primary/40 text-primary hover:bg-primary/10 active:bg-primary/20 transition-colors px-4 touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
           >
-            <ExternalLink className="h-4 w-4" />
+            <ExternalLink className="h-4 w-4" aria-hidden="true" />
             Ver en Luma
           </a>
         ) : (

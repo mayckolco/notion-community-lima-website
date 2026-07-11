@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Route } from "lucide-react";
+import { Check, Route } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
@@ -78,7 +78,7 @@ export default function ProgramasProfesionalesPage() {
                   key={item}
                   className="flex items-start gap-2 text-sm text-muted-foreground"
                 >
-                  <span className="text-primary mt-0.5">✓</span>
+                  <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" strokeWidth={2} aria-hidden="true" />
                   {item}
                 </li>
               ))}

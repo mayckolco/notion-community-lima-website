@@ -11,24 +11,24 @@ import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
 const VALUES = [
   {
-    icon: <Target className="h-6 w-6 text-primary" />,
+    icon: Target,
     titulo: "Builders que ejecutan",
     descripcion:
       "No teoría. Cada sesión es un caso real: qué se construyó, con qué herramientas y qué salió mal. Aprendizajes que se pueden aplicar el mismo día.",
   },
   {
-    icon: <Users className="h-6 w-6 text-primary" />,
+    icon: Users,
     titulo: "Comunidad primero",
     descripcion:
       "La red que construyes con otros founders vale tanto como el contenido. Conectamos a personas que ya están usando IA para crecer, no a las que hablan de usarla.",
   },
   {
-    icon: <Zap className="h-6 w-6 text-primary" />,
+    icon: Zap,
     titulo: "IA como primer recurso",
     descripcion:
       "No como ayuda, como base. Todos los que participan aquí ya tomaron la decisión de construir diferente. Eso cambia el nivel de la conversación.",
   },
-];
+] as const;
 
 const PARTICIPAR = [
   {
@@ -98,13 +98,13 @@ export default function NosotrosPage() {
         ])}
       />
       <Navbar />
-      <main className="min-h-screen px-6 py-16">
+      <main className="min-h-screen px-4 sm:px-6 py-12 sm:py-16">
         <div className="max-w-5xl mx-auto space-y-20">
 
           {/* Hero */}
-          <div className="space-y-6">
+          <header className="space-y-6">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
-            <h1 className="text-5xl font-serif tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-tight leading-tight">
               Claude<span className="ml-0.5 gradient-text">Perú</span>
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -121,7 +121,7 @@ export default function NosotrosPage() {
               Nacimos en 2024 como un grupo de founders en Lima que querían ir más allá de la teoría
               sobre IA. Hoy somos la comunidad de referencia en Perú para aprender y construir con Claude.
             </p>
-          </div>
+          </header>
 
           {/* Valores */}
           <div className="space-y-8">
@@ -133,13 +133,13 @@ export default function NosotrosPage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
-              {VALUES.map((v) => (
-                <div key={v.titulo} className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-3">
+              {VALUES.map(({ icon: Icon, titulo, descripcion }) => (
+                <div key={titulo} className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-3 hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200">
                   <div className="grid h-9 w-9 place-items-center rounded-md bg-primary/10 text-primary">
-                    {v.icon}
+                    <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
                   </div>
-                  <h3 className="font-serif text-lg">{v.titulo}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{v.descripcion}</p>
+                  <h3 className="font-serif text-lg">{titulo}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{descripcion}</p>
                 </div>
               ))}
             </div>
@@ -159,12 +159,12 @@ export default function NosotrosPage() {
               {PARTICIPAR.map(({ icon: Icon, titulo, descripcion, href, cta, externo }) => (
                 <div
                   key={titulo}
-                  className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4 flex flex-col"
+                  className="group rounded-xl border border-border bg-card p-6 shadow-soft space-y-4 flex flex-col hover:border-primary/30 hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  <div className="grid h-9 w-9 place-items-center rounded-md bg-primary/10 text-primary">
-                    <Icon className="h-5 w-5" strokeWidth={1.75} />
+                  <div className="grid h-9 w-9 place-items-center rounded-md bg-primary/10 text-primary transition-all duration-200 group-hover:bg-primary/15 group-hover:scale-105">
+                    <Icon className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
                   </div>
-                  <h3 className="font-serif text-lg">{titulo}</h3>
+                  <h3 className="font-serif text-lg group-hover:text-primary transition-colors">{titulo}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed flex-1">
                     {descripcion}
                   </p>
@@ -173,18 +173,18 @@ export default function NosotrosPage() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline touch-manipulation"
+                      className="inline-flex items-center gap-1 min-h-[44px] text-sm font-medium text-primary hover:underline touch-manipulation"
                     >
                       {cta}
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                     </a>
                   ) : (
                     <Link
                       href={href}
-                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline touch-manipulation"
+                      className="inline-flex items-center gap-1 min-h-[44px] text-sm font-medium text-primary hover:underline touch-manipulation"
                     >
                       {cta}
-                      <ArrowRight className="h-3.5 w-3.5" />
+                      <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                     </Link>
                   )}
                 </div>
@@ -196,7 +196,7 @@ export default function NosotrosPage() {
             </div>
           </div>
 
-{/* Founders */}
+          {/* Founders */}
           <div className="space-y-8">
             <div className="space-y-1">
               <p className="text-xs font-mono text-primary uppercase tracking-widest">Equipo fundador</p>
@@ -228,6 +228,7 @@ export default function NosotrosPage() {
                           fill
                           className="object-cover"
                           sizes="64px"
+                          priority
                         />
                       ) : (
                         <span className="text-xl font-serif text-muted-foreground/30">

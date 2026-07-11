@@ -42,33 +42,34 @@ export default async function LandingPage() {
   const nextEvent = confirmedSlots[0] ?? null;
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <>
       <JsonLd data={[organizationJsonLd(), faqPageJsonLd(LANDING_FAQ)]} />
       <Navbar />
+      <main className="flex flex-col min-h-screen">
+        <LandingHero nextEvent={nextEvent} />
+        <WhatIsClaudeSection />
+        <ClaudeProductsSection />
+        <CommunityStatsSection
+          speakerCount={allSpeakers.length}
+          eventCount={pastSlots.length}
+        />
+        <CommunityPillarsSection />
+        <ClaudeNovedadesSection novedades={novedades} />
 
-      <LandingHero nextEvent={nextEvent} />
-      <WhatIsClaudeSection />
-      <ClaudeProductsSection />
-      <CommunityStatsSection
-        speakerCount={allSpeakers.length}
-        eventCount={pastSlots.length}
-      />
-      <CommunityPillarsSection />
-      <ClaudeNovedadesSection novedades={novedades} />
+        {speakersWithPhoto.length > 0 && (
+          <section aria-label="Speakers de la comunidad" className="border-t border-border/60 py-12">
+            <SpeakerMarquee speakers={speakersWithPhoto} />
+          </section>
+        )}
 
-      {speakersWithPhoto.length > 0 && (
-        <section className="border-t border-border/60 py-12">
-          <SpeakerMarquee speakers={speakersWithPhoto} />
-        </section>
-      )}
-
-      <TestimonialsMarquee />
-      <FAQSection
-        faqs={LANDING_FAQ}
-        subtitle="Respuestas directas para buscadores, IA y nuevos miembros."
-      />
-      <FinalCTASection />
-      <Footer />
-    </main>
+        <TestimonialsMarquee />
+        <FAQSection
+          faqs={LANDING_FAQ}
+          subtitle="Respuestas directas para buscadores, IA y nuevos miembros."
+        />
+        <FinalCTASection />
+        <Footer />
+      </main>
+    </>
   );
 }
