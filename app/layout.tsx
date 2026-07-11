@@ -38,14 +38,14 @@ export const metadata: Metadata = {
     title: "Claude Community",
     description:
       "La comunidad peruana de builders que construyen con Claude. Webinars cada lunes, meetups en Lima y networking con founders de IA en Perú.",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Claude Community" }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Claude Community" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Claude Community",
     description:
       "La comunidad peruana de builders que construyen con Claude. Webinars cada lunes, meetups en Lima y networking con founders de IA en Perú.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "https://claude.mayckolco.com",
