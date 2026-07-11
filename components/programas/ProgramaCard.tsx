@@ -29,7 +29,7 @@ export function ProgramaCard({
   return (
     <article
       className={cn(
-        "flex flex-col border border-border/40 bg-card rounded-2xl p-6 sm:p-8 space-y-5 hover:border-primary/30 transition-colors",
+        "flex flex-col min-w-0 overflow-hidden border border-border/40 bg-card rounded-2xl p-6 sm:p-8 space-y-5 hover:border-primary/30 transition-colors",
         className
       )}
     >
@@ -72,9 +72,13 @@ export function ProgramaCard({
         </li>
       </ul>
 
-      <div className="space-y-3 pt-1">
+      <div className="space-y-3 pt-1 min-w-0">
         {showPreReserva && (
-          <PreReservaDualButtons programaNombre={programa.nombre} location={location} />
+          <PreReservaDualButtons
+            programaNombre={programa.nombre}
+            location={location}
+            compact
+          />
         )}
         <Link
           href={href}

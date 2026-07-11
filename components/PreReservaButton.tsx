@@ -16,6 +16,7 @@ interface PreReservaButtonProps {
   variant?: "default" | "outline";
   className?: string;
   fullWidth?: boolean;
+  compact?: boolean;
 }
 
 function buildPreReservaUrl(nombre: string, modalidad: ProgramaModalidad): string {
@@ -32,16 +33,26 @@ export function PreReservaButton({
   variant = "default",
   className,
   fullWidth = false,
+  compact = false,
 }: PreReservaButtonProps) {
-  const label = modalidad === "virtual" ? "Pre-reserva virtual" : "Pre-reserva presencial";
+  const label = compact
+    ? modalidad === "virtual"
+      ? "Reserva virtual"
+      : "Reserva presencial"
+    : modalidad === "virtual"
+      ? "Pre-reserva virtual"
+      : "Pre-reserva presencial";
+
+  const buttonSize = compact ? "sm" : size === "sm" ? "sm" : size === "lg" ? "lg" : "default";
 
   return (
     <Button
-      size={size === "sm" ? "sm" : size === "lg" ? "lg" : "default"}
+      size={buttonSize}
       variant={variant}
       className={cn(
-        size !== "sm" && "min-h-[48px]",
-        fullWidth && "w-full",
+        !compact && size !== "sm" && "min-h-[48px]",
+        (fullWidth || compact) && "w-full max-w-full",
+        compact && "text-xs",
         "touch-manipulation",
         className
       )}
@@ -60,8 +71,8 @@ export function PreReservaButton({
         />
       }
     >
-      <MessageCircle className="h-4 w-4 mr-2 shrink-0" strokeWidth={1.75} />
-      {label}
+      <MessageCircle className={cn("shrink-0", compact ? "h-3.5 w-3.5 mr-1.5" : "h-4 w-4 mr-2")} strokeWidth={1.75} />
+      <span className="truncate">{label}</span>
     </Button>
   );
 }
@@ -70,18 +81,27 @@ export function PreReservaDualButtons({
   programaNombre,
   location,
   className,
+  compact = false,
 }: {
   programaNombre: string;
   location: string;
   className?: string;
+  compact?: boolean;
 }) {
   return (
-    <div className={cn("flex flex-col sm:flex-row gap-3", className)}>
+    <div
+      className={cn(
+        "flex gap-2 min-w-0",
+        compact ? "flex-col" : "flex-col sm:flex-row sm:gap-3",
+        className
+      )}
+    >
       <PreReservaButton
         programaNombre={programaNombre}
         modalidad="virtual"
         location={location}
         fullWidth
+        compact={compact}
       />
       <PreReservaButton
         programaNombre={programaNombre}
@@ -89,6 +109,7 @@ export function PreReservaDualButtons({
         location={location}
         variant="outline"
         fullWidth
+        compact={compact}
       />
     </div>
   );
