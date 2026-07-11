@@ -21,9 +21,9 @@ const TRACKS = [
     icon: GraduationCap,
     title: "Para profesionales",
     description:
-      "6 cursos, 3 programas y 3 rutas para aprender Claude Chat, Cowork y Code desde cero hasta experto — sin código. Cohortes de 10, virtual y presencial.",
+      "Claude Bootcamp: sesión intensiva para dominar Claude sin código. Virtual S/ 159 o presencial S/ 249 en Lima.",
     href: "/programas/profesionales",
-    cta: "Ver catálogo",
+    cta: "Ver bootcamp",
     comingSoon: false,
   },
   {

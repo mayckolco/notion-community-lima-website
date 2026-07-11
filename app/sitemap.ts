@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 import { listDirectorySpeakers } from "@/lib/notion/speakers";
-import { ALL_PROGRAMAS } from "@/lib/content/programas";
 import { PROGRAMAS_EMPRESAS_PUBLIC } from "@/lib/content/constants";
 import { SITE_URL } from "@/lib/seo/site";
 
@@ -30,16 +29,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  const programaRoutes: MetadataRoute.Sitemap = ALL_PROGRAMAS.map((p) => ({
-    url: `${SITE_URL}/programas/profesionales/${p.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.65,
-  }));
-
   return [
     ...STATIC_ROUTES.map((route) => ({ ...route, lastModified: now })),
-    ...programaRoutes,
     ...speakerRoutes,
   ];
 }
