@@ -1,6 +1,14 @@
 import type { ProgramaModalidad } from "./programas";
 
-export const BOOTCAMP_CUPOS = 10;
+export const BOOTCAMP_CUPOS = {
+  virtual: 30,
+  presencial: 10,
+} as const;
+
+export function getBootcampCupos(modalidad: ProgramaModalidad): number {
+  return BOOTCAMP_CUPOS[modalidad];
+}
+
 export const BOOTCAMP_HORARIO = "10a.m. - 2 p.m.";
 /** @deprecated Use BOOTCAMP_HORARIO */
 export const BOOTCAMP_DURACION = BOOTCAMP_HORARIO;
@@ -17,7 +25,7 @@ export const CLAUDE_BOOTCAMP = {
   descripcion:
     "Intensivo práctico para aprender Claude Chat, Cowork y Code desde cero. Mentores, casos reales y demos en vivo en una sola sesión.",
   incluye: [
-    "Clases personalizadas en cohortes de 10 personas",
+    "Clases personalizadas en cohortes (30 virtual · 10 presencial)",
     "Mentor asignado durante la sesión",
     "Casos prácticos de tu industria o rol",
     "Demos en vivo con Claude Chat, Cowork y Code",

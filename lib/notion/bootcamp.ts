@@ -1,8 +1,8 @@
 import { format, isBefore, parseISO, startOfDay } from "date-fns";
 import { es } from "date-fns/locale";
 import {
-  BOOTCAMP_CUPOS,
   BOOTCAMP_HORARIO,
+  getBootcampCupos,
   bootcampUbicacion,
   CLAUDE_BOOTCAMP,
   type BootcampFecha,
@@ -118,7 +118,8 @@ export async function fetchBootcampFechas(
     }
 
     const inscritos = extractPersonaIds(props).length;
-    const cuposDisponibles = Math.max(0, BOOTCAMP_CUPOS - inscritos);
+    const cuposMax = getBootcampCupos(pageModalidad);
+    const cuposDisponibles = Math.max(0, cuposMax - inscritos);
     if (cuposDisponibles <= 0) continue;
 
     fechas.push({
@@ -159,7 +160,8 @@ export async function getBootcampReserva(
   }
 
   const inscritos = extractPersonaIds(props).length;
-  const cuposDisponibles = Math.max(0, BOOTCAMP_CUPOS - inscritos);
+  const cuposMax = getBootcampCupos(modalidad);
+  const cuposDisponibles = Math.max(0, cuposMax - inscritos);
   if (cuposDisponibles <= 0) return null;
 
   return { id: page.id, cuposDisponibles, modalidad };
@@ -235,7 +237,7 @@ export async function createBootcampInscripcion(params: {
       page_id: params.reservaId,
       properties: {
         Persona: { relation: [...existingIds, lead.id].map((id) => ({ id })) },
-        ...(existingIds.length + 1 >= BOOTCAMP_CUPOS
+        ...(existingIds.length + 1 >= getBootcampCupos(reserva.modalidad)
           ? { Estado: { status: { name: "Reservado" } } }
           : {}),
       },
@@ -261,97 +263,27 @@ export async function appendBootcampEncuesta(
     await notion.pages.update({
       page_id: leadId,
       properties: {
-        Rol: { rich_text: [{ text: { content: encuesta.dedicacion.slice(0, 2000) } }] },
-        Empresa: {
-          rich_text: [
-            {
-              text: {
-                content: `Nivel IA: ${encuesta.nivelIa}`.slice(0, 2000),
-              },
-            },
-          ],
+        "¿A qué te dedicas actualmente?": {
+          rich_text: [{ text: { content: encuesta.dedicacion.slice(0, 2000) } }],
+        },
+        "¿Cuál es tu nivel actual con herramientas de IA?": {
+          select: { name: encuesta.nivelIa },
+        },
+        "¿Cuál es el mayor problema en tu trabajo que quisieras resolver con IA?": {
+          rich_text: [{ text: { content: encuesta.problema.slice(0, 2000) } }],
+        },
+        "¿Qué herramienta de IA te genera más curiosidad?": {
+          multi_select: encuesta.herramientas.map((name) => ({ name })),
+        },
+        "¿Qué esperas llevarte del laboratorio?": {
+          rich_text: [{ text: { content: encuesta.expectativas.slice(0, 2000) } }],
         },
       },
     });
 
-    await notion.blocks.children.append({
-      block_id: leadId,
-      children: [
-        {
-          object: "block",
-          type: "heading_3",
-          heading_3: {
-            rich_text: [{ type: "text", text: { content: "Encuesta post-inscripción" } }],
-          },
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          paragraph: {
-            rich_text: [
-              {
-                type: "text",
-                text: { content: `¿A qué te dedicas?: ${encuesta.dedicacion}` },
-              },
-            ],
-          },
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          paragraph: {
-            rich_text: [
-              {
-                type: "text",
-                text: { content: `Nivel con IA: ${encuesta.nivelIa}` },
-              },
-            ],
-          },
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          paragraph: {
-            rich_text: [
-              {
-                type: "text",
-                text: { content: `Problema a resolver: ${encuesta.problema}` },
-              },
-            ],
-          },
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          paragraph: {
-            rich_text: [
-              {
-                type: "text",
-                text: {
-                  content: `Herramientas de interés: ${encuesta.herramientas.join(", ")}`,
-                },
-              },
-            ],
-          },
-        },
-        {
-          object: "block",
-          type: "paragraph",
-          paragraph: {
-            rich_text: [
-              {
-                type: "text",
-                text: { content: `Expectativas: ${encuesta.expectativas}` },
-              },
-            ],
-          },
-        },
-      ],
-    });
-
     return true;
   } catch (err) {
-    console.error("[bootcamp] encuesta append failed:", err);
+    console.error("[bootcamp] encuesta update failed:", err);
     return false;
   }
 }

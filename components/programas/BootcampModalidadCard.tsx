@@ -5,7 +5,7 @@ import { sendGAEvent } from "@next/third-parties/google";
 import { Clock, Info, MapPin, Monitor, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
-  BOOTCAMP_CUPOS,
+  getBootcampCupos,
   BOOTCAMP_HORARIO,
   bootcampUbicacion,
   CLAUDE_BOOTCAMP,
@@ -27,6 +27,8 @@ export function BootcampModalidadCard({ modalidad, location }: BootcampModalidad
   const precio = isVirtual
     ? CLAUDE_BOOTCAMP.precio.virtual
     : CLAUDE_BOOTCAMP.precio.presencial;
+
+  const cupos = getBootcampCupos(modalidad);
 
   return (
     <article
@@ -58,7 +60,7 @@ export function BootcampModalidadCard({ modalidad, location }: BootcampModalidad
       <ul className="space-y-1.5 text-xs text-muted-foreground">
         <li className="flex items-center gap-1.5">
           <Users className="h-3.5 w-3.5 text-primary shrink-0" strokeWidth={1.75} />
-          {BOOTCAMP_CUPOS} cupos por cohorte
+          {cupos} cupos por cohorte
         </li>
         <li className="flex items-center gap-1.5">
           <Clock className="h-3.5 w-3.5 text-primary shrink-0" strokeWidth={1.75} />

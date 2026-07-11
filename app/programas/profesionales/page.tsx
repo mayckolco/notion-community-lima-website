@@ -6,7 +6,6 @@ import { JsonLd } from "@/components/JsonLd";
 import { BootcampModalidadCard } from "@/components/programas/BootcampModalidadCard";
 import { RutaBloqueadaCard } from "@/components/programas/RutaBloqueadaCard";
 import {
-  BOOTCAMP_CUPOS,
   BOOTCAMP_HORARIO,
   CLAUDE_BOOTCAMP,
   RUTAS_BLOQUEADAS,
@@ -18,7 +17,7 @@ import { SITE_URL } from "@/lib/seo/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Programas para profesionales",
   description:
-    "Claude Bootcamp: aprende Claude Chat, Cowork y Code en una sesión intensiva. Virtual S/ 159 o presencial S/ 249. Cohortes de 10, sin código.",
+    "Claude Bootcamp: aprende Claude Chat, Cowork y Code en una sesión intensiva. Virtual S/ 159 (30 cupos) o presencial S/ 249 (10 cupos). Sin código.",
   path: "/programas/profesionales",
 });
 
@@ -55,7 +54,7 @@ export default function ProgramasProfesionalesPage() {
               <strong className="text-foreground font-medium">sin conocimiento de código</strong>.
             </p>
             <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <li>· {BOOTCAMP_CUPOS} cupos por cohorte</li>
+              <li>· 30 cupos virtual · 10 presencial</li>
               <li>· {BOOTCAMP_HORARIO}</li>
               <li>· Virtual y presencial (Lima)</li>
             </ul>
