@@ -25,7 +25,6 @@ const SITE_LINKS = [
 
 const COMMUNITY_LINKS = [
   { label: "Mapa de la comunidad", href: "/comunidad", external: false },
-  { label: "Directorio de speakers", href: "/directorio", external: false },
   { label: "Aplicar como speaker", href: "/aplicar", external: false },
   {
     label: "Comunidad de WhatsApp",

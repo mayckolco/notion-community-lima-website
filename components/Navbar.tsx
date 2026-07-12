@@ -159,7 +159,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <div className="hidden sm:block">
-            <Button size="sm" render={<Link href="/aplicar" />}>
+            <Button size="sm" render={<Link href="/portal" />}>
               Soy speaker
             </Button>
           </div>
@@ -226,7 +226,7 @@ export function Navbar() {
             <Button
               size="sm"
               className="w-full"
-              render={<Link href="/aplicar" onClick={closeAll} />}
+              render={<Link href="/portal" onClick={closeAll} />}
             >
               Soy speaker
             </Button>

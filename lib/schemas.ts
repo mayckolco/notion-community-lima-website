@@ -182,7 +182,8 @@ export type SlotEstado =
   | "Bloqueado"
   | "Publicado"
   | "En promocion"
-  | "En promoción";
+  | "En promoción"
+  | "Realizado";
 
 export interface SlotSpeaker {
   nombre: string;
@@ -201,6 +202,7 @@ export interface Slot {
   herramientas: string[];
   speaker: SlotSpeaker | null;
   coverUrl: string | null;
+  modalidad: string | null;
 }
 
 export type SpeakerEtiqueta = "speaker" | "admin" | "colaborador";

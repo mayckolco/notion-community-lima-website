@@ -12,10 +12,13 @@ import { listConfirmedSlots, listPastSlotsWithRecordings } from "@/lib/notion/sl
 import type { PastSlotRecord } from "@/lib/notion/slots";
 import type { Slot } from "@/lib/schemas";
 import { EVENT_SLOT_HORARIO } from "@/lib/content/constants";
+import { notionFileUrl } from "@/lib/notion/files";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd, eventJsonLd } from "@/lib/seo/json-ld";
 
 export const revalidate = 0;
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Eventos",
@@ -100,7 +103,7 @@ export default async function EventosPage() {
                 ¿Quieres ser el próximo <span className="gradient-text">speaker</span>?
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
-                Comparte tu experiencia construyendo con IA frente a la comunidad Claude Perú.
+                Comparte tu experiencia construyendo con Claude frente a la comunidad Claude Perú.
               </p>
             </div>
 
@@ -175,11 +178,18 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
   const hora = EVENT_SLOT_HORARIO;
 
   return (
-    <div className="border border-border/30 bg-card rounded-xl overflow-hidden flex flex-col sm:flex-row shadow-soft transition-shadow hover:shadow-clay">
+    <div className="border border-border/30 bg-card rounded-xl flex flex-col sm:flex-row shadow-soft transition-shadow hover:shadow-clay">
       <div className="flex-1 p-6 sm:p-8 space-y-4 flex flex-col">
-        <p className="text-xs font-bold uppercase tracking-widest text-primary">
-          Disponible · {dayName} · {hora}
-        </p>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+          <p className="text-xs font-bold uppercase tracking-widest text-primary">
+            {dayName} · {hora}
+          </p>
+          {slot.modalidad && (
+            <span className="inline-flex items-center rounded-md bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-primary-foreground">
+              {slot.modalidad}
+            </span>
+          )}
+        </div>
 
         {slot.titulo ? (
           <h2 className="text-xl sm:text-2xl font-serif leading-snug">
@@ -237,15 +247,18 @@ function ConfirmedSlotCard({ slot }: { slot: Slot }) {
       </div>
 
       {slot.coverUrl && (
-        <div className="relative w-full sm:w-52 md:w-60 shrink-0 aspect-[4/3] sm:aspect-auto sm:self-stretch min-h-[180px] sm:min-h-0 border-t sm:border-t-0 sm:border-l border-border/30">
-          <Image
-            src={slot.coverUrl}
-            alt={slot.titulo ?? "Cover del evento"}
-            fill
-            className="object-cover"
-            unoptimized
-            sizes="(max-width: 640px) 100vw, 240px"
-          />
+        <div className="flex items-center justify-center p-4 sm:py-4 sm:pr-4 sm:pl-0 shrink-0">
+          <div className="relative aspect-square w-full max-w-[216px] sm:w-[11.7rem] md:w-[13.5rem] sm:max-w-none rounded-lg overflow-hidden border border-border/25 shadow-soft">
+            <Image
+              key={slot.coverUrl}
+              src={notionFileUrl(slot.coverUrl)}
+              alt={slot.titulo ?? "Cover del evento"}
+              fill
+              className="object-cover"
+              unoptimized
+              sizes="(max-width: 640px) 85vw, 216px"
+            />
+          </div>
         </div>
       )}
     </div>

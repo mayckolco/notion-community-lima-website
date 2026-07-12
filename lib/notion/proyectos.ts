@@ -172,6 +172,18 @@ export async function listAllProyectos(): Promise<ComunidadProyecto[]> {
   return queryProyectos();
 }
 
+export async function countPublishedProyectosByMember(): Promise<Map<string, number>> {
+  const proyectos = await listPublishedProyectos();
+  const counts = new Map<string, number>();
+
+  for (const proyecto of proyectos) {
+    if (!proyecto.memberId) continue;
+    counts.set(proyecto.memberId, (counts.get(proyecto.memberId) ?? 0) + 1);
+  }
+
+  return counts;
+}
+
 export async function createProyecto(input: {
   nombre: string;
   descripcion: string;

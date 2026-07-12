@@ -6,6 +6,7 @@ import {
   MapControls,
   MapPointsLayer,
 } from "@/components/ui/mapcn-layer-markers";
+import { CommunityMapPopupContent } from "@/components/comunidad/CommunityMapPopupContent";
 import type { ComunidadMember } from "@/lib/notion/comunidad";
 import { comunidadMembersToGeoJSON } from "@/lib/notion/comunidad";
 
@@ -22,7 +23,12 @@ export function CommunityMap({ members }: CommunityMapProps) {
   return (
     <div className="h-[min(70vh,520px)] w-full overflow-hidden rounded-xl border border-border bg-card shadow-soft">
       <Map center={PERU_CENTER} zoom={DEFAULT_ZOOM} className="h-full w-full">
-        <MapPointsLayer data={geoJSON} />
+        <MapPointsLayer
+          data={geoJSON}
+          renderPopup={(point) => (
+            <CommunityMapPopupContent ciudad={point.ciudad} count={point.count} />
+          )}
+        />
         <MapControls showZoom showLocate={false} />
       </Map>
     </div>

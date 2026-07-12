@@ -104,11 +104,18 @@ export default function PortalLoginPage() {
             <p className="text-xs text-muted-foreground tracking-widest uppercase">
               Portal de Speakers
             </p>
-            <h1 className="text-2xl font-serif tracking-tight">Ingresa a tu portal</h1>
+            <h1 className="text-2xl font-serif tracking-tight">Panel de speaker</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Ingresa el email con el que aplicaste. Te enviaremos un link de acceso directo.
+              Ingresa con el email con el que aplicaste. Accede a tu perfil, charlas,
+              covers, links de Meet y grabaciones.
             </p>
           </div>
+
+          <ul className="text-xs text-muted-foreground space-y-1.5 list-disc list-inside">
+            <li>Datos de tu perfil y estado de charla</li>
+            <li>Covers, fotos y materiales de promoción</li>
+            <li>Links de Luma, Meet y grabación</li>
+          </ul>
 
           <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
             <Suspense fallback={null}>

@@ -1688,6 +1688,7 @@ export type MapPointProperties = {
 type MapPointsLayerProps = {
   data: GeoJSON.FeatureCollection<GeoJSON.Point, MapPointProperties>;
   pointColor?: string;
+  renderPopup?: (point: MapPointProperties) => ReactNode;
 };
 
 type SelectedMapPoint = MapPointProperties & {
@@ -1697,6 +1698,7 @@ type SelectedMapPoint = MapPointProperties & {
 function MapPointsLayer({
   data,
   pointColor = "#d97757",
+  renderPopup,
 }: MapPointsLayerProps) {
   const { map, isLoaded } = useMap();
   const id = useId();
@@ -1803,13 +1805,17 @@ function MapPointsLayer({
           offset={10}
           closeButton
         >
-          <div className="min-w-32 text-center">
-            <p className="font-serif text-lg">{selectedPoint.ciudad}</p>
-            <p className="text-muted-foreground text-sm mt-1">
-              {selectedPoint.count}{" "}
-              {selectedPoint.count === 1 ? "persona" : "personas"}
-            </p>
-          </div>
+          {renderPopup ? (
+            renderPopup(selectedPoint)
+          ) : (
+            <div className="min-w-32 text-center">
+              <p className="font-serif text-lg">{selectedPoint.ciudad}</p>
+              <p className="text-muted-foreground text-sm mt-1">
+                {selectedPoint.count}{" "}
+                {selectedPoint.count === 1 ? "persona" : "personas"}
+              </p>
+            </div>
+          )}
         </MapPopup>
       )}
     </>

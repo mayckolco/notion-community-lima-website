@@ -48,6 +48,11 @@ function extractHerramientas(props: Record<string, unknown>): string[] {
   return p["Herramientas"]?.multi_select?.map((t) => t.name ?? "").filter(Boolean) ?? [];
 }
 
+function extractModalidad(props: Record<string, unknown>): string | null {
+  const p = props as Record<string, { select?: { name?: string } }>;
+  return p["Modalidad"]?.select?.name ?? null;
+}
+
 function extractGrabacionUrl(props: Record<string, unknown>): string | null {
   const p = props as Record<string, { url?: string | null }>;
   return (
@@ -61,7 +66,11 @@ function extractGrabacionUrl(props: Record<string, unknown>): string | null {
 function extractCoverUrl(props: Record<string, unknown>): string | null {
   const files =
     (props["Cover"] as { files?: Array<Record<string, unknown>> })?.files ?? [];
-  for (const f of files) {
+  if (files.length === 0) return null;
+
+  // Notion appends new uploads; the latest cover is the last entry.
+  for (let i = files.length - 1; i >= 0; i--) {
+    const f = files[i];
     if (f.type === "file_upload") {
       const url = (f.file_upload as { url?: string })?.url;
       if (url) return url;
@@ -88,6 +97,7 @@ function extractSpeakerIds(props: Record<string, unknown>): string[] {
 async function fetchSpeakerBasic(speakerId: string): Promise<SlotSpeaker | null> {
   const res = await fetch(notionUrl(`pages/${speakerId}`), {
     headers: authHeaders(),
+    cache: "no-store",
   });
   if (!res.ok) return null;
   const page = (await res.json()) as { properties: Record<string, unknown> };
@@ -126,6 +136,7 @@ async function queryDatabase(
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify(body),
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -143,6 +154,7 @@ async function queryDatabaseOptional(
     method: "POST",
     headers: authHeaders(),
     body: JSON.stringify(body),
+    cache: "no-store",
   });
 
   if (!res.ok) return null;
@@ -163,6 +175,7 @@ function mapPageToSlot(page: Record<string, unknown>): Slot {
     herramientas: extractHerramientas(props),
     speaker: null,
     coverUrl: extractCoverUrl(props),
+    modalidad: extractModalidad(props),
   };
 }
 
@@ -231,6 +244,7 @@ export async function listSlots(): Promise<Slot[]> {
         herramientas: extractHerramientas(props),
         speaker: null,
         coverUrl: extractCoverUrl(props),
+        modalidad: extractModalidad(props),
       };
     })
     .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
@@ -295,6 +309,7 @@ export async function listPastSlotsWithRecordings(): Promise<PastSlotRecord[]> {
         speakerIds: extractSpeakerIds(props),
         grabacionUrl,
         coverUrl: extractCoverUrl(props),
+        modalidad: extractModalidad(props),
       };
     })
     .filter((slot): slot is NonNullable<typeof slot> => slot !== null && !!slot.fecha);
@@ -340,16 +355,22 @@ export async function listConfirmedSlots(): Promise<Slot[]> {
       return {
         id: ((page.id as string) ?? "").replace(/-/g, ""),
         fecha: extractDate(props) ?? "",
-        estado: "Disponible" as const,
+        estado: extractStatus(props),
         lumaUrl: extractLumaUrl(props),
         titulo: extractTitulo(props),
         descripcion: extractDescripcion(props),
         herramientas: extractHerramientas(props),
         speakerIds: extractSpeakerIds(props),
         coverUrl: extractCoverUrl(props),
+        modalidad: extractModalidad(props),
       };
     })
-    .filter((slot) => slot.fecha && !isBefore(parseISO(slot.fecha), today));
+    .filter(
+      (slot) =>
+        slot.fecha &&
+        !isBefore(parseISO(slot.fecha), today) &&
+        slot.estado !== "Realizado"
+    );
 
   const withSpeakers = await Promise.all(
     slots.map(async ({ speakerIds, ...slot }) => {
@@ -379,6 +400,7 @@ export async function getSlot(slotId: string): Promise<Slot | null> {
       herramientas: extractHerramientas(props),
       speaker: null,
       coverUrl: extractCoverUrl(props),
+      modalidad: extractModalidad(props),
     };
   } catch {
     return null;

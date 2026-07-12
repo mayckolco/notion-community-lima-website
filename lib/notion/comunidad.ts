@@ -1,5 +1,6 @@
 import { getDbComunidadId } from "./client";
 import { resolveCommunityRole, type CommunityRole } from "@/lib/config/community-roles";
+import { countPublishedProyectosByMember } from "./proyectos";
 
 const NOTION_BASE = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
@@ -7,11 +8,16 @@ const NOTION_VERSION = "2022-06-28";
 export interface ComunidadMember {
   id: string;
   nombre: string;
+  email: string | null;
   ciudad: string | null;
+  pais: string | null;
   rol: string | null;
+  empresa: string | null;
   latitud: number;
   longitud: number;
   linkedin: string | null;
+  github: string | null;
+  proyectosPublicados: number;
 }
 
 export interface ComunidadMemberRecord {
@@ -196,11 +202,16 @@ function parseComunidadPage(page: Record<string, unknown>): ComunidadMember | nu
   return {
     id: page.id as string,
     nombre,
+    email: getEmail(props),
     ciudad,
+    pais: getPais(props),
     rol: getRichText(props, "Rol"),
+    empresa: getRichText(props, "Empresa"),
     longitud: coords[0],
     latitud: coords[1],
     linkedin: (props["LinkedIn"] as { url?: string | null })?.url ?? null,
+    github: (props["GitHub"] as { url?: string | null })?.url ?? null,
+    proyectosPublicados: 0,
   };
 }
 
@@ -274,6 +285,18 @@ export async function listComunidadMembers(): Promise<ComunidadMember[]> {
     console.error("[listComunidadMembers] failed:", err);
     return [];
   }
+}
+
+export async function listComunidadMembersWithProyectos(): Promise<ComunidadMember[]> {
+  const [members, proyectoCounts] = await Promise.all([
+    listComunidadMembers(),
+    countPublishedProyectosByMember().catch(() => new Map<string, number>()),
+  ]);
+
+  return members.map((member) => ({
+    ...member,
+    proyectosPublicados: proyectoCounts.get(member.id) ?? 0,
+  }));
 }
 
 export async function findMemberByEmail(email: string): Promise<string | null> {

@@ -83,6 +83,10 @@ const ESTADO_CONFIG = {
     label: "Disponible",
     className: "bg-emerald-50 text-emerald-700 border-emerald-200",
   },
+  Realizado: {
+    label: "Realizado",
+    className: "bg-muted text-muted-foreground border-border",
+  },
 } as const;
 
 export function SlotCard({ slot }: SlotCardProps) {
