@@ -38,6 +38,7 @@ export default async function PortalPage() {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-10 space-y-8">
         <SpeakerHeader speaker={speaker} />
+        <SpeakerOnboarding speaker={speaker} />
         <CharlaCards slots={speaker.slots} speaker={speaker} />
       </div>
     </main>
@@ -145,6 +146,47 @@ function SpeakerHeader({ speaker }: { speaker: PortalSpeaker }) {
           </p>
         </div>
       )}
+    </section>
+  );
+}
+
+function SpeakerOnboarding({ speaker }: { speaker: PortalSpeaker }) {
+  const primerNombre = speaker.nombre.split(" ")[0];
+
+  return (
+    <section className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
+      <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium">
+        Onboarding speaker
+      </h2>
+      <p className="text-sm text-muted-foreground leading-relaxed">
+        Hola {primerNombre}, aquí tienes los pasos clave antes y después de tu charla.
+      </p>
+      <ol className="space-y-3 text-sm">
+        <li className="rounded-lg border border-border/60 px-4 py-3">
+          <strong className="text-foreground">1. Confirma tu slot</strong>
+          <p className="text-muted-foreground mt-1">
+            Revisa fecha, título y accesos en la tarjeta de tu charla.
+          </p>
+        </li>
+        <li className="rounded-lg border border-border/60 px-4 py-3">
+          <strong className="text-foreground">2. Agenda llamada de preparación</strong>
+          <p className="text-muted-foreground mt-1">
+            Coordina con el equipo los detalles de tu presentación.
+          </p>
+        </li>
+        <li className="rounded-lg border border-border/60 px-4 py-3">
+          <strong className="text-foreground">3. El día del webinar</strong>
+          <p className="text-muted-foreground mt-1">
+            Usa los links de Luma y Meet desde tu portal. Llega 10 minutos antes.
+          </p>
+        </li>
+        <li className="rounded-lg border border-border/60 px-4 py-3">
+          <strong className="text-foreground">4. Después de la charla</strong>
+          <p className="text-muted-foreground mt-1">
+            Sube covers, fotos y revisa la grabación desde el detalle de tu charla.
+          </p>
+        </li>
+      </ol>
     </section>
   );
 }

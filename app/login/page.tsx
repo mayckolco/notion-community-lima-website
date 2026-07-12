@@ -32,6 +32,7 @@ function CommunityAuthForm() {
   const [mode, setMode] = useState<AuthMode>("register");
   const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
+  const [pais, setPais] = useState("");
   const [ciudad, setCiudad] = useState("");
   const [rol, setRol] = useState("");
   const [empresa, setEmpresa] = useState("");
@@ -49,7 +50,7 @@ function CommunityAuthForm() {
         mode === "register" ? "/api/comunidad/register" : "/api/comunidad/auth/request";
       const body =
         mode === "register"
-          ? { nombre, email, ciudad, rol, empresa, linkedin }
+          ? { nombre, email, pais, ciudad, rol, empresa, linkedin }
           : { email };
 
       const res = await fetch(endpoint, {
@@ -117,6 +118,21 @@ function CommunityAuthForm() {
                 value={nombre}
                 onChange={(e) => setNombre(e.target.value)}
                 placeholder="Tu nombre"
+                className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="pais" className="block text-sm font-medium text-foreground">
+                País
+              </label>
+              <input
+                id="pais"
+                type="text"
+                required
+                value={pais}
+                onChange={(e) => setPais(e.target.value)}
+                placeholder="Perú, Colombia, Chile..."
                 className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
               />
             </div>

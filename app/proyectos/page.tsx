@@ -5,8 +5,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { ProyectoCard } from "@/components/ProyectoCard";
-import { JoinCommunityButton } from "@/components/JoinCommunityButton";
-import { PROYECTOS_COMUNIDAD } from "@/lib/content/proyectos";
+import { PROYECTOS_COMUNIDAD, type Proyecto } from "@/lib/content/proyectos";
+import { listPublishedProyectos } from "@/lib/notion/proyectos";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
@@ -17,9 +17,31 @@ export const metadata: Metadata = createPageMetadata({
   path: "/proyectos",
 });
 
-export default function ProyectosPage() {
-  const destacados = PROYECTOS_COMUNIDAD.filter((p) => p.destacado);
-  const resto = PROYECTOS_COMUNIDAD.filter((p) => !p.destacado);
+function notionToProyecto(
+  proyecto: Awaited<ReturnType<typeof listPublishedProyectos>>[number]
+): Proyecto {
+  return {
+    id: proyecto.id,
+    nombre: proyecto.nombre,
+    descripcion: proyecto.descripcion,
+    stack: proyecto.stack,
+    url: proyecto.url ?? undefined,
+    github: proyecto.github ?? undefined,
+    autor: proyecto.autor || "Builder de la comunidad",
+  };
+}
+
+export default async function ProyectosPage() {
+  const notionProyectos = await listPublishedProyectos().catch(() => []);
+  const merged = [
+    ...notionProyectos.map(notionToProyecto),
+    ...PROYECTOS_COMUNIDAD.filter(
+      (staticProyecto) => !notionProyectos.some((p) => p.nombre === staticProyecto.nombre)
+    ),
+  ];
+
+  const destacados = merged.filter((p) => p.destacado);
+  const resto = merged.filter((p) => !p.destacado);
 
   return (
     <>
@@ -76,7 +98,12 @@ export default function ProyectosPage() {
               Compártelo en la comunidad de WhatsApp o postula para mostrarlo en un webinar.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <JoinCommunityButton location="proyectos_cta" />
+              <Link
+                href="/login"
+                className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity touch-manipulation"
+              >
+                Subir mi proyecto
+              </Link>
               <Link
                 href="/aplicar"
                 className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 text-sm font-semibold border border-border rounded-md hover:bg-muted/30 transition-colors touch-manipulation"

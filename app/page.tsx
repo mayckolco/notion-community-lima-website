@@ -3,8 +3,6 @@ import {
   listConfirmedSlots,
   listPastSlotsWithRecordings,
 } from "@/lib/notion/slots";
-import { SpeakerMarquee } from "@/components/SpeakerMarquee";
-import { TestimonialsMarquee } from "@/components/TestimonialsMarquee";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
@@ -38,7 +36,6 @@ export default async function LandingPage() {
     getNovedades(),
   ]);
 
-  const speakersWithPhoto = allSpeakers.filter((s) => s.foto);
   const nextEvent = confirmedSlots[0] ?? null;
 
   return (
@@ -56,13 +53,6 @@ export default async function LandingPage() {
         <CommunityPillarsSection />
         <ClaudeNovedadesSection novedades={novedades} />
 
-        {speakersWithPhoto.length > 0 && (
-          <section aria-label="Speakers de la comunidad" className="border-t border-border/60 py-12">
-            <SpeakerMarquee speakers={speakersWithPhoto} />
-          </section>
-        )}
-
-        <TestimonialsMarquee />
         <FAQSection
           faqs={LANDING_FAQ}
           subtitle="Respuestas directas para buscadores, IA y nuevos miembros."

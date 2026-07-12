@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { JoinCommunityButton } from "@/components/JoinCommunityButton";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
   PROGRAMAS_EMPRESAS_LABEL,
@@ -160,9 +159,9 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <div className="hidden sm:block">
-            <JoinCommunityButton location="navbar" size="sm" showArrow={false}>
-              Únete
-            </JoinCommunityButton>
+            <Button size="sm" render={<Link href="/aplicar" />}>
+              Soy speaker
+            </Button>
           </div>
           <Button size="sm" variant="outline" render={<Link href="/login" />}>
             Ingresar
@@ -224,14 +223,20 @@ export function Navbar() {
           </Link>
 
           <div className="px-6 py-4 border-t border-border/60 space-y-3">
-            <JoinCommunityButton location="navbar_mobile" showArrow={false} />
+            <Button
+              size="sm"
+              className="w-full"
+              render={<Link href="/aplicar" onClick={closeAll} />}
+            >
+              Soy speaker
+            </Button>
             <Button
               size="sm"
               variant="outline"
               className="w-full"
               render={<Link href="/login" onClick={closeAll} />}
             >
-              Ingresar al portal
+              Ingresar
             </Button>
           </div>
         </div>

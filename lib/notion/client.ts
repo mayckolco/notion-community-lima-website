@@ -41,3 +41,7 @@ export function getDbComunidadId(): string {
   if (!id) throw new Error("DB_COMUNIDAD_ID env var is required");
   return id;
 }
+
+export function getDbProyectosId(): string | null {
+  return process.env.DB_PROYECTOS_ID ?? null;
+}

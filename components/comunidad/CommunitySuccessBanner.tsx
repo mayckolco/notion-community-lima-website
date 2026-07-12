@@ -13,9 +13,9 @@ function BannerContent() {
       role="status"
       className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-foreground"
     >
-      ¡Perfil confirmado! Ya apareces en el mapa de la comunidad.{" "}
-      <Link href="/comunidad" className="text-primary hover:underline underline-offset-4">
-        Actualizar vista
+      ¡Perfil confirmado! Ya puedes editar tu perfil y ver las sesiones.{" "}
+      <Link href="/cuenta" className="text-primary hover:underline underline-offset-4">
+        Ir a mi cuenta
       </Link>
     </div>
   );

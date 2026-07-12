@@ -39,11 +39,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { nombre, email, ciudad, rol, empresa, linkedin } = parsed.data;
+  const { nombre, email, pais, ciudad, rol, empresa, linkedin } = parsed.data;
   const normalizedEmail = email.toLowerCase().trim();
   const memberInput = {
     nombre: nombre.trim(),
     email: normalizedEmail,
+    pais: pais.trim(),
     ciudad: ciudad.trim(),
     rol: rol?.trim() || undefined,
     empresa: empresa?.trim() || undefined,

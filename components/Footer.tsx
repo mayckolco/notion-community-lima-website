@@ -32,11 +32,6 @@ const COMMUNITY_LINKS = [
     href: "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3",
     external: true,
   },
-  {
-    label: "Instagram @claudeperucommunity",
-    href: "https://instagram.com/claudeperucommunity",
-    external: true,
-  },
 ];
 
 export function Footer() {

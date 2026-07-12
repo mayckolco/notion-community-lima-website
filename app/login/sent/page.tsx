@@ -34,8 +34,8 @@ export default function LoginSentPage() {
           <Button variant="outline" render={<Link href="/login" />} className="w-full">
             Volver e intentar de nuevo
           </Button>
-          <Button variant="link" render={<Link href="/comunidad" />} className="w-full">
-            Ver mapa de la comunidad
+          <Button variant="link" render={<Link href="/cuenta" />} className="w-full">
+            Ir a mi cuenta
           </Button>
         </div>
       </section>

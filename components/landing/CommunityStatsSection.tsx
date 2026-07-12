@@ -23,7 +23,7 @@ const STATS_CONFIG = [
   {
     key: "community",
     icon: Users,
-    getValue: () => 500,
+    getValue: () => 100,
     label: "Miembros en WhatsApp",
     suffix: "+",
   },

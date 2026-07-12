@@ -1,4 +1,5 @@
 import { getDbComunidadId } from "./client";
+import { resolveCommunityRole, type CommunityRole } from "@/lib/config/community-roles";
 
 const NOTION_BASE = "https://api.notion.com/v1";
 const NOTION_VERSION = "2022-06-28";
@@ -17,11 +18,13 @@ export interface ComunidadMemberRecord {
   id: string;
   nombre: string;
   email: string;
+  pais: string | null;
   ciudad: string | null;
   rol: string | null;
   empresa: string | null;
   linkedin: string | null;
   estado: string | null;
+  tipo: CommunityRole;
 }
 
 function authHeaders(): Record<string, string> {
@@ -136,24 +139,35 @@ function getEmail(props: Record<string, unknown>): string | null {
   return getRichText(props, "Email");
 }
 
+function getPais(props: Record<string, unknown>): string | null {
+  return getRichText(props, "Pais", "País") ?? getSelectText(props, "Pais", "País");
+}
+
+function getMemberTipo(props: Record<string, unknown>): string | null {
+  return getSelectText(props, "Tipo", "Rol sistema") ?? getRichText(props, "Tipo");
+}
+
 function parseComunidadRecord(page: Record<string, unknown>): ComunidadMemberRecord | null {
   const props = page.properties as Record<string, unknown>;
   const nombre = getTitleText(props, "Nombre");
   const email = getEmail(props);
-  if (!nombre || !email) return null;
+  if (!nombre) return null;
+
+  const emailValue = email ?? "";
 
   return {
     id: page.id as string,
     nombre,
-    email,
+    email: emailValue,
+    pais: getPais(props),
     ciudad:
       getRichText(props, "Ciudad") ??
-      getSelectText(props, "Ciudad") ??
-      getSelectText(props, "Pais"),
+      getSelectText(props, "Ciudad"),
     rol: getRichText(props, "Rol"),
     empresa: getRichText(props, "Empresa"),
     linkedin: (props["LinkedIn"] as { url?: string | null })?.url ?? null,
     estado: getStatusName(props, "Estado", "Status"),
+    tipo: resolveCommunityRole(emailValue, getMemberTipo(props)),
   };
 }
 
@@ -168,8 +182,7 @@ function parseComunidadPage(page: Record<string, unknown>): ComunidadMember | nu
 
   const ciudad =
     getRichText(props, "Ciudad") ??
-    getSelectText(props, "Ciudad") ??
-    getSelectText(props, "Pais");
+    getSelectText(props, "Ciudad");
 
   const coords = resolveCoordinates(
     page.id as string,
@@ -299,21 +312,28 @@ function buildMemberProperties(
   input: {
     nombre: string;
     email: string;
+    pais?: string;
     ciudad: string;
     rol?: string;
     empresa?: string;
     linkedin?: string;
+    tipo?: CommunityRole;
   },
   estado?: string
 ): Record<string, unknown> {
   const today = new Date().toISOString().split("T")[0];
   const properties: Record<string, unknown> = {
     Nombre: { title: [{ text: { content: input.nombre } }] },
-    Email: { email: input.email },
     Ciudad: { rich_text: [{ text: { content: input.ciudad } }] },
     "Fecha de inscripción": { date: { start: today } },
   };
 
+  if (input.email) {
+    properties.Email = { email: input.email };
+  }
+  if (input.pais) {
+    properties.Pais = { rich_text: [{ text: { content: input.pais } }] };
+  }
   if (input.rol) {
     properties.Rol = { rich_text: [{ text: { content: input.rol } }] };
   }
@@ -323,6 +343,9 @@ function buildMemberProperties(
   if (input.linkedin) {
     properties.LinkedIn = { url: input.linkedin };
   }
+  if (input.tipo) {
+    properties.Tipo = { select: { name: input.tipo === "admin" ? "Admin" : "Miembros" } };
+  }
   if (estado) {
     properties.Estado = { status: { name: estado } };
   }
@@ -330,9 +353,67 @@ function buildMemberProperties(
   return properties;
 }
 
+export async function listAllComunidadMembers(): Promise<ComunidadMemberRecord[]> {
+  const allPages = await fetchComunidadPages({});
+  if (!allPages) return [];
+  return allPages
+    .map(parseComunidadRecord)
+    .filter((member): member is ComunidadMemberRecord => member !== null);
+}
+
+export async function updateMemberEstado(memberId: string, estado: string): Promise<boolean> {
+  const res = await fetch(`${NOTION_BASE}/pages/${memberId}`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({
+      properties: {
+        Estado: { status: { name: estado } },
+      },
+    }),
+  });
+  return res.ok;
+}
+
+export async function updateMemberAdmin(
+  memberId: string,
+  input: {
+    nombre: string;
+    email: string;
+    pais?: string;
+    ciudad: string;
+    rol?: string;
+    empresa?: string;
+    linkedin?: string;
+    estado?: string;
+    tipo?: CommunityRole;
+  }
+): Promise<boolean> {
+  const properties = buildMemberProperties(
+    {
+      nombre: input.nombre,
+      email: input.email.toLowerCase().trim(),
+      pais: input.pais,
+      ciudad: input.ciudad,
+      rol: input.rol,
+      empresa: input.empresa,
+      linkedin: input.linkedin,
+      tipo: input.tipo,
+    },
+    input.estado
+  );
+
+  const res = await fetch(`${NOTION_BASE}/pages/${memberId}`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({ properties }),
+  });
+  return res.ok;
+}
+
 export async function createCommunityMember(input: {
   nombre: string;
   email: string;
+  pais: string;
   ciudad: string;
   rol?: string;
   empresa?: string;
@@ -348,7 +429,7 @@ export async function createCommunityMember(input: {
       body: JSON.stringify({
         parent: { database_id: databaseId },
         properties: buildMemberProperties(
-          { ...input, email: normalizedEmail },
+          { ...input, email: normalizedEmail, tipo: "miembro" },
           estado
         ),
       }),
@@ -369,6 +450,7 @@ export async function updateCommunityMember(
   input: {
     nombre: string;
     email: string;
+    pais?: string;
     ciudad: string;
     rol?: string;
     empresa?: string;

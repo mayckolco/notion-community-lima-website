@@ -60,6 +60,7 @@ export type NewsletterInput = z.infer<typeof newsletterSchema>;
 export const comunidadRegisterSchema = z.object({
   nombre: z.string().min(2, "Mínimo 2 caracteres").max(80),
   email: z.string().min(1, "El email es requerido").email("Email inválido"),
+  pais: z.string().min(2, "Indica tu país").max(80),
   ciudad: z.string().min(2, "Indica tu ciudad").max(80),
   rol: z.string().max(80).optional().or(z.literal("")),
   empresa: z.string().max(80).optional().or(z.literal("")),
@@ -67,6 +68,27 @@ export const comunidadRegisterSchema = z.object({
 });
 
 export type ComunidadRegisterInput = z.infer<typeof comunidadRegisterSchema>;
+
+export const comunidadPerfilSchema = z.object({
+  nombre: z.string().min(2, "Mínimo 2 caracteres").max(80),
+  pais: z.string().min(2, "Indica tu país").max(80),
+  ciudad: z.string().min(2, "Indica tu ciudad").max(80),
+  rol: z.string().max(80).optional().or(z.literal("")),
+  empresa: z.string().max(80).optional().or(z.literal("")),
+  linkedin: linkedinUrl.optional().or(z.literal("")),
+});
+
+export type ComunidadPerfilInput = z.infer<typeof comunidadPerfilSchema>;
+
+export const comunidadProyectoSchema = z.object({
+  nombre: z.string().min(2, "Mínimo 2 caracteres").max(120),
+  descripcion: z.string().min(10, "Mínimo 10 caracteres").max(2000),
+  stack: z.array(z.string().min(1)).min(1, "Agrega al menos una herramienta"),
+  url: z.string().url("URL inválida").optional().or(z.literal("")),
+  github: z.string().url("URL inválida").optional().or(z.literal("")),
+});
+
+export type ComunidadProyectoInput = z.infer<typeof comunidadProyectoSchema>;
 
 export const comunidadLoginSchema = z.object({
   email: z.string().min(1, "El email es requerido").email("Email inválido"),
