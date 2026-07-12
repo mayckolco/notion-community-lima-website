@@ -268,29 +268,20 @@ export interface PastSlotRecord extends Slot {
 }
 
 export async function listPastSlotsWithRecordings(): Promise<PastSlotRecord[]> {
+  return listSlotsWithRecordings({ pastOnly: true });
+}
+
+export async function listSlotsWithRecordings(options?: {
+  pastOnly?: boolean;
+}): Promise<PastSlotRecord[]> {
   const now = new Date();
   const today = startOfDay(now);
-
-  const pastStatuses = ["Publicado", "Realizado"] as const;
-
-  async function queryPast(statusProperty: string) {
-    return queryDatabaseOptional(getDbSlotsId(), {
-      filter: {
-        or: pastStatuses.map((status) => ({
-          and: [
-            { property: statusProperty, status: { equals: status } },
-            { property: "Fecha", date: { before: today.toISOString() } },
-          ],
-        })),
-      },
-      sorts: [{ property: "Fecha", direction: "descending" }],
-    });
-  }
+  const pastOnly = options?.pastOnly ?? false;
 
   const results =
-    (await queryPast("Status")) ??
-    (await queryPast("Estado")) ??
-    [];
+    (await queryDatabaseOptional(getDbSlotsId(), {
+      sorts: [{ property: "Fecha", direction: "descending" }],
+    })) ?? [];
 
   const slots = results
     .map((page) => {
@@ -298,9 +289,14 @@ export async function listPastSlotsWithRecordings(): Promise<PastSlotRecord[]> {
       const grabacionUrl = extractGrabacionUrl(props);
       if (!grabacionUrl) return null;
 
+      const fecha = extractDate(props) ?? "";
+      if (pastOnly && fecha && !isBefore(parseISO(fecha), today)) {
+        return null;
+      }
+
       return {
         id: ((page.id as string) ?? "").replace(/-/g, ""),
-        fecha: extractDate(props) ?? "",
+        fecha,
         estado: extractStatus(props),
         lumaUrl: extractLumaUrl(props),
         titulo: extractTitulo(props),
@@ -312,13 +308,12 @@ export async function listPastSlotsWithRecordings(): Promise<PastSlotRecord[]> {
         modalidad: extractModalidad(props),
       };
     })
-    .filter((slot): slot is NonNullable<typeof slot> => slot !== null && !!slot.fecha);
+    .filter((slot): slot is NonNullable<typeof slot> => slot !== null);
 
   const withSpeakers = await Promise.all(
     slots.map(async ({ speakerIds, ...slot }) => {
-      const speaker = speakerIds.length > 0
-        ? await fetchSpeakerBasic(speakerIds[0])
-        : null;
+      const speaker =
+        speakerIds.length > 0 ? await fetchSpeakerBasic(speakerIds[0]) : null;
       return { ...slot, speaker };
     })
   );

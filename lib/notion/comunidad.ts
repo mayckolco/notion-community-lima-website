@@ -95,6 +95,12 @@ function normalizeCityKey(value: string): string {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function normalizePaisInput(pais: string): string {
+  const trimmed = pais.trim();
+  if (normalizeCityKey(trimmed) === "peru") return "Perú";
+  return trimmed;
+}
+
 function hashOffset(id: string): [number, number] {
   const hash = id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const jitter = 0.035;
@@ -231,6 +237,7 @@ async function fetchComunidadPages(
         page_size: 100,
         start_cursor: cursor,
       }),
+      cache: "no-store",
     });
 
     if (!res.ok) return null;
@@ -355,7 +362,7 @@ function buildMemberProperties(
     properties.Email = { email: input.email };
   }
   if (input.pais) {
-    properties.Pais = { rich_text: [{ text: { content: input.pais } }] };
+    properties.Pais = { select: { name: normalizePaisInput(input.pais) } };
   }
   if (input.rol) {
     properties.Rol = { rich_text: [{ text: { content: input.rol } }] };
@@ -457,7 +464,11 @@ export async function createCommunityMember(input: {
         ),
       }),
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      const errBody = await res.text();
+      console.error("[createCommunityMember] Notion error:", res.status, errBody);
+      return null;
+    }
     const page = (await res.json()) as { id?: string };
     return page.id ?? null;
   };

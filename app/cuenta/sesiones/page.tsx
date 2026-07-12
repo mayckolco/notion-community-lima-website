@@ -1,10 +1,10 @@
-import { listPastSlotsWithRecordings } from "@/lib/notion/slots";
+import { listSlotsWithRecordings } from "@/lib/notion/slots";
 import { MemberSessionsList } from "@/components/cuenta/MemberSessionsList";
 
 export const revalidate = 0;
 
 export default async function CuentaSesionesPage() {
-  const sessions = await listPastSlotsWithRecordings().catch(() => []);
+  const sessions = await listSlotsWithRecordings().catch(() => []);
 
   return (
     <div className="space-y-8">

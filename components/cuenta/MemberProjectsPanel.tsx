@@ -1,18 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { Pencil, X } from "lucide-react";
 import type { ComunidadProyecto } from "@/lib/notion/proyectos";
 
 interface MemberProjectsPanelProps {
   initialProyectos: ComunidadProyecto[];
+  publishedProyectos: ComunidadProyecto[];
   configured: boolean;
 }
 
 export function MemberProjectsPanel({
   initialProyectos,
+  publishedProyectos,
   configured,
 }: MemberProjectsPanelProps) {
   const [proyectos, setProyectos] = useState(initialProyectos);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [stackInput, setStackInput] = useState("");
@@ -21,6 +25,34 @@ export function MemberProjectsPanel({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+
+  function resetForm() {
+    setEditingId(null);
+    setNombre("");
+    setDescripcion("");
+    setStackInput("");
+    setUrl("");
+    setGithub("");
+  }
+
+  function startEdit(proyecto: ComunidadProyecto) {
+    setEditingId(proyecto.id);
+    setNombre(proyecto.nombre);
+    setDescripcion(proyecto.descripcion);
+    setStackInput(proyecto.stack.join(", "));
+    setUrl(proyecto.url ?? "");
+    setGithub(proyecto.github ?? "");
+    setMessage(null);
+    setError(null);
+  }
+
+  async function refreshMine() {
+    const refresh = await fetch("/api/comunidad/proyectos");
+    if (refresh.ok) {
+      const data = (await refresh.json()) as { proyectos: ComunidadProyecto[] };
+      setProyectos(data.proyectos);
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -35,34 +67,41 @@ export function MemberProjectsPanel({
       .map((item) => item.trim())
       .filter(Boolean);
 
+    const payload = { nombre, descripcion, stack, url, github };
+
     try {
-      const res = await fetch("/api/comunidad/proyectos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, descripcion, stack, url, github }),
-      });
+      const res = editingId
+        ? await fetch(`/api/comunidad/proyectos/${editingId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          })
+        : await fetch("/api/comunidad/proyectos", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
 
       if (res.status === 503) {
         setError("La base de proyectos aún no está configurada.");
         return;
       }
+      if (res.status === 403) {
+        setError("No puedes editar este proyecto.");
+        return;
+      }
       if (!res.ok) {
-        setError("No se pudo enviar el proyecto.");
+        setError(editingId ? "No se pudo actualizar el proyecto." : "No se pudo enviar el proyecto.");
         return;
       }
 
-      setMessage("Proyecto enviado. Un admin lo revisará para publicarlo.");
-      setNombre("");
-      setDescripcion("");
-      setStackInput("");
-      setUrl("");
-      setGithub("");
-
-      const refresh = await fetch("/api/comunidad/proyectos");
-      if (refresh.ok) {
-        const data = (await refresh.json()) as { proyectos: ComunidadProyecto[] };
-        setProyectos(data.proyectos);
-      }
+      setMessage(
+        editingId
+          ? "Proyecto actualizado."
+          : "Proyecto enviado. Un admin lo revisará para publicarlo."
+      );
+      resetForm();
+      await refreshMine();
     } catch {
       setError("No se pudo conectar.");
     } finally {
@@ -71,32 +110,74 @@ export function MemberProjectsPanel({
   }
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-3">
-        <h3 className="font-serif text-lg">Mis proyectos</h3>
+    <div className="space-y-10">
+      <section className="space-y-4">
+        <h2 className="font-serif text-lg">Mis proyectos</h2>
         {proyectos.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            Aún no has subido proyectos.
-          </p>
+          <p className="text-sm text-muted-foreground">Aún no has subido proyectos.</p>
         ) : (
           <ul className="space-y-3">
             {proyectos.map((proyecto) => (
-              <li key={proyecto.id} className="rounded-lg border border-border p-4 space-y-1">
-                <p className="font-medium">{proyecto.nombre}</p>
-                <p className="text-xs text-muted-foreground">
-                  Estado: {proyecto.estado ?? "Idea"}
-                </p>
+              <li
+                key={proyecto.id}
+                className="rounded-lg border border-border p-4 space-y-2"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <p className="font-medium">{proyecto.nombre}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Estado: {proyecto.estado ?? "Idea"}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => startEdit(proyecto)}
+                    className="inline-flex items-center gap-1 text-xs text-primary hover:underline shrink-0"
+                  >
+                    <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                    Editar
+                  </button>
+                </div>
                 {proyecto.descripcion && (
                   <p className="text-sm text-muted-foreground">{proyecto.descripcion}</p>
+                )}
+                {proyecto.stack.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {proyecto.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-md bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 )}
               </li>
             ))}
           </ul>
         )}
-      </div>
+      </section>
 
-      <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-border bg-card p-5">
-        <h4 className="font-medium">Subir nuevo proyecto</h4>
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-4 rounded-xl border border-border bg-card p-5"
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h3 className="font-medium">
+            {editingId ? "Editar proyecto" : "Publicar nuevo proyecto"}
+          </h3>
+          {editingId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+            >
+              <X className="h-3.5 w-3.5" aria-hidden="true" />
+              Cancelar
+            </button>
+          )}
+        </div>
         {!configured && (
           <p className="text-sm text-amber-700">
             La base de proyectos en Notion aún no está conectada (DB_PROYECTOS_ID).
@@ -143,9 +224,80 @@ export function MemberProjectsPanel({
           disabled={loading || !configured}
           className="inline-flex min-h-[44px] items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground disabled:opacity-50"
         >
-          {loading ? "Enviando..." : "Enviar proyecto"}
+          {loading
+            ? "Guardando..."
+            : editingId
+              ? "Guardar cambios"
+              : "Enviar proyecto"}
         </button>
       </form>
+
+      <section className="space-y-4 pt-4 border-t border-border/60">
+        <h2 className="font-serif text-lg">Proyectos de la comunidad</h2>
+        <p className="text-sm text-muted-foreground">
+          Todos los proyectos publicados por miembros de Claude Perú.
+        </p>
+        {publishedProyectos.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            Aún no hay proyectos publicados.
+          </p>
+        ) : (
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {publishedProyectos.map((proyecto) => (
+              <li
+                key={proyecto.id}
+                className="rounded-xl border border-border bg-card p-5 shadow-soft space-y-3"
+              >
+                <div className="space-y-1">
+                  <p className="font-serif text-lg leading-snug">{proyecto.nombre}</p>
+                  <p className="text-xs text-muted-foreground">
+                    por {proyecto.autor || "Builder de la comunidad"}
+                  </p>
+                </div>
+                {proyecto.descripcion && (
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {proyecto.descripcion}
+                  </p>
+                )}
+                {proyecto.stack.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {proyecto.stack.map((tech) => (
+                      <span
+                        key={tech}
+                        className="rounded-md bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <div className="flex flex-wrap gap-3 text-sm">
+                  {proyecto.url && (
+                    <a
+                      href={proyecto.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      Ver proyecto
+                    </a>
+                  )}
+                  {proyecto.github && (
+                    <a
+                      href={proyecto.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary hover:underline"
+                    >
+                      GitHub
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

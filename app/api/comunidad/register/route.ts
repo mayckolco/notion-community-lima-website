@@ -75,11 +75,16 @@ export async function POST(req: NextRequest) {
     if (member?.nombre) greetingName = member.nombre.split(" ")[0];
   }
 
-  await sendCommunityMagicLinkEmail({
-    to: normalizedEmail,
-    nombre: greetingName,
-    magicUrl,
-  });
+  try {
+    await sendCommunityMagicLinkEmail({
+      to: normalizedEmail,
+      nombre: greetingName,
+      magicUrl,
+    });
+  } catch (err) {
+    console.error("[comunidad/register] email failed:", err);
+    return NextResponse.json({ error: "email_failed" }, { status: 500 });
+  }
 
   return NextResponse.json({ ok: true, memberId });
 }

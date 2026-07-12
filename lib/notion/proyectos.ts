@@ -126,6 +126,7 @@ async function queryProyectos(
         page_size: 100,
         start_cursor: cursor,
       }),
+      cache: "no-store",
     });
 
     if (!res.ok) return [];
@@ -182,6 +183,44 @@ export async function countPublishedProyectosByMember(): Promise<Map<string, num
   }
 
   return counts;
+}
+
+export async function getProyectoById(
+  proyectoId: string
+): Promise<ComunidadProyecto | null> {
+  const res = await fetch(`${NOTION_BASE}/pages/${proyectoId}`, {
+    headers: authHeaders(),
+    cache: "no-store",
+  });
+  if (!res.ok) return null;
+  const page = (await res.json()) as Record<string, unknown>;
+  return parseProyectoPage(page);
+}
+
+export async function updateProyecto(
+  proyectoId: string,
+  input: {
+    nombre: string;
+    descripcion: string;
+    stack: string[];
+    url?: string;
+    github?: string;
+  }
+): Promise<boolean> {
+  const properties: Record<string, unknown> = {
+    Nombre: { title: [{ text: { content: input.nombre } }] },
+    Descripcion: { rich_text: [{ text: { content: input.descripcion } }] },
+    Stack: { multi_select: input.stack.map((name) => ({ name })) },
+    URL: { url: input.url || null },
+    GitHub: { url: input.github || null },
+  };
+
+  const res = await fetch(`${NOTION_BASE}/pages/${proyectoId}`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify({ properties }),
+  });
+  return res.ok;
 }
 
 export async function createProyecto(input: {

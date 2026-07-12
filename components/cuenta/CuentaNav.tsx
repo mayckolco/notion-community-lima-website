@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const NAV_ITEMS = [
+const BASE_NAV_ITEMS = [
   { href: "/cuenta/perfil", label: "Perfil" },
-  { href: "/cuenta/configuraciones", label: "Configuraciones" },
-  { href: "/cuenta/mapa", label: "Mapa" },
   { href: "/cuenta/sesiones", label: "Sesiones" },
+  { href: "/cuenta/proyectos", label: "Proyectos" },
+  { href: "/cuenta/comunidad", label: "Comunidad" },
+  { href: "/cuenta/configuraciones", label: "Configuraciones" },
 ] as const;
 
 interface CuentaNavProps {
@@ -18,6 +19,9 @@ interface CuentaNavProps {
 
 export function CuentaNav({ memberFirstName, isAdmin }: CuentaNavProps) {
   const pathname = usePathname();
+  const navItems = isAdmin
+    ? [...BASE_NAV_ITEMS, { href: "/cuenta/admin", label: "Admin" }]
+    : BASE_NAV_ITEMS;
 
   return (
     <>
@@ -39,7 +43,7 @@ export function CuentaNav({ memberFirstName, isAdmin }: CuentaNavProps) {
             role="tablist"
             aria-label="Secciones de mi cuenta"
           >
-            {NAV_ITEMS.map(({ href, label }) => {
+            {navItems.map(({ href, label }) => {
               const active = pathname === href || pathname.startsWith(`${href}/`);
               return (
                 <Link
@@ -58,21 +62,6 @@ export function CuentaNav({ memberFirstName, isAdmin }: CuentaNavProps) {
                 </Link>
               );
             })}
-            {isAdmin && (
-              <Link
-                href="/cuenta/admin"
-                role="tab"
-                aria-selected={pathname.startsWith("/cuenta/admin")}
-                className={cn(
-                  "shrink-0 rounded-md px-3 py-2 text-sm font-medium transition-colors touch-manipulation",
-                  pathname.startsWith("/cuenta/admin")
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                )}
-              >
-                Admin
-              </Link>
-            )}
           </div>
         </div>
       </div>

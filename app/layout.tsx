@@ -60,6 +60,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  icons: {
+    icon: [{ url: "/claude-icon.png", type: "image/png" }],
+    apple: [{ url: "/claude-icon.png", type: "image/png" }],
+    shortcut: ["/claude-icon.png"],
+  },
   robots: {
     index: true,
     follow: true,
