@@ -61,9 +61,12 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: [{ url: "/claude-icon.png", type: "image/png" }],
-    apple: [{ url: "/claude-icon.png", type: "image/png" }],
-    shortcut: ["/claude-icon.png"],
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon", sizes: "any" },
+    ],
+    apple: [{ url: "/apple-icon", type: "image/svg+xml" }],
+    shortcut: ["/favicon.svg"],
   },
   robots: {
     index: true,

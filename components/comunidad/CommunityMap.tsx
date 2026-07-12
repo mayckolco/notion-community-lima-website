@@ -21,8 +21,8 @@ export function CommunityMap({ members }: CommunityMapProps) {
   const geoJSON = useMemo(() => comunidadMembersToGeoJSON(members), [members]);
 
   return (
-    <div className="h-[min(70vh,520px)] w-full overflow-hidden rounded-xl border border-border bg-card shadow-soft">
-      <Map center={PERU_CENTER} zoom={DEFAULT_ZOOM} className="h-full w-full">
+    <div className="community-map relative z-0 h-[min(70vh,520px)] w-full rounded-xl border border-border bg-card shadow-soft">
+      <Map center={PERU_CENTER} zoom={DEFAULT_ZOOM} className="h-full w-full rounded-xl">
         <MapPointsLayer
           data={geoJSON}
           renderPopup={(point) => (

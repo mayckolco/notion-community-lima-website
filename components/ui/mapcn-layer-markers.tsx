@@ -1802,8 +1802,10 @@ function MapPointsLayer({
           onClose={() => setSelectedPoint(null)}
           closeOnClick={false}
           focusAfterOpen={false}
-          offset={10}
+          anchor="top"
+          offset={[0, 18]}
           closeButton
+          className="border-[#e7dfd6] bg-[#f5f0eb] p-3 shadow-lg"
         >
           {renderPopup ? (
             renderPopup(selectedPoint)

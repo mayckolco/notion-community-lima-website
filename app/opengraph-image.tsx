@@ -1,15 +1,10 @@
-import { readFile } from "fs/promises";
-import { join } from "path";
 import { ImageResponse } from "next/og";
 
 export const alt = "Claude Perú · La comunidad de builders con IA en Perú";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default async function OgImage() {
-  const iconBuffer = await readFile(join(process.cwd(), "public/claude-icon.png"));
-  const iconSrc = `data:image/png;base64,${iconBuffer.toString("base64")}`;
-
+export default function OgImage() {
   return new ImageResponse(
     (
       <div
@@ -76,10 +71,12 @@ export default async function OgImage() {
             borderRadius: "32px",
             background: "#09090b",
             boxShadow: "0 24px 60px rgba(43, 38, 34, 0.18)",
+            color: "#D97E63",
+            fontSize: "180px",
+            lineHeight: 1,
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={iconSrc} width={200} height={200} alt="" />
+          ✳
         </div>
       </div>
     ),

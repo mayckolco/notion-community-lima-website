@@ -134,3 +134,18 @@
     animation-play-state: paused !important;
   }
 }
+
+.community-map .maplibregl-canvas-container,
+.community-map .maplibregl-map {
+  overflow: visible !important;
+}
+
+.community-map .maplibregl-popup {
+  z-index: 5;
+}
+
+.community-map .maplibregl-popup-content {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}

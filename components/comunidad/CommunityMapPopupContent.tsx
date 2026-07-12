@@ -1,5 +1,3 @@
-import { ClaudeCodeLogo } from "@/components/comunidad/ClaudeCodeLogo";
-
 interface CommunityMapPopupContentProps {
   ciudad: string;
   count: number;
@@ -10,12 +8,11 @@ export function CommunityMapPopupContent({
   count,
 }: CommunityMapPopupContentProps) {
   return (
-    <div className="min-w-[7.5rem] rounded-lg bg-[#f5f0eb] px-4 py-3 text-center space-y-2">
-      <div className="flex justify-center">
-        <ClaudeCodeLogo className="h-9 w-9" />
-      </div>
-      <p className="font-serif text-lg leading-tight text-foreground">{ciudad}</p>
-      <p className="text-muted-foreground text-sm">
+    <div className="min-w-[8.5rem] px-1 py-0.5 text-center">
+      <p className="font-serif text-xl font-semibold leading-tight text-[#2B2622]">
+        {ciudad}
+      </p>
+      <p className="mt-1 text-sm text-[#6B6560]">
         {count} {count === 1 ? "persona" : "personas"}
       </p>
     </div>
