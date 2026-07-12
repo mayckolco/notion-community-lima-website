@@ -35,3 +35,9 @@ export function getDbBootcampRegistrosId(): string {
   if (!id) throw new Error("DB_BOOTCAMP_REGISTROS_ID env var is required");
   return id;
 }
+
+export function getDbComunidadId(): string {
+  const id = process.env.DB_COMUNIDAD_ID;
+  if (!id) throw new Error("DB_COMUNIDAD_ID env var is required");
+  return id;
+}

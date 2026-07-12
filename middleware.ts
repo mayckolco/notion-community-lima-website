@@ -6,9 +6,13 @@ const SESSION_COOKIE = "aiff_session";
 
 export function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/portal")) {
+    if (req.nextUrl.pathname.startsWith("/portal/login")) {
+      return NextResponse.next();
+    }
+
     const hasSession = !!req.cookies.get(SESSION_COOKIE)?.value;
     if (!hasSession) {
-      return NextResponse.redirect(new URL("/login", req.url));
+      return NextResponse.redirect(new URL("/portal/login", req.url));
     }
   }
   return NextResponse.next();

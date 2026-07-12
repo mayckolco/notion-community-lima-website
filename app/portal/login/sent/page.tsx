@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 
-export default function LoginSentPage() {
+export default function PortalLoginSentPage() {
   return (
     <main className="flex flex-col min-h-screen">
       <Navbar />
@@ -15,7 +15,7 @@ export default function LoginSentPage() {
             </div>
             <h1 className="text-2xl font-serif tracking-tight">Revisa tu correo</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Te enviamos un link para confirmar tu perfil en la comunidad.
+              Si tu email está registrado como speaker, te enviamos un link de acceso.
               Expira en <strong className="text-foreground">15 minutos</strong>.
             </p>
           </div>
@@ -26,16 +26,13 @@ export default function LoginSentPage() {
             </p>
             <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
               <li>Revisa la carpeta de spam o promociones</li>
-              <li>Asegúrate de usar el mismo email con el que te registraste</li>
+              <li>Asegúrate de usar el email con el que aplicaste</li>
               <li>Espera hasta 2 minutos antes de reintentar</li>
             </ul>
           </div>
 
-          <Button variant="outline" render={<Link href="/login" />} className="w-full">
+          <Button variant="outline" render={<Link href="/portal/login" />} className="w-full">
             Volver e intentar de nuevo
-          </Button>
-          <Button variant="link" render={<Link href="/comunidad" />} className="w-full">
-            Ver mapa de la comunidad
           </Button>
         </div>
       </section>

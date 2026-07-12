@@ -3,7 +3,7 @@
 Documento vivo que define la visión, el plan de desarrollo y el estado de cada funcionalidad.
 **Regla de mantenimiento**: cada vez que se complete, agregue o descarte una funcionalidad, actualizar este archivo en el mismo commit.
 
-Última actualización: 2026-07-11 (programas empresas bloqueados)
+Última actualización: 2026-07-11 (auth comunidad vs speakers)
 
 ---
 
@@ -32,13 +32,14 @@ Secciones principales del navbar:
 | Sección | Ruta | Estado |
 |---|---|---|
 | Eventos | `/eventos` | ✅ Creada (`/calendario` redirige 301 aquí) |
+| Comunidad | `/comunidad` | ✅ Mapa interactivo con miembros desde Notion (`DB_COMUNIDAD_ID`) |
 | Proyectos | `/proyectos` | ✅ v2 con showcase de proyectos |
 | Recursos | `/recursos` | ✅ v2 con filtros y grabaciones |
 | Programas ▾ Profesionales | `/programas/profesionales` | ✅ Creada (`/programas` es página índice) |
 | Programas ▾ Empresas | `/programas/empresas` | 🔒 Bloqueado (pronto) : página coming soon, sin link en nav/footer |
 | Sobre nosotros | `/nosotros` | ✅ v2 con historia y cómo participar |
 
-Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `/aplicar`, `/login`, `/portal`.
+Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `/aplicar`, `/login` (comunidad), `/portal/login` (speakers), `/portal`, `/portal/admin`.
 
 **Contactos oficiales** (usar siempre estos valores):
 
@@ -52,7 +53,8 @@ Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `
 
 - [x] Next.js 14 App Router + TypeScript strict + Tailwind + shadcn/ui
 - [x] Backend Notion (slots + speakers), llamadas solo server-side
-- [x] Auth magic link (Resend + HMAC + cookie `aiff_session`)
+- [x] Auth magic link speakers (Resend + HMAC + cookie `aiff_session`) en `/portal/login`
+- [x] Auth comunidad: registro/login en `/login` → Notion Clowdianos (`DB_COMUNIDAD_ID`) + cookie `aiff_community_session`
 - [x] Flujo speaker: `/aplicar` → formulario → `/portal` con covers, fotos, grabaciones
 - [x] Páginas base: landing, directorio, calendario, proyectos, recursos, programas, nosotros
 - [x] Google Analytics cargado en `app/layout.tsx` (G-FGDCTV5ZEV)
@@ -64,7 +66,7 @@ Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `
 Objetivo: dejar la navegación y los elementos comunes alineados a la visión.
 
 - [x] **Botón flotante de WhatsApp**: `components/WhatsAppButton.tsx` fijo abajo a la derecha, global vía `app/layout.tsx`, enlaza a `https://wa.me/51946542990`, con `aria-label`, 56px táctil y evento GA `click_whatsapp`.
-- [x] **Navbar objetivo**: Eventos, Proyectos, Recursos, Programas (dropdown: Profesionales / Empresas), Sobre nosotros. Dropdown con `aria-expanded`, cierre con Escape/click-fuera, y sublinks en menú móvil.
+- [x] **Navbar objetivo**: Eventos, Comunidad, Proyectos, Recursos, Programas (dropdown: Profesionales / Empresas), Sobre nosotros. Dropdown con `aria-expanded`, cierre con Escape/click-fuera, y sublinks en menú móvil.
 - [x] **Footer completo**: 3 columnas (marca+redes, Explora, Comunidad) con Instagram @claudeperucommunity, comunidad WhatsApp, directorio/aplicar, y disclaimer de comunidad independiente no afiliada a Anthropic.
 - [x] **Página `/eventos`**: absorbe `/calendario` con metadata propia. Redirect 301 `/calendario` → `/eventos` en `next.config.mjs`. Sección de eventos pasados con grabaciones desde Notion.
 - [x] **Split de Programas**: `/programas` como índice con dos tracks. `/programas/profesionales` con catálogo completo: 6 cursos, 3 programas y 3 rutas (Chat, Cowork, Code; cero a experto; cohortes de 10; virtual y presencial 3–4 h; pre-reserva WhatsApp). `/programas/empresas` bloqueado con "(pronto)" hasta lanzamiento (`PROGRAMAS_EMPRESAS_PUBLIC = false`).
@@ -131,4 +133,4 @@ Una funcionalidad se marca `[x]` solo si:
 | 2026-07-10 | Fase 5 completada: buscador recursos, dark mode, novedades RSS automáticas, panel admin ampliado |
 | 2026-07-11 | Catálogo programas profesionales: 6 cursos, 3 programas, 3 rutas (Chat/Cowork/Code), pre-reserva WhatsApp, precios virtual/presencial |
 | 2026-07-11 | Programas empresas bloqueados (pronto): nav/footer deshabilitados, página coming soon, excluido del sitemap |
-| 2026-07-11 | Claude Bootcamp: horario 10a.m.–2p.m., virtual por Meet, checkout 4 pasos (fecha → datos → Yape → encuesta) con Notion Reservas/Leads |
+| 2026-07-11 | Auth separado: `/login` comunidad (mapa + Notion Clowdianos), `/portal/login` speakers, `/portal/admin` admin |

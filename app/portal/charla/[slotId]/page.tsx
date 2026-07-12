@@ -73,7 +73,7 @@ export default async function CharlaDetailPage({
   params: { slotId: string };
 }) {
   const session = getSession();
-  if (!session) redirect("/login");
+  if (!session) redirect("/portal/login");
 
   const etiqueta = getSpeakerEtiqueta(session.email);
   const isPrivileged = etiqueta === "admin" || etiqueta === "colaborador";
@@ -83,7 +83,7 @@ export default async function CharlaDetailPage({
       ? await getSpeakerPortalById(session.speakerId)
       : null;
 
-  if (!isPrivileged && !speaker) redirect("/login?error=no_encontrado");
+  if (!isPrivileged && !speaker) redirect("/portal/login?error=no_encontrado");
 
   if (!isPrivileged) {
     const slotBelongs = speaker!.slots.some(

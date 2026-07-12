@@ -6,6 +6,7 @@ import { SITE_URL } from "@/lib/seo/site";
 const STATIC_ROUTES: MetadataRoute.Sitemap = [
   { url: SITE_URL, changeFrequency: "weekly", priority: 1 },
   { url: `${SITE_URL}/eventos`, changeFrequency: "weekly", priority: 0.9 },
+  { url: `${SITE_URL}/comunidad`, changeFrequency: "weekly", priority: 0.85 },
   { url: `${SITE_URL}/recursos`, changeFrequency: "weekly", priority: 0.8 },
   { url: `${SITE_URL}/proyectos`, changeFrequency: "monthly", priority: 0.7 },
   { url: `${SITE_URL}/nosotros`, changeFrequency: "monthly", priority: 0.8 },

@@ -26,11 +26,11 @@ const isConfirmed = (estado: string) =>
 
 export default async function PortalPage() {
   const session = getSession();
-  if (!session) redirect("/login");
+  if (!session) redirect("/portal/login");
   if (session.speakerId === ADMIN_SPEAKER_ID) redirect("/portal/admin");
 
   const speaker = await getSpeakerPortalById(session.speakerId);
-  if (!speaker) redirect("/login?error=no_encontrado");
+  if (!speaker) redirect("/portal/login?error=no_encontrado");
 
   return (
     <main className="min-h-screen bg-background">

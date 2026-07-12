@@ -64,7 +64,8 @@ Flow: email → Resend → HMAC token → `aiff_session` cookie (7 days, httpOnl
 | `/` | Landing page |
 | `/aplicar` | Grid of available slots |
 | `/aplicar/[slotId]` | Speaker application form |
-| `/login` | Magic link login |
+| `/login` | Registro/login comunidad (magic link → mapa) |
+| `/portal/login` | Magic link login speakers |
 | `/verificando` | Token verification |
 | `/portal` | Authenticated speaker portal (CharlaCards) |
 | `/portal/charla/[slotId]` | Slot detail: date, Meet, recording, covers gallery, photos |

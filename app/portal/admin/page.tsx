@@ -24,7 +24,7 @@ export default async function AdminPage({
   searchParams: { estado?: string };
 }) {
   const session = getSession();
-  if (!session) redirect("/login");
+  if (!session) redirect("/portal/login");
 
   const etiqueta = getSpeakerEtiqueta(session.email);
   if (etiqueta !== "admin" && etiqueta !== "colaborador") redirect("/portal");

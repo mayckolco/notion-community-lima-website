@@ -13,9 +13,10 @@ import {
 import { usePathname } from "next/navigation";
 
 const NAV_LINKS = [
-  { label: "Eventos",   href: "/eventos" },
+  { label: "Eventos", href: "/eventos" },
+  { label: "Comunidad", href: "/comunidad" },
   { label: "Proyectos", href: "/proyectos" },
-  { label: "Recursos",  href: "/recursos" },
+  { label: "Recursos", href: "/recursos" },
 ];
 
 const PROGRAMAS_LINKS = [

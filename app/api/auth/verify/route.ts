@@ -11,12 +11,12 @@ export async function GET(req: NextRequest) {
 
   const rawToken = req.nextUrl.searchParams.get("token");
   if (!rawToken) {
-    return NextResponse.redirect(`${baseUrl}/login?error=link_invalido`);
+    return NextResponse.redirect(`${baseUrl}/portal/login?error=link_invalido`);
   }
 
-  const payload = verifyMagicLinkToken(rawToken);
+  const payload = verifyMagicLinkToken(rawToken, "portal-login");
   if (!payload) {
-    return NextResponse.redirect(`${baseUrl}/login?error=link_expirado`);
+    return NextResponse.redirect(`${baseUrl}/portal/login?error=link_expirado`);
   }
 
   let speakerId = await findSpeakerByEmail(payload.email);
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
     if (isAdminEmail(payload.email) || isColaboradorEmail(payload.email)) {
       speakerId = ADMIN_SPEAKER_ID;
     } else {
-      return NextResponse.redirect(`${baseUrl}/login?error=no_encontrado`);
+      return NextResponse.redirect(`${baseUrl}/portal/login?error=no_encontrado`);
     }
   }
 

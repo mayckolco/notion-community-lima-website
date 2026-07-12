@@ -11,18 +11,26 @@ function currentWindow(): number {
   return Math.floor(Date.now() / WINDOW_MS);
 }
 
-export function createMagicLinkToken(email: string): string {
+export type MagicLinkScope = "portal-login" | "community-login";
+
+export function createMagicLinkToken(
+  email: string,
+  scope: MagicLinkScope = "portal-login"
+): string {
   const secret = process.env.EMAIL_VERIFICATION_SECRET;
   if (!secret) throw new Error("EMAIL_VERIFICATION_SECRET is not set");
 
   const win = currentWindow();
-  const payload = JSON.stringify({ email, win, scope: "portal-login" });
+  const payload = JSON.stringify({ email, win, scope });
   const payloadB64 = Buffer.from(payload).toString("base64url");
   const sig = createHmac("sha256", secret).update(payloadB64).digest("hex");
   return `${payloadB64}.${sig}`;
 }
 
-export function verifyMagicLinkToken(token: string): { email: string } | null {
+export function verifyMagicLinkToken(
+  token: string,
+  expectedScope?: MagicLinkScope
+): { email: string } | null {
   const secret = process.env.EMAIL_VERIFICATION_SECRET;
   if (!secret) return null;
 
@@ -48,7 +56,13 @@ export function verifyMagicLinkToken(token: string): { email: string } | null {
     const raw = JSON.parse(
       Buffer.from(payloadB64, "base64url").toString()
     ) as Record<string, unknown>;
-    if (raw.scope !== "portal-login") return null;
+    const scope = raw.scope as MagicLinkScope | undefined;
+    const isLegacyPortal =
+      !scope && expectedScope === "portal-login" && typeof raw.exp === "number";
+    if (!isLegacyPortal) {
+      if (!scope || (scope !== "portal-login" && scope !== "community-login")) return null;
+      if (expectedScope && scope !== expectedScope) return null;
+    }
 
     if (typeof raw.win === "number") {
       // New format: window-based. Accept current window or previous window.

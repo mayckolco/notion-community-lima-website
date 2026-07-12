@@ -9,6 +9,7 @@ import {
 
 const SITE_LINKS = [
   { label: "Eventos", href: "/eventos" },
+  { label: "Comunidad", href: "/comunidad" },
   { label: "Proyectos", href: "/proyectos" },
   { label: "Recursos", href: "/recursos" },
   { label: "Programas para profesionales", href: "/programas/profesionales" },
@@ -23,6 +24,7 @@ const SITE_LINKS = [
 ];
 
 const COMMUNITY_LINKS = [
+  { label: "Mapa de la comunidad", href: "/comunidad", external: false },
   { label: "Directorio de speakers", href: "/directorio", external: false },
   { label: "Aplicar como speaker", href: "/aplicar", external: false },
   {

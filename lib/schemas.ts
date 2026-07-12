@@ -57,6 +57,23 @@ export const newsletterSchema = z.object({
 
 export type NewsletterInput = z.infer<typeof newsletterSchema>;
 
+export const comunidadRegisterSchema = z.object({
+  nombre: z.string().min(2, "Mínimo 2 caracteres").max(80),
+  email: z.string().min(1, "El email es requerido").email("Email inválido"),
+  ciudad: z.string().min(2, "Indica tu ciudad").max(80),
+  rol: z.string().max(80).optional().or(z.literal("")),
+  empresa: z.string().max(80).optional().or(z.literal("")),
+  linkedin: linkedinUrl.optional().or(z.literal("")),
+});
+
+export type ComunidadRegisterInput = z.infer<typeof comunidadRegisterSchema>;
+
+export const comunidadLoginSchema = z.object({
+  email: z.string().min(1, "El email es requerido").email("Email inválido"),
+});
+
+export type ComunidadLoginInput = z.infer<typeof comunidadLoginSchema>;
+
 const notionIdDashed = z
   .string()
   .regex(

@@ -7,6 +7,8 @@ import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
 
+type AuthMode = "register" | "login";
+
 function LoginError() {
   const params = useSearchParams();
   const error = params.get("error");
@@ -15,7 +17,7 @@ function LoginError() {
   const messages: Record<string, string> = {
     link_invalido: "El link no es válido.",
     link_expirado: "El link expiró. Solicita uno nuevo.",
-    no_encontrado: "No encontramos tu email. Verifica que sea el mismo con el que aplicaste.",
+    no_encontrado: "No encontramos tu email. Regístrate primero o verifica el correo.",
   };
 
   return (
@@ -25,9 +27,15 @@ function LoginError() {
   );
 }
 
-function LoginForm() {
+function CommunityAuthForm() {
   const router = useRouter();
+  const [mode, setMode] = useState<AuthMode>("register");
+  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
+  const [ciudad, setCiudad] = useState("");
+  const [rol, setRol] = useState("");
+  const [empresa, setEmpresa] = useState("");
+  const [linkedin, setLinkedin] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,10 +45,17 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/request", {
+      const endpoint =
+        mode === "register" ? "/api/comunidad/register" : "/api/comunidad/auth/request";
+      const body =
+        mode === "register"
+          ? { nombre, email, ciudad, rol, empresa, linkedin }
+          : { email };
+
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify(body),
       });
 
       if (res.status === 429) {
@@ -61,35 +76,147 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-      <div className="space-y-2">
-        <label htmlFor="email" className="block text-sm font-medium text-foreground">
-          Email con el que aplicaste
-        </label>
-        <input
-          id="email"
-          type="email"
-          required
-          autoComplete="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="tu@email.com"
-          aria-describedby={error ? "login-error" : undefined}
-          aria-invalid={error ? "true" : undefined}
-          className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors aria-invalid:border-destructive"
-        />
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-2 p-1 rounded-lg bg-muted/50">
+        <button
+          type="button"
+          onClick={() => setMode("register")}
+          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            mode === "register"
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Registrarme
+        </button>
+        <button
+          type="button"
+          onClick={() => setMode("login")}
+          className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+            mode === "login"
+              ? "bg-background text-foreground shadow-sm"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Ya tengo cuenta
+        </button>
       </div>
 
-      {error && (
-        <p id="login-error" role="alert" className="text-sm text-destructive border border-destructive/20 bg-destructive/5 rounded-md px-4 py-3">
-          {error}
-        </p>
-      )}
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        {mode === "register" && (
+          <>
+            <div className="space-y-2">
+              <label htmlFor="nombre" className="block text-sm font-medium text-foreground">
+                Nombre
+              </label>
+              <input
+                id="nombre"
+                type="text"
+                required
+                autoComplete="name"
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                placeholder="Tu nombre"
+                className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+              />
+            </div>
 
-      <Button type="submit" className="w-full min-h-[44px]" disabled={loading} aria-busy={loading}>
-        {loading ? "Enviando..." : "Enviar link de acceso"}
-      </Button>
-    </form>
+            <div className="space-y-2">
+              <label htmlFor="ciudad" className="block text-sm font-medium text-foreground">
+                Ciudad
+              </label>
+              <input
+                id="ciudad"
+                type="text"
+                required
+                value={ciudad}
+                onChange={(e) => setCiudad(e.target.value)}
+                placeholder="Lima, Arequipa, Bogotá..."
+                className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="rol" className="block text-sm font-medium text-foreground">
+                Rol <span className="text-muted-foreground font-normal">(opcional)</span>
+              </label>
+              <input
+                id="rol"
+                type="text"
+                value={rol}
+                onChange={(e) => setRol(e.target.value)}
+                placeholder="Developer, PM, Founder..."
+                className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="empresa" className="block text-sm font-medium text-foreground">
+                Empresa <span className="text-muted-foreground font-normal">(opcional)</span>
+              </label>
+              <input
+                id="empresa"
+                type="text"
+                value={empresa}
+                onChange={(e) => setEmpresa(e.target.value)}
+                placeholder="Donde trabajas o construyes"
+                className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="linkedin" className="block text-sm font-medium text-foreground">
+                LinkedIn <span className="text-muted-foreground font-normal">(opcional)</span>
+              </label>
+              <input
+                id="linkedin"
+                type="url"
+                value={linkedin}
+                onChange={(e) => setLinkedin(e.target.value)}
+                placeholder="https://linkedin.com/in/tu-perfil"
+                className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors"
+              />
+            </div>
+          </>
+        )}
+
+        <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-medium text-foreground">
+            Email
+          </label>
+          <input
+            id="email"
+            type="email"
+            required
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="tu@email.com"
+            aria-describedby={error ? "community-auth-error" : undefined}
+            aria-invalid={error ? "true" : undefined}
+            className="w-full rounded-md bg-background border border-border px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-ring/40 transition-colors aria-invalid:border-destructive"
+          />
+        </div>
+
+        {error && (
+          <p
+            id="community-auth-error"
+            role="alert"
+            className="text-sm text-destructive border border-destructive/20 bg-destructive/5 rounded-md px-4 py-3"
+          >
+            {error}
+          </p>
+        )}
+
+        <Button type="submit" className="w-full min-h-[44px]" disabled={loading} aria-busy={loading}>
+          {loading
+            ? "Enviando..."
+            : mode === "register"
+              ? "Registrarme y confirmar email"
+              : "Enviar link de acceso"}
+        </Button>
+      </form>
+    </div>
   );
 }
 
@@ -99,14 +226,15 @@ export default function LoginPage() {
       <Navbar />
 
       <section className="flex-1 flex items-center justify-center px-4 py-16">
-        <div className="w-full max-w-sm space-y-8">
+        <div className="w-full max-w-md space-y-8">
           <div className="space-y-2">
             <p className="text-xs text-muted-foreground tracking-widest uppercase">
-              Portal de Speakers
+              Comunidad Claude Perú
             </p>
-            <h1 className="text-2xl font-serif tracking-tight">Ingresa a tu portal</h1>
+            <h1 className="text-2xl font-serif tracking-tight">Únete al mapa</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Ingresa el email con el que aplicaste. Te enviaremos un link de acceso directo.
+              Regístrate para aparecer en el mapa de la comunidad. Te enviaremos un link
+              para confirmar tu perfil.
             </p>
           </div>
 
@@ -114,13 +242,16 @@ export default function LoginPage() {
             <Suspense fallback={null}>
               <LoginError />
             </Suspense>
-            <LoginForm />
+            <CommunityAuthForm />
           </div>
 
           <p className="text-xs text-muted-foreground text-center">
-            ¿Aún no eres speaker?{" "}
-            <Link href="/aplicar" className="text-foreground hover:underline underline-offset-4">
-              Aplica aquí
+            ¿Eres speaker?{" "}
+            <Link
+              href="/portal/login"
+              className="text-foreground hover:underline underline-offset-4"
+            >
+              Ingresa al portal de speakers
             </Link>
           </p>
         </div>
