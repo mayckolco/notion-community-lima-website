@@ -43,7 +43,7 @@ export const CLAUDE_NOVEDADES: Novedad[] = [
     fecha: "2026-04-10",
     titulo: "Model Context Protocol (MCP)",
     resumen:
-      "Protocolo abierto para conectar Claude con herramientas externas — bases de datos, APIs, Notion, GitHub y más — de forma estandarizada.",
+      "Protocolo abierto para conectar Claude con herramientas externas (bases de datos, APIs, Notion, GitHub y más) de forma estandarizada.",
     url: "https://modelcontextprotocol.io",
     tag: "api",
   },

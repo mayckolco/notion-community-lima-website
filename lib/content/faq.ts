@@ -33,7 +33,7 @@ export const LANDING_FAQ: FAQItem[] = [
     id: "ser-speaker",
     question: "¿Cómo puedo ser speaker en Claude Perú?",
     answer:
-      "Visita /aplicar, elige una fecha disponible y completa el formulario con el título de tu charla, herramientas que usas y una breve descripción. No necesitas experiencia previa como speaker — valoramos casos reales y aprendizajes concretos.",
+      "Visita /aplicar, elige una fecha disponible y completa el formulario con el título de tu charla, herramientas que usas y una breve descripción. No necesitas experiencia previa como speaker; valoramos casos reales y aprendizajes concretos.",
   },
   {
     id: "afiliacion-anthropic",

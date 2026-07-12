@@ -62,7 +62,7 @@ export default async function EventosPage() {
               <Calendar className="h-10 w-10 text-muted-foreground/40 mx-auto" aria-hidden="true" />
               <p className="text-lg font-semibold">No hay eventos disponibles aún</p>
               <p className="text-sm text-muted-foreground">
-                Vuelve pronto — los eventos se confirman semanas antes.
+                Vuelve pronto. Los eventos se confirman semanas antes.
               </p>
             </div>
           ) : (

@@ -30,7 +30,7 @@ export function ClaudeProductsSection() {
                 href={product.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`${product.nombre} — ${product.tagline} (abre en nueva pestaña)`}
+                aria-label={`${product.nombre}: ${product.tagline} (abre en nueva pestaña)`}
                 className={`group rounded-xl border bg-card p-6 shadow-soft space-y-4 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-primary/40 hover:shadow-clay touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 ${
                   product.destacado ? "border-primary/30" : "border-border"
                 }`}

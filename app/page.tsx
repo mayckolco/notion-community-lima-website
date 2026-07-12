@@ -24,7 +24,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { faqPageJsonLd, organizationJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata = createPageMetadata({
-  title: "Claude Perú — Comunidad de builders con IA",
+  title: "Claude Perú · Comunidad de builders con IA",
   description:
     "La referencia en español sobre Claude en Perú. Aprende, construye y conecta con builders que usan Claude, Claude Code y la API en casos reales.",
   path: "/",

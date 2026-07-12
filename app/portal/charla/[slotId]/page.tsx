@@ -163,7 +163,7 @@ export default async function CharlaDetailPage({
           )}
         </div>
 
-        {/* Estructura del evento — ANTES de accesos */}
+        {/* Estructura del evento: ANTES de accesos */}
         <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
           <h2 className="text-xs text-muted-foreground uppercase tracking-widest font-medium border-b border-border/30 pb-3">
             Estructura del webinar
@@ -285,7 +285,7 @@ export default async function CharlaDetailPage({
           </div>
         </div>
 
-        {/* KIT (antes: "Kit de difusión — Covers") */}
+        {/* KIT (antes: "Kit de difusión, Covers") */}
         {slot.covers.length > 0 && (
           <div className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
             <div className="flex items-center justify-between border-b border-border/30 pb-3">
@@ -353,7 +353,7 @@ export default async function CharlaDetailPage({
               {slot.registrados !== null ? (
                 <p className="font-serif text-2xl">{slot.registrados}</p>
               ) : (
-                <p className="font-serif text-lg text-muted-foreground/30">—</p>
+                <p className="font-serif text-lg text-muted-foreground/30">N/D</p>
               )}
               <p className="text-xs text-muted-foreground/30">en Luma</p>
             </div>
@@ -364,7 +364,7 @@ export default async function CharlaDetailPage({
               {slot.asistentes !== null ? (
                 <p className="font-serif text-2xl">{slot.asistentes}</p>
               ) : (
-                <p className="font-serif text-lg text-muted-foreground/30">—</p>
+                <p className="font-serif text-lg text-muted-foreground/30">N/D</p>
               )}
               <p className="text-xs text-muted-foreground/30">en vivo</p>
             </div>
@@ -377,7 +377,7 @@ export default async function CharlaDetailPage({
                   {Math.round(slot.tasaAsistencia * 100)}%
                 </p>
               ) : (
-                <p className="font-serif text-lg text-muted-foreground/30">—</p>
+                <p className="font-serif text-lg text-muted-foreground/30">N/D</p>
               )}
               <p className="text-xs text-muted-foreground/30">de asistencia</p>
             </div>

@@ -14,7 +14,7 @@ pnpm test:notion      # test Notion connection (scripts/test-notion.ts)
 vercel --prod         # deploy to production
 ```
 
-Use `pnpm` exclusively — npm/yarn are blocked by package.json engines.
+Use `pnpm` exclusively : npm/yarn are blocked by package.json engines.
 
 ## Architecture
 
@@ -24,24 +24,24 @@ Use `pnpm` exclusively — npm/yarn are blocked by package.json engines.
 
 ### Backend: Notion-only
 
-Notion is the sole database. All Notion calls are server-side only — `NOTION_TOKEN` never reaches the client.
+Notion is the sole database. All Notion calls are server-side only : `NOTION_TOKEN` never reaches the client.
 
-- `lib/notion/client.ts` — singleton Notion client + env var accessors (`getDbSlotsId`, `getDbSpeakersId`)
-- `lib/notion/portal.ts` — `fetchSlot`, `PortalSpeaker`, `PortalSlot` types
-- `lib/notion/slots.ts` — slot queries
-- `lib/notion/speakers.ts` — speaker queries
+- `lib/notion/client.ts` : singleton Notion client + env var accessors (`getDbSlotsId`, `getDbSpeakersId`)
+- `lib/notion/portal.ts` : `fetchSlot`, `PortalSpeaker`, `PortalSlot` types
+- `lib/notion/slots.ts` : slot queries
+- `lib/notion/speakers.ts` : speaker queries
 
 **Notion DBs:**
-- `DB_SPEAKERS_ID` — speakers with status: `Registrado / Confirmado / Realizado / Bloqueado`
-- `DB_SLOTS_ID` — speaking slots with covers (6 images: Instagram, Storie, LinkedIn, Cover 3/2/1), photos, Luma URL, Meet URL, recording URL
+- `DB_SPEAKERS_ID` : speakers with status: `Registrado / Confirmado / Realizado / Bloqueado`
+- `DB_SLOTS_ID` : speaking slots with covers (6 images: Instagram, Storie, LinkedIn, Cover 3/2/1), photos, Luma URL, Meet URL, recording URL
 
 ### Auth: Magic Link
 
 Flow: email → Resend → HMAC token → `aiff_session` cookie (7 days, httpOnly).
 
-- `lib/auth/session.ts` — `createSessionToken`, `parseSessionToken`, `getSession` (HMAC SHA-256)
-- `lib/auth/magic-link.ts` — token generation for email verification
-- `middleware.ts` — Edge Runtime cookie presence check only (no crypto); full HMAC validation in Server Components via `getSession()`
+- `lib/auth/session.ts` : `createSessionToken`, `parseSessionToken`, `getSession` (HMAC SHA-256)
+- `lib/auth/magic-link.ts` : token generation for email verification
+- `middleware.ts` : Edge Runtime cookie presence check only (no crypto); full HMAC validation in Server Components via `getSession()`
 - Protected routes: `/portal/**`
 
 ### API Routes (`app/api/`)
@@ -73,10 +73,10 @@ Flow: email → Resend → HMAC token → `aiff_session` cookie (7 days, httpOnl
 
 ### Components
 
-- `CharlaCard.tsx` — `"use client"`, hover orange style (`border-orange-500/60 bg-orange-950/20`), B&W default
-- `CoversGallery.tsx` — `"use client"`, lightbox with Esc/←/→ navigation, downloads via `/api/download`
-- `SpeakerForm.tsx` — react-hook-form + zod validation
-- `ui/` — shadcn/ui components
+- `CharlaCard.tsx` : `"use client"`, hover orange style (`border-orange-500/60 bg-orange-950/20`), B&W default
+- `CoversGallery.tsx` : `"use client"`, lightbox with Esc/←/→ navigation, downloads via `/api/download`
+- `SpeakerForm.tsx` : react-hook-form + zod validation
+- `ui/` : shadcn/ui components
 
 ### Data Validation
 
@@ -84,13 +84,13 @@ All user input validated with **zod**. Schemas in `lib/schemas.ts`.
 
 ## Rules
 
-- `GUIA-PROYECTO.md` is the living development roadmap — when a feature is completed, added, or dropped, update its checklist in the same commit
-- TypeScript strict — no `any`
+- `GUIA-PROYECTO.md` is the living development roadmap : when a feature is completed, added, or dropped, update its checklist in the same commit
+- TypeScript strict : no `any`
 - All Notion API calls must be server-side (Route Handlers or Server Components)
 - Validate all input with zod at API boundaries
 - `/api/download` is the required proxy for all Notion S3 file URLs (they expire and require CORS proxying)
 - Fonts: Inter (`--font-sans`) + Fraunces (`--font-serif`)
-- Vercel project name is `aiff-speakers` — do not create `speaker-platform`
+- Vercel project name is `aiff-speakers` : do not create `speaker-platform`
 
 ## Environment Variables
 

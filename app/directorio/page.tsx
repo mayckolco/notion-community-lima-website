@@ -48,7 +48,7 @@ export default async function DirectorioPage() {
               <div className="border border-border/50 bg-card p-8 sm:p-12 text-center space-y-3">
                 <p className="text-lg font-semibold">Aún no hay speakers registrados</p>
                 <p className="text-sm text-muted-foreground">
-                  Vuelve pronto — cada martes se suma un nuevo builder.
+                  Vuelve pronto. Cada martes se suma un nuevo builder.
                 </p>
               </div>
             ) : (

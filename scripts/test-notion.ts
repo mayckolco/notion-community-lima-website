@@ -23,7 +23,7 @@ async function main() {
   const slots = await listSlots();
   console.log(`  Found ${slots.length} upcoming slots:`);
   for (const s of slots) {
-    console.log(`  · ${s.fecha.slice(0, 10)} — ${s.estado}`);
+    console.log(`  · ${s.fecha.slice(0, 10)} · ${s.estado}`);
   }
 
   // 3. Test Speakers DB

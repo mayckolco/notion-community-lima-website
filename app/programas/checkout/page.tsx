@@ -8,7 +8,7 @@ import type { ProgramaModalidad } from "@/lib/content/programas";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Inscripción — Claude Bootcamp",
+  title: "Inscripción · Claude Bootcamp",
   description:
     "Inscríbete a Claude Bootcamp: elige fecha, completa tus datos y paga por Yape. Virtual S/ 159 o presencial S/ 249.",
   path: "/programas/checkout",

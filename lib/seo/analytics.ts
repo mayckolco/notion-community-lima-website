@@ -1,4 +1,4 @@
-/** GA4 conversion events — mark as conversions in GA4 dashboard */
+/** GA4 conversion events: mark as conversions in GA4 dashboard */
 export const GA_EVENTS = {
   clickWhatsapp: "click_whatsapp",
   joinCommunity: "join_community",

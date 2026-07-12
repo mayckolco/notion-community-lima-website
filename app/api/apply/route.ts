@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
   try {
     token = createVerificationToken({ ...parsed, fotoId });
   } catch {
-    console.error("[POST /api/apply] createVerificationToken failed — EMAIL_VERIFICATION_SECRET missing?");
+    console.error("[POST /api/apply] createVerificationToken failed: EMAIL_VERIFICATION_SECRET missing?");
     return NextResponse.json({ error: "server_misconfiguration" }, { status: 500 });
   }
 

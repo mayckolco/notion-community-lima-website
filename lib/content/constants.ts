@@ -14,6 +14,6 @@ export const CLAUDE_API_DOCS_URL = "https://docs.anthropic.com/en/api/getting-st
 /** Horario estándar de webinars / eventos de la comunidad (Lima, GMT-5). */
 export const EVENT_SLOT_HORARIO = "19:00 – 20:00 GMT-5";
 
-/** Programas para empresas — bloqueado hasta lanzamiento */
+/** Programas para empresas: bloqueado hasta lanzamiento */
 export const PROGRAMAS_EMPRESAS_PUBLIC = false;
 export const PROGRAMAS_EMPRESAS_LABEL = "Para empresas (pronto)";

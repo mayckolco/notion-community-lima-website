@@ -228,11 +228,11 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
 
       <div className="grid lg:grid-cols-[1fr_280px] gap-6 lg:gap-8 items-start">
         <div className="min-w-0">
-          {/* Paso 1 — Fecha */}
+          {/* Paso 1: Fecha */}
           {step === 1 && (
             <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-6">
               <div>
-                <h2 className="font-serif text-xl tracking-tight">Paso 1 — Elige tu fecha</h2>
+                <h2 className="font-serif text-xl tracking-tight">Paso 1: Elige tu fecha</h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   Selecciona la sesión a la que deseas asistir.
                 </p>
@@ -303,11 +303,11 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
             </div>
           )}
 
-          {/* Paso 2 — Datos */}
+          {/* Paso 2: Datos */}
           {step === 2 && selectedFecha && (
             <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-6">
               <div>
-                <h2 className="font-serif text-xl tracking-tight">Paso 2 — Tus datos personales</h2>
+                <h2 className="font-serif text-xl tracking-tight">Paso 2: Tus datos personales</h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   Completa la información para reservar tu cupo en{" "}
                   <strong className="text-foreground">{selectedFecha.fechaLabel}</strong>.
@@ -379,12 +379,12 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
             </div>
           )}
 
-          {/* Paso 3 — Pago Yape */}
+          {/* Paso 3: Pago Yape */}
           {step === 3 && selectedFecha && (
             <div className="space-y-4">
               <div className="rounded-2xl border-2 border-amber-400/60 bg-amber-50/50 dark:bg-amber-950/20 p-5 sm:p-8 space-y-5">
                 <div>
-                  <h2 className="font-serif text-xl tracking-tight">Paso 3 — Realiza tu pago por Yape</h2>
+                  <h2 className="font-serif text-xl tracking-tight">Paso 3: Realiza tu pago por Yape</h2>
                   <p className="text-sm text-muted-foreground mt-1">
                     Usa el código de referencia como <strong>concepto</strong> al yapear.
                   </p>
@@ -484,7 +484,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
             </div>
           )}
 
-          {/* Paso 4 — Encuesta */}
+          {/* Paso 4: Encuesta */}
           {step === 4 && (
             <div className="rounded-2xl border border-border/40 bg-card overflow-hidden">
               <div className="h-1 bg-primary" />

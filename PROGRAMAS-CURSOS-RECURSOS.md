@@ -1,4 +1,4 @@
-# Programas, cursos y recursos — Claude Perú
+# Programas, cursos y recursos : Claude Perú
 
 Catálogo de referencia del sitio [claude.mayckolco.com](https://claude.mayckolco.com).
 
@@ -26,7 +26,7 @@ Catálogo de referencia del sitio [claude.mayckolco.com](https://claude.mayckolc
 | **Virtual** | S/ 159 | Pre-reserva → checkout Yape (4 pasos) · En vivo por Meet |
 | **Presencial** (Lima) | S/ 249 | Pre-reserva → checkout Yape (4 pasos) · Más info → WhatsApp |
 
-**Tagline:** Domina Claude en un día — sin código
+**Tagline:** Domina Claude en un día : sin código
 
 **Incluye:**
 - Clases personalizadas en cohortes de 10 personas
@@ -53,7 +53,7 @@ Catálogo de referencia del sitio [claude.mayckolco.com](https://claude.mayckolc
 
 ## Programas empresas
 
-Bloqueado — `PROGRAMAS_EMPRESAS_PUBLIC = false`  
+Bloqueado : `PROGRAMAS_EMPRESAS_PUBLIC = false`  
 [/programas/empresas](https://claude.mayckolco.com/programas/empresas) (coming soon)
 
 ---
@@ -79,8 +79,8 @@ Página: [/recursos](https://claude.mayckolco.com/recursos)
 - [MCP](https://modelcontextprotocol.io)
 
 ### Comunidad
-- [/aplicar](https://claude.mayckolco.com/aplicar) — Aplica como speaker
-- [/directorio](https://claude.mayckolco.com/directorio) — Speakers
+- [/aplicar](https://claude.mayckolco.com/aplicar) : Aplica como speaker
+- [/directorio](https://claude.mayckolco.com/directorio) : Speakers
 
 ---
 

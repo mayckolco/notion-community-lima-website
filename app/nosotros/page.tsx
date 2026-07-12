@@ -60,33 +60,30 @@ const PARTICIPAR = [
   },
 ] as const;
 
+const FOUNDERS = [
+  {
+    nombre: "Gianmarco Guerrero",
+    titulo: "Co-fundador · Claude Perú",
+    foto: "/founders/gianmarco-guerrero.jpg",
+  },
+  {
+    nombre: "Mayckol Cruzado",
+    titulo: "Co-fundador · Claude Perú",
+    foto: "/founders/mayckol-cruzado.jpeg",
+  },
+  {
+    nombre: "Jhon Miranda",
+    titulo: "Co-fundador · Claude Perú",
+    foto: "/founders/jhon-miranda.jpeg",
+  },
+] as const;
+
 export const metadata: Metadata = createPageMetadata({
   title: "Sobre nosotros",
   description:
     "Historia, misión y equipo de Claude Perú. Comunidad de builders peruanos que aprenden y construyen con Claude.",
   path: "/nosotros",
 });
-
-const FOUNDERS: { nombre: string; titulo: string; bio: string; foto?: string }[] = [
-  {
-    nombre: "Javier Flores",
-    titulo: "Co-fundador · Claude Perú",
-    bio: "",
-    foto: "/founders/javier-flores.jpeg",
-  },
-  {
-    nombre: "Mayckol Cruzado",
-    titulo: "Co-fundador · Claude Perú",
-    bio: "",
-    foto: "/founders/mayckol-cruzado.jpeg",
-  },
-  {
-    nombre: "Ignacio Velásquez",
-    titulo: "Co-fundador · Claude Perú",
-    bio: "",
-    foto: "/founders/ignacio-velasquez.jpeg",
-  },
-];
 
 export default function NosotrosPage() {
   return (
@@ -145,6 +142,49 @@ export default function NosotrosPage() {
             </div>
           </div>
 
+          {/* Equipo */}
+          <div className="space-y-8">
+            <div className="space-y-1">
+              <h2 className="text-2xl font-serif tracking-tight">
+                Quién está detrás de{" "}
+                <span className="gradient-text">esta comunidad</span>
+              </h2>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-3">
+              {FOUNDERS.map((f, i) => {
+                const num = String(i + 1).padStart(2, "0");
+                return (
+                  <div
+                    key={f.nombre}
+                    className="relative rounded-xl border border-border bg-card p-6 shadow-soft space-y-4 group hover:border-primary/40 transition-colors"
+                  >
+                    <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">
+                      {num}
+                    </span>
+                    <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
+                    <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
+
+                    <div className="mt-2 relative w-16 h-16 rounded-sm overflow-hidden bg-muted-foreground/10 border border-border/40 flex items-center justify-center flex-shrink-0">
+                      <Image
+                        src={f.foto}
+                        alt={f.nombre}
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                      />
+                    </div>
+
+                    <div>
+                      <p className="font-serif">{f.nombre}</p>
+                      <p className="text-xs text-primary font-mono mt-0.5">{f.titulo}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Cómo participar */}
           <div className="space-y-8">
             <div className="space-y-1">
@@ -193,60 +233,6 @@ export default function NosotrosPage() {
 
             <div className="text-center pt-4">
               <JoinCommunityButton location="nosotros_cta" />
-            </div>
-          </div>
-
-          {/* Founders */}
-          <div className="space-y-8">
-            <div className="space-y-1">
-              <p className="text-xs font-mono text-primary uppercase tracking-widest">Equipo fundador</p>
-              <h2 className="text-2xl font-serif tracking-tight">
-                Las personas detrás de <span className="gradient-text">la comunidad</span>
-              </h2>
-            </div>
-
-            <div className="grid gap-6 sm:grid-cols-3">
-              {FOUNDERS.map((f, i) => {
-                const num = String(i + 1).padStart(2, "0");
-                return (
-                  <div
-                    key={f.nombre}
-                    className="relative rounded-xl border border-border bg-card p-6 shadow-soft space-y-4 group hover:border-primary/40 transition-colors"
-                  >
-                    <span className="absolute top-2 left-2 text-[10px] text-muted-foreground/40 font-mono">
-                      {num}
-                    </span>
-                    <span className="absolute top-2 right-2 w-3 h-3 border-t border-r border-muted-foreground/20" />
-                    <span className="absolute bottom-2 left-2 w-3 h-3 border-b border-l border-muted-foreground/20" />
-
-                    {/* Photo */}
-                    <div className="mt-2 relative w-16 h-16 rounded-sm overflow-hidden bg-muted-foreground/10 border border-border/40 flex items-center justify-center flex-shrink-0">
-                      {f.foto ? (
-                        <Image
-                          src={f.foto}
-                          alt={f.nombre}
-                          fill
-                          className="object-cover"
-                          sizes="64px"
-                          priority
-                        />
-                      ) : (
-                        <span className="text-xl font-serif text-muted-foreground/30">
-                          {f.nombre.charAt(0)}
-                        </span>
-                      )}
-                    </div>
-
-                    <div>
-                      <p className="font-serif">{f.nombre}</p>
-                      <p className="text-xs text-primary font-mono mt-0.5">{f.titulo}</p>
-                    </div>
-                    {f.bio && (
-                      <p className="text-sm text-muted-foreground leading-relaxed">{f.bio}</p>
-                    )}
-                  </div>
-                );
-              })}
             </div>
           </div>
 

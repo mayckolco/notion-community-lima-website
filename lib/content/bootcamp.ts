@@ -21,7 +21,7 @@ export const BOOTCAMP_YAPE = {
 export const CLAUDE_BOOTCAMP = {
   slug: "claude-bootcamp",
   nombre: "Claude Bootcamp",
-  tagline: "Domina Claude en un día — sin código",
+  tagline: "Domina Claude en un día, sin código",
   descripcion:
     "Intensivo práctico para aprender Claude Chat, Cowork y Code desde cero. Mentores, casos reales y demos en vivo en una sola sesión.",
   incluye: [

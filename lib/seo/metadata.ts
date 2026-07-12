@@ -32,7 +32,7 @@ export function createPageMetadata({
           url: OG_IMAGE_PATH,
           width: 1200,
           height: 630,
-          alt: `${title} — ${SITE_NAME}`,
+          alt: `${title} · ${SITE_NAME}`,
         },
       ],
     },

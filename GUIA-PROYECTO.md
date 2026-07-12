@@ -1,4 +1,4 @@
-# Guía del Proyecto — Claude Perú Website
+# Guía del Proyecto : Claude Perú Website
 
 Documento vivo que define la visión, el plan de desarrollo y el estado de cada funcionalidad.
 **Regla de mantenimiento**: cada vez que se complete, agregue o descarte una funcionalidad, actualizar este archivo en el mismo commit.
@@ -35,7 +35,7 @@ Secciones principales del navbar:
 | Proyectos | `/proyectos` | ✅ v2 con showcase de proyectos |
 | Recursos | `/recursos` | ✅ v2 con filtros y grabaciones |
 | Programas ▾ Profesionales | `/programas/profesionales` | ✅ Creada (`/programas` es página índice) |
-| Programas ▾ Empresas | `/programas/empresas` | 🔒 Bloqueado (pronto) — página coming soon, sin link en nav/footer |
+| Programas ▾ Empresas | `/programas/empresas` | 🔒 Bloqueado (pronto) : página coming soon, sin link en nav/footer |
 | Sobre nosotros | `/nosotros` | ✅ v2 con historia y cómo participar |
 
 Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `/aplicar`, `/login`, `/portal`.
@@ -48,7 +48,7 @@ Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `
 
 ## 3. Plan de desarrollo
 
-### Fase 0 — Base ya construida ✅
+### Fase 0 : Base ya construida ✅
 
 - [x] Next.js 14 App Router + TypeScript strict + Tailwind + shadcn/ui
 - [x] Backend Notion (slots + speakers), llamadas solo server-side
@@ -59,7 +59,7 @@ Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `
 - [x] Rebrand a Claude Perú + design system aplicado
 - [x] Deploy en Vercel → `https://speakers.mayckolco.com`
 
-### Fase 1 — Estructura y elementos globales ✅ (2026-07-10)
+### Fase 1 : Estructura y elementos globales ✅ (2026-07-10)
 
 Objetivo: dejar la navegación y los elementos comunes alineados a la visión.
 
@@ -69,7 +69,7 @@ Objetivo: dejar la navegación y los elementos comunes alineados a la visión.
 - [x] **Página `/eventos`**: absorbe `/calendario` con metadata propia. Redirect 301 `/calendario` → `/eventos` en `next.config.mjs`. Sección de eventos pasados con grabaciones desde Notion.
 - [x] **Split de Programas**: `/programas` como índice con dos tracks. `/programas/profesionales` con catálogo completo: 6 cursos, 3 programas y 3 rutas (Chat, Cowork, Code; cero a experto; cohortes de 10; virtual y presencial 3–4 h; pre-reserva WhatsApp). `/programas/empresas` bloqueado con "(pronto)" hasta lanzamiento (`PROGRAMAS_EMPRESAS_PUBLIC = false`).
 
-### Fase 2 — Contenido informativo sobre Claude (el corazón del sitio) ✅ (2026-07-10)
+### Fase 2 : Contenido informativo sobre Claude (el corazón del sitio) ✅ (2026-07-10)
 
 Objetivo: convertirse en la referencia en español-Perú sobre Claude y sus productos.
 
@@ -79,7 +79,7 @@ Objetivo: convertirse en la referencia en español-Perú sobre Claude y sus prod
 - [x] **Proyectos v2**: showcase de proyectos de la comunidad con stack y enlaces (`lib/content/proyectos.ts`).
 - [x] **Sobre nosotros v2**: historia, misión, equipo/organizadores, cómo participar (asistir, ser speaker, colaborar).
 
-### Fase 3 — SEO / GEO / AEO y analítica ✅ (2026-07-10)
+### Fase 3 : SEO / GEO / AEO y analítica ✅ (2026-07-10)
 
 Objetivo: máxima visibilidad en buscadores y en motores de respuesta (ChatGPT, Perplexity, Google AI Overviews).
 
@@ -91,21 +91,21 @@ Objetivo: máxima visibilidad en buscadores y en motores de respuesta (ChatGPT, 
 - [x] **GA4 eventos de conversión**: `click_whatsapp`, `join_community`, `apply_speaker`, `register_event`, `click_instagram` implementados vía `lib/seo/analytics.ts`. *Pendiente manual: marcarlos como conversiones en el dashboard de GA4.*
 - [x] **Performance**: imágenes con `next/image` en todo el sitio; fonts Inter + Fraunces optimizadas en layout.
 
-### Fase 4 — Conversión y crecimiento ✅ (2026-07-10)
+### Fase 4 : Conversión y crecimiento ✅ (2026-07-10)
 
 Objetivo: que el tráfico se convierta en miembros activos.
 
 - [x] **CTA principal unificado**: `JoinCommunityButton` en navbar (desktop + móvil), hero, CTAs de página y `FooterCTA` global en todas las páginas con footer.
-- [x] **Newsletter / captura de email**: `NewsletterForm` + `POST /api/newsletter` con Resend (email de bienvenida + audiencia opcional vía `RESEND_AUDIENCE_ID`). Ubicado en footer global.
+- [x] **Newsletter / captura de email**: `NewsletterForm` (nombre + email) + `POST /api/newsletter` con Resend y webhook n8n (`etiqueta: claude-peru-website`). Ubicado en footer global.
 - [x] **Página de gracias por conversión**: `/gracias?tipo=speaker` (verificación de speaker) y `/gracias?tipo=newsletter` (suscripción). Contenido dinámico por flujo.
 - [x] **Testimonios y social proof**: `lib/content/testimonials.ts` ampliado a 14 testimonios con roles (Asistente, Speaker, Organizador).
-- [ ] **A/B de copy en CTAs** — diferido: sin tráfico suficiente aún para experimentar.
+- [ ] **A/B de copy en CTAs** : diferido: sin tráfico suficiente aún para experimentar.
 
-### Fase 5 — Mejora continua (backlog) ✅ (2026-07-10)
+### Fase 5 : Mejora continua (backlog) ✅ (2026-07-10)
 
 - [x] **Buscador interno de recursos**: campo de búsqueda en `RecursosFilter` (título, descripción, speaker, categoría).
 - [x] **Modo claro/oscuro**: `ThemeProvider` + `ThemeToggle` en navbar, paleta dark en `globals.css`, `darkMode: class` en Tailwind.
-- [ ] **Versión en inglés** — diferido: sin demanda confirmada aún.
+- [ ] **Versión en inglés** : diferido: sin demanda confirmada aún.
 - [x] **Automatizar novedades Anthropic**: `fetchAnthropicNews()` desde RSS con fallback manual, cache 24h (`getNovedades`), cron `/api/cron/sync-novedades` diario.
 - [x] **Panel admin ampliado**: búsqueda de webinars/speakers, tab de speakers, quick links (eventos, directorio, aplicar), stats mejoradas.
 

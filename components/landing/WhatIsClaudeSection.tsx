@@ -17,7 +17,7 @@ export function WhatIsClaudeSection() {
           </p>
           <p className="text-muted-foreground leading-relaxed">
             A diferencia de un buscador, Claude mantiene conversaciones, entiende contexto
-            y puede trabajar con archivos, herramientas y APIs — ideal para profesionales
+            y puede trabajar con archivos, herramientas y APIs, ideal para profesionales
             y builders en Perú que quieren resultados concretos, no solo respuestas genéricas.
           </p>
         </div>
@@ -36,7 +36,7 @@ export function WhatIsClaudeSection() {
             </li>
             <li className="flex gap-2">
               <span className="text-primary font-bold shrink-0">→</span>
-              Comunidad local que comparte casos reales — no tutoriales traducidos.
+              Comunidad local que comparte casos reales, no tutoriales traducidos.
             </li>
             <li className="flex gap-2">
               <span className="text-primary font-bold shrink-0">→</span>

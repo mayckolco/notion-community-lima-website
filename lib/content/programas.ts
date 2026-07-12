@@ -317,10 +317,10 @@ export const RUTAS: RutaAprendizaje[] = [
       "Certificado al completar los 6 módulos",
     ],
     temario: [
-      "Fase 1 — Chat: fundamentos y productividad",
-      "Fase 2 — Cowork: colaboración en equipo",
-      "Fase 3 — Code: automatización sin programar",
-      "Fase 4 — Casos prácticos y flujos experto",
+      "Fase 1: Chat: fundamentos y productividad",
+      "Fase 2: Cowork: colaboración en equipo",
+      "Fase 3: Code: automatización sin programar",
+      "Fase 4: Casos prácticos y flujos experto",
     ],
     paraQuien:
       "Personas sin conocimiento de código que quieren una guía estructurada de principio a fin.",

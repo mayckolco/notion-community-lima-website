@@ -36,7 +36,7 @@ export const RECURSO_CATEGORIAS: Record<RecursoCategoria, string> = {
 export const RECURSOS_ESTATICOS: Recurso[] = [
   {
     id: "claude-ai",
-    titulo: "Claude.ai — Empieza gratis",
+    titulo: "Claude.ai · Empieza gratis",
     descripcion:
       "Crea tu cuenta y prueba Claude en el navegador. Ideal para tu primer contacto con la herramienta.",
     categoria: "empezar",
@@ -76,7 +76,7 @@ export const RECURSOS_ESTATICOS: Recurso[] = [
   },
   {
     id: "claude-code-docs",
-    titulo: "Claude Code — Documentación",
+    titulo: "Claude Code · Documentación",
     descripcion:
       "Instalación, comandos, flujos de trabajo y cómo usar Claude Code en tu terminal.",
     categoria: "claude-code",
@@ -95,7 +95,7 @@ export const RECURSOS_ESTATICOS: Recurso[] = [
   },
   {
     id: "api-getting-started",
-    titulo: "Claude API — Primeros pasos",
+    titulo: "Claude API · Primeros pasos",
     descripcion:
       "Crea tu API key, elige un modelo y haz tu primera llamada. Base para productos con IA.",
     categoria: "api",

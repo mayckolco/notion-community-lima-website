@@ -41,7 +41,7 @@ export const PROYECTOS_COMUNIDAD: Proyecto[] = [
     id: "prompt-library",
     nombre: "Biblioteca de prompts en español",
     descripcion:
-      "Colección curada de system prompts para ventas, contenido, código y análisis — probados por speakers de Claude Perú.",
+      "Colección curada de system prompts para ventas, contenido, código y análisis, probados por speakers de Claude Perú.",
     stack: ["Claude", "Notion"],
     autor: "Comunidad Claude Perú",
   },

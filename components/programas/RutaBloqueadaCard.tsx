@@ -46,7 +46,7 @@ export function RutaBloqueadaCard({ ruta }: RutaBloqueadaCardProps) {
       </ol>
 
       <p className="text-[11px] text-muted-foreground/80 italic">
-        Precios referenciales — disponible pronto.
+        Precios referenciales. Disponible pronto.
       </p>
     </article>
   );

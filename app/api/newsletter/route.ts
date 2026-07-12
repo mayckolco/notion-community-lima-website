@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { newsletterSchema } from "@/lib/schemas";
 import { addNewsletterContact, sendNewsletterWelcomeEmail } from "@/lib/email";
+import { sendNewsletterWebhook } from "@/lib/webhooks/newsletter";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
@@ -23,12 +24,16 @@ export async function POST(req: NextRequest) {
   }
 
   const email = parsed.data.email.toLowerCase().trim();
-  const nombre = parsed.data.nombre?.trim() || undefined;
+  const nombre = parsed.data.nombre.trim().normalize("NFC");
+  const location = parsed.data.location?.trim();
 
   try {
     await Promise.all([
       addNewsletterContact(email, nombre).catch(() => undefined),
       sendNewsletterWelcomeEmail({ to: email, nombre }),
+      sendNewsletterWebhook({ nombre, email, location }).catch((err) => {
+        console.error("[POST /api/newsletter] webhook failed:", err);
+      }),
     ]);
   } catch (err) {
     console.error("[POST /api/newsletter] failed:", err);

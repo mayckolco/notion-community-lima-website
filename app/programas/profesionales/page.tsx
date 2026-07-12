@@ -93,7 +93,7 @@ export default function ProgramasProfesionalesPage() {
               </h2>
             </div>
             <p className="text-sm text-muted-foreground max-w-2xl">
-              Próximamente — recorridos guiados de varias sesiones. Precios referenciales.
+              Próximamente: recorridos guiados de varias sesiones. Precios referenciales.
             </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {RUTAS_BLOQUEADAS.map((ruta) => (

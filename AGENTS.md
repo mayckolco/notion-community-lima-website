@@ -1,4 +1,4 @@
-# Claude Perú Speakers — AGENTS.md
+# Claude Perú Speakers : AGENTS.md
 
 Plataforma de speakers para Claude Perú.
 Notion es el único backend. La web lee/escribe vía Notion API.
@@ -36,12 +36,12 @@ Notion es el único backend. La web lee/escribe vía Notion API.
 | Descripción | `descripcion` | rich_text |
 | Fecha | `fecha` | date |
 | Luma URL | `lumaUrl` | url |
-| Meet URL | `webinarUrl` | url — link en vivo del meet |
-| Webinar URL | `grabacionUrl` | url — grabación post-evento |
+| Meet URL | `webinarUrl` | url : link en vivo del meet |
+| Webinar URL | `grabacionUrl` | url : grabación post-evento |
 | Herramientas | `herramientas[]` | multi_select |
 | Estado | `estado` | status |
 | Fotos | `fotos[]` | files |
-| Cover | `covers[]` | files — 6 covers: Instagram, Storie, LinkedIn, Cover 3, Cover 2, Cover 1 |
+| Cover | `covers[]` | files : 6 covers: Instagram, Storie, LinkedIn, Cover 3, Cover 2, Cover 1 |
 
 ## Comandos
 ```bash
@@ -74,8 +74,8 @@ app/
     download/route.ts             # Proxy descarga archivos Notion S3
     cron/sync-luma/route.ts
 components/
-  CharlaCard.tsx                  # "use client" — tarjeta de charla con hover naranja
-  CoversGallery.tsx               # "use client" — lightbox + descarga de covers
+  CharlaCard.tsx                  # "use client" : tarjeta de charla con hover naranja
+  CoversGallery.tsx               # "use client" : lightbox + descarga de covers
   SlotCard.tsx
   SpeakerForm.tsx
   PhotoUpload.tsx
@@ -110,11 +110,11 @@ middleware.ts                     # Protege /portal/:path*
 
 ## Reglas
 - TypeScript strict, sin `any`
-- NOTION_TOKEN nunca llega al cliente — toda llamada a Notion es server-side
+- NOTION_TOKEN nunca llega al cliente : toda llamada a Notion es server-side
 - Validar toda entrada con zod
 - Commits convencionales: `feat:` / `fix:` / `chore:` / `docs:` / `test:`
 - Nunca commitear `.env*`
-- El proyecto Vercel es `aiff-speakers` — no crear `speaker-platform` (fue eliminado)
+- El proyecto Vercel es `aiff-speakers` : no crear `speaker-platform` (fue eliminado)
 
 ## Variables de entorno
 ```

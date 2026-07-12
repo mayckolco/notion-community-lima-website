@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendGAEvent } from "@next/third-parties/google";
-import { Loader2, Mail } from "lucide-react";
+import { Loader2, Mail, User } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GA_EVENTS } from "@/lib/seo/analytics";
@@ -15,13 +15,14 @@ interface NewsletterFormProps {
 
 export function NewsletterForm({ location, compact = false }: NewsletterFormProps) {
   const router = useRouter();
+  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!nombre.trim() || !email.trim()) return;
 
     setStatus("loading");
     setErrorMsg(null);
@@ -29,8 +30,12 @@ export function NewsletterForm({ location, compact = false }: NewsletterFormProp
     try {
       const res = await fetch("/api/newsletter", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify({
+          nombre: nombre.trim(),
+          email: email.trim(),
+          location,
+        }),
       });
 
       if (res.status === 429) {
@@ -60,8 +65,22 @@ export function NewsletterForm({ location, compact = false }: NewsletterFormProp
           Recibe eventos, novedades de Claude y recursos de la comunidad en tu correo.
         </p>
       )}
-      <div className={`flex gap-2 ${compact ? "flex-col sm:flex-row" : "flex-col sm:flex-row"}`}>
-        <div className="relative flex-1">
+      <div className="flex flex-row items-center gap-2 w-full">
+        <div className="relative flex-1 min-w-0 basis-0">
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+          <Input
+            type="text"
+            name="nombre"
+            placeholder="Tu nombre"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            required
+            autoComplete="name"
+            className="pl-9 min-h-[44px] touch-manipulation w-full"
+            disabled={status === "loading"}
+          />
+        </div>
+        <div className="relative flex-1 min-w-0 basis-0">
           <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           <Input
             type="email"
@@ -71,7 +90,7 @@ export function NewsletterForm({ location, compact = false }: NewsletterFormProp
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
-            className="pl-9 min-h-[44px] touch-manipulation"
+            className="pl-9 min-h-[44px] touch-manipulation w-full"
             disabled={status === "loading"}
           />
         </div>

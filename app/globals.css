@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    /* Claude Perú — warm editorial palette */
+    /* Claude Perú: warm editorial palette */
     --paper: #F5F1EB;
     --paper-deep: #EDE6DA;
     --ink: #2B2622;
@@ -80,7 +80,7 @@
     @apply font-serif tracking-tight;
   }
 
-  /* Skip-to-content link — visually hidden until focused */
+  /* Skip-to-content link: visually hidden until focused */
   .skip-link {
     @apply absolute -top-full left-4 z-[200] rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground;
     transition: top 0.15s ease;

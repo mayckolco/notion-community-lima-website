@@ -51,7 +51,8 @@ export type ApplyInput = z.infer<typeof applySchema>;
 
 export const newsletterSchema = z.object({
   email: z.string().min(1, "El email es requerido").email("Email inválido"),
-  nombre: z.string().max(80).optional().or(z.literal("")),
+  nombre: z.string().min(1, "El nombre es requerido").max(80),
+  location: z.string().max(50).optional(),
 });
 
 export type NewsletterInput = z.infer<typeof newsletterSchema>;

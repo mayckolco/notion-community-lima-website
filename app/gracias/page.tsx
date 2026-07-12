@@ -56,7 +56,7 @@ const CONTENT: Record<
         ¡Suscripción <span className="gradient-text">confirmada!</span>
       </>
     ),
-    subtitle: "Revisa tu correo — te enviamos un mensaje de bienvenida.",
+    subtitle: "Revisa tu correo. Te enviamos un mensaje de bienvenida.",
     steps: [
       "Te avisaremos sobre próximos webinars y eventos de la comunidad.",
       "Recibirás novedades de Claude y recursos curados en español.",

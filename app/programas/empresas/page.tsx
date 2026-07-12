@@ -17,7 +17,7 @@ export const metadata: Metadata = createPageMetadata({
     : "Programas para empresas (pronto)",
   description: PROGRAMAS_EMPRESAS_PUBLIC
     ? "Capacitaciones de IA a medida para equipos: talleres in-house de Claude, casos aplicados a tu industria y acompañamiento en la adopción."
-    : "Capacitaciones de IA a medida para equipos — próximamente en Claude Perú. Mientras tanto, explora nuestros programas para profesionales.",
+    : "Capacitaciones de IA a medida para equipos. Próximamente en Claude Perú. Mientras tanto, explora nuestros programas para profesionales.",
   path: "/programas/empresas",
   noIndex: !PROGRAMAS_EMPRESAS_PUBLIC,
 });

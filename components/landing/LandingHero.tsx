@@ -24,7 +24,7 @@ export function LandingHero({ nextEvent }: LandingHeroProps) {
         </h1>
 
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Comunidad de builders peruanos que comparten casos reales con Claude —
+          Comunidad de builders peruanos que comparten casos reales con Claude,
           desde tu primer prompt hasta productos con IA.
         </p>
 
