@@ -37,7 +37,6 @@ export function Navbar() {
     setProgramasOpen(false);
   };
 
-  // Close mobile menu on route change
   useEffect(() => {
     closeAll();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +54,6 @@ export function Navbar() {
         setProgramasOpen(false);
       }
     };
-    // Move focus into dropdown when opened via keyboard
     const firstLink = dropdownRef.current?.querySelector<HTMLElement>("a, button");
     firstLink?.focus();
     document.addEventListener("pointerdown", onPointerDown);

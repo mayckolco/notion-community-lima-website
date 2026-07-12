@@ -1,32 +1,36 @@
+"use client";
+
 import Link from "next/link";
-import { getSession } from "@/lib/auth/session";
-import { getCommunitySession } from "@/lib/auth/community-session";
-import { ADMIN_SPEAKER_ID } from "@/lib/config/roles";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+
+interface AuthStatus {
+  speaker: { href: string } | null;
+  community: { href: string } | null;
+}
 
 interface NavbarAuthButtonsProps {
   variant?: "desktop" | "mobile";
   onClose?: () => void;
 }
 
-function getSpeakerPortalHref(speakerId: string): string {
-  return speakerId === ADMIN_SPEAKER_ID ? "/portal/admin" : "/portal";
-}
-
 export function NavbarAuthButtons({
   variant = "desktop",
   onClose,
 }: NavbarAuthButtonsProps) {
-  const speakerSession = getSession();
-  const communitySession = getCommunitySession();
+  const [status, setStatus] = useState<AuthStatus | null>(null);
 
-  const speakerHref = speakerSession
-    ? getSpeakerPortalHref(speakerSession.speakerId)
-    : "/portal/login";
-  const speakerLabel = speakerSession ? "Mi portal" : "Soy speaker";
+  useEffect(() => {
+    fetch("/api/auth/status", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data: AuthStatus | null) => setStatus(data))
+      .catch(() => setStatus({ speaker: null, community: null }));
+  }, []);
 
-  const communityHref = communitySession ? "/cuenta/perfil" : "/login";
-  const communityLabel = communitySession ? "Mi cuenta" : "Ingresar";
+  const speakerHref = status?.speaker?.href ?? "/portal/login";
+  const speakerLabel = status?.speaker ? "Mi portal" : "Soy speaker";
+  const communityHref = status?.community?.href ?? "/login";
+  const communityLabel = status?.community ? "Mi cuenta" : "Ingresar";
 
   if (variant === "mobile") {
     return (
