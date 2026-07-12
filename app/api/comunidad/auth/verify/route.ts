@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     email: payload.email,
   });
 
-  const response = NextResponse.redirect(`${baseUrl}/cuenta`);
+  const response = NextResponse.redirect(`${baseUrl}/cuenta/perfil`);
   response.cookies.set(communitySessionCookieOptions(sessionToken));
   return response;
 }

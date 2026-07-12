@@ -14,7 +14,7 @@ function BannerContent() {
       className="rounded-xl border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-foreground"
     >
       ¡Perfil confirmado! Ya puedes editar tu perfil y ver las sesiones.{" "}
-      <Link href="/cuenta" className="text-primary hover:underline underline-offset-4">
+      <Link href="/cuenta/perfil" className="text-primary hover:underline underline-offset-4">
         Ir a mi cuenta
       </Link>
     </div>

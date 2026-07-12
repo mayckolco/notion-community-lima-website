@@ -34,7 +34,7 @@ export default function LoginSentPage() {
           <Button variant="outline" render={<Link href="/login" />} className="w-full">
             Volver e intentar de nuevo
           </Button>
-          <Button variant="link" render={<Link href="/cuenta" />} className="w-full">
+          <Button variant="link" render={<Link href="/cuenta/perfil" />} className="w-full">
             Ir a mi cuenta
           </Button>
         </div>
