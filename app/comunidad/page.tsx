@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { MapPin, Users } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
+import { CommunityAccountLink } from "@/components/CommunityAccountLink";
 import { JoinCommunityButton } from "@/components/JoinCommunityButton";
 import { CommunityMap } from "@/components/comunidad/CommunityMap";
 import { CommunityMemberCard } from "@/components/comunidad/CommunityMemberCard";
@@ -98,12 +98,12 @@ export default async function ComunidadPage() {
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/login"
+              <CommunityAccountLink
+                loggedInHref="/cuenta/comunidad"
                 className="inline-flex items-center justify-center gap-2 min-h-[44px] px-5 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors touch-manipulation"
               >
                 Registrarme en la comunidad
-              </Link>
+              </CommunityAccountLink>
               <JoinCommunityButton
                 location="comunidad_cta"
                 size="default"

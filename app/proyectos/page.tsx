@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { CommunityAccountLink } from "@/components/CommunityAccountLink";
+import { SpeakerPortalLink } from "@/components/SpeakerPortalLink";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
@@ -98,19 +99,19 @@ export default async function ProyectosPage() {
               Compártelo en la comunidad de WhatsApp o postula para mostrarlo en un webinar.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/login"
+              <CommunityAccountLink
+                loggedInHref="/cuenta/proyectos"
                 className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 text-sm font-semibold rounded-md bg-primary text-primary-foreground hover:opacity-90 transition-opacity touch-manipulation"
               >
                 Subir mi proyecto
-              </Link>
-              <Link
+              </CommunityAccountLink>
+              <SpeakerPortalLink
                 href="/aplicar"
                 className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 text-sm font-semibold border border-border rounded-md hover:bg-muted/30 transition-colors touch-manipulation"
               >
                 Aplicar como speaker
                 <ArrowRight className="h-4 w-4" />
-              </Link>
+              </SpeakerPortalLink>
             </div>
           </div>
         </div>

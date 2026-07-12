@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { NavbarAuthButtons } from "@/components/NavbarAuthButtons";
 import {
   PROGRAMAS_EMPRESAS_LABEL,
   PROGRAMAS_EMPRESAS_PUBLIC,
@@ -158,14 +158,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <div className="hidden sm:block">
-            <Button size="sm" render={<Link href="/portal" />}>
-              Soy speaker
-            </Button>
-          </div>
-          <Button size="sm" variant="outline" render={<Link href="/login" />}>
-            Ingresar
-          </Button>
+          <NavbarAuthButtons />
 
           <button
             className="flex md:hidden items-center justify-center w-11 h-11 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors touch-manipulation"
@@ -222,23 +215,7 @@ export function Navbar() {
             {ABOUT_LINK.label}
           </Link>
 
-          <div className="px-6 py-4 border-t border-border/60 space-y-3">
-            <Button
-              size="sm"
-              className="w-full"
-              render={<Link href="/portal" onClick={closeAll} />}
-            >
-              Soy speaker
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="w-full"
-              render={<Link href="/login" onClick={closeAll} />}
-            >
-              Ingresar
-            </Button>
-          </div>
+          <NavbarAuthButtons variant="mobile" onClose={closeAll} />
         </div>
       )}
     </nav>

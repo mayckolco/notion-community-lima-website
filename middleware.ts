@@ -6,8 +6,24 @@ const SESSION_COOKIE = "aiff_session";
 const COMMUNITY_SESSION_COOKIE = "aiff_community_session";
 
 export function middleware(req: NextRequest) {
-  if (req.nextUrl.pathname.startsWith("/portal")) {
-    if (req.nextUrl.pathname.startsWith("/portal/login")) {
+  const { pathname } = req.nextUrl;
+
+  if (pathname === "/login") {
+    if (req.cookies.get(COMMUNITY_SESSION_COOKIE)?.value) {
+      return NextResponse.redirect(new URL("/cuenta/perfil", req.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname === "/portal/login") {
+    if (req.cookies.get(SESSION_COOKIE)?.value) {
+      return NextResponse.redirect(new URL("/portal", req.url));
+    }
+    return NextResponse.next();
+  }
+
+  if (pathname.startsWith("/portal")) {
+    if (pathname.startsWith("/portal/login")) {
       return NextResponse.next();
     }
 
@@ -17,7 +33,7 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  if (req.nextUrl.pathname.startsWith("/cuenta")) {
+  if (pathname.startsWith("/cuenta")) {
     const hasCommunitySession = !!req.cookies.get(COMMUNITY_SESSION_COOKIE)?.value;
     if (!hasCommunitySession) {
       return NextResponse.redirect(new URL("/login", req.url));
@@ -28,5 +44,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/portal/:path*", "/portal/charla/:path*", "/cuenta/:path*"],
+  matcher: ["/login", "/portal/login", "/portal/:path*", "/portal/charla/:path*", "/cuenta/:path*"],
 };
