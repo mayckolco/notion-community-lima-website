@@ -3,14 +3,13 @@
 import { cn } from "@/lib/utils";
 
 const STEPS = [
-  { num: 1, label: "Elige tu fecha" },
-  { num: 2, label: "Tus datos" },
-  { num: 3, label: "Pago Yape" },
-  { num: 4, label: "¡Listo!" },
+  { num: 1, label: "Tus datos" },
+  { num: 2, label: "Pago Yape" },
+  { num: 3, label: "¡Listo!" },
 ] as const;
 
 interface CheckoutStepperProps {
-  current: 1 | 2 | 3 | 4;
+  current: 1 | 2 | 3;
 }
 
 export function CheckoutStepper({ current }: CheckoutStepperProps) {

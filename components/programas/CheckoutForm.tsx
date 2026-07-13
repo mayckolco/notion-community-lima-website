@@ -8,12 +8,9 @@ import {
   ArrowRight,
   Check,
   CheckCircle2,
-  Clock,
   Copy,
-  MapPin,
   Smartphone,
   Upload,
-  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CheckoutStepper } from "@/components/programas/checkout/CheckoutStepper";
@@ -36,16 +33,16 @@ import { cn } from "@/lib/utils";
 
 interface CheckoutFormProps {
   modalidad: ProgramaModalidad;
+  initialFechaId?: string;
 }
 
-type Step = 1 | 2 | 3 | 4;
+type Step = 1 | 2 | 3;
 
 const inputClass =
   "w-full rounded-xl border border-border/60 bg-background px-3.5 py-2.5 text-sm outline-none focus:border-primary/50 focus:ring-2 focus:ring-primary/20";
 
-export function CheckoutForm({ modalidad }: CheckoutFormProps) {
+export function CheckoutForm({ modalidad, initialFechaId }: CheckoutFormProps) {
   const [step, setStep] = useState<Step>(1);
-  const [fechas, setFechas] = useState<BootcampFecha[]>([]);
   const [fechasLoading, setFechasLoading] = useState(true);
   const [selectedFecha, setSelectedFecha] = useState<BootcampFecha | null>(null);
   const [nombre, setNombre] = useState("");
@@ -79,7 +76,20 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
     fetch(`/api/bootcamp/fechas?modalidad=${modalidad}`)
       .then((r) => r.json())
       .then((data: { fechas?: BootcampFecha[] }) => {
-        if (!cancelled) setFechas(data.fechas ?? []);
+        if (cancelled) return;
+        const loaded = data.fechas ?? [];
+
+        if (initialFechaId) {
+          const match = loaded.find((fecha) => fecha.id === initialFechaId);
+          if (match) {
+            setSelectedFecha(match);
+            setStep(1);
+          } else {
+            setError("La fecha seleccionada ya no está disponible. Elige otra.");
+          }
+        } else {
+          setError("Selecciona una fecha en la página del bootcamp para continuar.");
+        }
       })
       .catch(() => {
         if (!cancelled) setError("No pudimos cargar las fechas. Intenta de nuevo.");
@@ -90,7 +100,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
     return () => {
       cancelled = true;
     };
-  }, [modalidad]);
+  }, [modalidad, initialFechaId]);
 
   const copyReferencia = useCallback(async () => {
     if (!referencia) return;
@@ -143,7 +153,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
       });
 
       setLeadId(data.leadId ?? null);
-      setStep(4);
+      setStep(3);
     } catch {
       setError("Error de conexión. Intenta de nuevo.");
     } finally {
@@ -228,86 +238,26 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
 
       <div className="grid lg:grid-cols-[1fr_280px] gap-6 lg:gap-8 items-start">
         <div className="min-w-0">
-          {/* Paso 1: Fecha */}
+          {fechasLoading ? (
+            <div className="rounded-2xl border border-border/40 bg-card p-8 text-center">
+              <p className="text-sm text-muted-foreground">Preparando tu inscripción…</p>
+            </div>
+          ) : !selectedFecha ? (
+            <div className="rounded-2xl border border-border/40 bg-card p-8 text-center space-y-4">
+              <p className="text-sm text-destructive">
+                {error ?? "No pudimos cargar la fecha seleccionada."}
+              </p>
+              <Button variant="outline" size="sm" render={<Link href="/programas/profesionales" />}>
+                Volver a fechas disponibles
+              </Button>
+            </div>
+          ) : (
+            <>
+          {/* Paso 1: Datos */}
           {step === 1 && (
             <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-6">
               <div>
-                <h2 className="font-serif text-xl tracking-tight">Paso 1: Elige tu fecha</h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Selecciona la sesión a la que deseas asistir.
-                </p>
-              </div>
-
-              {fechasLoading ? (
-                <p className="text-sm text-muted-foreground py-8 text-center">Cargando fechas…</p>
-              ) : fechas.length === 0 ? (
-                <div className="text-center py-8 space-y-3">
-                  <p className="text-sm text-muted-foreground">
-                    No hay fechas disponibles por ahora para modalidad {modalidadLabel}.
-                  </p>
-                  <Button variant="outline" size="sm" render={<Link href="/programas/profesionales" />}>
-                    Volver a programas
-                  </Button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {fechas.map((fecha) => (
-                    <button
-                      key={fecha.id}
-                      type="button"
-                      onClick={() => setSelectedFecha(fecha)}
-                      className={cn(
-                        "w-full text-left rounded-xl border p-4 sm:p-5 transition-colors",
-                        selectedFecha?.id === fecha.id
-                          ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-                          : "border-border/50 hover:border-primary/40"
-                      )}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                        <div className="space-y-2">
-                          <p className="font-semibold">{fecha.fechaLabel}</p>
-                          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <Clock className="h-3.5 w-3.5" strokeWidth={1.75} />
-                            {fecha.horario}
-                          </p>
-                          <p className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                            <MapPin className="h-3.5 w-3.5" strokeWidth={1.75} />
-                            {fecha.ubicacion}
-                          </p>
-                          <p className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400">
-                            <Users className="h-3.5 w-3.5" strokeWidth={1.75} />
-                            {fecha.cuposDisponibles} cupos disponibles
-                          </p>
-                        </div>
-                        <div className="text-right shrink-0">
-                          <p className="text-xs text-muted-foreground">Inversión</p>
-                          <p className="font-serif text-xl font-semibold">
-                            {formatBootcampPrecio(precio)}
-                          </p>
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              )}
-
-              <Button
-                size="lg"
-                className="w-full min-h-[48px]"
-                disabled={!selectedFecha}
-                onClick={() => setStep(2)}
-              >
-                Continuar
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </div>
-          )}
-
-          {/* Paso 2: Datos */}
-          {step === 2 && selectedFecha && (
-            <div className="rounded-2xl border border-border/40 bg-card p-5 sm:p-8 space-y-6">
-              <div>
-                <h2 className="font-serif text-xl tracking-tight">Paso 2: Tus datos personales</h2>
+                <h2 className="font-serif text-xl tracking-tight">Paso 1: Tus datos personales</h2>
                 <p className="text-sm text-muted-foreground mt-1">
                   Completa la información para reservar tu cupo en{" "}
                   <strong className="text-foreground">{selectedFecha.fechaLabel}</strong>.
@@ -359,7 +309,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
               </div>
 
               <div className="flex gap-3">
-                <Button variant="outline" size="lg" onClick={() => setStep(1)}>
+                <Button variant="outline" size="lg" render={<Link href="/programas/profesionales" />}>
                   <ArrowLeft className="h-4 w-4" />
                   Volver
                 </Button>
@@ -369,7 +319,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                   disabled={!nombre.trim() || !email.trim() || !whatsapp.trim()}
                   onClick={() => {
                     setReferencia(generateBootcampReferencia(nombre));
-                    setStep(3);
+                    setStep(2);
                   }}
                 >
                   Continuar al pago
@@ -379,12 +329,12 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
             </div>
           )}
 
-          {/* Paso 3: Pago Yape */}
-          {step === 3 && selectedFecha && (
+          {/* Paso 2: Pago Yape */}
+          {step === 2 && (
             <div className="space-y-4">
               <div className="rounded-2xl border-2 border-amber-400/60 bg-amber-50/50 dark:bg-amber-950/20 p-5 sm:p-8 space-y-5">
                 <div>
-                  <h2 className="font-serif text-xl tracking-tight">Paso 3: Realiza tu pago por Yape</h2>
+                  <h2 className="font-serif text-xl tracking-tight">Paso 2: Realiza tu pago por Yape</h2>
                   <p className="text-sm text-muted-foreground mt-1">
                     Usa el código de referencia como <strong>concepto</strong> al yapear.
                   </p>
@@ -484,8 +434,8 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
             </div>
           )}
 
-          {/* Paso 4: Encuesta */}
-          {step === 4 && (
+          {/* Paso 3: Encuesta */}
+          {step === 3 && (
             <div className="rounded-2xl border border-border/40 bg-card overflow-hidden">
               <div className="h-1 bg-primary" />
               <div className="p-5 sm:p-8 space-y-6">
@@ -495,12 +445,13 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                       <CheckCircle2 className="h-7 w-7" strokeWidth={1.75} />
                     </span>
                     <div className="space-y-2">
-                      <h2 className="font-serif text-2xl tracking-tight">¡Inscripción completada!</h2>
-                      <p className="text-sm text-muted-foreground">
-                        Gracias por completar la encuesta. Te contactaremos pronto con los detalles.
+                      <h2 className="font-serif text-2xl tracking-tight">¡Felicitaciones!</h2>
+                      <p className="text-sm text-muted-foreground leading-relaxed max-w-md mx-auto">
+                        Estaremos validando tu pago y nos pondremos en contacto contigo para
+                        contarte los siguientes pasos.
                       </p>
                       {referencia && (
-                        <p className="text-xs text-muted-foreground">Referencia: {referencia}</p>
+                        <p className="text-xs text-muted-foreground pt-1">Referencia: {referencia}</p>
                       )}
                     </div>
                     <Button size="lg" render={<Link href="/programas/profesionales" />}>
@@ -523,7 +474,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
                         Cuéntanos un poco sobre ti
                       </h3>
                       <p className="text-sm text-muted-foreground">
-                        Esto nos ayuda a personalizar el laboratorio para ti 🎯
+                        Esto nos ayuda a personalizar el bootcamp para ti 🎯
                       </p>
                     </div>
 
@@ -613,7 +564,7 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
 
                       <div>
                         <label className="text-sm font-medium mb-2 block">
-                          5. ¿Qué esperas llevarte del laboratorio?
+                          5. ¿Qué esperas llevarte del bootcamp?
                         </label>
                         <textarea
                           placeholder="Ej. Quiero aprender a automatizar mis reportes semanales"
@@ -652,13 +603,15 @@ export function CheckoutForm({ modalidad }: CheckoutFormProps) {
               </div>
             </div>
           )}
+            </>
+          )}
         </div>
 
-        {step < 4 && (
+        {step < 3 && selectedFecha && (
           <CheckoutSummary
             precio={precio}
             fecha={selectedFecha}
-            referencia={step >= 3 ? referencia : undefined}
+            referencia={step >= 2 ? referencia : undefined}
           />
         )}
       </div>

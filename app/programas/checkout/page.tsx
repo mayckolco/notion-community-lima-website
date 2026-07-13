@@ -16,7 +16,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 interface PageProps {
-  searchParams: { programa?: string; modalidad?: string };
+  searchParams: { programa?: string; modalidad?: string; fecha?: string };
 }
 
 function parseModalidad(value: string | undefined): ProgramaModalidad | null {
@@ -31,6 +31,7 @@ export default function CheckoutPage({ searchParams }: PageProps) {
 
   const modalidad = parseModalidad(searchParams.modalidad);
   if (!modalidad) notFound();
+  if (!searchParams.fecha) redirect("/programas/profesionales");
 
   return (
     <>
@@ -44,7 +45,7 @@ export default function CheckoutPage({ searchParams }: PageProps) {
         }}
       >
         <div className="max-w-4xl mx-auto">
-          <CheckoutForm modalidad={modalidad} />
+          <CheckoutForm modalidad={modalidad} initialFechaId={searchParams.fecha} />
         </div>
       </main>
       <Footer />

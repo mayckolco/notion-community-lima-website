@@ -3,7 +3,7 @@
 Documento vivo que define la visión, el plan de desarrollo y el estado de cada funcionalidad.
 **Regla de mantenimiento**: cada vez que se complete, agregue o descarte una funcionalidad, actualizar este archivo en el mismo commit.
 
-Última actualización: 2026-07-11 (auth comunidad vs speakers)
+Última actualización: 2026-07-12 (proyectos solo en portal miembro, copy Sobre nosotros)
 
 ---
 
@@ -14,7 +14,7 @@ Landing page **100% informativa** sobre el ecosistema Claude (Anthropic) y sus p
 - Anunciar **eventos** y permitir **aplicar como speaker**
 - Ofrecer **formaciones** (programas para profesionales y empresas)
 - Centralizar **recursos** de aprendizaje
-- Mostrar **proyectos** de la comunidad
+- Gestionar **proyectos** de la comunidad (solo desde el portal del miembro `/cuenta/proyectos`)
 
 **Objetivos de calidad** (criterios que toda página nueva debe cumplir):
 
@@ -33,13 +33,12 @@ Secciones principales del navbar:
 |---|---|---|
 | Eventos | `/eventos` | ✅ Creada (`/calendario` redirige 301 aquí) |
 | Comunidad | `/comunidad` | ✅ Mapa interactivo con miembros desde Notion (`DB_COMUNIDAD_ID`) |
-| Proyectos | `/proyectos` | ✅ v2 con showcase de proyectos |
 | Recursos | `/recursos` | ✅ v2 con filtros y grabaciones |
 | Programas ▾ Profesionales | `/programas/profesionales` | ✅ Creada (`/programas` es página índice) |
 | Programas ▾ Empresas | `/programas/empresas` | 🔒 Bloqueado (pronto) : página coming soon, sin link en nav/footer |
 | Sobre nosotros | `/nosotros` | ✅ v2 con historia y cómo participar |
 
-Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `/aplicar`, `/login` (comunidad), `/portal/login` (speakers), `/portal`, `/portal/admin`.
+Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `/aplicar`, `/login` (comunidad), `/portal/login` (speakers), `/portal`, `/portal/admin`, `/cuenta/proyectos` (proyectos de miembros; `/proyectos` redirige aquí).
 
 **Contactos oficiales** (usar siempre estos valores):
 
@@ -66,7 +65,7 @@ Secundarias (fuera del menú principal o en footer): `/directorio` (speakers), `
 Objetivo: dejar la navegación y los elementos comunes alineados a la visión.
 
 - [x] **Botón flotante de WhatsApp**: `components/WhatsAppButton.tsx` fijo abajo a la derecha, global vía `app/layout.tsx`, enlaza a `https://wa.me/51946542990`, con `aria-label`, 56px táctil y evento GA `click_whatsapp`.
-- [x] **Navbar objetivo**: Eventos, Comunidad, Proyectos, Recursos, Programas (dropdown: Profesionales / Empresas), Sobre nosotros. Dropdown con `aria-expanded`, cierre con Escape/click-fuera, y sublinks en menú móvil.
+- [x] **Navbar objetivo**: Eventos, Comunidad, Recursos, Programas (dropdown: Profesionales / Empresas), Sobre nosotros. Dropdown con `aria-expanded`, cierre con Escape/click-fuera, y sublinks en menú móvil.
 - [x] **Footer completo**: 3 columnas (marca+redes, Explora, Comunidad) con Instagram @claudeperucommunity, comunidad WhatsApp, directorio/aplicar, y disclaimer de comunidad independiente no afiliada a Anthropic.
 - [x] **Página `/eventos`**: absorbe `/calendario` con metadata propia. Redirect 301 `/calendario` → `/eventos` en `next.config.mjs`. Sección de eventos pasados con grabaciones desde Notion.
 - [x] **Split de Programas**: `/programas` como índice con dos tracks. `/programas/profesionales` con catálogo completo: 6 cursos, 3 programas y 3 rutas (Chat, Cowork, Code; cero a experto; cohortes de 10; virtual y presencial 3–4 h; pre-reserva WhatsApp). `/programas/empresas` bloqueado con "(pronto)" hasta lanzamiento (`PROGRAMAS_EMPRESAS_PUBLIC = false`).
@@ -78,8 +77,8 @@ Objetivo: convertirse en la referencia en español-Perú sobre Claude y sus prod
 - [x] **Landing renovada**: hero orientado a conversión (unirse a la comunidad + próximo evento), sección "¿Qué es Claude?", productos (Claude app, Claude Code, API), prueba social (speakers, testimonios), CTA final.
 - [x] **Sección novedades de Claude**: bloque en landing y `/recursos` con lanzamientos de Anthropic (`lib/content/novedades.ts`), mantenida manualmente.
 - [x] **Recursos v2**: recursos categorizados con filtros (`RecursosFilter`), contenido estático + grabaciones de charlas desde Notion.
-- [x] **Proyectos v2**: showcase de proyectos de la comunidad con stack y enlaces (`lib/content/proyectos.ts`).
-- [x] **Sobre nosotros v2**: historia, misión, equipo/organizadores, cómo participar (asistir, ser speaker, colaborar).
+- [x] **Proyectos v2**: gestión y showcase solo en portal miembro (`/cuenta/proyectos`); `/proyectos` redirige al portal.
+- [x] **Sobre nosotros v2**: historia, misión, equipo/organizadores, cómo participar (asistir, ser speaker, colaborar). Copy actualizado jul 2026 (comunidad independiente, IA Labs, sin afiliación Anthropic).
 
 ### Fase 3 : SEO / GEO / AEO y analítica ✅ (2026-07-10)
 

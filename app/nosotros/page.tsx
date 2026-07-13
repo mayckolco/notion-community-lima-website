@@ -63,17 +63,17 @@ const PARTICIPAR = [
 const FOUNDERS = [
   {
     nombre: "Gianmarco Guerrero",
-    titulo: "Co-fundador · Claude Perú",
+    titulo: "Community Leader · Claude Perú",
     foto: "/founders/gianmarco-guerrero.jpg",
   },
   {
     nombre: "Mayckol Cruzado",
-    titulo: "Co-fundador · Claude Perú",
+    titulo: "Co-founder · IA Labs",
     foto: "/founders/mayckol-cruzado.jpeg",
   },
   {
     nombre: "Jhon Miranda",
-    titulo: "Co-fundador · Claude Perú",
+    titulo: "Co-founder · IA Labs",
     foto: "/founders/jhon-miranda.jpeg",
   },
 ] as const;
@@ -81,7 +81,7 @@ const FOUNDERS = [
 export const metadata: Metadata = createPageMetadata({
   title: "Sobre nosotros",
   description:
-    "Historia, misión y equipo de Claude Perú. Comunidad de builders peruanos que aprenden y construyen con Claude.",
+    "Claude Perú es la comunidad independiente para aprender, experimentar y construir con Claude e inteligencia artificial en Perú, impulsada por IA Labs.",
   path: "/nosotros",
 });
 
@@ -102,22 +102,24 @@ export default function NosotrosPage() {
           <header className="space-y-6">
             <p className="text-xs font-mono text-primary uppercase tracking-widest">Quiénes somos</p>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-serif tracking-tight leading-tight">
-              Claude<span className="ml-0.5 gradient-text">Perú</span>
+              Sobre nosotros
             </h1>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Somos una comunidad de founders que construyen negocios usando inteligencia artificial
-              como primer recurso. Cada semana, un builder comparte en vivo lo que está
-              construyendo, qué herramientas usa y qué aprendió en el camino.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              Creemos que la IA no es el futuro, es el presente. Nuestra misión es conectar a los
-              founders que ya están construyendo con IA y ayudarlos a crecer más rápido compartiendo
-              experiencias reales, errores incluidos.
-            </p>
-            <p className="text-sm text-muted-foreground/80 leading-relaxed">
-              Nacimos en 2024 como un grupo de founders en Lima que querían ir más allá de la teoría
-              sobre IA. Hoy somos la comunidad de referencia en Perú para aprender y construir con Claude.
-            </p>
+            <div className="space-y-4 text-muted-foreground leading-relaxed">
+              <p className="text-lg">
+                Claude Perú es la comunidad independiente para aprender, experimentar y construir con
+                Claude e inteligencia artificial en Perú, impulsada por IA Labs. Reunimos a personas
+                con ganas de crear, compartir y aplicar la IA en su trabajo, negocio o proyectos, a
+                través de eventos, workshops, cursos y sesiones prácticas basadas en casos reales.
+              </p>
+              <p>
+                Creemos que la mejor forma de aprender es construyendo. Por eso fomentamos una
+                comunidad abierta y colaborativa donde los miembros comparten herramientas, flujos de
+                trabajo, experimentos y aprendizajes para que más personas puedan aprovechar el
+                potencial de Claude y la IA. Claude Perú no está afiliada a Anthropic; somos una
+                iniciativa de la comunidad impulsada por IA Labs con el objetivo de convertirnos en
+                el principal punto de encuentro para los builders de IA en Perú.
+              </p>
+            </div>
           </header>
 
           {/* Valores */}

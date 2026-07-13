@@ -21,64 +21,82 @@ export const BOOTCAMP_YAPE = {
 export const CLAUDE_BOOTCAMP = {
   slug: "claude-bootcamp",
   nombre: "Claude Bootcamp",
-  tagline: "Domina Claude en un día, sin código",
+  tagline: "Aprende los fundamentos de Claude",
   descripcion:
     "Intensivo práctico para aprender Claude Chat, Cowork y Code desde cero. Mentores, casos reales y demos en vivo en una sola sesión.",
-  incluye: [
-    "Clases personalizadas en cohortes (30 virtual · 10 presencial)",
-    "Mentor asignado durante la sesión",
-    "Casos prácticos de tu industria o rol",
-    "Demos en vivo con Claude Chat, Cowork y Code",
-    "Material de apoyo y plantillas post-sesión",
-  ],
+  incluye: {
+    virtual: [
+      "Curso en vivo (por Meet)",
+      "Casos prácticos de tu industria o rol",
+      "Mentoría personalizada (durante la sesión)",
+      "Materiales",
+      "Grabación",
+      "Constancia de participación",
+      "Soporte técnico (1 mes)",
+    ],
+    presencial: [
+      "Curso presencial en Lima",
+      "Casos prácticos de tu industria o rol",
+      "Mentoría personalizada (durante la sesión)",
+      "Materiales",
+      "Revisión de proyecto",
+      "Networking",
+      "Coffee break",
+      "Soporte técnico (3 meses)",
+      "Constancia de participación",
+    ],
+  },
   precio: {
     virtual: 159,
     presencial: 249,
+    precioRegular: {
+      virtual: 229,
+      presencial: 399,
+    },
     moneda: "PEN" as const,
   },
 } as const;
 
 export interface RutaBloqueada {
   slug: string;
+  numero: 1 | 2 | 3;
+  accent: "green" | "orange" | "blue";
   nombre: string;
-  tagline: string;
+  subtitulo: string;
   descripcion: string;
-  duracion: string;
   precioReferencial: { virtual: number; presencial: number };
-  pasos: string[];
 }
 
 export const RUTAS_BLOQUEADAS: RutaBloqueada[] = [
   {
-    slug: "ruta-fundamentos-experto",
-    nombre: "Ruta Fundamentos a Experto",
-    tagline: "De cero a referente de IA en tu equipo",
+    slug: "claude-essentials",
+    numero: 1,
+    accent: "green",
+    nombre: "Claude Essentials",
+    subtitulo: "Productividad",
     descripcion:
-      "Recorrido progresivo por Chat, Cowork y Code en múltiples sesiones. La ruta completa para dominar el ecosistema Claude.",
-    duracion: "6 sesiones · 10a.m. - 2 p.m.",
-    precioReferencial: { virtual: 699, presencial: 1199 },
-    pasos: [
-      "Claude Chat desde cero",
-      "Productividad avanzada",
-      "Cowork para equipos",
-      "Code sin programar",
-      "Casos prácticos",
-      "Flujos y agentes",
-    ],
+      "Para cualquier profesional que quiera incorporar IA en su trabajo diario.",
+    precioReferencial: { virtual: 399, presencial: 649 },
   },
   {
-    slug: "ruta-builder-ia",
-    nombre: "Ruta Builder con IA",
-    tagline: "Construye soluciones sin ser developer",
+    slug: "claude-for-teams",
+    numero: 2,
+    accent: "orange",
+    nombre: "Claude for Teams",
+    subtitulo: "Colaboración",
     descripcion:
-      "Tres sesiones para pasar de usuario casual a builder: colabora en equipo, automatiza con Code y resuelve casos propios.",
-    duracion: "3 sesiones · 10a.m. - 2 p.m.",
-    precioReferencial: { virtual: 449, presencial: 749 },
-    pasos: [
-      "Claude Chat desde cero",
-      "Cowork para equipos",
-      "Casos prácticos con Claude",
-    ],
+      "Para equipos y empresas que buscan optimizar procesos y trabajo colaborativo.",
+    precioReferencial: { virtual: 549, presencial: 899 },
+  },
+  {
+    slug: "claude-builder",
+    numero: 3,
+    accent: "blue",
+    nombre: "Claude Builder",
+    subtitulo: "Desarrollo con Claude Code",
+    descripcion:
+      "Para desarrolladores y builders que desean crear software y automatizaciones con IA.",
+    precioReferencial: { virtual: 649, presencial: 1099 },
   },
 ];
 
@@ -88,8 +106,13 @@ export function buildBootcampInfoUrl(modalidad: ProgramaModalidad): string {
   return `https://wa.me/51946542990?text=${encodeURIComponent(text)}`;
 }
 
-export function buildCheckoutUrl(modalidad: ProgramaModalidad): string {
-  return `/programas/checkout?programa=${CLAUDE_BOOTCAMP.slug}&modalidad=${modalidad}`;
+export function buildCheckoutUrl(modalidad: ProgramaModalidad, fechaId?: string): string {
+  const params = new URLSearchParams({
+    programa: CLAUDE_BOOTCAMP.slug,
+    modalidad,
+  });
+  if (fechaId) params.set("fecha", fechaId);
+  return `/programas/checkout?${params.toString()}`;
 }
 
 export function formatBootcampPrecio(amount: number): string {

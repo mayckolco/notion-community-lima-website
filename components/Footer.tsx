@@ -10,7 +10,6 @@ import {
 const SITE_LINKS = [
   { label: "Eventos", href: "/eventos" },
   { label: "Comunidad", href: "/comunidad" },
-  { label: "Proyectos", href: "/proyectos" },
   { label: "Recursos", href: "/recursos" },
   { label: "Programas para profesionales", href: "/programas/profesionales" },
   {

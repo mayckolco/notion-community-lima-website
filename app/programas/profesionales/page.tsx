@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Check, Route } from "lucide-react";
+import { Route } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
-import { BootcampModalidadCard } from "@/components/programas/BootcampModalidadCard";
+import { BootcampFechasSection } from "@/components/programas/BootcampFechasSection";
 import { RutaBloqueadaCard } from "@/components/programas/RutaBloqueadaCard";
 import {
-  BOOTCAMP_HORARIO,
   CLAUDE_BOOTCAMP,
   RUTAS_BLOQUEADAS,
 } from "@/lib/content/bootcamp";
+import { fetchBootcampFechas } from "@/lib/notion/bootcamp";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd, courseJsonLd } from "@/lib/seo/json-ld";
 import { SITE_URL } from "@/lib/seo/site";
@@ -17,11 +17,20 @@ import { SITE_URL } from "@/lib/seo/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Programas para profesionales",
   description:
-    "Claude Bootcamp: aprende Claude Chat, Cowork y Code en una sesión intensiva. Virtual S/ 159 (30 cupos) o presencial S/ 249 (10 cupos). Sin código.",
+    "Claude Bootcamp: aprende los fundamentos de Claude Chat, Cowork y Code en una sesión intensiva. Virtual S/ 159 o presencial S/ 249.",
   path: "/programas/profesionales",
 });
 
-export default function ProgramasProfesionalesPage() {
+export default async function ProgramasProfesionalesPage() {
+  const [fechasVirtual, fechasPresencial] = await Promise.all([
+    fetchBootcampFechas("virtual").catch(() => []),
+    fetchBootcampFechas("presencial").catch(() => []),
+  ]);
+
+  const fechas = [...fechasVirtual, ...fechasPresencial].sort((a, b) =>
+    a.fecha.localeCompare(b.fecha)
+  );
+
   return (
     <>
       <JsonLd
@@ -51,39 +60,11 @@ export default function ProgramasProfesionalesPage() {
             <p className="text-base text-primary font-medium">{CLAUDE_BOOTCAMP.tagline}</p>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
               {CLAUDE_BOOTCAMP.descripcion} Diseñado para personas{" "}
-              <strong className="text-foreground font-medium">sin conocimiento de código</strong>.
+              <strong className="text-foreground font-medium">sin conocimiento técnico</strong>.
             </p>
-            <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <li>· 30 cupos virtual · 10 presencial</li>
-              <li>· {BOOTCAMP_HORARIO}</li>
-              <li>· Virtual y presencial (Lima)</li>
-            </ul>
           </header>
 
-          <section className="space-y-4">
-            <h2 className="font-serif text-xl sm:text-2xl tracking-tight">
-              Elige tu modalidad
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <BootcampModalidadCard modalidad="virtual" location="bootcamp_virtual" />
-              <BootcampModalidadCard modalidad="presencial" location="bootcamp_presencial" />
-            </div>
-          </section>
-
-          <section className="border border-border/40 bg-card rounded-2xl p-6 sm:p-8 space-y-4">
-            <h2 className="font-serif text-lg sm:text-xl tracking-tight">Qué incluye</h2>
-            <ul className="grid sm:grid-cols-2 gap-2">
-              {CLAUDE_BOOTCAMP.incluye.map((item) => (
-                <li
-                  key={item}
-                  className="flex items-start gap-2 text-sm text-muted-foreground"
-                >
-                  <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" strokeWidth={2} aria-hidden="true" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </section>
+          <BootcampFechasSection fechas={fechas} />
 
           <section id="rutas" className="space-y-4">
             <div className="flex items-center gap-2">
@@ -93,9 +74,9 @@ export default function ProgramasProfesionalesPage() {
               </h2>
             </div>
             <p className="text-sm text-muted-foreground max-w-2xl">
-              Próximamente: recorridos guiados de varias sesiones. Precios referenciales.
+              Próximamente: recorridos guiados de varias sesiones en modalidad virtual o presencial.
             </p>
-            <div className="grid sm:grid-cols-2 gap-4">
+            <div className="grid gap-4 lg:grid-cols-3">
               {RUTAS_BLOQUEADAS.map((ruta) => (
                 <RutaBloqueadaCard key={ruta.slug} ruta={ruta} />
               ))}

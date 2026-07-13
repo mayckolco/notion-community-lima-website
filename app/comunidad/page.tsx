@@ -5,10 +5,11 @@ import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { CommunityAccountLink } from "@/components/CommunityAccountLink";
 import { JoinCommunityButton } from "@/components/JoinCommunityButton";
+import { CommunityMembersSection } from "@/components/comunidad/CommunityMembersSection";
 import { CommunityMap } from "@/components/comunidad/CommunityMap";
-import { CommunityMemberCard } from "@/components/comunidad/CommunityMemberCard";
 import { CommunitySuccessBanner } from "@/components/comunidad/CommunitySuccessBanner";
 import { listComunidadMembersWithProyectos } from "@/lib/notion/comunidad";
+import { getCommunitySession } from "@/lib/auth/community-session";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
@@ -22,7 +23,10 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default async function ComunidadPage() {
-  const members = await listComunidadMembersWithProyectos();
+  const [members, session] = await Promise.all([
+    listComunidadMembersWithProyectos(),
+    Promise.resolve(getCommunitySession()),
+  ]);
 
   return (
     <>
@@ -71,18 +75,7 @@ export default async function ComunidadPage() {
             <CommunityMap members={members} />
           </section>
 
-          {members.length > 0 && (
-            <section className="space-y-4" aria-labelledby="lista-comunidad">
-              <h2 id="lista-comunidad" className="font-serif text-xl tracking-tight">
-                Miembros de la comunidad
-              </h2>
-              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {members.map((member) => (
-                  <CommunityMemberCard key={member.id} member={member} />
-                ))}
-              </ul>
-            </section>
-          )}
+          <CommunityMembersSection members={members} isLoggedIn={!!session} />
 
           <section className="rounded-xl border border-border bg-card p-6 sm:p-8 shadow-soft space-y-4">
             <div className="flex items-start gap-3">
