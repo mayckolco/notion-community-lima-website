@@ -77,7 +77,7 @@ const FOUNDERS = [
     foto: "/founders/jhon-miranda.jpeg",
   },
   {
-    nombre: "Douglas Lover",
+    nombre: "Douglas Lovera",
     titulo: "Team Community",
     foto: "/founders/douglas-lovera.jpg",
   },
