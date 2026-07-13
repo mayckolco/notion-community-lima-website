@@ -13,7 +13,8 @@ import { getCommunitySession } from "@/lib/auth/community-session";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd } from "@/lib/seo/json-ld";
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = createPageMetadata({
   title: "Comunidad",
