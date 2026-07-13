@@ -61,12 +61,9 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon", sizes: "32x32", type: "image/svg+xml" },
-    ],
-    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/svg+xml" }],
-    shortcut: ["/favicon.svg"],
+    icon: [{ url: "/favicon.webp", type: "image/webp", sizes: "512x512" }],
+    apple: [{ url: "/favicon.webp", type: "image/webp", sizes: "512x512" }],
+    shortcut: ["/favicon.webp"],
   },
   robots: {
     index: true,

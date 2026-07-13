@@ -15,6 +15,7 @@ const nextConfig = {
   async redirects() {
     return [
       { source: "/calendario", destination: "/eventos", permanent: true },
+      { source: "/favicon.ico", destination: "/favicon.webp", permanent: false },
     ];
   },
 

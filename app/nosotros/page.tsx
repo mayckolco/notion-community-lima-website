@@ -158,7 +158,7 @@ export default function NosotrosPage() {
           <div className="space-y-8">
             <div className="space-y-1">
               <h2 className="text-2xl font-serif tracking-tight">
-                Quién está detrás de{" "}
+                Quiénes están detrás de{" "}
                 <span className="gradient-text">esta comunidad</span>
               </h2>
             </div>
