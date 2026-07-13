@@ -1,5 +1,6 @@
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ?? "https://claude.mayckolco.com";
+import { PRODUCTION_SITE_URL } from "@/lib/base-url";
+
+export const SITE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? PRODUCTION_SITE_URL;
 
 export const SITE_NAME = "Claude Perú";
 

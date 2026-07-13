@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/verify-token";
 import { getSlot, confirmWebinar } from "@/lib/notion/slots";
 import { findSpeakerByEmail, createSpeakerProfile } from "@/lib/notion/speakers";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function GET(req: NextRequest) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
+  const baseUrl = getBaseUrl(req);
 
   const redirect = (error: string) =>
     NextResponse.redirect(`${baseUrl}/verificando?error=${error}`);

@@ -4,13 +4,7 @@ import { createMagicLinkToken } from "@/lib/auth/magic-link";
 import { sendCommunityMagicLinkEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { findMemberByEmail, getMemberById } from "@/lib/notion/comunidad";
-
-function getBaseUrl(req: NextRequest): string {
-  return (
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`
-  );
-}
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req);

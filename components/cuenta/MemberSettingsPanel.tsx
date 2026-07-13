@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 import type { ComunidadMemberRecord } from "@/lib/notion/comunidad";
 import { WHATSAPP_COMMUNITY_URL } from "@/lib/content/constants";
+import { CommunityLogoutButton } from "@/components/cuenta/CommunityLogoutButton";
 
 interface MemberSettingsPanelProps {
   member: ComunidadMemberRecord;
@@ -50,14 +51,7 @@ export function MemberSettingsPanel({ member }: MemberSettingsPanelProps) {
         <p className="text-sm text-muted-foreground">
           Cierra sesión en este dispositivo. Podrás volver a ingresar con tu email.
         </p>
-        <form action="/api/comunidad/auth/logout" method="POST">
-          <button
-            type="submit"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-md border border-border px-4 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-          >
-            Cerrar sesión
-          </button>
-        </form>
+        <CommunityLogoutButton />
         <p className="text-xs text-muted-foreground">
           ¿Necesitas actualizar tu perfil?{" "}
           <Link href="/cuenta/perfil" className="text-primary hover:underline">

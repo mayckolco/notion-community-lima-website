@@ -8,6 +8,7 @@ import { uploadPhotoToNotion } from "@/lib/notion/speakers";
 import { createVerificationToken } from "@/lib/verify-token";
 import { sendVerificationEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { getBaseUrl } from "@/lib/base-url";
 
 const ALLOWED_IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const MAX_PHOTO_BYTES = 5 * 1024 * 1024;
@@ -126,9 +127,7 @@ export async function POST(req: NextRequest) {
   }
 
   // 8) Send verification email
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
+  const baseUrl = getBaseUrl(req);
   const verifyUrl = `${baseUrl}/api/verify?token=${encodeURIComponent(token)}`;
 
   try {

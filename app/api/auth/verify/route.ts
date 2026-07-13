@@ -3,11 +3,10 @@ import { verifyMagicLinkToken } from "@/lib/auth/magic-link";
 import { findSpeakerByEmail } from "@/lib/notion/speakers";
 import { createSessionToken, sessionCookieOptions } from "@/lib/auth/session";
 import { isAdminEmail, isColaboradorEmail, ADMIN_SPEAKER_ID } from "@/lib/config/roles";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function GET(req: NextRequest) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
+  const baseUrl = getBaseUrl(req);
 
   const rawToken = req.nextUrl.searchParams.get("token");
   if (!rawToken) {

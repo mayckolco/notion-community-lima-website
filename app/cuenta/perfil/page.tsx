@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getCommunitySession } from "@/lib/auth/community-session";
 import { getMemberById } from "@/lib/notion/comunidad";
 import { MemberProfileForm } from "@/components/cuenta/MemberProfileForm";
+import { CommunityLogoutButton } from "@/components/cuenta/CommunityLogoutButton";
 
 export default async function CuentaPerfilPage() {
   const session = getCommunitySession();
@@ -23,6 +24,14 @@ export default async function CuentaPerfilPage() {
       <section className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-4">
         <h2 className="font-serif text-lg">Datos personales</h2>
         <MemberProfileForm member={member} />
+      </section>
+
+      <section className="rounded-xl border border-border bg-card p-6 shadow-soft space-y-3">
+        <h2 className="font-serif text-lg">Sesión</h2>
+        <p className="text-sm text-muted-foreground">
+          Cierra sesión en este dispositivo. Podrás volver a ingresar con tu email.
+        </p>
+        <CommunityLogoutButton />
       </section>
     </div>
   );

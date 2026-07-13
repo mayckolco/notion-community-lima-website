@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SESSION_COOKIE_NAME } from "@/lib/auth/session";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function POST(req: NextRequest) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
+  const baseUrl = getBaseUrl(req);
 
   const response = NextResponse.redirect(`${baseUrl}/portal/login`, { status: 303 });
   response.cookies.set({

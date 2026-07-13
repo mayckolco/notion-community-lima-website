@@ -4,6 +4,7 @@ import { createMagicLinkToken } from "@/lib/auth/magic-link";
 import { sendMagicLinkEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { isAdminEmail, isPrivilegedEmail } from "@/lib/config/roles";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function POST(req: NextRequest) {
   // Rate limit: 3 requests per 10 minutes per IP
@@ -31,9 +32,7 @@ export async function POST(req: NextRequest) {
   }
 
   const token = createMagicLinkToken(email, "portal-login");
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
+  const baseUrl = getBaseUrl(req);
   const magicUrl = `${baseUrl}/api/auth/verify?token=${encodeURIComponent(token)}`;
 
   let nombre = isAdminEmail(email) ? "Admin" : "Colaborador";

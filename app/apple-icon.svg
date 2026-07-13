@@ -1,20 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-label="Claude Perú">
-  <rect width="180" height="180" fill="#09090b"/>
-  <g fill="#D97E63" transform="translate(90 90)">
-    <rect x="-7" y="-62" width="14" height="53" rx="3"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(27)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(54)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(81)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(108)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(135)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(162)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(189)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(216)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(243)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(270)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(297)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(324)"/>
-    <rect x="-7" y="-62" width="14" height="53" rx="3" transform="rotate(351)"/>
-    <circle r="16"/>
+  <rect width="180" height="180" rx="32" fill="#D97E63"/>
+  <g fill="none" stroke="#F5F1EB" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90 57.4a6.75 6.75 0 0 0-5.63-3.15l-20.7-5.35a1.69 1.69 0 0 1 0-3.27l20.7-5.35a6.75 6.75 0 0 0 3.15-5.63l5.35-20.7a1.69 1.69 0 0 1 3.27 0l5.35 20.7a6.75 6.75 0 0 0 5.63 3.15l20.7 5.35a1.69 1.69 0 0 1 0 3.27l-20.7 5.35a6.75 6.75 0 0 0-3.15 5.63l-5.35 20.7a1.69 1.69 0 0 1-3.27 0z"/>
+    <path d="M125 44v10.7"/>
+    <path d="M130.3 49.35h-10.7"/>
+    <path d="M51.2 126v5.6"/>
+    <path d="M54 128.8H48.4"/>
   </g>
 </svg>

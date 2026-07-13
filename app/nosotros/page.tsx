@@ -76,6 +76,16 @@ const FOUNDERS = [
     titulo: "Co-founder · IA Labs",
     foto: "/founders/jhon-miranda.jpeg",
   },
+  {
+    nombre: "Douglas Lover",
+    titulo: "Team Community",
+    foto: "/founders/douglas-lovera.jpg",
+  },
+  {
+    nombre: "Daniel Santos",
+    titulo: "Team Community",
+    foto: "/founders/daniel-santos.jpeg",
+  },
 ] as const;
 
 export const metadata: Metadata = createPageMetadata({
@@ -153,7 +163,7 @@ export default function NosotrosPage() {
               </h2>
             </div>
 
-            <div className="grid gap-6 sm:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {FOUNDERS.map((f, i) => {
                 const num = String(i + 1).padStart(2, "0");
                 return (

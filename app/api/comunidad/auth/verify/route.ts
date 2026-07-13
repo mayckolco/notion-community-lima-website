@@ -5,11 +5,10 @@ import {
   communitySessionCookieOptions,
 } from "@/lib/auth/community-session";
 import { findMemberByEmail, publishCommunityMember } from "@/lib/notion/comunidad";
+import { getBaseUrl } from "@/lib/base-url";
 
 export async function GET(req: NextRequest) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ??
-    `${req.headers.get("x-forwarded-proto") ?? "https"}://${req.headers.get("host")}`;
+  const baseUrl = getBaseUrl(req);
 
   const rawToken = req.nextUrl.searchParams.get("token");
   if (!rawToken) {
