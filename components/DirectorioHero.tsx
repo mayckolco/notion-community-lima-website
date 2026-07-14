@@ -90,7 +90,7 @@ export function DirectorioHero({ speakers }: DirectorioHeroProps) {
             </h1>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Fundadores, makers y builders que presentaron en Claude Perú.
+              Fundadores, makers y builders que presentaron en Notion Community Lima.
               Sin teoría. Solo experiencia real.
             </p>
 

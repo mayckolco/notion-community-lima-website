@@ -82,7 +82,7 @@ export function CommunityMembersSection({
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Inicia sesión o regístrate para ver los perfiles, roles y enlaces de contacto de
-                las personas que forman parte de Claude Perú.
+                las personas que forman parte de Notion Community Lima.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

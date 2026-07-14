@@ -6,7 +6,7 @@ import { GA_EVENTS } from "@/lib/seo/analytics";
 const SOCIALS = [
   {
     label: "Instagram",
-    href: "https://instagram.com/claudeperucommunity",
+    href: "https://instagram.com/notioncommunitylima",
     event: GA_EVENTS.clickInstagram,
     svg: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">

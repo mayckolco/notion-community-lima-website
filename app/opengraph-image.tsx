@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const dynamic = "force-dynamic";
 
-export const alt = "Claude Perú · La comunidad de builders con IA en Perú";
+export const alt = "Notion Community Lima · La comunidad de Notion en Perú";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -11,7 +11,7 @@ export default function OgImage() {
     (
       <div
         style={{
-          background: "#F5F1EB",
+          background: "#FBFAF7",
           width: "100%",
           height: "100%",
           display: "flex",
@@ -31,14 +31,14 @@ export default function OgImage() {
         >
           <p
             style={{
-              color: "#D97757",
+              color: "#1E1EB4",
               fontSize: "14px",
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               margin: "0 0 24px",
             }}
           >
-            COMUNIDAD DE IA EN PERÚ
+            COMUNIDAD DE NOTION EN LIMA
           </p>
           <h1
             style={{
@@ -49,7 +49,7 @@ export default function OgImage() {
               lineHeight: 1.05,
             }}
           >
-            Claude Perú
+            Notion Community Lima
           </h1>
           <p
             style={{
@@ -59,7 +59,7 @@ export default function OgImage() {
               lineHeight: 1.5,
             }}
           >
-            Aprende, construye y crece con Claude.
+            Aprende, conecta y construye con Notion.
           </p>
         </div>
 
@@ -71,14 +71,14 @@ export default function OgImage() {
             width: "280px",
             height: "280px",
             borderRadius: "32px",
-            background: "#09090b",
-            boxShadow: "0 24px 60px rgba(43, 38, 34, 0.18)",
-            color: "#D97E63",
-            fontSize: "180px",
+            background: "#1E1EB4",
+            boxShadow: "0 24px 60px rgba(30, 30, 180, 0.25)",
+            color: "#FBFAF7",
+            fontSize: "140px",
             lineHeight: 1,
           }}
         >
-          ✳
+          N
         </div>
       </div>
     ),
