@@ -42,7 +42,7 @@ const NOTION_PRODUCTS = [
     url: "https://developers.notion.com",
     Icon: Database,
   },
-] as const;
+];
 
 export function ClaudeProductsSection() {
   return (
