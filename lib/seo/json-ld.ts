@@ -8,7 +8,7 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: SITE_NAME,
-    alternateName: "Claude Community",
+    alternateName: "NCL",
     url: SITE_URL,
     logo: `${SITE_URL}/og-image.png`,
     description: SITE_DESCRIPTION,
@@ -44,10 +44,10 @@ export function eventJsonLd(slot: Slot) {
   return {
     "@context": "https://schema.org",
     "@type": "Event",
-    name: slot.titulo ?? "Webinar Claude Perú",
+    name: slot.titulo ?? "Meetup Notion Community Lima",
     description:
       slot.descripcion ??
-      "Sesión en vivo de la comunidad Claude Perú con builders peruanos.",
+      "Sesión en vivo de la comunidad Notion Community Lima.",
     startDate: slot.fecha,
     eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",

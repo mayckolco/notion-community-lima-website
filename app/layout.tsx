@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Inter, PT_Serif, VT323 } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { ThemeProvider } from "@/components/ThemeProvider";
@@ -14,11 +14,17 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
-const fraunces = Fraunces({
+const ptSerif = PT_Serif({
   subsets: ["latin"],
   variable: "--font-serif",
-  weight: ["400", "500", "600"],
+  weight: ["400", "700"],
   style: ["normal", "italic"],
+});
+
+const vt323 = VT323({
+  subsets: ["latin"],
+  variable: "--font-pixel",
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -29,16 +35,16 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   keywords: [
-    "Claude",
-    "Anthropic",
-    "inteligencia artificial",
-    "IA",
-    "Perú",
+    "Notion",
+    "Notion Community",
     "Lima",
+    "Perú",
     "comunidad",
-    "builders",
-    "Claude Code",
-    "webinars",
+    "productividad",
+    "bases de datos",
+    "gestión de proyectos",
+    "meetups",
+    "workspace",
   ],
   authors: [{ name: SITE_NAME }],
   creator: SITE_NAME,
@@ -73,7 +79,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es-PE" className={`${inter.variable} ${fraunces.variable}`} suppressHydrationWarning>
+    <html lang="es-PE" className={`${inter.variable} ${ptSerif.variable} ${vt323.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         <a href="#main-content" className="skip-link">
           Saltar al contenido principal

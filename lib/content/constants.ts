@@ -3,15 +3,13 @@ export const WHATSAPP_COMMUNITY_URL =
 
 export const WHATSAPP_DIRECT_URL = "https://wa.me/51946542990";
 
-export const INSTAGRAM_URL = "https://instagram.com/claudeperucommunity";
+export const INSTAGRAM_URL = "https://instagram.com/notioncommunitylima";
 
-export const CLAUDE_APP_URL = "https://claude.ai";
+export const NOTION_URL = "https://notion.so";
 
-export const CLAUDE_CODE_DOCS_URL = "https://docs.anthropic.com/en/docs/claude-code";
+export const NOTION_TEMPLATES_URL = "https://notion.so/templates";
 
-export const CLAUDE_API_DOCS_URL = "https://docs.anthropic.com/en/api/getting-started";
-
-/** Horario estándar de webinars / eventos de la comunidad (Lima, GMT-5). */
+/** Horario estándar de meetups / eventos de la comunidad (Lima, GMT-5). */
 export const EVENT_SLOT_HORARIO = "19:00 – 20:00 GMT-5";
 
 /** Programas para empresas: bloqueado hasta lanzamiento */

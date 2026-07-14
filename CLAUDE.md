@@ -20,7 +20,7 @@ Use `pnpm` exclusively : npm/yarn are blocked by package.json engines.
 
 **Next.js 14 App Router** with TypeScript strict mode. Deployed on Vercel (`aiff-speakers` project).
 
-**Production URL**: `https://speakers.mayckolco.com`
+**Production URL**: `https://notioncommunitylima.com`
 
 ### Backend: Notion-only
 

@@ -18,11 +18,11 @@ interface SendVerificationParams {
 }
 
 export async function sendVerificationEmail(params: SendVerificationParams): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Notion Community Lima <hola@mayckolco.com>";
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Confirma tu postulación como Speaker [Claude Perú]",
+    subject: "Confirma tu postulación como Speaker [Notion Community Lima]",
     html: buildEmailHtml(params),
   });
 }
@@ -45,7 +45,7 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
           <tr>
             <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
               <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
-                CLAUDE PERÚ
+                NOTION COMMUNITY LIMA
               </p>
             </td>
           </tr>
@@ -95,7 +95,7 @@ function buildEmailHtml({ nombre, verifyUrl, slotLabel }: SendVerificationParams
 
                   <p style="margin:0 0 28px;color:#a1a1aa;font-size:14px;line-height:1.8;">
                     Un abrazo,<br/>
-                    <strong style="color:#fafafa;">Equipo Claude Perú</strong>
+                    <strong style="color:#fafafa;">Equipo Notion Community Lima</strong>
                   </p>
 
                   <hr style="border:none;border-top:1px solid #27272a;margin:0 0 20px;" />
@@ -135,11 +135,11 @@ interface SendMagicLinkParams {
 }
 
 export async function sendMagicLinkEmail(params: SendMagicLinkParams): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Notion Community Lima <hola@mayckolco.com>";
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Tu acceso al portal de Speaker · Claude Perú",
+    subject: "Tu acceso al portal de Speaker · Notion Community Lima",
     html: buildMagicLinkHtml(params),
   });
 }
@@ -160,7 +160,7 @@ function buildMagicLinkHtml({ nombre, magicUrl }: SendMagicLinkParams): string {
           <tr>
             <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
               <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
-                CLAUDE PERÚ
+                NOTION COMMUNITY LIMA
               </p>
             </td>
           </tr>
@@ -215,11 +215,11 @@ function buildMagicLinkHtml({ nombre, magicUrl }: SendMagicLinkParams): string {
 }
 
 export async function sendCommunityMagicLinkEmail(params: SendMagicLinkParams): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Notion Community Lima <hola@mayckolco.com>";
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Confirma tu perfil en la comunidad · Claude Perú",
+    subject: "Confirma tu perfil en la comunidad · Notion Community Lima",
     html: buildCommunityMagicLinkHtml(params),
   });
 }
@@ -240,7 +240,7 @@ function buildCommunityMagicLinkHtml({ nombre, magicUrl }: SendMagicLinkParams):
           <tr>
             <td align="center" style="padding-bottom:28px;border-bottom:1px solid #27272a;">
               <p style="margin:0;color:#52525b;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;text-align:center;">
-                CLAUDE PERÚ
+                NOTION COMMUNITY LIMA
               </p>
             </td>
           </tr>
@@ -253,7 +253,7 @@ function buildCommunityMagicLinkHtml({ nombre, magicUrl }: SendMagicLinkParams):
                     Hola ${escHtml(nombre)},
                   </p>
                   <p style="margin:0 0 16px;color:#71717a;font-size:14px;line-height:1.8;">
-                    Confirma tu perfil para aparecer en el mapa de la comunidad de Claude Perú:
+                    Confirma tu perfil para aparecer en el mapa de la comunidad de Notion Community Lima:
                   </p>
                   <table cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
                     <tr>
@@ -298,18 +298,18 @@ interface SendNewsletterWelcomeParams {
 export async function sendNewsletterWelcomeEmail(
   params: SendNewsletterWelcomeParams
 ): Promise<void> {
-  const from = process.env.RESEND_FROM_EMAIL ?? "Claude Perú <hola@mayckolco.com>";
+  const from = process.env.RESEND_FROM_EMAIL ?? "Notion Community Lima <hola@mayckolco.com>";
   const greeting = params.nombre ? escHtml(params.nombre) : "builder";
 
   await getResend().emails.send({
     from,
     to: params.to,
-    subject: "Bienvenido a las novedades de Claude Perú",
+    subject: "Bienvenido a las novedades de Notion Community Lima",
     html: `<!DOCTYPE html>
 <html lang="es">
 <body style="margin:0;padding:40px 20px;background:#F5F1EB;font-family:sans-serif;">
   <div style="max-width:520px;margin:0 auto;background:#fff;border:1px solid #EDE6DA;border-radius:12px;padding:32px;">
-    <p style="margin:0 0 8px;color:#D97757;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Claude Perú</p>
+    <p style="margin:0 0 8px;color:#D97757;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Notion Community Lima</p>
     <h1 style="margin:0 0 16px;color:#2B2622;font-size:22px;">¡Gracias por suscribirte!</h1>
     <p style="margin:0 0 16px;color:#6B6560;font-size:15px;line-height:1.6;">
       Hola ${greeting}, te avisaremos sobre próximos eventos, lanzamientos de Claude y recursos nuevos de la comunidad.
