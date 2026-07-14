@@ -13,7 +13,7 @@ export const revalidate = 0;
 export const metadata: Metadata = createPageMetadata({
   title: "Directorio de speakers",
   description:
-    "Conoce a los builders peruanos que han compartido en Claude Perú. Directorio de speakers con charlas, herramientas y grabaciones.",
+    "Conoce a los miembros que han compartido en Notion Lima. Directorio de speakers con charlas, sistemas y grabaciones.",
   path: "/directorio",
 });
 

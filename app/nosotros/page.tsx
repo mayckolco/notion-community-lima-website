@@ -44,7 +44,7 @@ const PARTICIPAR = [
     icon: Mic,
     titulo: "Ser speaker",
     descripcion:
-      "Comparte lo que estás construyendo con Claude en un webinar en vivo. Aplica con tu charla y fecha.",
+      "Comparte tu experiencia con Notion en una sesión en vivo. Aplica con tu charla y fecha.",
     href: "/aplicar",
     cta: "Aplicar ahora",
     externo: false,
@@ -63,7 +63,7 @@ const PARTICIPAR = [
 const FOUNDERS = [
   {
     nombre: "Gianmarco Guerrero",
-    titulo: "Community Leader · Claude Perú",
+    titulo: "Community Leader · Notion Lima",
     foto: "/founders/gianmarco-guerrero.jpg",
   },
   {
@@ -91,7 +91,7 @@ const FOUNDERS = [
 export const metadata: Metadata = createPageMetadata({
   title: "Sobre nosotros",
   description:
-    "Claude Perú es la comunidad independiente para aprender, experimentar y construir con Claude e inteligencia artificial en Perú, impulsada por IA Labs.",
+    "Notion Lima es la comunidad independiente para aprender, organizar y crecer con Notion en Lima, impulsada por IA Labs.",
   path: "/nosotros",
 });
 
@@ -116,18 +116,18 @@ export default function NosotrosPage() {
             </h1>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p className="text-lg">
-                Claude Perú es la comunidad independiente para aprender, experimentar y construir con
-                Claude e inteligencia artificial en Perú, impulsada por IA Labs. Reunimos a personas
-                con ganas de crear, compartir y aplicar la IA en su trabajo, negocio o proyectos, a
-                través de eventos, workshops, cursos y sesiones prácticas basadas en casos reales.
+                Notion Lima es la comunidad independiente para aprender, organizar y crecer con
+                Notion en Lima, impulsada por IA Labs. Reunimos a personas con ganas de crear
+                sistemas, compartir flujos de trabajo y aplicar Notion en su trabajo, negocio o
+                proyectos, a través de eventos, workshops y sesiones prácticas basadas en casos reales.
               </p>
               <p>
-                Creemos que la mejor forma de aprender es construyendo. Por eso fomentamos una
-                comunidad abierta y colaborativa donde los miembros comparten herramientas, flujos de
-                trabajo, experimentos y aprendizajes para que más personas puedan aprovechar el
-                potencial de Claude y la IA. Claude Perú no está afiliada a Anthropic; somos una
-                iniciativa de la comunidad impulsada por IA Labs con el objetivo de convertirnos en
-                el principal punto de encuentro para los builders de IA en Perú.
+                Creemos que la mejor forma de aprender es haciendo. Por eso fomentamos una
+                comunidad abierta y colaborativa donde los miembros comparten templates, sistemas
+                y aprendizajes para que más personas puedan aprovechar el potencial de Notion.
+                Notion Lima no está afiliada a Notion Labs; somos una iniciativa de la comunidad
+                impulsada por IA Labs con el objetivo de convertirnos en el principal punto de
+                encuentro para los usuarios de Notion en Lima.
               </p>
             </div>
           </header>

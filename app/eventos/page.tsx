@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = createPageMetadata({
   title: "Eventos",
   description:
-    "Próximos eventos y webinars de la comunidad Claude Perú. Sesiones con builders y founders que comparten sus experiencias construyendo con IA.",
+    "Próximos eventos y meetups de la comunidad Notion Lima. Sesiones con miembros que comparten sus sistemas, flujos y experiencias usando Notion.",
   path: "/eventos",
 });
 
@@ -52,7 +52,7 @@ export default async function EventosPage() {
               Próximos eventos
             </p>
             <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
-              Eventos de <span className="gradient-text">Claude Perú</span>
+              Eventos de <span className="gradient-text">Notion Lima</span>
             </h1>
             <p className="text-muted-foreground max-w-xl">
               Sesiones disponibles con builders y founders que comparten sus
@@ -103,7 +103,7 @@ export default async function EventosPage() {
                 ¿Quieres ser el próximo <span className="gradient-text">speaker</span>?
               </h2>
               <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
-                Comparte tu experiencia construyendo con Claude frente a la comunidad Claude Perú.
+                Comparte tu experiencia con Notion frente a la comunidad Notion Lima.
               </p>
             </div>
 

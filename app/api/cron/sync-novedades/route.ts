@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidateTag } from "next/cache";
 import { NOVEDADES_CACHE_TAG } from "@/lib/novedades/get-novedades";
-import { fetchAnthropicNews } from "@/lib/novedades/fetch-anthropic";
+import { fetchNotionNews } from "@/lib/novedades/fetch-anthropic";
 
 export async function GET(req: NextRequest) {
   const cronSecret = process.env.CRON_SECRET;
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const items = await fetchAnthropicNews();
+    const items = await fetchNotionNews();
     revalidateTag(NOVEDADES_CACHE_TAG);
     return NextResponse.json({ ok: true, count: items.length });
   } catch {

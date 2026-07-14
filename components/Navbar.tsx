@@ -75,7 +75,7 @@ export function Navbar() {
             <Sparkles className="h-4 w-4" strokeWidth={1.75} />
           </span>
           <span className="whitespace-nowrap">
-            Claude<span className="ml-0.5 text-muted-foreground">Perú</span>
+            Notion<span className="ml-0.5 text-muted-foreground">Lima</span>
           </span>
         </Link>
 

@@ -245,7 +245,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md space-y-8">
           <div className="space-y-2">
             <p className="text-xs text-muted-foreground tracking-widest uppercase">
-              Comunidad Claude Perú
+              Comunidad Notion Lima
             </p>
             <h1 className="text-2xl font-serif tracking-tight">Únete al mapa</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">

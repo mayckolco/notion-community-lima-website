@@ -268,7 +268,7 @@ export const PROGRAMAS: ProgramaBundle[] = [
     nombre: "Programa Experto Total",
     tagline: "Los 6 cursos en un solo paquete",
     descripcion:
-      "Acceso a toda la formación Claude Perú: desde fundamentos hasta experto. La inversión más completa para convertirte en referente de IA en tu entorno.",
+      "Acceso a toda la formación Notion Lima: desde fundamentos hasta experto. La inversión más completa para convertirte en referente de Notion en tu entorno.",
     producto: "mixto",
     nivel: 4,
     nivelLabel: "Fundamentos → Experto",
@@ -282,7 +282,7 @@ export const PROGRAMAS: ProgramaBundle[] = [
       ...PROGRAMA_FEATURES,
       "Máximo descuento del catálogo",
       "Prioridad en fechas de cohorte",
-      "Certificado de finalización Claude Perú",
+      "Certificado de finalización Notion Lima",
     ],
     temario: CURSOS.map((c) => c.nombre),
     paraQuien:

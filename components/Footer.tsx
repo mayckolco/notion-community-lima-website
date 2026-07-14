@@ -46,7 +46,7 @@ export function Footer() {
                 <Sparkles className="h-3.5 w-3.5" strokeWidth={1.75} />
               </span>
               <span className="font-serif text-sm tracking-tight whitespace-nowrap">
-                Notion<span className="ml-0.5 text-muted-foreground">Community Lima</span>
+                Notion<span className="ml-0.5 text-muted-foreground">Lima</span>
               </span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed max-w-xs">
@@ -112,10 +112,10 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-border/40 space-y-2 text-center">
           <p className="text-xs text-muted-foreground">
-            © {year} Notion Community Lima. Comunidad independiente · Todos los derechos reservados.
+            © {year} Notion Lima. Comunidad independiente · Todos los derechos reservados.
           </p>
           <p className="text-[11px] text-muted-foreground/60 max-w-lg mx-auto">
-            Notion Community Lima es una comunidad independiente organizada por entusiastas.
+            Notion Lima es una comunidad independiente organizada por entusiastas.
             No está afiliada oficialmente a Notion. Notion es una marca de Notion Labs, Inc.
           </p>
         </div>

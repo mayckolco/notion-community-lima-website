@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const description =
     speaker.biografia ??
-    `Speaker de Claude Perú${speaker.rol ? ` · ${speaker.rol}` : ""}${speaker.empresa ? ` en ${speaker.empresa}` : ""}.`;
+    `Speaker de Notion Lima${speaker.rol ? ` · ${speaker.rol}` : ""}${speaker.empresa ? ` en ${speaker.empresa}` : ""}.`;
 
   return createPageMetadata({
     title: speaker.nombre,

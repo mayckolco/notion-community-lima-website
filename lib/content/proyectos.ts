@@ -12,53 +12,52 @@ export interface Proyecto {
 export const PROYECTOS_COMUNIDAD: Proyecto[] = [
   {
     id: "speakers-platform",
-    nombre: "Portal de Speakers Claude Perú",
+    nombre: "Portal de Speakers Notion Lima",
     descripcion:
       "Plataforma para gestionar charlas, covers, grabaciones y portal de speakers. Backend 100% Notion con auth magic link.",
     stack: ["Next.js", "Notion API", "Resend", "Tailwind"],
-    url: "https://speakers.mayckolco.com",
-    autor: "Claude Perú",
+    url: "https://notioncommunitylima.com",
+    autor: "Notion Lima",
     destacado: true,
   },
   {
-    id: "agente-notion",
-    nombre: "Agente de reportes con Claude",
+    id: "notion-crm",
+    nombre: "CRM personal en Notion",
     descripcion:
-      "Bot que consulta Notion, genera reportes semanales y envía resúmenes por WhatsApp usando Claude API y MCP.",
-    stack: ["Claude API", "MCP", "Notion", "n8n"],
-    autor: "Builder de la comunidad",
+      "Sistema de gestión de contactos y seguimiento de oportunidades construido 100% en Notion con vistas Kanban, filtros y Notion AI para resúmenes de reuniones.",
+    stack: ["Notion", "Notion AI", "Make"],
+    autor: "Miembro de la comunidad",
   },
   {
-    id: "claude-code-starter",
-    nombre: "Starter kit Claude Code",
+    id: "notion-dashboard",
+    nombre: "Dashboard de empresa en Notion",
     descripcion:
-      "Plantilla con CLAUDE.md, hooks de pre-commit y flujos de PR automatizados para equipos que empiezan con Claude Code.",
-    stack: ["Claude Code", "TypeScript", "GitHub Actions"],
-    github: "https://github.com",
-    autor: "Builder de la comunidad",
+      "Workspace completo para una startup: OKRs, proyectos, wiki, onboarding y reuniones en un solo espacio conectado.",
+    stack: ["Notion", "Make", "Google Calendar"],
+    autor: "Miembro de la comunidad",
   },
   {
-    id: "prompt-library",
-    nombre: "Biblioteca de prompts en español",
+    id: "template-library",
+    nombre: "Biblioteca de templates en español",
     descripcion:
-      "Colección curada de system prompts para ventas, contenido, código y análisis, probados por speakers de Claude Perú.",
-    stack: ["Claude", "Notion"],
-    autor: "Comunidad Claude Perú",
+      "Colección curada de templates para gestión personal, freelancers y equipos, probados y compartidos por speakers de Notion Lima.",
+    stack: ["Notion", "Notion AI"],
+    autor: "Comunidad Notion Lima",
   },
   {
     id: "luma-sync",
     nombre: "Sync automático de eventos Luma",
     descripcion:
-      "Cron job que sincroniza eventos de Luma con la base de datos de slots para mantener el calendario actualizado.",
+      "Cron job que sincroniza eventos de Luma con la base de datos de slots en Notion para mantener el calendario actualizado.",
     stack: ["Next.js", "Luma API", "Notion", "Vercel Cron"],
-    autor: "Claude Perú",
+    autor: "Notion Lima",
   },
   {
-    id: "cover-generator",
-    nombre: "Generador de covers para charlas",
+    id: "notion-make-flows",
+    nombre: "Flujos de automatización con Notion + Make",
     descripcion:
-      "Flujo con Claude para generar copy y assets de promoción (Instagram, LinkedIn, Stories) para cada webinar.",
-    stack: ["Claude", "Figma", "Make"],
-    autor: "Builder de la comunidad",
+      "Serie de automatizaciones que conectan Notion con Gmail, Slack y Google Sheets para sincronizar datos sin esfuerzo manual.",
+    stack: ["Notion API", "Make", "Gmail", "Google Sheets"],
+    autor: "Miembro de la comunidad",
   },
 ];

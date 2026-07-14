@@ -13,7 +13,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
   title: "¡Gracias!",
-  description: "Tu acción en Claude Perú fue registrada correctamente.",
+  description: "Tu acción en Notion Lima fue registrada correctamente.",
   path: "/gracias",
   noIndex: true,
 });
@@ -44,7 +44,7 @@ const CONTENT: Record<
     subtitle: "Tu lugar está reservado. Te contactaremos pronto con los detalles.",
     steps: [
       "Recibirás un email de confirmación con todos los detalles de tu charla.",
-      "El equipo de Claude Perú coordinará contigo la logística del evento.",
+      "El equipo de Notion Lima coordinará contigo la logística del evento.",
       "Te compartiremos el link de Luma para que puedas invitar a tu red.",
     ],
     primaryCta: { label: "Ver eventos", href: "/eventos" },
@@ -59,7 +59,7 @@ const CONTENT: Record<
     subtitle: "Revisa tu correo. Te enviamos un mensaje de bienvenida.",
     steps: [
       "Te avisaremos sobre próximos webinars y eventos de la comunidad.",
-      "Recibirás novedades de Claude y recursos curados en español.",
+      "Recibirás novedades de Notion y recursos curados en español.",
       "Mientras tanto, únete al grupo de WhatsApp para no perderte nada en vivo.",
     ],
     primaryCta: {

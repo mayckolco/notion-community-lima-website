@@ -235,7 +235,7 @@ export function MemberProjectsPanel({
       <section className="space-y-4 pt-4 border-t border-border/60">
         <h2 className="font-serif text-lg">Proyectos de la comunidad</h2>
         <p className="text-sm text-muted-foreground">
-          Todos los proyectos publicados por miembros de Claude Perú.
+          Todos los proyectos publicados por miembros de Notion Lima.
         </p>
         {publishedProyectos.length === 0 ? (
           <p className="text-sm text-muted-foreground">

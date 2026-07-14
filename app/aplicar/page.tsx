@@ -15,7 +15,7 @@ export const revalidate = 0;
 export const metadata: Metadata = createPageMetadata({
   title: "Aplicar como speaker",
   description:
-    "Postula para compartir tu experiencia construyendo con Claude en un webinar de la comunidad Claude Perú. Elige una fecha y envía tu charla.",
+    "Postula para compartir tu experiencia con Notion en una sesión de la comunidad Notion Lima. Elige una fecha y envía tu charla.",
   path: "/aplicar",
 });
 
@@ -52,11 +52,11 @@ export default async function AplicarPage() {
             </Link>
 
             <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
-              ¡Convocatoria abierta: Claude Perú – <span className="gradient-text">Call for speakers!</span>
+              ¡Convocatoria abierta: Notion Lima – <span className="gradient-text">Call for speakers!</span>
             </h1>
             <div className="text-sm sm:text-base text-muted-foreground mt-3 max-w-4xl space-y-3 leading-relaxed">
-              <p>¿Estás construyendo una startup o desarrollando productos con inteligencia artificial?</p>
-              <p>Tu experiencia, aprendizajes y desafíos pueden inspirar a la próxima generación de founders y builders. No importa si es tu primera vez como speaker o si ya has compartido en escenarios antes y sé parte de Speakers de Claude Perú.</p>
+              <p>¿Usas Notion en tu trabajo, equipo o startup y tienes algo que compartir?</p>
+              <p>Tu experiencia, sistemas y aprendizajes pueden inspirar a otros miembros de la comunidad. No importa si es tu primera vez como speaker o ya has presentado antes. Sé parte de los speakers de Notion Lima.</p>
             </div>
           </div>
 

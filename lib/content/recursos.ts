@@ -1,14 +1,10 @@
-import {
-  CLAUDE_API_DOCS_URL,
-  CLAUDE_APP_URL,
-  CLAUDE_CODE_DOCS_URL,
-} from "./constants";
+import { NOTION_URL, NOTION_TEMPLATES_URL } from "./constants";
 
 export type RecursoCategoria =
   | "empezar"
-  | "prompting"
-  | "claude-code"
-  | "api"
+  | "notion-ai"
+  | "templates"
+  | "integraciones"
   | "comunidad";
 
 export type RecursoTipo = "link" | "video" | "grabacion";
@@ -26,90 +22,81 @@ export interface Recurso {
 }
 
 export const RECURSO_CATEGORIAS: Record<RecursoCategoria, string> = {
-  empezar: "Empezar con Claude",
-  prompting: "Prompting",
-  "claude-code": "Claude Code",
-  api: "API y builders",
+  empezar: "Empezar con Notion",
+  "notion-ai": "Notion AI",
+  templates: "Templates",
+  integraciones: "Integraciones",
   comunidad: "Comunidad",
 };
 
 export const RECURSOS_ESTATICOS: Recurso[] = [
   {
-    id: "claude-ai",
-    titulo: "Claude.ai · Empieza gratis",
+    id: "notion-app",
+    titulo: "Notion · Empieza gratis",
     descripcion:
-      "Crea tu cuenta y prueba Claude en el navegador. Ideal para tu primer contacto con la herramienta.",
+      "Crea tu cuenta y prueba Notion en el navegador. Ideal para tu primer workspace personal o de equipo.",
     categoria: "empezar",
-    url: CLAUDE_APP_URL,
+    url: NOTION_URL,
     tipo: "link",
     externo: true,
   },
   {
-    id: "anthropic-docs",
-    titulo: "Documentación oficial de Anthropic",
+    id: "notion-docs",
+    titulo: "Centro de ayuda oficial de Notion",
     descripcion:
-      "Guías oficiales sobre modelos, API, Claude Code y mejores prácticas de seguridad.",
+      "Guías oficiales sobre páginas, bases de datos, permisos, integraciones y las últimas funciones.",
     categoria: "empezar",
-    url: "https://docs.anthropic.com",
+    url: "https://notion.so/help",
     tipo: "link",
     externo: true,
   },
   {
-    id: "prompt-engineering",
-    titulo: "Guía de prompt engineering",
+    id: "notion-ai-intro",
+    titulo: "Notion AI · Guía de inicio",
     descripcion:
-      "Técnicas para escribir prompts claros: contexto, ejemplos, formato de salida y iteración.",
-    categoria: "prompting",
-    url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview",
+      "Cómo activar y usar Notion AI para redactar, resumir, traducir y extraer información de tus páginas.",
+    categoria: "notion-ai",
+    url: "https://notion.so/product/ai",
     tipo: "link",
     externo: true,
   },
   {
-    id: "system-prompts",
-    titulo: "System prompts efectivos",
+    id: "notion-ai-search",
+    titulo: "Búsqueda inteligente con Notion AI",
     descripcion:
-      "Cómo definir el rol, tono y restricciones de Claude para tareas recurrentes y asistentes personalizados.",
-    categoria: "prompting",
-    url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts",
+      "Aprende a hacer preguntas en lenguaje natural a tu workspace y obtener respuestas directas desde cualquier página.",
+    categoria: "notion-ai",
+    url: "https://notion.so/product/ai",
     tipo: "link",
     externo: true,
   },
   {
-    id: "claude-code-docs",
-    titulo: "Claude Code · Documentación",
+    id: "notion-templates-gallery",
+    titulo: "Galería de templates oficiales",
     descripcion:
-      "Instalación, comandos, flujos de trabajo y cómo usar Claude Code en tu terminal.",
-    categoria: "claude-code",
-    url: CLAUDE_CODE_DOCS_URL,
+      "Más de 500 templates organizados por industria, tamaño de equipo y caso de uso. Empieza desde un sistema ya probado.",
+    categoria: "templates",
+    url: NOTION_TEMPLATES_URL,
     tipo: "link",
     externo: true,
   },
   {
-    id: "claude-code-tips",
-    titulo: "Tips de la comunidad para Claude Code",
+    id: "notion-make-integration",
+    titulo: "Notion + Make · Automatizaciones sin código",
     descripcion:
-      "Resumen de aprendizajes compartidos en charlas de Claude Perú: CLAUDE.md, hooks y flujos con git.",
-    categoria: "claude-code",
-    url: "/recursos",
-    tipo: "link",
-  },
-  {
-    id: "api-getting-started",
-    titulo: "Claude API · Primeros pasos",
-    descripcion:
-      "Crea tu API key, elige un modelo y haz tu primera llamada. Base para productos con IA.",
-    categoria: "api",
-    url: CLAUDE_API_DOCS_URL,
+      "Conecta Notion con más de 2000 aplicaciones usando Make. Sincroniza datos, crea registros automáticos y dispara flujos desde eventos en tu workspace.",
+    categoria: "integraciones",
+    url: "https://www.make.com/en/integrations/notion",
     tipo: "link",
     externo: true,
   },
   {
-    id: "mcp-docs",
-    titulo: "Model Context Protocol (MCP)",
+    id: "notion-api-docs",
+    titulo: "API de Notion · Documentación oficial",
     descripcion:
-      "Conecta Claude con herramientas externas: bases de datos, APIs, Notion, GitHub y más.",
-    categoria: "api",
-    url: "https://modelcontextprotocol.io",
+      "Referencia completa para desarrolladores: autenticación, endpoints de bases de datos, páginas y bloques.",
+    categoria: "integraciones",
+    url: "https://developers.notion.com",
     tipo: "link",
     externo: true,
   },
@@ -117,7 +104,7 @@ export const RECURSOS_ESTATICOS: Recurso[] = [
     id: "aplicar-speaker",
     titulo: "Aplica como speaker",
     descripcion:
-      "Comparte tu experiencia construyendo con Claude en un webinar en vivo con la comunidad.",
+      "Comparte tu experiencia con Notion en una sesión en vivo con la comunidad.",
     categoria: "comunidad",
     url: "/aplicar",
     tipo: "link",
@@ -126,7 +113,7 @@ export const RECURSOS_ESTATICOS: Recurso[] = [
     id: "directorio",
     titulo: "Directorio de speakers",
     descripcion:
-      "Conoce a los builders que ya compartieron en Claude Perú y revisa sus charlas.",
+      "Conoce a los miembros que ya compartieron en Notion Lima y revisa sus charlas.",
     categoria: "comunidad",
     url: "/directorio",
     tipo: "link",

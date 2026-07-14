@@ -1,11 +1,48 @@
-import { ArrowUpRight, Bot, Code2, Terminal } from "lucide-react";
-import { CLAUDE_PRODUCTS } from "@/lib/content/claude-products";
+import { ArrowUpRight, Bot, Calendar, Database, Layout } from "lucide-react";
 
-const PRODUCT_ICONS = {
-  "claude-app": Bot,
-  "claude-code": Terminal,
-  "claude-api": Code2,
-} as const;
+const NOTION_PRODUCTS = [
+  {
+    id: "notion-workspace",
+    nombre: "Notion",
+    tagline: "Tu workspace todo en uno",
+    descripcion:
+      "Docs, bases de datos, wikis y proyectos en un solo lugar. Ideal para organizar notas, procesos y conocimiento de tu equipo con total flexibilidad.",
+    paraQuien: "Profesionales, equipos y founders que quieren un sistema propio sin depender de múltiples apps.",
+    url: "https://notion.so",
+    destacado: true,
+    Icon: Layout,
+  },
+  {
+    id: "notion-ai",
+    nombre: "Notion AI",
+    tagline: "IA dentro de tu workspace",
+    descripcion:
+      "Redacta, resume, traduce y organiza con IA directamente en tus páginas. Accede a búsqueda inteligente en todo tu workspace y genera contenido con contexto.",
+    paraQuien: "Usuarios que quieren aprovechar la IA sin salir de su sistema de trabajo.",
+    url: "https://notion.so/product/ai",
+    Icon: Bot,
+  },
+  {
+    id: "notion-calendar",
+    nombre: "Notion Calendar",
+    tagline: "Gestiona tu tiempo con contexto",
+    descripcion:
+      "Calendario integrado con tu workspace. Ve tus eventos junto a tus proyectos y tareas. Conecta con Google Calendar y mantén todo en un solo flujo.",
+    paraQuien: "Personas que quieren unificar agenda y trabajo en Notion.",
+    url: "https://notion.so/product/calendar",
+    Icon: Calendar,
+  },
+  {
+    id: "notion-api",
+    nombre: "Notion API",
+    tagline: "Integra Notion en tus productos",
+    descripcion:
+      "Conecta Notion con otras herramientas vía API. Automatiza flujos, sincroniza datos y construye integraciones con Make, Zapier o código propio.",
+    paraQuien: "Builders que quieren usar Notion como base de datos o backend de sus automatizaciones.",
+    url: "https://developers.notion.com",
+    Icon: Database,
+  },
+] as const;
 
 export function ClaudeProductsSection() {
   return (
@@ -14,16 +51,16 @@ export function ClaudeProductsSection() {
         <div className="space-y-3 max-w-2xl">
           <p className="text-xs uppercase tracking-widest text-primary">Productos</p>
           <h2 id="products-heading" className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
-            El ecosistema <span className="gradient-text">Claude</span>
+            El ecosistema <span className="gradient-text">Notion</span>
           </h2>
           <p className="text-muted-foreground leading-relaxed">
-            Tres formas de usar Claude según tu perfil: conversar, programar o integrar en productos.
+            Cuatro formas de usar Notion según tu perfil: organizar, automatizar, integrar o escalar.
           </p>
         </div>
 
-        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {CLAUDE_PRODUCTS.map((product) => {
-            const Icon = PRODUCT_ICONS[product.id as keyof typeof PRODUCT_ICONS] ?? Bot;
+        <div className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {NOTION_PRODUCTS.map((product) => {
+            const Icon = product.Icon;
             return (
               <a
                 key={product.id}

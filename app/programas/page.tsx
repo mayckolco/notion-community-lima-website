@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = createPageMetadata({
   title: "Programas",
   description:
-    "Formaciones de Claude Perú para profesionales y empresas. Aprende a usar Claude y la IA aplicada, desde cero o en tu organización.",
+    "Formaciones de Notion Lima para profesionales y empresas. Aprende a usar Notion y sus sistemas aplicados, desde cero o en tu organización.",
   path: "/programas",
 });
 
@@ -21,7 +21,7 @@ const TRACKS = [
     icon: GraduationCap,
     title: "Para profesionales",
     description:
-      "Claude Bootcamp: sesión intensiva para dominar Claude sin código. Virtual S/ 159 o presencial S/ 249 en Lima.",
+      "Notion Bootcamp: sesión intensiva para dominar Notion sin código. Virtual S/ 159 o presencial S/ 249 en Lima.",
     href: "/programas/profesionales",
     cta: "Ver bootcamp",
     comingSoon: false,
@@ -55,8 +55,8 @@ export default function ProgramasPage() {
               Formaciones para <span className="gradient-text">cada nivel</span>
             </h1>
             <p className="text-muted-foreground leading-relaxed max-w-2xl">
-              Formaciones y experiencias de Claude Perú, tanto para profesionales que
-              quieren dominar la IA como para empresas que buscan adoptarla en sus equipos.
+              Formaciones y experiencias de Notion Lima, tanto para profesionales que
+              quieren dominar Notion como para empresas que buscan adoptarlo en sus equipos.
             </p>
           </div>
 

@@ -6,27 +6,27 @@ import { JoinCommunityButton } from "@/components/JoinCommunityButton";
 const PILLARS = [
   {
     icon: Video,
-    title: "Webinars semanales",
+    title: "Sesiones mensuales",
     description:
-      "Charlas en vivo cada lunes con builders peruanos que comparten casos reales, demos y aprendizajes construyendo con Claude.",
+      "Charlas en vivo con miembros de Lima que comparten casos reales, sistemas y aprendizajes construyendo con Notion.",
   },
   {
     icon: Users,
-    title: "Meetups mensuales",
+    title: "Meetups presenciales",
     description:
-      "Nos reunimos presencialmente en Lima para compartir demos, proyectos y descubrimientos sobre Claude.",
+      "Nos reunimos en Lima para compartir demos, templates y flujos de trabajo reales dentro de Notion.",
   },
   {
     icon: BookOpen,
     title: "Aprendizaje colectivo",
     description:
-      "Desde prompt engineering avanzado hasta implementación de agentes. El conocimiento se comparte y multiplica.",
+      "Desde tu primer workspace hasta sistemas operativos complejos. El conocimiento se comparte y multiplica.",
   },
   {
     icon: Network,
     title: "Networking de calidad",
     description:
-      "Conoce a los builders más inquietos de Perú. Encuentra co-founders, talento o inspiración para tu próximo proyecto.",
+      "Conoce a los usuarios más curiosos de Lima. Encuentra colaboradores, talento o inspiración para tu próximo proyecto.",
   },
 ] as const;
 
@@ -37,7 +37,7 @@ export function CommunityPillarsSection() {
         <div className="space-y-3 max-w-2xl">
           <p className="text-xs uppercase tracking-widest text-primary">Comunidad</p>
           <h2 id="pillars-heading" className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
-            Claude Perú: builders, para builders
+            Notion Lima: aprende, organízate y crece
           </h2>
         </div>
 
@@ -70,11 +70,11 @@ export function FinalCTASection() {
       <div className="max-w-3xl mx-auto text-center space-y-6">
         <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl tracking-tight text-balance">
           Empieza hoy con la comunidad{" "}
-          <span className="gradient-text">Claude Perú</span>
+          <span className="gradient-text">Notion Lima</span>
         </h2>
         <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto">
-          Únete gratis, asiste a los webinars, aprende de casos reales y conecta
-          con builders que ya construyen con IA en Perú.
+          Únete gratis, asiste a los meetups, aprende de casos reales y conecta
+          con personas que ya usan Notion en Lima para organizarse y crecer.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <JoinCommunityButton location="landing_final_cta" />

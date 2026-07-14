@@ -422,7 +422,7 @@ export async function confirmWebinar(
     });
     return;
   } catch {
-    // Claude Perú DB uses Status; legacy AIFF DB uses Estado
+    // Notion Lima DB uses Status; legacy AIFF DB uses Estado
   }
 
   await notion.pages.update({

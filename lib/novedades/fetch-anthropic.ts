@@ -1,9 +1,7 @@
 import type { Novedad, NovedadTag } from "@/lib/content/novedades";
 
 const RSS_URLS = [
-  "https://www.anthropic.com/index.xml",
-  "https://www.anthropic.com/rss.xml",
-  "https://www.anthropic.com/news/rss",
+  "https://www.notion.so/blog/rss.xml",
 ];
 
 function stripHtml(html: string): string {
@@ -52,10 +50,10 @@ function parseRssItems(xml: string): Array<{
 
 function inferTag(title: string, description: string): NovedadTag {
   const text = `${title} ${description}`.toLowerCase();
-  if (text.includes("api") || text.includes("sdk") || text.includes("mcp")) return "api";
-  if (text.includes("security") || text.includes("seguridad") || text.includes("safety")) return "seguridad";
-  if (text.includes("claude code") || text.includes("product") || text.includes("feature")) return "producto";
-  return "modelo";
+  if (text.includes("api") || text.includes("sdk") || text.includes("integration")) return "api";
+  if (text.includes("template") || text.includes("gallery")) return "template";
+  if (text.includes("ai") || text.includes("feature") || text.includes("update")) return "feature";
+  return "producto";
 }
 
 function toIsoDate(pubDate: string): string {
@@ -74,7 +72,7 @@ function slugify(text: string): string {
     .slice(0, 60);
 }
 
-export async function fetchAnthropicNews(): Promise<Novedad[]> {
+export async function fetchNotionNews(): Promise<Novedad[]> {
   for (const url of RSS_URLS) {
     try {
       const res = await fetch(url, {
@@ -88,10 +86,10 @@ export async function fetchAnthropicNews(): Promise<Novedad[]> {
       if (items.length === 0) continue;
 
       return items.slice(0, 6).map((item) => ({
-        id: `anthropic-${slugify(item.title)}`,
+        id: `notion-${slugify(item.title)}`,
         fecha: toIsoDate(item.pubDate),
         titulo: item.title,
-        resumen: item.description.slice(0, 280) || "Novedad de Anthropic.",
+        resumen: item.description.slice(0, 280) || "Novedad de Notion.",
         url: item.link,
         tag: inferTag(item.title, item.description),
       }));

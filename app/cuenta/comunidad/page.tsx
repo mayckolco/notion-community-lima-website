@@ -15,7 +15,7 @@ export default async function CuentaComunidadPage() {
         <p className="text-xs uppercase tracking-widest text-primary">Mi cuenta</p>
         <h1 className="font-serif text-2xl tracking-tight">Comunidad</h1>
         <p className="text-sm text-muted-foreground">
-          Explora el mapa y conoce a otros miembros de Claude Perú.
+          Explora el mapa y conoce a otros miembros de Notion Lima.
         </p>
       </header>
 

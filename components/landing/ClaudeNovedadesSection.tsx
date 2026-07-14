@@ -11,7 +11,7 @@ interface ClaudeNovedadesSectionProps {
 
 export function ClaudeNovedadesSection({ novedades }: ClaudeNovedadesSectionProps) {
   const items = novedades.slice(0, 4);
-  const isAutomated = novedades.some((n) => n.id.startsWith("anthropic-"));
+  const isAutomated = novedades.some((n) => n.id.startsWith("notion-"));
 
   return (
     <section className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
@@ -20,10 +20,10 @@ export function ClaudeNovedadesSection({ novedades }: ClaudeNovedadesSectionProp
           <div className="space-y-3 max-w-2xl">
             <p className="text-xs uppercase tracking-widest text-primary">Novedades</p>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl leading-tight tracking-tight">
-              Lo último de <span className="gradient-text">Anthropic</span>
+              Lo último de <span className="gradient-text">Notion</span>
             </h2>
             <p className="text-muted-foreground leading-relaxed">
-              Modelos, productos y features relevantes para la comunidad.
+              Features, actualizaciones y lanzamientos relevantes para la comunidad.
               {isAutomated ? " Sincronizado automáticamente." : " Curado manualmente."}
             </p>
           </div>

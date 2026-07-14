@@ -1,6 +1,4 @@
-import { CLAUDE_CODE_DOCS_URL } from "./constants";
-
-export type NovedadTag = "modelo" | "producto" | "api" | "seguridad";
+export type NovedadTag = "feature" | "producto" | "api" | "template";
 
 export interface Novedad {
   id: string;
@@ -12,47 +10,48 @@ export interface Novedad {
 }
 
 export const NOVEDAD_TAGS: Record<NovedadTag, string> = {
-  modelo: "Modelo",
+  feature: "Feature",
   producto: "Producto",
   api: "API",
-  seguridad: "Seguridad",
+  template: "Template",
 };
 
-/** Mantener manualmente. Actualizar cuando Anthropic anuncie novedades relevantes. */
-export const CLAUDE_NOVEDADES: Novedad[] = [
+/** Mantener manualmente. Actualizar cuando Notion anuncie novedades relevantes. */
+export const NOTION_NOVEDADES: Novedad[] = [
   {
-    id: "claude-4-family",
-    fecha: "2026-05-15",
-    titulo: "Familia Claude 4: Sonnet y Opus",
+    id: "notion-ai-search",
+    fecha: "2026-06-10",
+    titulo: "Notion AI: búsqueda inteligente en todo el workspace",
     resumen:
-      "Anthropic lanzó Claude 4 con mejor razonamiento, ventanas de contexto ampliadas y capacidades mejoradas para código y análisis de documentos largos.",
-    url: "https://www.anthropic.com/news",
-    tag: "modelo",
+      "Notion lanzó búsqueda semántica con IA que entiende el contexto de tus preguntas y devuelve respuestas directas desde cualquier página de tu workspace, sin necesidad de saber exactamente qué buscar.",
+    url: "https://notion.so/product/ai",
+    tag: "feature",
   },
   {
-    id: "claude-code-updates",
-    fecha: "2026-06-02",
-    titulo: "Claude Code: agentes en el repositorio",
+    id: "notion-calendar-tasks",
+    fecha: "2026-05-20",
+    titulo: "Notion Calendar integra tareas de bases de datos",
     resumen:
-      "Nuevas capacidades de Claude Code para navegar codebases, ejecutar tests y aplicar cambios multi-archivo con mayor precisión en proyectos reales.",
-    url: CLAUDE_CODE_DOCS_URL,
+      "Ahora puedes ver tus tareas y fechas límite de cualquier base de datos directamente en Notion Calendar, unificando agenda y gestión de proyectos en una sola vista.",
+    url: "https://notion.so/product/calendar",
     tag: "producto",
   },
   {
-    id: "mcp-protocol",
-    fecha: "2026-04-10",
-    titulo: "Model Context Protocol (MCP)",
+    id: "notion-api-v2",
+    fecha: "2026-04-15",
+    titulo: "API de Notion: nuevos endpoints para bases de datos relacionales",
     resumen:
-      "Protocolo abierto para conectar Claude con herramientas externas (bases de datos, APIs, Notion, GitHub y más) de forma estandarizada.",
-    url: "https://modelcontextprotocol.io",
+      "La API de Notion añade soporte completo para propiedades relacionales y rollups, permitiendo automatizaciones más complejas con Make, Zapier y código propio.",
+    url: "https://developers.notion.com",
     tag: "api",
   },
   {
-    id: "extended-thinking",
-    fecha: "2026-03-20",
-    titulo: "Extended thinking en modelos Claude",
+    id: "notion-templates-2026",
+    fecha: "2026-03-08",
+    titulo: "Galería de templates rediseñada con filtros por industria",
     resumen:
-      "Los modelos pueden dedicar más tiempo a razonar antes de responder, mejorando resultados en tareas complejas de matemáticas, código y planificación.",
-    tag: "modelo",
+      "La galería oficial de Notion se rediseñó con más de 500 templates organizados por industria, tamaño de equipo y caso de uso. Más fácil que nunca encontrar el sistema que necesitas.",
+    url: "https://notion.so/templates",
+    tag: "template",
   },
 ];

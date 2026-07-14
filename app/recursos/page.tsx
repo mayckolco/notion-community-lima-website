@@ -19,7 +19,7 @@ export const revalidate = 0;
 export const metadata: Metadata = createPageMetadata({
   title: "Recursos",
   description:
-    "Guías, links y grabaciones para aprender Claude, prompting, Claude Code y la API. Recursos curados por la comunidad Claude Perú.",
+    "Guías, links y grabaciones para aprender Notion, Notion AI, templates y automatizaciones. Recursos curados por la comunidad Notion Lima.",
   path: "/recursos",
 });
 
@@ -31,7 +31,7 @@ function pastSlotsToRecursos(
     titulo: slot.titulo ?? "Charla de la comunidad",
     descripcion:
       slot.descripcion ??
-      "Grabación de un webinar de Claude Perú con casos reales de builders peruanos.",
+      "Grabación de una sesión de Notion Lima con casos reales de miembros de la comunidad.",
     categoria: "comunidad" as const,
     url: slot.grabacionUrl,
     tipo: "grabacion" as const,
@@ -82,7 +82,7 @@ export default async function RecursosPage() {
               <p className="text-xs uppercase tracking-widest text-primary">Novedades</p>
               <h2 className="font-serif text-2xl tracking-tight">
                 Últimos lanzamientos de{" "}
-                <span className="gradient-text">Anthropic</span>
+                <span className="gradient-text">Notion</span>
               </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">

@@ -1,10 +1,6 @@
-import {
-  CLAUDE_API_DOCS_URL,
-  CLAUDE_APP_URL,
-  CLAUDE_CODE_DOCS_URL,
-} from "./constants";
+import { NOTION_URL, NOTION_TEMPLATES_URL } from "./constants";
 
-export interface ClaudeProduct {
+export interface NotionProduct {
   id: string;
   nombre: string;
   tagline: string;
@@ -14,33 +10,42 @@ export interface ClaudeProduct {
   destacado?: boolean;
 }
 
-export const CLAUDE_PRODUCTS: ClaudeProduct[] = [
+export const NOTION_PRODUCTS: NotionProduct[] = [
   {
-    id: "claude-app",
-    nombre: "Claude",
-    tagline: "Tu asistente de IA en el navegador y móvil",
+    id: "notion-workspace",
+    nombre: "Notion",
+    tagline: "Tu workspace todo en uno",
     descripcion:
-      "Conversa con Claude para redactar, analizar documentos, programar, investigar y resolver problemas complejos. Disponible en web, iOS y Android con planes Free, Pro y Max.",
-    paraQuien: "Profesionales, estudiantes y cualquier persona que quiera usar IA en su día a día.",
-    url: CLAUDE_APP_URL,
+      "Docs, bases de datos, wikis y proyectos en un solo lugar. Organiza notas, procesos y conocimiento de tu equipo con total flexibilidad.",
+    paraQuien: "Profesionales, equipos y founders que quieren un sistema propio sin depender de múltiples apps.",
+    url: NOTION_URL,
     destacado: true,
   },
   {
-    id: "claude-code",
-    nombre: "Claude Code",
-    tagline: "IA en tu terminal para builders",
+    id: "notion-ai",
+    nombre: "Notion AI",
+    tagline: "IA dentro de tu workspace",
     descripcion:
-      "Agente de código que entiende tu repositorio, ejecuta comandos, edita archivos y automatiza tareas de desarrollo. Ideal para prototipar, refactorizar y construir features completas.",
-    paraQuien: "Developers, founders técnicos y equipos que construyen software con IA.",
-    url: CLAUDE_CODE_DOCS_URL,
+      "Redacta, resume, traduce y organiza con IA directamente en tus páginas. Búsqueda inteligente en todo tu workspace y generación de contenido con contexto.",
+    paraQuien: "Usuarios que quieren aprovechar la IA sin salir de su sistema de trabajo.",
+    url: "https://notion.so/product/ai",
   },
   {
-    id: "claude-api",
-    nombre: "Claude API",
-    tagline: "Integra Claude en tus productos",
+    id: "notion-calendar",
+    nombre: "Notion Calendar",
+    tagline: "Gestiona tu tiempo con contexto",
     descripcion:
-      "Accede a los modelos Claude (Sonnet, Opus, Haiku) vía API para crear chatbots, agentes, pipelines de análisis y productos con IA embebida. Compatible con MCP y tool use.",
-    paraQuien: "Builders que quieren productos propios con IA, no solo usar un chat.",
-    url: CLAUDE_API_DOCS_URL,
+      "Calendario integrado con tu workspace. Ve tus eventos junto a tus proyectos y tareas. Conecta con Google Calendar y mantén todo en un solo flujo.",
+    paraQuien: "Personas que quieren unificar agenda y trabajo en Notion.",
+    url: "https://notion.so/product/calendar",
+  },
+  {
+    id: "notion-templates",
+    nombre: "Templates",
+    tagline: "Empieza desde un sistema probado",
+    descripcion:
+      "Más de 500 templates creados por la comunidad y el equipo de Notion. Desde gestión personal hasta operaciones completas de empresa.",
+    paraQuien: "Cualquiera que quiera arrancar rápido con un sistema ya diseñado.",
+    url: NOTION_TEMPLATES_URL,
   },
 ];

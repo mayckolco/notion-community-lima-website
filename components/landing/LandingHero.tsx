@@ -15,17 +15,17 @@ export function LandingHero({ nextEvent }: LandingHeroProps) {
     <section aria-labelledby="hero-heading" className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-24 text-center">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         <p className="text-xs uppercase tracking-widest text-primary">
-          La referencia en español sobre Claude en Perú
+          La comunidad de Notion en Lima
         </p>
 
         <h1 id="hero-heading" className="font-serif text-4xl sm:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-balance">
-          Aprende, construye y crece con{" "}
-          <span className="gradient-text">Claude</span>
+          Aprende, organízate y crece con{" "}
+          <span className="gradient-text">Notion</span>
         </h1>
 
         <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Comunidad de builders peruanos que comparten casos reales con Claude,
-          desde tu primer prompt hasta productos con IA.
+          Comunidad de personas en Lima que comparten casos reales con Notion,
+          desde tu primer workspace hasta sistemas que escalan con tu equipo.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 sm:px-0">

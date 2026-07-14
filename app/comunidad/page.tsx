@@ -19,7 +19,7 @@ export const revalidate = 0;
 export const metadata: Metadata = createPageMetadata({
   title: "Comunidad",
   description:
-    "Mapa de builders de Claude Perú. Descubre quién forma parte de la comunidad y desde dónde construyen con IA.",
+    "Mapa de miembros de Notion Lima. Descubre quién forma parte de la comunidad y desde dónde usan Notion.",
   path: "/comunidad",
 });
 
@@ -45,11 +45,11 @@ export default async function ComunidadPage() {
               Comunidad
             </p>
             <h1 className="text-3xl sm:text-4xl font-serif tracking-tight leading-tight">
-              Builders de <span className="gradient-text">Claude Perú</span>
+              Miembros de <span className="gradient-text">Notion Lima</span>
             </h1>
             <p className="text-muted-foreground leading-relaxed max-w-2xl">
               Personas que forman parte de la comunidad y comparten lo que construyen
-              con Claude. Haz clic en un punto del mapa para ver cuántas personas hay en cada ciudad.
+              con Notion. Haz clic en un punto del mapa para ver cuántas personas hay en cada ciudad.
             </p>
           </header>
 

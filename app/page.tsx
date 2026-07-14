@@ -22,9 +22,9 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { faqPageJsonLd, organizationJsonLd } from "@/lib/seo/json-ld";
 
 export const metadata = createPageMetadata({
-  title: "Claude Perú · Comunidad de builders con IA",
+  title: "Notion Lima · Comunidad de Notion en Lima",
   description:
-    "La referencia en español sobre Claude en Perú. Aprende, construye y conecta con builders que usan Claude, Claude Code y la API en casos reales.",
+    "La comunidad de Notion en Lima. Aprende, organízate y conecta con personas que usan Notion para gestionar proyectos, equipos y conocimiento.",
   path: "/",
 });
 

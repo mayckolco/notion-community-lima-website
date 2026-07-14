@@ -6,54 +6,54 @@ export interface FAQItem {
 
 export const LANDING_FAQ: FAQItem[] = [
   {
-    id: "que-es-claude",
-    question: "¿Qué es Claude?",
+    id: "que-es-notion",
+    question: "¿Qué es Notion?",
     answer:
-      "Claude es un asistente de inteligencia artificial creado por Anthropic. Puede conversar, redactar textos, analizar documentos, escribir código y razonar sobre problemas complejos. Está disponible en claude.ai, como Claude Code en la terminal y vía API para integrarlo en productos propios.",
+      "Notion es una plataforma todo en uno que combina notas, bases de datos, gestión de proyectos y wikis en un solo workspace. Con Notion AI puedes redactar, resumir, traducir y organizar información de forma inteligente sin salir de tu entorno de trabajo.",
   },
   {
-    id: "claude-en-peru",
-    question: "¿Cómo uso Claude en Perú?",
+    id: "notion-gratis",
+    question: "¿Notion es gratis?",
     answer:
-      "Puedes empezar gratis en claude.ai desde cualquier lugar de Perú. Para ir más allá, únete a Claude Perú: asiste a webinars semanales en vivo, revisa grabaciones en /recursos, explora el directorio de speakers y participa en meetups presenciales en Lima.",
+      "Sí, Notion tiene un plan gratuito con uso individual ilimitado. Los planes Plus, Business y Enterprise ofrecen más capacidad de colaboración, historial de páginas y funciones de equipo. La comunidad Notion Lima es completamente gratuita: meetups, recursos y grupo de WhatsApp sin costo.",
   },
   {
-    id: "claude-gratis",
-    question: "¿Claude es gratis?",
+    id: "notion-ai",
+    question: "¿Qué es Notion AI?",
     answer:
-      "Sí, Claude tiene un plan gratuito en claude.ai con uso diario limitado. Los planes Pro y Max ofrecen más capacidad, acceso a modelos avanzados y Claude Code. La comunidad Claude Perú es gratuita: webinars, recursos y grupo de WhatsApp sin costo.",
+      "Notion AI es la inteligencia artificial integrada directamente en tu workspace. Te permite generar texto, resumir documentos, traducir contenido, extraer tareas de reuniones y hacer búsquedas inteligentes en todo tu espacio de trabajo. Es un add-on disponible en todos los planes.",
   },
   {
-    id: "claude-code-vs-chat",
-    question: "¿Cuál es la diferencia entre Claude y Claude Code?",
+    id: "para-quien",
+    question: "¿Para quién es Notion Lima?",
     answer:
-      "Claude (claude.ai) es un chat para tareas generales: redacción, análisis y conversación. Claude Code es un agente en tu terminal que entiende tu repositorio, edita archivos, ejecuta comandos y automatiza flujos de desarrollo. Ambos usan los modelos de Anthropic.",
+      "Para cualquier persona en Lima que use o quiera aprender Notion: freelancers, emprendedores, equipos de trabajo, estudiantes o profesionales que buscan organizar mejor su vida y trabajo. No se requiere experiencia previa; compartimos desde los conceptos básicos hasta sistemas avanzados.",
   },
   {
     id: "ser-speaker",
-    question: "¿Cómo puedo ser speaker en Claude Perú?",
+    question: "¿Cómo puedo ser speaker en Notion Lima?",
     answer:
-      "Visita /aplicar, elige una fecha disponible y completa el formulario con el título de tu charla, herramientas que usas y una breve descripción. No necesitas experiencia previa como speaker; valoramos casos reales y aprendizajes concretos.",
+      "Visita /aplicar, elige una fecha disponible y completa el formulario con el título de tu charla y una breve descripción de tu sistema o experiencia con Notion. No necesitas experiencia previa como speaker; valoramos casos reales y aprendizajes concretos.",
   },
   {
-    id: "afiliacion-anthropic",
-    question: "¿Claude Perú está afiliado a Anthropic?",
+    id: "afiliacion-notion",
+    question: "¿Notion Lima está afiliada a Notion?",
     answer:
-      "No. Claude Perú es una comunidad independiente organizada por entusiastas en Perú. No está afiliada oficialmente a Anthropic. Claude es una marca registrada de Anthropic, PBC.",
+      "No. Notion Lima es una comunidad independiente organizada por entusiastas en Lima. No está afiliada oficialmente a Notion Labs, Inc. Notion es una marca registrada de Notion Labs, Inc.",
   },
 ];
 
 export const RECURSOS_FAQ: FAQItem[] = [
   {
     id: "por-donde-empezar",
-    question: "¿Por dónde empiezo si nunca he usado Claude?",
+    question: "¿Por dónde empiezo si nunca he usado Notion?",
     answer:
-      "Crea una cuenta en claude.ai y prueba con una tarea concreta de tu trabajo. Luego revisa la categoría 'Empezar con Claude' en esta página y asiste a un webinar de la comunidad para ver casos reales.",
+      "Crea una cuenta gratuita en notion.so y empieza con una página simple. Luego revisa la categoría 'Empezar con Notion' en esta página y asiste a un meetup de la comunidad para ver casos reales en acción.",
   },
   {
     id: "grabaciones",
     question: "¿Dónde encuentro las grabaciones de charlas?",
     answer:
-      "En la categoría 'Comunidad' de esta página aparecen las grabaciones de webinars pasados. También puedes verlas en /eventos bajo 'Eventos pasados'.",
+      "En la categoría 'Comunidad' de esta página aparecen las grabaciones de sesiones pasadas. También puedes verlas en /eventos bajo 'Eventos pasados'.",
   },
 ];
