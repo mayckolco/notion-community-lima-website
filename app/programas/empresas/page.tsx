@@ -55,7 +55,7 @@ export default function ProgramasEmpresasPage() {
               </h1>
               <p className="text-muted-foreground leading-relaxed">
                 Estamos preparando capacitaciones a medida para equipos que quieren adoptar
-                Claude e IA aplicada. Muy pronto podrás solicitar talleres in-house y
+                Notion y automatizaciones. Muy pronto podrás solicitar talleres in-house y
                 acompañamiento para tu organización.
               </p>
             </div>
@@ -103,7 +103,7 @@ export default function ProgramasEmpresasPage() {
           courseJsonLd({
             name: "Capacitaciones de IA para empresas",
             description:
-              "Capacitaciones a medida para equipos que quieren adoptar Claude e IA aplicada con talleres in-house y casos de su industria.",
+              "Capacitaciones a medida para equipos que quieren adoptar Notion con talleres in-house y casos de su industria.",
             url: `${SITE_URL}/programas/empresas`,
           }),
         ]}

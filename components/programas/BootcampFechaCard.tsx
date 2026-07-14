@@ -110,7 +110,7 @@ export function BootcampFechaCard({ fecha, location }: BootcampFechaCardProps) {
               onClick={() =>
                 sendGAEvent("event", GA_EVENTS.clickWhatsapp, {
                   location: `${location}_info`,
-                  programa: "Claude Bootcamp",
+                  programa: "Notion Bootcamp",
                   modalidad: fecha.modalidad,
                 })
               }

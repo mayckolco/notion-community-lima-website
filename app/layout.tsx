@@ -67,9 +67,9 @@ export const metadata: Metadata = {
     canonical: SITE_URL,
   },
   icons: {
-    icon: [{ url: "/favicon.webp", type: "image/webp", sizes: "512x512" }],
-    apple: [{ url: "/favicon.webp", type: "image/webp", sizes: "512x512" }],
-    shortcut: ["/favicon.webp"],
+    icon: [{ url: "/favicon.jpg", type: "image/jpeg", sizes: "512x512" }],
+    apple: [{ url: "/favicon.jpg", type: "image/jpeg", sizes: "512x512" }],
+    shortcut: ["/favicon.jpg"],
   },
   robots: {
     index: true,

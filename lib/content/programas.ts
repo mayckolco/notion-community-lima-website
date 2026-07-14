@@ -51,7 +51,7 @@ export const PROGRAMA_FEATURES = [
   "Clases personalizadas en cohortes de 10 personas",
   "Mentor asignado durante todo el programa",
   "Casos prácticos de tu industria o rol",
-  "Demos en vivo con Claude Chat, Cowork y Code",
+  "Demos en vivo con Notion Chat, Cowork y Code",
   "Material de apoyo y plantillas post-sesión",
 ] as const;
 
@@ -59,10 +59,10 @@ export const CURSOS: Curso[] = [
   {
     slug: "claude-chat-fundamentos",
     tipo: "curso",
-    nombre: "Claude Chat desde cero",
+    nombre: "Notion Chat desde cero",
     tagline: "Tu primer paso con IA, sin tecnicismos",
     descripcion:
-      "Aprende a usar Claude en el navegador y móvil para redactar, resumir, investigar y organizar tu trabajo. Diseñado para personas sin experiencia previa en IA ni programación.",
+      "Aprende a usar Notion en el navegador y móvil para redactar, resumir, organizar y gestionar tu trabajo. Diseñado para personas sin experiencia previa en la herramienta.",
     producto: "chat",
     nivel: 1,
     nivelLabel: "Fundamentos",
@@ -71,7 +71,7 @@ export const CURSOS: Curso[] = [
     precio: { virtual: 179, presencial: 299, moneda: "PEN" },
     incluye: [...PROGRAMA_FEATURES],
     temario: [
-      "Qué es Claude y cómo se diferencia de otros chats",
+      "Qué es Notion y cómo se diferencia de otras herramientas",
       "Crear tu cuenta y primeros prompts efectivos",
       "Redactar emails, informes y presentaciones",
       "Analizar PDFs y documentos largos",
@@ -83,10 +83,10 @@ export const CURSOS: Curso[] = [
   {
     slug: "claude-chat-productividad",
     tipo: "curso",
-    nombre: "Claude Chat: productividad avanzada",
+    nombre: "Notion Chat: productividad avanzada",
     tagline: "Automatiza tareas repetitivas sin código",
     descripcion:
-      "Domina proyectos, instrucciones personalizadas, artefactos y flujos de trabajo con Claude Chat. Lleva tu productividad al siguiente nivel con técnicas de prompting avanzado.",
+      "Domina proyectos, instrucciones personalizadas, artefactos y flujos de trabajo con Notion Chat. Lleva tu productividad al siguiente nivel con técnicas de prompting avanzado.",
     producto: "chat",
     nivel: 2,
     nivelLabel: "Intermedio",
@@ -95,23 +95,23 @@ export const CURSOS: Curso[] = [
     precio: { virtual: 199, presencial: 329, moneda: "PEN" },
     incluye: [...PROGRAMA_FEATURES],
     temario: [
-      "Proyectos y contexto persistente en Claude",
+      "Proyectos y bases de datos relacionales en Notion",
       "Instrucciones personalizadas para tu rol",
       "Artefactos: informes, tablas y mini-apps sin código",
       "Cadenas de prompts para flujos complejos",
       "Integración con Google Drive y herramientas del día a día",
     ],
     paraQuien:
-      "Quienes ya usan Claude ocasionalmente y quieren sistematizar su trabajo diario.",
-    prerequisitos: "Haber completado Claude Chat desde cero o uso básico equivalente.",
+      "Quienes ya usan Notion ocasionalmente y quieren sistematizar su trabajo diario.",
+    prerequisitos: "Haber completado Notion Chat desde cero o uso básico equivalente.",
   },
   {
     slug: "claude-cowork-equipos",
     tipo: "curso",
-    nombre: "Claude Cowork para equipos",
+    nombre: "Notion Cowork para equipos",
     tagline: "Colabora con IA en proyectos compartidos",
     descripcion:
-      "Aprende a usar Claude Cowork para coordinar tareas, compartir contexto y trabajar en equipo con IA. Ideal para equipos pequeños y líderes que quieren adoptar IA sin fricción.",
+      "Aprende a usar Notion Cowork para coordinar tareas, compartir contexto y trabajar en equipo con IA. Ideal para equipos pequeños y líderes que quieren adoptar IA sin fricción.",
     producto: "cowork",
     nivel: 2,
     nivelLabel: "Intermedio",
@@ -120,7 +120,7 @@ export const CURSOS: Curso[] = [
     precio: { virtual: 199, presencial: 329, moneda: "PEN" },
     incluye: [...PROGRAMA_FEATURES],
     temario: [
-      "Qué es Claude Cowork y cuándo usarlo vs Chat",
+      "Qué es Notion Cowork y cuándo usarlo vs Chat",
       "Configurar espacios de trabajo compartidos",
       "Delegar tareas y seguimiento con el equipo",
       "Compartir documentos y contexto de proyecto",
@@ -128,15 +128,15 @@ export const CURSOS: Curso[] = [
     ],
     paraQuien:
       "Líderes de equipo, project managers y profesionales que coordinan trabajo grupal.",
-    prerequisitos: "Conocimiento básico de Claude Chat.",
+    prerequisitos: "Conocimiento básico de Notion Chat.",
   },
   {
     slug: "claude-code-sin-codigo",
     tipo: "curso",
-    nombre: "Claude Code sin programar",
+    nombre: "Notion API sin programar",
     tagline: "Construye y automatiza hablando en español",
     descripcion:
-      "Descubre Claude Code desde la perspectiva de un no-técnico: crea scripts, automatiza archivos y prototipa soluciones describiendo lo que necesitas, sin escribir código manualmente.",
+      "Descubre Notion API desde la perspectiva de un no-técnico: crea scripts, automatiza archivos y prototipa soluciones describiendo lo que necesitas, sin escribir código manualmente.",
     producto: "code",
     nivel: 3,
     nivelLabel: "Avanzado",
@@ -145,20 +145,20 @@ export const CURSOS: Curso[] = [
     precio: { virtual: 229, presencial: 369, moneda: "PEN" },
     incluye: [...PROGRAMA_FEATURES],
     temario: [
-      "Instalar y configurar Claude Code paso a paso",
-      "Pedirle a Claude que escriba y ejecute por ti",
+      "Instalar y configurar Notion API paso a paso",
+      "Conectar Notion con Make para ejecutar automatizaciones",
       "Automatizar reportes, renombrar archivos, limpiar datos",
       "Prototipar una herramienta interna sin ser developer",
       "Límites, seguridad y cuándo pedir ayuda técnica",
     ],
     paraQuien:
       "Profesionales curiosos que quieren ir más allá del chat sin volverse programadores.",
-    prerequisitos: "Claude Chat desde cero o nivel intermedio equivalente.",
+    prerequisitos: "Notion Chat desde cero o nivel intermedio equivalente.",
   },
   {
     slug: "claude-casos-practicos",
     tipo: "curso",
-    nombre: "Casos prácticos con Claude",
+    nombre: "Casos prácticos con Notion",
     tagline: "Resuelve problemas reales de tu trabajo",
     descripcion:
       "Taller intensivo donde traes tus propios casos (marketing, ventas, RR.HH., educación, operaciones) y los resolvemos en vivo con mentores. Sal con soluciones listas para usar.",
@@ -177,16 +177,16 @@ export const CURSOS: Curso[] = [
       "Plan de adopción para las próximas 2 semanas",
     ],
     paraQuien:
-      "Quienes ya usan Claude y quieren resultados concretos en su rol o empresa.",
+      "Quienes ya usan Notion y quieren resultados concretos en su rol o empresa.",
     prerequisitos: "Al menos un curso de nivel 1 o 2 completado.",
   },
   {
     slug: "claude-experto-flujos",
     tipo: "curso",
-    nombre: "Claude Experto: flujos y agentes",
-    tagline: "Orquesta Chat, Cowork y Code como un pro",
+    nombre: "Notion Experto: flujos y automatizaciones",
+    tagline: "Orquesta Notion con Make y APIs como un pro",
     descripcion:
-      "El nivel más alto para no-técnicos: diseña flujos multi-herramienta, conecta MCP básico, crea agentes simples y establece estándares de IA en tu equipo u organización.",
+      "El nivel más alto: diseña flujos multi-herramienta, conecta Notion API con Make, crea automatizaciones complejas y establece estándares de Notion en tu equipo u organización.",
     producto: "mixto",
     nivel: 4,
     nivelLabel: "Experto",
@@ -212,9 +212,9 @@ export const PROGRAMAS: ProgramaBundle[] = [
     slug: "programa-chat-completo",
     tipo: "programa",
     nombre: "Programa Chat Completo",
-    tagline: "De cero a productivo con Claude Chat",
+    tagline: "De cero a productivo con Notion Chat",
     descripcion:
-      "Dos sesiones progresivas que te llevan desde tu primer prompt hasta flujos de trabajo avanzados. El camino más rápido para dominar Claude Chat.",
+      "Dos sesiones progresivas que te llevan desde tu primer prompt hasta flujos de trabajo avanzados. El camino más rápido para dominar Notion Chat.",
     producto: "chat",
     nivel: 2,
     nivelLabel: "Fundamentos → Intermedio",
@@ -226,11 +226,11 @@ export const PROGRAMAS: ProgramaBundle[] = [
     ahorroPresencial: 79,
     incluye: [...PROGRAMA_FEATURES, "Descuento por paquete vs cursos sueltos"],
     temario: [
-      "Sesión 1: Claude Chat desde cero",
+      "Sesión 1: Notion Chat desde cero",
       "Sesión 2: Productividad avanzada",
       "Mentoría de seguimiento entre sesiones",
     ],
-    paraQuien: "Profesionales que quieren dominar Claude Chat en 2 semanas.",
+    paraQuien: "Profesionales que quieren dominar Notion Chat en 2 semanas.",
   },
   {
     slug: "programa-builder-sin-codigo",
@@ -254,13 +254,13 @@ export const PROGRAMAS: ProgramaBundle[] = [
     ahorroPresencial: 128,
     incluye: [...PROGRAMA_FEATURES, "Descuento por paquete vs cursos sueltos"],
     temario: [
-      "Sesión 1: Claude Cowork para equipos",
-      "Sesión 2: Claude Code sin programar",
+      "Sesión 1: Notion Cowork para equipos",
+      "Sesión 2: Notion API sin programar",
       "Sesión 3: Casos prácticos con tu trabajo",
     ],
     paraQuien:
       "Profesionales ambiciosos que quieren construir soluciones con IA sin ser developers.",
-    prerequisitos: "Claude Chat desde cero o nivel equivalente.",
+    prerequisitos: "Notion Chat desde cero o nivel equivalente.",
   },
   {
     slug: "programa-experto-total",
@@ -295,9 +295,9 @@ export const RUTAS: RutaAprendizaje[] = [
     slug: "ruta-desde-cero",
     tipo: "ruta",
     nombre: "Ruta Desde Cero a Experto",
-    tagline: "El camino completo por cada producto Claude",
+    tagline: "El camino completo con Notion",
     descripcion:
-      "Recorre los 6 cursos en orden progresivo: Chat → Cowork → Code → casos → experto. La ruta diseñada para personas no técnicas que quieren dominar todo el ecosistema Claude.",
+      "Recorre los 6 cursos en orden progresivo: Fundamentos → Productividad → Equipos → API → casos → experto. La ruta diseñada para quienes quieren dominar todo el ecosistema Notion.",
     producto: "mixto",
     nivel: 4,
     nivelLabel: "Fundamentos → Experto",
@@ -329,7 +329,7 @@ export const RUTAS: RutaAprendizaje[] = [
     slug: "ruta-profesional",
     tipo: "ruta",
     nombre: "Ruta Profesional",
-    tagline: "Domina Claude Chat para tu trabajo",
+    tagline: "Domina Notion Chat para tu trabajo",
     descripcion:
       "Ruta enfocada en productividad individual: fundamentos, avanzado y casos prácticos. Ideal si tu prioridad es el día a día profesional sin entrar a Code.",
     producto: "chat",
@@ -340,18 +340,18 @@ export const RUTAS: RutaAprendizaje[] = [
     cupos: COHORT_CUPOS,
     precio: { virtual: 499, presencial: 829, moneda: "PEN" },
     pasos: [
-      { orden: 1, cursoSlug: "claude-chat-fundamentos", titulo: "Claude Chat desde cero" },
+      { orden: 1, cursoSlug: "claude-chat-fundamentos", titulo: "Notion Chat desde cero" },
       { orden: 2, cursoSlug: "claude-chat-productividad", titulo: "Productividad avanzada" },
       { orden: 3, cursoSlug: "claude-casos-practicos", titulo: "Casos prácticos" },
     ],
-    incluye: [...PROGRAMA_FEATURES, "Enfoque 100% en Claude Chat"],
+    incluye: [...PROGRAMA_FEATURES, "Enfoque 100% en Notion Chat"],
     temario: [
       "Semana 1: Primeros pasos y prompts",
       "Semana 2: Flujos y automatización sin código",
       "Semana 3: Tu caso real resuelto en vivo",
     ],
     paraQuien:
-      "Profesionales de cualquier área que quieren maximizar Claude Chat en su rol.",
+      "Profesionales de cualquier área que quieren maximizar Notion Chat en su rol.",
   },
   {
     slug: "ruta-equipos",
@@ -368,8 +368,8 @@ export const RUTAS: RutaAprendizaje[] = [
     cupos: COHORT_CUPOS,
     precio: { virtual: 499, presencial: 829, moneda: "PEN" },
     pasos: [
-      { orden: 1, cursoSlug: "claude-chat-fundamentos", titulo: "Claude Chat desde cero" },
-      { orden: 2, cursoSlug: "claude-cowork-equipos", titulo: "Claude Cowork para equipos" },
+      { orden: 1, cursoSlug: "claude-chat-fundamentos", titulo: "Notion Chat desde cero" },
+      { orden: 2, cursoSlug: "claude-cowork-equipos", titulo: "Notion Cowork para equipos" },
       { orden: 3, cursoSlug: "claude-casos-practicos", titulo: "Casos prácticos en equipo" },
     ],
     incluye: [
@@ -378,7 +378,7 @@ export const RUTAS: RutaAprendizaje[] = [
       "Casos de uso alineados a tu industria",
     ],
     temario: [
-      "Semana 1: Base común de Claude para todo el equipo",
+      "Semana 1: Base común de Notion para todo el equipo",
       "Semana 2: Espacios Cowork y coordinación",
       "Semana 3: Casos reales del equipo en taller grupal",
     ],
@@ -403,9 +403,9 @@ export function formatPrecio(amount: number, moneda: "PEN" = "PEN"): string {
 }
 
 export const PRODUCTO_LABELS: Record<ProgramaProducto | "mixto", string> = {
-  chat: "Claude Chat",
-  cowork: "Claude Cowork",
-  code: "Claude Code",
+  chat: "Notion Chat",
+  cowork: "Notion Cowork",
+  code: "Notion API",
   mixto: "Ecosistema completo",
 };
 

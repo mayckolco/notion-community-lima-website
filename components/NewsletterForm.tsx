@@ -62,7 +62,7 @@ export function NewsletterForm({ location, compact = false }: NewsletterFormProp
     <form onSubmit={handleSubmit} className="space-y-3 w-full">
       {!compact && (
         <p className="text-sm text-muted-foreground leading-relaxed">
-          Recibe eventos, novedades de Claude y recursos de la comunidad en tu correo.
+          Recibe eventos, novedades de Notion y recursos de la comunidad en tu correo.
         </p>
       )}
       <div className="flex flex-row items-center gap-2 w-full">

@@ -17,7 +17,7 @@ import { SITE_URL } from "@/lib/seo/site";
 export const metadata: Metadata = createPageMetadata({
   title: "Programas para profesionales",
   description:
-    "Claude Bootcamp: aprende los fundamentos de Claude Chat, Cowork y Code en una sesión intensiva. Virtual S/ 159 o presencial S/ 249.",
+    "Notion Bootcamp: aprende los fundamentos de Notion en una sesión intensiva. Virtual S/ 159 o presencial S/ 249.",
   path: "/programas/profesionales",
 });
 

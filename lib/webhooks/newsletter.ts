@@ -1,7 +1,7 @@
 const NEWSLETTER_WEBHOOK_URL =
-  "https://mayckolco.app.n8n.cloud/webhook/claude-peru-website";
+  "https://mayckolco.app.n8n.cloud/webhook/notion-lima-website";
 
-const NEWSLETTER_TAG = "claude-peru-website";
+const NEWSLETTER_TAG = "notion-lima-website";
 
 export interface NewsletterWebhookPayload {
   nombre: string;

@@ -4,7 +4,7 @@ import { WHATSAPP_DIRECT_URL } from "@/lib/content/constants";
 
 const BENEFITS = [
   "Talleres prácticos in-house o remotos, adaptados a tu industria",
-  "Casos de uso reales con Claude aplicados a los flujos de tu equipo",
+  "Casos de uso reales con Notion aplicados a los flujos de tu equipo",
   "Acompañamiento en la adopción: desde el piloto hasta el uso diario",
   "Buenas prácticas de seguridad y datos al usar IA en la empresa",
 ];
@@ -21,8 +21,8 @@ export function EmpresasPublicContent() {
             Lleva la IA a <span className="gradient-text">tu equipo</span>
           </h1>
           <p className="text-muted-foreground leading-relaxed max-w-2xl">
-            Capacitaciones a medida para empresas que quieren adoptar Claude e IA
-            aplicada: formamos a tu equipo con casos reales de tu propia operación.
+            Capacitaciones a medida para empresas que quieren adoptar Notion
+            y automatizaciones: formamos a tu equipo con casos reales de tu propia operación.
           </p>
         </div>
 

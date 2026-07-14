@@ -155,7 +155,7 @@ function AdminNav({ nombre, etiqueta }: { nombre: string; etiqueta: SpeakerEtiqu
             href="/"
             className="font-serif text-lg tracking-tight hover:opacity-80 transition-opacity whitespace-nowrap"
           >
-            Claude<span className="ml-0.5 text-muted-foreground">Perú</span>
+            Notion<span className="ml-0.5 text-muted-foreground">Lima</span>
           </Link>
           <span className={`text-xs border rounded-full px-2 py-0.5 ${etiquetaColors[etiqueta]}`}>
             {etiqueta}

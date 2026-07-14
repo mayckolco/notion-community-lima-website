@@ -312,7 +312,7 @@ export async function sendNewsletterWelcomeEmail(
     <p style="margin:0 0 8px;color:#D97757;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;">Notion Community Lima</p>
     <h1 style="margin:0 0 16px;color:#2B2622;font-size:22px;">¡Gracias por suscribirte!</h1>
     <p style="margin:0 0 16px;color:#6B6560;font-size:15px;line-height:1.6;">
-      Hola ${greeting}, te avisaremos sobre próximos eventos, lanzamientos de Claude y recursos nuevos de la comunidad.
+      Hola ${greeting}, te avisaremos sobre próximos eventos, novedades de Notion y recursos nuevos de la comunidad.
     </p>
     <p style="margin:0 0 24px;color:#6B6560;font-size:15px;line-height:1.6;">
       Mientras tanto, únete al grupo de WhatsApp para no perderte ningún webinar.

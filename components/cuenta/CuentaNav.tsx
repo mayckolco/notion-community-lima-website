@@ -28,7 +28,7 @@ export function CuentaNav({ memberFirstName, isAdmin }: CuentaNavProps) {
       <nav className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           <Link href="/" className="font-serif text-lg tracking-tight shrink-0">
-            Claude<span className="text-muted-foreground">Perú</span>
+            Notion<span className="text-muted-foreground">Lima</span>
           </Link>
           <p className="hidden sm:block text-xs text-muted-foreground truncate">
             Hola, {memberFirstName}

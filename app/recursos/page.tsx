@@ -66,7 +66,7 @@ export default async function RecursosPage() {
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-widest text-primary">Recursos</p>
             <h1 className="font-serif text-3xl sm:text-4xl tracking-tight">
-              Aprende Claude con{" "}
+              Aprende Notion con{" "}
               <span className="gradient-text">recursos curados</span>
             </h1>
             <p className="text-muted-foreground leading-relaxed max-w-2xl">

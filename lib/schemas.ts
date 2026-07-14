@@ -132,11 +132,11 @@ export const BOOTCAMP_NIVEL_IA_OPTIONS = [
 ] as const;
 
 export const BOOTCAMP_HERRAMIENTAS_OPTIONS = [
-  "ChatGPT",
-  "Claude",
-  "Midjourney",
-  "Gemini",
+  "Notion",
   "Notion AI",
+  "ChatGPT",
+  "Make",
+  "Zapier",
   "No sé por dónde empezar",
 ] as const;
 
@@ -155,20 +155,17 @@ export type BootcampEncuestaInput = z.infer<typeof bootcampEncuestaSchema>;
 
 export const HERRAMIENTAS_OPTIONS = [
   "Notion",
+  "Notion AI",
   "Make",
   "n8n",
-  "Supabase",
   "Zapier",
+  "Supabase",
   "V0",
   "Replit",
   "Cursor",
-  "Claude Code",
-  "Codex",
   "Windsurf",
-  "Antigravity",
   "Lovable",
   "Bolt",
-  "Claude",
   "ChatGPT",
   "Otros",
 ] as const;

@@ -20,10 +20,10 @@ export const BOOTCAMP_YAPE = {
 
 export const CLAUDE_BOOTCAMP = {
   slug: "claude-bootcamp",
-  nombre: "Claude Bootcamp",
-  tagline: "Aprende los fundamentos de Claude",
+  nombre: "Notion Bootcamp",
+  tagline: "Aprende los fundamentos de Notion",
   descripcion:
-    "Intensivo práctico para aprender Claude Chat, Cowork y Code desde cero. Mentores, casos reales y demos en vivo en una sola sesión.",
+    "Intensivo práctico para aprender Notion desde cero: workspace, bases de datos y Notion AI. Mentores, casos reales y demos en vivo en una sola sesión.",
   incluye: {
     virtual: [
       "Curso en vivo (por Meet)",
@@ -72,7 +72,7 @@ export const RUTAS_BLOQUEADAS: RutaBloqueada[] = [
     slug: "claude-essentials",
     numero: 1,
     accent: "green",
-    nombre: "Claude Essentials",
+    nombre: "Notion Essentials",
     subtitulo: "Productividad",
     descripcion:
       "Para cualquier profesional que quiera incorporar IA en su trabajo diario.",
@@ -82,7 +82,7 @@ export const RUTAS_BLOQUEADAS: RutaBloqueada[] = [
     slug: "claude-for-teams",
     numero: 2,
     accent: "orange",
-    nombre: "Claude for Teams",
+    nombre: "Notion for Teams",
     subtitulo: "Colaboración",
     descripcion:
       "Para equipos y empresas que buscan optimizar procesos y trabajo colaborativo.",
@@ -92,17 +92,17 @@ export const RUTAS_BLOQUEADAS: RutaBloqueada[] = [
     slug: "claude-builder",
     numero: 3,
     accent: "blue",
-    nombre: "Claude Builder",
-    subtitulo: "Desarrollo con Claude Code",
+    nombre: "Notion Builder",
+    subtitulo: "Automatizaciones con Notion",
     descripcion:
-      "Para desarrolladores y builders que desean crear software y automatizaciones con IA.",
+      "Para builders que desean crear automatizaciones e integraciones con Notion API y Make.",
     precioReferencial: { virtual: 649, presencial: 1099 },
   },
 ];
 
 export function buildBootcampInfoUrl(modalidad: ProgramaModalidad): string {
   const label = modalidad === "virtual" ? "virtual" : "presencial";
-  const text = `Hola! Quiero más información sobre Claude Bootcamp en modalidad ${label}. Gracias!`;
+  const text = `Hola! Quiero más información sobre el Notion Bootcamp en modalidad ${label}. Gracias!`;
   return `https://wa.me/51946542990?text=${encodeURIComponent(text)}`;
 }
 

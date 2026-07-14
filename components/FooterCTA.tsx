@@ -9,12 +9,12 @@ export function FooterCTA() {
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-widest text-primary">Comunidad</p>
             <h2 className="font-serif text-2xl sm:text-3xl tracking-tight text-balance">
-              Únete a los builders que ya construyen con{" "}
-              <span className="gradient-text">Claude</span>
+              Únete a los que ya usan{" "}
+              <span className="gradient-text">Notion</span> en Lima
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-              Webinars semanales, meetups en Lima y una red de founders peruanos
-              usando IA en producción.
+              Meetups mensuales, recursos curados y una red de personas
+              que organizan su trabajo y equipos con Notion.
             </p>
             <JoinCommunityButton location="footer_cta" />
           </div>
