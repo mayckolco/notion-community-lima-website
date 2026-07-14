@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   buildBootcampInfoUrl,
   buildCheckoutUrl,
-  CLAUDE_BOOTCAMP,
+  NOTION_BOOTCAMP,
   formatBootcampPrecio,
 } from "@/lib/content/bootcamp";
 import type { BootcampFecha } from "@/lib/content/bootcamp";
@@ -32,12 +32,12 @@ export function BootcampFechaCard({ fecha, location }: BootcampFechaCardProps) {
   const [showIncluye, setShowIncluye] = useState(false);
   const isVirtual = fecha.modalidad === "virtual";
   const precio = isVirtual
-    ? CLAUDE_BOOTCAMP.precio.virtual
-    : CLAUDE_BOOTCAMP.precio.presencial;
+    ? NOTION_BOOTCAMP.precio.virtual
+    : NOTION_BOOTCAMP.precio.presencial;
   const precioRegular = isVirtual
-    ? CLAUDE_BOOTCAMP.precio.precioRegular.virtual
-    : CLAUDE_BOOTCAMP.precio.precioRegular.presencial;
-  const beneficios = CLAUDE_BOOTCAMP.incluye[fecha.modalidad];
+    ? NOTION_BOOTCAMP.precio.precioRegular.virtual
+    : NOTION_BOOTCAMP.precio.precioRegular.presencial;
+  const beneficios = NOTION_BOOTCAMP.incluye[fecha.modalidad];
 
   return (
     <article

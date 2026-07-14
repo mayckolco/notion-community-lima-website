@@ -1,86 +1,89 @@
-# Programas, cursos y recursos : Claude Perú
+# Programas, cursos y recursos : Notion Community Lima
 
-Catálogo de referencia del sitio [claude.mayckolco.com](https://claude.mayckolco.com).
+Catálogo de referencia del sitio [notion.mayckolco.com](https://notion.mayckolco.com).
 
-**Última actualización:** 2026-07-11  
+**Última actualización:** 2026-07-14  
 **Fuente de verdad en código:** `lib/content/bootcamp.ts` y `lib/content/recursos.ts`
 
 ---
 
 ## Programa activo
 
-### Claude Bootcamp
+### Notion Bootcamp
 
 | Campo | Detalle |
 |---|---|
-| **URL** | [/programas/profesionales](https://claude.mayckolco.com/programas/profesionales) |
-| **Checkout** | `/programas/checkout?programa=claude-bootcamp&modalidad=virtual\|presencial` |
+| **URL** | [/programas/profesionales](https://notion.mayckolco.com/programas/profesionales) |
+| **Checkout** | `/programas/checkout?programa=notion-bootcamp&modalidad=virtual\|presencial` |
 | **Duración** | 10a.m. - 2 p.m. |
-| **Cupos** | 10 por cohorte |
-| **Audiencia** | Personas sin conocimiento de código |
-| **Fechas (Notion)** | DB `9e574cb31d8b4cf5a0d49bea50cfab22` |
-| **Registros (Notion)** | DB `686f7d1078614a009caa15c9c8acf2a8` |
+| **Cupos** | Virtual 30 · Presencial 10 por cohorte |
+| **Audiencia** | Personas sin conocimiento previo de Notion |
+| **Fechas (Notion)** | `DB_BOOTCAMP_DATES_ID` |
+| **Registros (Notion)** | Auto desde relación `Persona` en fechas (override opcional: `DB_BOOTCAMP_REGISTROS_ID`) |
 
 | Modalidad | Precio | Acciones |
 |---|---|---|
 | **Virtual** | S/ 159 | Pre-reserva → checkout Yape (4 pasos) · En vivo por Meet |
 | **Presencial** (Lima) | S/ 249 | Pre-reserva → checkout Yape (4 pasos) · Más info → WhatsApp |
 
-**Tagline:** Domina Claude en un día : sin código
+**Tagline:** Aprende los fundamentos de Notion
 
 **Incluye:**
-- Clases personalizadas en cohortes de 10 personas
-- Mentor asignado durante la sesión
+- Curso en vivo (virtual o presencial en Lima)
 - Casos prácticos de tu industria o rol
-- Demos en vivo con Claude Chat, Cowork y Code
-- Material de apoyo y plantillas post-sesión
+- Mentoría personalizada durante la sesión
+- Materiales y grabación (virtual)
+- Constancia de participación
+- Soporte técnico post-sesión
+
+**Referencia de pago Yape:** prefijo `NCL-` (ej. `NCL-MC-A1B2C3`)
 
 ---
 
 ## Rutas bloqueadas (próximamente)
 
-### Ruta Fundamentos a Experto
-- **Precio referencial:** Virtual S/ 699 · Presencial S/ 1,199
-- **Duración:** 6 sesiones · 10a.m. - 2 p.m.
-- **Pasos:** Chat desde cero → Productividad → Cowork → Code → Casos → Flujos experto
+### Notion Essentials
+- **Slug legacy:** `claude-essentials`
+- **Precio referencial:** Virtual S/ 399 · Presencial S/ 649
 
-### Ruta Builder con IA
-- **Precio referencial:** Virtual S/ 449 · Presencial S/ 749
-- **Duración:** 3 sesiones · 10a.m. - 2 p.m.
-- **Pasos:** Chat desde cero → Cowork → Casos prácticos
+### Notion for Teams
+- **Slug legacy:** `claude-for-teams`
+- **Precio referencial:** Virtual S/ 549 · Presencial S/ 899
+
+### Notion Builder
+- **Slug legacy:** `claude-builder`
+- **Precio referencial:** Virtual S/ 649 · Presencial S/ 1099
 
 ---
 
 ## Programas empresas
 
 Bloqueado : `PROGRAMAS_EMPRESAS_PUBLIC = false`  
-[/programas/empresas](https://claude.mayckolco.com/programas/empresas) (coming soon)
+[/programas/empresas](https://notion.mayckolco.com/programas/empresas) (coming soon)
 
 ---
 
 ## Recursos
 
-Página: [/recursos](https://claude.mayckolco.com/recursos)
+Página: [/recursos](https://notion.mayckolco.com/recursos)
 
-### Empezar con Claude
-- [Claude.ai](https://claude.ai)
-- [Documentación Anthropic](https://docs.anthropic.com)
+### Empezar con Notion
+- [Notion](https://notion.so)
+- [Documentación Notion](https://developers.notion.com)
 
-### Prompting
-- [Prompt engineering](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
-- [System prompts](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts)
+### Notion AI
+- [Notion AI](https://notion.so/product/ai)
+- [Guías de prompting](https://www.notion.so/help/category/ai)
 
-### Claude Code
-- [Claude Code docs](https://docs.anthropic.com/en/docs/claude-code)
-- Tips comunidad → `/recursos`
-
-### API y builders
-- [Claude API](https://docs.anthropic.com/en/api/getting-started)
-- [MCP](https://modelcontextprotocol.io)
+### Templates y builders
+- [Notion Templates](https://notion.so/templates)
+- [Notion API](https://developers.notion.com)
+- [Make](https://make.com) · [Zapier](https://zapier.com)
 
 ### Comunidad
-- [/aplicar](https://claude.mayckolco.com/aplicar) : Aplica como speaker
-- [/directorio](https://claude.mayckolco.com/directorio) : Speakers
+- [/aplicar](https://notion.mayckolco.com/aplicar) : Aplica como speaker
+- [/directorio](https://notion.mayckolco.com/directorio) : Speakers
+- [/comunidad](https://notion.mayckolco.com/comunidad) : Mapa de miembros
 
 ---
 
@@ -88,4 +91,4 @@ Página: [/recursos](https://claude.mayckolco.com/recursos)
 
 - **WhatsApp:** [+51 946 542 990](https://wa.me/51946542990)
 - **Comunidad:** [Grupo WhatsApp](https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3)
-- **Instagram:** [@claudeperucommunity](https://instagram.com/claudeperucommunity)
+- **Instagram:** [@notioncommunitylima](https://instagram.com/notioncommunitylima)

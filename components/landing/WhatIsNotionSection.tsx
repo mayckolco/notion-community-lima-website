@@ -1,6 +1,6 @@
 import { BookOpen } from "lucide-react";
 
-export function WhatIsClaudeSection() {
+export function WhatIsNotionSection() {
   return (
     <section aria-labelledby="what-is-notion-heading" className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
       <div className="max-w-6xl mx-auto grid gap-10 lg:grid-cols-2 lg:gap-16 items-center">

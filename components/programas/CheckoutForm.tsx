@@ -17,7 +17,7 @@ import { CheckoutStepper } from "@/components/programas/checkout/CheckoutStepper
 import { CheckoutSummary } from "@/components/programas/checkout/CheckoutSummary";
 import {
   BOOTCAMP_YAPE,
-  CLAUDE_BOOTCAMP,
+  NOTION_BOOTCAMP,
   formatBootcampPrecio,
   generateBootcampReferencia,
 } from "@/lib/content/bootcamp";
@@ -65,8 +65,8 @@ export function CheckoutForm({ modalidad, initialFechaId }: CheckoutFormProps) {
 
   const precio =
     modalidad === "virtual"
-      ? CLAUDE_BOOTCAMP.precio.virtual
-      : CLAUDE_BOOTCAMP.precio.presencial;
+      ? NOTION_BOOTCAMP.precio.virtual
+      : NOTION_BOOTCAMP.precio.presencial;
 
   const modalidadLabel = modalidad === "virtual" ? "Virtual" : "Presencial";
 
@@ -148,7 +148,7 @@ export function CheckoutForm({ modalidad, initialFechaId }: CheckoutFormProps) {
 
       sendGAEvent("event", GA_EVENTS.preReservaPrograma, {
         location: "checkout_yape",
-        programa: CLAUDE_BOOTCAMP.nombre,
+        programa: NOTION_BOOTCAMP.nombre,
         modalidad,
       });
 
@@ -230,7 +230,7 @@ export function CheckoutForm({ modalidad, initialFechaId }: CheckoutFormProps) {
             Inscripción al curso
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
-            {CLAUDE_BOOTCAMP.nombre} · {modalidadLabel}
+            {NOTION_BOOTCAMP.nombre} · {modalidadLabel}
           </p>
         </div>
         <CheckoutStepper current={step} />

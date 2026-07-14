@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-export const PRODUCTION_SITE_URL = "https://notioncommunitylima.com";
+export const PRODUCTION_SITE_URL = "https://notion.mayckolco.com";
 
 export function getBaseUrl(req?: NextRequest): string {
   const fromEnv = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, "");

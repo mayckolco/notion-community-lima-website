@@ -16,6 +16,13 @@ const nextConfig = {
     return [
       { source: "/calendario", destination: "/eventos", permanent: true },
       { source: "/favicon.ico", destination: "/favicon.webp", permanent: false },
+      { source: "/proyectos", destination: "/cuenta/proyectos", permanent: true },
+      {
+        source: "/programas/checkout",
+        has: [{ type: "query", key: "programa", value: "claude-bootcamp" }],
+        destination: "/programas/checkout?programa=notion-bootcamp",
+        permanent: true,
+      },
     ];
   },
 

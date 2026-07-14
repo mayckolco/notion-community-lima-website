@@ -18,8 +18,9 @@ export const BOOTCAMP_YAPE = {
   titular: "Gianmarco Guerrero",
 } as const;
 
-export const CLAUDE_BOOTCAMP = {
-  slug: "claude-bootcamp",
+
+export const NOTION_BOOTCAMP = {
+  slug: "notion-bootcamp",
   nombre: "Notion Bootcamp",
   tagline: "Aprende los fundamentos de Notion",
   descripcion:
@@ -108,7 +109,7 @@ export function buildBootcampInfoUrl(modalidad: ProgramaModalidad): string {
 
 export function buildCheckoutUrl(modalidad: ProgramaModalidad, fechaId?: string): string {
   const params = new URLSearchParams({
-    programa: CLAUDE_BOOTCAMP.slug,
+    programa: NOTION_BOOTCAMP.slug,
     modalidad,
   });
   if (fechaId) params.set("fecha", fechaId);
@@ -131,7 +132,7 @@ export function generateBootcampReferencia(nombre: string): string {
     .map((w) => w[0]?.toUpperCase() ?? "")
     .join("");
   const suffix = Math.random().toString(36).slice(2, 8).toUpperCase();
-  return `CP-${initials || "XX"}-${suffix}`;
+  return `NCL-${initials || "XX"}-${suffix}`;
 }
 
 export interface BootcampFecha {

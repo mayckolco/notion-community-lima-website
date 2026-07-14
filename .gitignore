@@ -26,7 +26,11 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
+
+# GA4 service account (never commit)
+.secrets/
 
 # vercel
 .vercel

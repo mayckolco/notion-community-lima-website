@@ -16,7 +16,7 @@ export const PROYECTOS_COMUNIDAD: Proyecto[] = [
     descripcion:
       "Plataforma para gestionar charlas, covers, grabaciones y portal de speakers. Backend 100% Notion con auth magic link.",
     stack: ["Next.js", "Notion API", "Resend", "Tailwind"],
-    url: "https://notioncommunitylima.com",
+    url: "https://notion.mayckolco.com",
     autor: "Notion Lima",
     destacado: true,
   },

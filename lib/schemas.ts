@@ -119,7 +119,7 @@ export const bootcampInscripcionSchema = z.object({
     ),
   referencia: z
     .string()
-    .regex(/^CP-[A-Z]{1,4}-[A-Z0-9]{4,8}$/, "Referencia inválida"),
+    .regex(/^NCL-[A-Z]{1,4}-[A-Z0-9]{4,8}$/, "Referencia inválida"),
 });
 
 export type BootcampInscripcionInput = z.infer<typeof bootcampInscripcionSchema>;

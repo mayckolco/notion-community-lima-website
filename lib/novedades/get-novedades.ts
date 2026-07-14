@@ -1,6 +1,6 @@
 import { unstable_cache } from "next/cache";
 import { NOTION_NOVEDADES, type Novedad } from "@/lib/content/novedades";
-import { fetchNotionNews } from "./fetch-anthropic";
+import { fetchNotionNews } from "./fetch-notion";
 
 export const NOVEDADES_CACHE_TAG = "notion-novedades";
 

@@ -6,13 +6,15 @@ import { JsonLd } from "@/components/JsonLd";
 import { BootcampFechasSection } from "@/components/programas/BootcampFechasSection";
 import { RutaBloqueadaCard } from "@/components/programas/RutaBloqueadaCard";
 import {
-  CLAUDE_BOOTCAMP,
+  NOTION_BOOTCAMP,
   RUTAS_BLOQUEADAS,
 } from "@/lib/content/bootcamp";
 import { fetchBootcampFechas } from "@/lib/notion/bootcamp";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbJsonLd, courseJsonLd } from "@/lib/seo/json-ld";
 import { SITE_URL } from "@/lib/seo/site";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Programas para profesionales",
@@ -23,8 +25,14 @@ export const metadata: Metadata = createPageMetadata({
 
 export default async function ProgramasProfesionalesPage() {
   const [fechasVirtual, fechasPresencial] = await Promise.all([
-    fetchBootcampFechas("virtual").catch(() => []),
-    fetchBootcampFechas("presencial").catch(() => []),
+    fetchBootcampFechas("virtual").catch((err) => {
+      console.error("[programas/profesionales] bootcamp virtual:", err);
+      return [];
+    }),
+    fetchBootcampFechas("presencial").catch((err) => {
+      console.error("[programas/profesionales] bootcamp presencial:", err);
+      return [];
+    }),
   ]);
 
   const fechas = [...fechasVirtual, ...fechasPresencial].sort((a, b) =>
@@ -41,8 +49,8 @@ export default async function ProgramasProfesionalesPage() {
             { name: "Profesionales", path: "/programas/profesionales" },
           ]),
           courseJsonLd({
-            name: CLAUDE_BOOTCAMP.nombre,
-            description: CLAUDE_BOOTCAMP.descripcion,
+            name: NOTION_BOOTCAMP.nombre,
+            description: NOTION_BOOTCAMP.descripcion,
             url: `${SITE_URL}/programas/profesionales`,
           }),
         ]}
@@ -55,11 +63,11 @@ export default async function ProgramasProfesionalesPage() {
               Programas · Profesionales
             </p>
             <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl tracking-tight">
-              {CLAUDE_BOOTCAMP.nombre}
+              {NOTION_BOOTCAMP.nombre}
             </h1>
-            <p className="text-base text-primary font-medium">{CLAUDE_BOOTCAMP.tagline}</p>
+            <p className="text-base text-primary font-medium">{NOTION_BOOTCAMP.tagline}</p>
             <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              {CLAUDE_BOOTCAMP.descripcion} Diseñado para personas{" "}
+              {NOTION_BOOTCAMP.descripcion} Diseñado para personas{" "}
               <strong className="text-foreground font-medium">sin conocimiento técnico</strong>.
             </p>
           </header>

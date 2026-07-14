@@ -1,5 +1,5 @@
 import {
-  CLAUDE_BOOTCAMP,
+  NOTION_BOOTCAMP,
   formatBootcampPrecio,
 } from "@/lib/content/bootcamp";
 import type { BootcampFecha } from "@/lib/content/bootcamp";
@@ -18,7 +18,7 @@ export function CheckoutSummary({ precio, fecha, referencia }: CheckoutSummaryPr
       <div className="space-y-3 text-sm">
         <div>
           <p className="text-muted-foreground text-xs">Curso</p>
-          <p className="font-medium">{CLAUDE_BOOTCAMP.nombre}</p>
+          <p className="font-medium">{NOTION_BOOTCAMP.nombre}</p>
         </div>
 
         {fecha && (

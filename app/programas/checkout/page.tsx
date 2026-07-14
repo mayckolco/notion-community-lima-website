@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { CheckoutForm } from "@/components/programas/CheckoutForm";
-import { CLAUDE_BOOTCAMP } from "@/lib/content/bootcamp";
+import { NOTION_BOOTCAMP } from "@/lib/content/bootcamp";
 import type { ProgramaModalidad } from "@/lib/content/programas";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
@@ -25,7 +25,10 @@ function parseModalidad(value: string | undefined): ProgramaModalidad | null {
 }
 
 export default function CheckoutPage({ searchParams }: PageProps) {
-  if (searchParams.programa !== CLAUDE_BOOTCAMP.slug) {
+  if (
+    searchParams.programa !== NOTION_BOOTCAMP.slug &&
+    searchParams.programa !== "claude-bootcamp"
+  ) {
     redirect("/programas/profesionales");
   }
 

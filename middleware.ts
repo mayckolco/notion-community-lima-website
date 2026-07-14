@@ -8,6 +8,15 @@ const COMMUNITY_SESSION_COOKIE = "aiff_community_session";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  if (pathname === "/programas/checkout") {
+    const programa = req.nextUrl.searchParams.get("programa");
+    if (programa === "claude-bootcamp") {
+      const url = req.nextUrl.clone();
+      url.searchParams.set("programa", "notion-bootcamp");
+      return NextResponse.redirect(url, 301);
+    }
+  }
+
   if (pathname === "/login") {
     if (req.cookies.get(COMMUNITY_SESSION_COOKIE)?.value) {
       return NextResponse.redirect(new URL("/cuenta/perfil", req.url));
@@ -44,5 +53,12 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/portal/login", "/portal/:path*", "/portal/charla/:path*", "/cuenta/:path*"],
+  matcher: [
+    "/programas/checkout",
+    "/login",
+    "/portal/login",
+    "/portal/:path*",
+    "/portal/charla/:path*",
+    "/cuenta/:path*",
+  ],
 };

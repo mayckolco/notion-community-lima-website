@@ -8,9 +8,9 @@ import { Footer } from "@/components/Footer";
 import { JsonLd } from "@/components/JsonLd";
 import { FAQSection } from "@/components/FAQSection";
 import { LandingHero } from "@/components/landing/LandingHero";
-import { WhatIsClaudeSection } from "@/components/landing/WhatIsClaudeSection";
-import { ClaudeProductsSection } from "@/components/landing/ClaudeProductsSection";
-import { ClaudeNovedadesSection } from "@/components/landing/ClaudeNovedadesSection";
+import { WhatIsNotionSection } from "@/components/landing/WhatIsNotionSection";
+import { NotionProductsSection } from "@/components/landing/NotionProductsSection";
+import { NotionNovedadesSection } from "@/components/landing/NotionNovedadesSection";
 import { CommunityStatsSection } from "@/components/landing/CommunityStatsSection";
 import {
   CommunityPillarsSection,
@@ -44,14 +44,14 @@ export default async function LandingPage() {
       <Navbar />
       <main className="flex flex-col min-h-screen">
         <LandingHero nextEvent={nextEvent} />
-        <WhatIsClaudeSection />
-        <ClaudeProductsSection />
+        <WhatIsNotionSection />
+        <NotionProductsSection />
         <CommunityStatsSection
           speakerCount={allSpeakers.length}
           eventCount={pastSlots.length}
         />
         <CommunityPillarsSection />
-        <ClaudeNovedadesSection novedades={novedades} />
+        <NotionNovedadesSection novedades={novedades} />
 
         <FAQSection
           faqs={LANDING_FAQ}

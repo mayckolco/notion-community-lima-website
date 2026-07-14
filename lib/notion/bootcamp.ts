@@ -4,12 +4,11 @@ import {
   BOOTCAMP_HORARIO,
   getBootcampCupos,
   bootcampUbicacion,
-  CLAUDE_BOOTCAMP,
+  NOTION_BOOTCAMP,
   type BootcampFecha,
 } from "@/lib/content/bootcamp";
 import {
   getDbBootcampDatesId,
-  getDbBootcampRegistrosId,
   getNotionClient,
 } from "./client";
 import { uploadPhotoToNotion } from "./speakers";
@@ -18,6 +17,13 @@ import type { ProgramaModalidad } from "@/lib/content/programas";
 export type { BootcampFecha } from "@/lib/content/bootcamp";
 
 const NOTION_VERSION = "2022-06-28";
+
+/** Estados de cohorte visibles en la web (deben existir en Notion → Estado). */
+const BOOTCAMP_ESTADOS_DISPONIBLES = ["Confirmado"] as const;
+
+function isBootcampEstadoDisponible(estado: string): boolean {
+  return (BOOTCAMP_ESTADOS_DISPONIBLES as readonly string[]).includes(estado);
+}
 
 function notionUrl(path: string): string {
   return `https://api.notion.com/v1/${path}`;
@@ -95,7 +101,12 @@ export async function fetchBootcampFechas(
     filter: {
       and: [
         { property: "Modalidad", select: { equals: modalidadNotion } },
-        { property: "Estado", status: { equals: "Confirmado" } },
+        {
+          or: BOOTCAMP_ESTADOS_DISPONIBLES.map((estado) => ({
+            property: "Estado",
+            status: { equals: estado },
+          })),
+        },
         { property: "Fecha", date: { on_or_after: today } },
       ],
     },
@@ -130,7 +141,7 @@ export async function fetchBootcampFechas(
       ubicacion: bootcampUbicacion(pageModalidad),
       modalidad: pageModalidad,
       cuposDisponibles,
-      programa: extractTitle(props) || CLAUDE_BOOTCAMP.nombre,
+      programa: extractTitle(props) || NOTION_BOOTCAMP.nombre,
     });
   }
 
@@ -151,7 +162,7 @@ export async function getBootcampReserva(
   const estado = extractEstado(props);
   const fecha = extractDate(props);
 
-  if (!modalidad || estado !== "Confirmado" || !fecha) return null;
+  if (!modalidad || !isBootcampEstadoDisponible(estado) || !fecha) return null;
 
   try {
     if (isBefore(parseISO(fecha), startOfDay(new Date()))) return null;
@@ -165,6 +176,28 @@ export async function getBootcampReserva(
   if (cuposDisponibles <= 0) return null;
 
   return { id: page.id, cuposDisponibles, modalidad };
+}
+
+async function resolveBootcampRegistrosDbId(): Promise<string> {
+  const fromEnv = process.env.DB_BOOTCAMP_REGISTROS_ID;
+  if (fromEnv) return fromEnv;
+
+  const res = await fetch(notionUrl(`databases/${getDbBootcampDatesId()}`), {
+    headers: authHeaders(),
+  });
+  if (!res.ok) {
+    console.error("[bootcamp] could not read dates DB schema:", res.status);
+    throw new Error("Could not resolve bootcamp registros database");
+  }
+
+  const db = (await res.json()) as {
+    properties: Record<string, { type?: string; relation?: { database_id?: string } }>;
+  };
+  const targetId = db.properties?.Persona?.relation?.database_id;
+  if (!targetId) {
+    throw new Error("Persona relation on bootcamp dates DB has no linked database");
+  }
+  return targetId;
 }
 
 export async function createBootcampInscripcion(params: {
@@ -190,8 +223,10 @@ export async function createBootcampInscripcion(params: {
 
   const notion = getNotionClient();
 
+  const registrosDbId = await resolveBootcampRegistrosDbId();
+
   const lead = await notion.pages.create({
-    parent: { database_id: getDbBootcampRegistrosId() },
+    parent: { database_id: registrosDbId },
     properties: {
       Nombre: { title: [{ text: { content: params.nombre } }] },
       Correo: { email: params.email },

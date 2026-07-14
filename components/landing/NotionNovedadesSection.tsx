@@ -5,11 +5,11 @@ import { ArrowRight } from "lucide-react";
 import type { Novedad } from "@/lib/content/novedades";
 import { NOVEDAD_TAGS } from "@/lib/content/novedades";
 
-interface ClaudeNovedadesSectionProps {
+interface NotionNovedadesSectionProps {
   novedades: Novedad[];
 }
 
-export function ClaudeNovedadesSection({ novedades }: ClaudeNovedadesSectionProps) {
+export function NotionNovedadesSection({ novedades }: NotionNovedadesSectionProps) {
   const items = novedades.slice(0, 4);
   const isAutomated = novedades.some((n) => n.id.startsWith("notion-"));
 

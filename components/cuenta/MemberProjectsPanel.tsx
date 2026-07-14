@@ -202,7 +202,7 @@ export function MemberProjectsPanel({
           required
           value={stackInput}
           onChange={(e) => setStackInput(e.target.value)}
-          placeholder="Stack (separado por comas): Claude, Next.js, n8n"
+          placeholder="Stack (separado por comas): Notion, Next.js, n8n"
           className="w-full rounded-md border border-border px-4 py-2.5 text-sm"
         />
         <input

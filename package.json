@@ -10,7 +10,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:notion": "tsx scripts/test-notion.ts",
-    "test:apify": "tsx scripts/test-apify.ts"
+    "test:bootcamp": "tsx scripts/test-bootcamp.ts",
+    "test:apify": "tsx scripts/test-apify.ts",
+    "ga4:setup": "tsx scripts/configure-ga4-conversions.ts",
+    "ga4:check": "tsx scripts/configure-ga4-conversions.ts --check"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

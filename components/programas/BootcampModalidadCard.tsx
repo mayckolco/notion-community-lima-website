@@ -7,7 +7,7 @@ import {
   getBootcampCupos,
   BOOTCAMP_HORARIO,
   bootcampUbicacion,
-  CLAUDE_BOOTCAMP,
+  NOTION_BOOTCAMP,
   buildBootcampInfoUrl,
   formatBootcampPrecio,
 } from "@/lib/content/bootcamp";
@@ -31,11 +31,11 @@ interface BootcampModalidadCardProps {
 export function BootcampModalidadCard({ modalidad, location }: BootcampModalidadCardProps) {
   const isVirtual = modalidad === "virtual";
   const precio = isVirtual
-    ? CLAUDE_BOOTCAMP.precio.virtual
-    : CLAUDE_BOOTCAMP.precio.presencial;
+    ? NOTION_BOOTCAMP.precio.virtual
+    : NOTION_BOOTCAMP.precio.presencial;
   const precioRegular = isVirtual
-    ? CLAUDE_BOOTCAMP.precio.precioRegular.virtual
-    : CLAUDE_BOOTCAMP.precio.precioRegular.presencial;
+    ? NOTION_BOOTCAMP.precio.precioRegular.virtual
+    : NOTION_BOOTCAMP.precio.precioRegular.presencial;
 
   const cupos = getBootcampCupos(modalidad);
 

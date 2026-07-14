@@ -44,7 +44,7 @@ const NOTION_PRODUCTS = [
   },
 ];
 
-export function ClaudeProductsSection() {
+export function NotionProductsSection() {
   return (
     <section aria-labelledby="products-heading" className="border-t border-border/60 px-4 sm:px-6 py-12 sm:py-20">
       <div className="max-w-6xl mx-auto space-y-10">
