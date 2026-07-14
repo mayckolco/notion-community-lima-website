@@ -207,11 +207,13 @@ async function main() {
 
   const existing = await listConversionEvents(token);
   const existingNames = new Set(
-    existing.map((e) => e.eventName ?? e.name?.split("/").pop()).filter(Boolean)
+    existing
+      .map((e) => e.eventName ?? e.name?.split("/").pop())
+      .filter((name): name is string => Boolean(name))
   );
 
   console.log(`\n🎯 Conversiones actuales (${existingNames.size}):`);
-  for (const name of [...existingNames].sort()) {
+  for (const name of Array.from(existingNames).sort()) {
     console.log(`  · ${name}`);
   }
 
