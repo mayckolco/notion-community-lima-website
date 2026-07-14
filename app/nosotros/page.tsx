@@ -63,7 +63,7 @@ const PARTICIPAR = [
 const FOUNDERS = [
   {
     nombre: "Gianmarco Guerrero",
-    titulo: "Community Leader · Notion Lima",
+    titulo: "Community Leader · Notion",
     foto: "/founders/gianmarco-guerrero.jpg",
   },
   {
@@ -75,16 +75,6 @@ const FOUNDERS = [
     nombre: "Jhon Miranda",
     titulo: "Co-founder · IA Labs",
     foto: "/founders/jhon-miranda.jpeg",
-  },
-  {
-    nombre: "Douglas Lovera",
-    titulo: "Team Community",
-    foto: "/founders/douglas-lovera.jpg",
-  },
-  {
-    nombre: "Daniel Santos",
-    titulo: "Team Community",
-    foto: "/founders/daniel-santos.jpeg",
   },
 ] as const;
 
