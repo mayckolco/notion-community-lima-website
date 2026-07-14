@@ -1,6 +1,7 @@
 "use client";
 
 import { sendGAEvent } from "@next/third-parties/google";
+import { WHATSAPP_COMMUNITY_URL } from "@/lib/content/constants";
 import { GA_EVENTS } from "@/lib/seo/analytics";
 
 const SOCIALS = [
@@ -16,7 +17,7 @@ const SOCIALS = [
   },
   {
     label: "WhatsApp",
-    href: "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3",
+    href: WHATSAPP_COMMUNITY_URL,
     event: GA_EVENTS.joinCommunity,
     svg: (
       <svg viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">

@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { WHATSAPP_COMMUNITY_URL } from "@/lib/content/constants";
 
 let _resend: Resend | null = null;
 
@@ -317,7 +318,7 @@ export async function sendNewsletterWelcomeEmail(
     <p style="margin:0 0 24px;color:#6B6560;font-size:15px;line-height:1.6;">
       Mientras tanto, únete al grupo de WhatsApp para no perderte ningún webinar.
     </p>
-    <a href="https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3"
+    <a href="${WHATSAPP_COMMUNITY_URL}"
        style="display:inline-block;padding:12px 24px;background:#D97757;color:#fff;text-decoration:none;border-radius:8px;font-weight:600;font-size:14px;">
       Unirme a la comunidad
     </a>

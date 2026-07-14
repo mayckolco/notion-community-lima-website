@@ -54,7 +54,7 @@ Secundarias (fuera del menú principal o en footer):
 **Contactos oficiales** (usar siempre estos valores):
 
 - WhatsApp directo: `https://wa.me/51946542990`
-- Comunidad WhatsApp: `https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3`
+- Comunidad WhatsApp: `https://chat.whatsapp.com/LiAhJvYlfJfGSSCljXtl3k`
 - Instagram: `https://instagram.com/notioncommunitylima` (@notioncommunitylima)
 
 ## 3. Auth dual

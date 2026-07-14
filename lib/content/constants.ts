@@ -1,5 +1,5 @@
 export const WHATSAPP_COMMUNITY_URL =
-  "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3";
+  "https://chat.whatsapp.com/LiAhJvYlfJfGSSCljXtl3k";
 
 export const WHATSAPP_DIRECT_URL = "https://wa.me/51946542990";
 

@@ -5,6 +5,7 @@ import { FooterCTA } from "@/components/FooterCTA";
 import {
   PROGRAMAS_EMPRESAS_LABEL,
   PROGRAMAS_EMPRESAS_PUBLIC,
+  WHATSAPP_COMMUNITY_URL,
 } from "@/lib/content/constants";
 
 const SITE_LINKS = [
@@ -27,7 +28,7 @@ const COMMUNITY_LINKS = [
   { label: "Aplicar como speaker", href: "/aplicar", external: false },
   {
     label: "Comunidad de WhatsApp",
-    href: "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3",
+    href: WHATSAPP_COMMUNITY_URL,
     external: true,
   },
 ];

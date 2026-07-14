@@ -90,5 +90,5 @@ Página: [/recursos](https://notion.mayckolco.com/recursos)
 ## Contacto
 
 - **WhatsApp:** [+51 946 542 990](https://wa.me/51946542990)
-- **Comunidad:** [Grupo WhatsApp](https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3)
+- **Comunidad:** [Grupo WhatsApp](https://chat.whatsapp.com/LiAhJvYlfJfGSSCljXtl3k)
 - **Instagram:** [@notioncommunitylima](https://instagram.com/notioncommunitylima)

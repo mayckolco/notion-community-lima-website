@@ -9,6 +9,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { JoinCommunityButton } from "@/components/JoinCommunityButton";
 import { Button } from "@/components/ui/button";
+import { WHATSAPP_COMMUNITY_URL } from "@/lib/content/constants";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -64,7 +65,7 @@ const CONTENT: Record<
     ],
     primaryCta: {
       label: "Unirme a la comunidad",
-      href: "https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3",
+      href: WHATSAPP_COMMUNITY_URL,
       external: true,
     },
   },
@@ -131,7 +132,7 @@ export default function GraciasPage({ searchParams }: Props) {
             <p className="text-xs text-muted-foreground">
               ¿Aún no estás en la comunidad?{" "}
               <a
-                href="https://chat.whatsapp.com/CvBaizXWjtZCstUgXlJqi3"
+                href={WHATSAPP_COMMUNITY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
