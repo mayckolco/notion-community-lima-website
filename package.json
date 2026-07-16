@@ -13,7 +13,8 @@
     "test:bootcamp": "tsx scripts/test-bootcamp.ts",
     "test:apify": "tsx scripts/test-apify.ts",
     "ga4:setup": "tsx scripts/configure-ga4-conversions.ts",
-    "ga4:check": "tsx scripts/configure-ga4-conversions.ts --check"
+    "ga4:check": "tsx scripts/configure-ga4-conversions.ts --check",
+    "ga4:consolidate": "tsx scripts/configure-ga4-conversions.ts --consolidate"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

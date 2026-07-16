@@ -3,7 +3,7 @@
 Documento vivo que define la visión, el plan de desarrollo y el estado de cada funcionalidad.
 **Regla de mantenimiento**: cada vez que se complete, agregue o descarte una funcionalidad, actualizar este archivo en el mismo commit.
 
-Última actualización: 2026-07-14 (GA4 conectado `G-1D2VSCG9LR`, deploy producción)
+Última actualización: 2026-07-16 (GA4 unificado `G-1D2VSCG9LR` en ambos dominios)
 
 ---
 
@@ -24,7 +24,7 @@ Landing page **100% informativa** sobre el ecosistema Notion y sus productos, qu
 - **UX/UI** de primer nivel, consistente con el design system Notion Community Lima
 - **Responsive** (mobile-first, probado en 375px / 768px / 1280px)
 - Optimizada para **SEO, GEO y AEO** (metadata, datos estructurados, contenido que responde preguntas)
-- Medición con **Google Analytics 4** (`G-1D2VSCG9LR`) — eventos de conversión vía `lib/seo/analytics.ts`
+- Medición con **Google Analytics 4** (`G-1D2VSCG9LR`) — un solo measurement ID para `notion.mayckolco.com` y `notion.ialabs.tech`; eventos de conversión vía `lib/seo/analytics.ts`
 
 ## 2. Arquitectura de navegación (objetivo)
 
@@ -78,7 +78,7 @@ Middleware (`middleware.ts`) valida presencia de cookie en Edge; HMAC completo e
 - [x] Portal miembro `/cuenta/*`: perfil, mapa, sesiones, proyectos, configuraciones, admin
 - [x] Notion Bootcamp: fechas (`DB_BOOTCAMP_DATES_ID`), inscripciones vía relación `Persona`, checkout `/programas/checkout`
 - [x] Páginas base: landing, directorio, eventos, recursos, programas, nosotros, comunidad
-- [x] GA4: conectado en `app/layout.tsx` con `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-1D2VSCG9LR` (Vercel + `.env.local.example`)
+- [x] GA4: conectado en `app/layout.tsx` con `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-1D2VSCG9LR` (Vercel + `.env.local.example`); dominios `notion.mayckolco.com` y `notion.ialabs.tech` → mismo ID
 - [x] Rebrand a Notion Community Lima + design system aplicado
 - [x] Deploy en Vercel → `https://notion.mayckolco.com` (proyecto `notion-community-lima-website`)
 
@@ -111,7 +111,7 @@ Objetivo: máxima visibilidad en buscadores y en motores de respuesta (ChatGPT, 
 - [x] **Infraestructura SEO**: `sitemap.ts` dinámico con speakers, `robots.ts`, canonical URLs vía metadata, `lang="es-PE"` en layout.
 - [x] **AEO**: sección FAQ en landing (`LANDING_FAQ`) y recursos (`RECURSOS_FAQ`) con respuestas directas.
 - [x] **GEO**: `CommunityStatsSection` con datos citable (speakers, charlas, miembros WhatsApp).
-- [x] **GA4 eventos de conversión**: `click_whatsapp`, `join_community`, `apply_speaker`, `register_event`, `click_instagram` implementados vía `lib/seo/analytics.ts`. *Pendiente en GA4 Admin: marcar eventos como conversiones.*
+- [x] **GA4 eventos de conversión**: `click_whatsapp`, `join_community`, `apply_speaker`, `register_event`, `click_instagram` implementados vía `lib/seo/analytics.ts`. Conversiones marcadas en GA4 Admin (7/7). Script: `pnpm ga4:check` / `pnpm ga4:consolidate`.
 - [x] **Performance**: imágenes con `next/image` en todo el sitio; fonts Inter + PT Serif + VT323 optimizadas en layout.
 
 ### Fase 4 : Conversión y crecimiento ✅ (2026-07-10)

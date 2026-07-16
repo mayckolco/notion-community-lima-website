@@ -6,8 +6,9 @@
  *   GA4_SERVICE_ACCOUNT_PATH=.secrets/ga4-service-account.json
  *
  * Uso:
- *   pnpm ga4:setup          # crear conversiones faltantes
- *   pnpm ga4:setup --check  # solo listar estado (sin cambios)
+ *   pnpm ga4:setup               # crear conversiones faltantes
+ *   pnpm ga4:setup --check       # solo listar estado (sin cambios)
+ *   pnpm ga4:setup --consolidate # eliminar data streams duplicados (un solo G- ID)
  */
 import { createSign } from "crypto";
 import { readFileSync, existsSync } from "fs";
@@ -26,6 +27,9 @@ const CREDENTIALS_PATH =
 const ADMIN_SCOPE = "https://www.googleapis.com/auth/analytics.edit";
 const TOKEN_URL = "https://oauth2.googleapis.com/token";
 const ADMIN_BASE = "https://analyticsadmin.googleapis.com/v1beta";
+
+/** Dominios de producción que envían al mismo measurement ID. */
+const PRODUCTION_DOMAINS = ["notion.mayckolco.com", "notion.ialabs.tech"] as const;
 
 /** Conversiones principales del sitio (+ extras del formulario speaker). */
 const CONVERSION_EVENTS = [
@@ -160,8 +164,80 @@ async function createConversionEvent(token: string, eventName: string): Promise<
   });
 }
 
+type DataStream = {
+  name?: string;
+  displayName?: string;
+  type?: string;
+  webStreamData?: { defaultUri?: string; measurementId?: string };
+};
+
+async function listDataStreams(token: string): Promise<DataStream[]> {
+  const data = await adminFetch<{ dataStreams?: DataStream[] }>(
+    token,
+    `/properties/${PROPERTY_ID}/dataStreams`
+  );
+  return data.dataStreams ?? [];
+}
+
+async function deleteDataStream(token: string, streamName: string): Promise<void> {
+  await adminFetch(token, `/${streamName}`, { method: "DELETE" });
+}
+
+async function consolidateDataStreams(
+  token: string,
+  primaryMeasurementId: string
+): Promise<void> {
+  const streams = await listDataStreams(token);
+  const primary = streams.filter(
+    (s) => s.webStreamData?.measurementId === primaryMeasurementId
+  );
+  const duplicates = streams.filter(
+    (s) => s.webStreamData?.measurementId && s.webStreamData.measurementId !== primaryMeasurementId
+  );
+
+  if (primary.length === 0) {
+    throw new Error(
+      `No existe un data stream con ${primaryMeasurementId}. Crea uno antes de consolidar.`
+    );
+  }
+
+  if (primary.length > 1) {
+    console.warn(
+      `\n⚠️  Hay ${primary.length} streams con ${primaryMeasurementId}. Revisa manualmente en GA4 Admin.`
+    );
+  }
+
+  console.log(`\n🌐 Dominios de producción (un solo measurement ID):`);
+  for (const domain of PRODUCTION_DOMAINS) {
+    console.log(`  · ${domain} → ${primaryMeasurementId}`);
+  }
+
+  if (duplicates.length === 0) {
+    console.log("\n✅ No hay data streams duplicados para eliminar.");
+    return;
+  }
+
+  console.log(`\n🗑️  Eliminando ${duplicates.length} data stream(s) duplicado(s)...`);
+  for (const stream of duplicates) {
+    const id = stream.webStreamData?.measurementId ?? "sin ID";
+    const uri = stream.webStreamData?.defaultUri ?? "—";
+    if (!stream.name) {
+      console.error(`  ❌ ${stream.displayName ?? "Web"} (${id}): falta resource name`);
+      continue;
+    }
+    try {
+      await deleteDataStream(token, stream.name);
+      console.log(`  ✅ ${stream.displayName ?? "Web"} → ${uri} (${id})`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      console.error(`  ❌ ${stream.displayName ?? "Web"} (${id}): ${msg}`);
+    }
+  }
+}
+
 async function main() {
   const checkOnly = process.argv.includes("--check");
+  const consolidateStreams = process.argv.includes("--consolidate");
   const creds = loadCredentials();
   const token = await getAccessToken(creds);
 
@@ -175,18 +251,10 @@ async function main() {
   );
   console.log(`✅ Propiedad encontrada: ${property.displayName ?? property.name}`);
 
-  type DataStream = {
-    displayName?: string;
-    type?: string;
-    webStreamData?: { defaultUri?: string; measurementId?: string };
-  };
-  const streams = await adminFetch<{ dataStreams?: DataStream[] }>(
-    token,
-    `/properties/${PROPERTY_ID}/dataStreams`
-  );
+  const streams = await listDataStreams(token);
 
   console.log("\n📡 Data streams:");
-  for (const stream of streams.dataStreams ?? []) {
+  for (const stream of streams) {
     const web = stream.webStreamData;
     console.log(
       `  · ${stream.displayName ?? "Web"} → ${web?.defaultUri ?? "—"} (${web?.measurementId ?? "sin ID"})`
@@ -194,15 +262,28 @@ async function main() {
   }
 
   const expectedMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? "G-1D2VSCG9LR";
-  const hasMatchingStream = (streams.dataStreams ?? []).some(
+  const hasMatchingStream = streams.some(
     (s) => s.webStreamData?.measurementId === expectedMeasurementId
   );
   if (hasMatchingStream) {
     console.log(`\n✅ Measurement ID ${expectedMeasurementId} coincide con un data stream.`);
+    console.log(`   Dominios: ${PRODUCTION_DOMAINS.join(", ")}`);
   } else {
     console.warn(
       `\n⚠️  No se encontró el data stream con ${expectedMeasurementId}. Revisa la propiedad correcta.`
     );
+  }
+
+  if (consolidateStreams) {
+    await consolidateDataStreams(token, expectedMeasurementId);
+    const after = await listDataStreams(token);
+    console.log(`\n📡 Data streams finales (${after.length}):`);
+    for (const stream of after) {
+      const web = stream.webStreamData;
+      console.log(
+        `  · ${stream.displayName ?? "Web"} → ${web?.defaultUri ?? "—"} (${web?.measurementId ?? "sin ID"})`
+      );
+    }
   }
 
   const existing = await listConversionEvents(token);
@@ -224,8 +305,12 @@ async function main() {
     console.log(`  ${status} ${event}`);
   }
 
-  if (checkOnly) {
-    console.log("\nModo --check: no se crearon conversiones.");
+  if (checkOnly || consolidateStreams) {
+    console.log(
+      consolidateStreams
+        ? "\nModo --consolidate: streams duplicados procesados."
+        : "\nModo --check: no se crearon conversiones."
+    );
     return;
   }
 
